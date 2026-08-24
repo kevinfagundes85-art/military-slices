@@ -1,6 +1,6 @@
 # Service Terminology Matrix — Military SLICES 2026
 
-**Research date:** 2026-08-24  
+**Research date:** 2026-08-24
 **Authority preference:** current service headquarters/program pages > current DoD/department policy > current installation implementation pages > historical guides/anecdotal material.
 
 This matrix exists so Military SLICES can speak the user's service language without creating six different products.
