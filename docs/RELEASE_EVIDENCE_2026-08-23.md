@@ -2,12 +2,12 @@
 
 ## Locked candidate
 
-- Source commit: `dc0c3feb8f706584d901c09ef2a69f331d9feb60`
-- Cloud Run revision: `military-slices-00006-yes`
+- Deployed source commit: `a9c0ce5`
+- Cloud Run revision: `military-slices-00007-qob`
 - Traffic: `0%`
-- Tagged URL: <https://release-candidate---military-slices-ztvqlzospa-uw.a.run.app/>
-- Container image: `sha256:90dd6996a702b98d1b747e36ff9243bc2dc29afa43003b09796302579c31855f`
-- Immediate rollback candidates: `military-slices-00005-goq` and `military-slices-00004-sih`
+- Tagged URL: <https://final-candidate---military-slices-ztvqlzospa-uw.a.run.app/>
+- Container image: `sha256:420ced754a5fab6216ac09da2144e0bd00d474ec5ebfdabd3175d1af43d7e343`
+- Immediate rollback candidates: `military-slices-00006-yes` and `military-slices-00005-goq`
 - Custom domain: purchased, intentionally unmapped pending human release approval
 
 ## Exact hosted bundle
@@ -24,6 +24,7 @@
 - Ruff, MyPy, Bandit, JavaScript syntax, diff validation, and dependency audit passed.
 - Dependency audit: no known third-party vulnerabilities; the local package itself is not published to PyPI.
 - Hosted ADK proof: `google-adk/gemini-3.7-flash`, Vertex AI backend, two model turns, four bounded tool calls, version 1 Firestore write.
+- Aggregate synthetic-run telemetry at evidence lock: 12 recorded model calls, 19 tool calls, 8,232 input tokens, and 1,559 output tokens across seven test profiles.
 - Hosted idempotency proof: identical replay returned version 1 with no second agent run.
 - Hosted persistence: confirmed state, rejection, and refinement survived reload.
 - Hosted isolation: two independent signed sessions produced distinct profile IDs; the untouched session remained version 0 with zero facts.
@@ -32,7 +33,8 @@
 - Raw artifact bytes were not written to Firestore or application logs. Extracted text remained editable and ungoverned until confirmation.
 - Mobile 375×812: no horizontal overflow; primary visible controls measured 48–72 px high.
 - Ambiguous input remained reviewable and disappeared on reload before confirmation.
-- Candidate logs contained no unexpected application errors after the final deployment.
+- `/api/health` returned 200 with the intended model/framework identity and security headers.
+- Repeated hammer testing produced an expected Vertex `429 RESOURCE_EXHAUSTED`; the deterministic fallback returned 200 and preserved the user decision path. No user-facing 5xx occurred.
 
 ## Defects found and closed
 
@@ -42,6 +44,7 @@
 4. Gemini introduced unsupported local-employer context; grounding rules tightened and proposal capabilities/gaps made explicit.
 5. Rejecting one role expanded the foreground to five choices; recomputation capped at three.
 6. HTTP lost-response retries returned 409 before engine idempotency; replay now returns current state without another write or model call.
+7. Cloud Run's tagged front end intercepted `/healthz`; a routable `/api/health` alias was added while retaining the container endpoint.
 
 ## Remaining human gates
 
@@ -49,7 +52,7 @@
 2. Real second-account/device isolation validation.
 3. Founder cold-user/adult-tone convergence.
 4. Eligibility, ownership, team roster, and third-party-content attestations.
-5. Public repository URL and access decision.
+5. GitHub account creation, terms acceptance, username selection, and public repository URL.
 6. Canonical-domain cutover and post-cutover smoke test.
 7. Unedited public demo recording of four minutes or less.
 8. Final Devpost review and irreversible submission.
