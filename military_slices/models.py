@@ -138,6 +138,10 @@ class TelemetrySummary(BaseModel):
     tool_calls: int = 0
     agent_gates_closed: int = 0
     duplicate_questions_avoided: int = 0
+    total_agent_latency_ms: int = 0
+    resolver_context_bytes: int = 0
+    state_bytes_avoided: int = 0
+    context_reduction_ratio: float = 0
     estimated_cost_usd: float = 0
 
 

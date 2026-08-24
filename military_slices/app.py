@@ -151,7 +151,15 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
         updated.telemetry.tool_calls += int(agent_result.telemetry.get("tool_calls", 0))
         updated.telemetry.input_tokens += int(agent_result.telemetry.get("input_tokens", 0))
         updated.telemetry.output_tokens += int(agent_result.telemetry.get("output_tokens", 0))
+        updated.telemetry.agent_gates_closed += int(agent_result.telemetry.get("agent_gates_closed", 0))
+        updated.telemetry.total_agent_latency_ms += int(agent_result.telemetry.get("latency_ms", 0))
+        updated.telemetry.resolver_context_bytes = int(agent_result.telemetry.get("resolver_context_bytes", 0))
+        updated.telemetry.state_bytes_avoided += int(agent_result.telemetry.get("state_bytes_avoided", 0))
+        updated.telemetry.context_reduction_ratio = float(
+            agent_result.telemetry.get("context_reduction_ratio", 0)
+        )
         saved = application.state.store.save(updated, expected_version=current.version)
+        current_gate = active_gate(saved)
         _event(
             "confirmed_input",
             profile_id,
@@ -160,6 +168,12 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             agent_provider=agent_result.provider,
             model_calls=agent_result.telemetry.get("model_calls", 0),
             tool_calls=agent_result.telemetry.get("tool_calls", 0),
+            input_tokens=agent_result.telemetry.get("input_tokens", 0),
+            output_tokens=agent_result.telemetry.get("output_tokens", 0),
+            latency_ms=agent_result.telemetry.get("latency_ms", 0),
+            context_reduction_ratio=agent_result.telemetry.get("context_reduction_ratio", 0),
+            agent_gates_closed=agent_result.telemetry.get("agent_gates_closed", 0),
+            human_gate=current_gate.id if current_gate else None,
         )
         return _envelope(
             saved,

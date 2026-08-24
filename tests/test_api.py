@@ -44,6 +44,8 @@ def test_full_feedback_cycle_persists_and_reconstitutes() -> None:
     payload = confirmed.json()
     assert payload["state"]["version"] == 1
     assert payload["what_changed"] is not None
+    assert payload["state"]["telemetry"]["resolver_context_bytes"] > 0
+    assert payload["state"]["telemetry"]["context_reduction_ratio"] >= 0
     reloaded = client.get("/api/state").json()
     assert reloaded["state"]["version"] == 1
     assert reloaded["state"]["facts"]

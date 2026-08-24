@@ -86,6 +86,18 @@ def _minimal_context(state: CanonicalState) -> dict[str, Any]:
     }
 
 
+def _context_metrics(state: CanonicalState) -> dict[str, int | float]:
+    context_bytes = len(json.dumps(_minimal_context(state), separators=(",", ":")).encode())
+    state_bytes = len(state.model_dump_json().encode())
+    avoided = max(0, state_bytes - context_bytes)
+    reduction = round(avoided / state_bytes, 4) if state_bytes else 0
+    return {
+        "resolver_context_bytes": context_bytes,
+        "state_bytes_avoided": avoided,
+        "context_reduction_ratio": reduction,
+    }
+
+
 def _extract_json(text: str) -> dict[str, Any]:
     stripped = text.strip()
     if stripped.startswith("```"):
@@ -108,6 +120,7 @@ class Resolver:
 
     async def resolve(self, state: CanonicalState) -> ResolverResult:
         fallback = deterministic_hypotheses(" ".join(fact.statement for fact in state.facts), state.rejected_roles)
+        context_metrics = _context_metrics(state)
         if self.mode != "adk":
             return ResolverResult(
                 hypotheses=fallback,
@@ -117,6 +130,7 @@ class Resolver:
                     "tool_calls": 1,
                     "latency_ms": 0,
                     "fallback": False,
+                    **context_metrics,
                 },
             )
 
@@ -145,6 +159,8 @@ class Resolver:
             if not hypotheses:
                 hypotheses = fallback
             event_telemetry["latency_ms"] = int((time.perf_counter() - started) * 1000)
+            event_telemetry["agent_gates_closed"] = len(proposal.machine_closed)
+            event_telemetry.update(context_metrics)
             return ResolverResult(
                 hypotheses=hypotheses[:3],
                 provider=f"google-adk/{self.model}",
@@ -166,6 +182,8 @@ class Resolver:
                     "latency_ms": int((time.perf_counter() - started) * 1000),
                     "fallback": True,
                     "error_class": type(exc).__name__,
+                    "agent_gates_closed": 0,
+                    **context_metrics,
                 },
             )
 
