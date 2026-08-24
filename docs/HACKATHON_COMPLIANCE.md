@@ -14,30 +14,30 @@ State vocabulary: `YES`, `NO`, `PARTIAL`, `UNKNOWN`, `CONFLICTED`.
 | New project only | Fresh `military-slices` repository; no Veteran Slice code/schema/deployment reuse | YES | BHE | Maintain provenance and disclosure |
 | One category | Collaborative Partner selected because the system guides, captures feedback, and adapts | YES | BHE | Select in Devpost draft |
 | Team structure | Individual entry currently assumed | PARTIAL | Kevin | Confirm final entrant/team roster |
-| Gemini 3.5+ | `gemini-3.7-flash` through Vertex AI | PARTIAL | BHE | Hosted call evidence required |
-| Google agent framework | Google ADK agent and bounded tools | PARTIAL | BHE | Hosted execution evidence required |
-| Google Cloud infrastructure | Cloud Run + Firestore | PARTIAL | BHE | Candidate deployment evidence required |
-| Autonomous behavior beyond chat | Agent proposes structured state movement; machine-closeable timing/evidence work; adaptive decision interface | PARTIAL | BHE | Demo proof required |
-| Functional/testable project | Public candidate planned at `militaryslices.com` | PARTIAL | BHE | Deploy, HTTPS, test |
-| Free judge access | Anonymous first value with isolated signed session | PARTIAL | BHE | Hosted cold-browser validation |
+| Gemini 3.5+ | Hosted `gemini-3.7-flash` execution through Vertex AI; release-candidate logs record two model turns | YES | BHE | Preserve release evidence |
+| Google agent framework | Hosted Google ADK agent used four bounded tool calls in the release-candidate proof | YES | BHE | Preserve release evidence |
+| Google Cloud infrastructure | Cloud Run revision `military-slices-00006-yes`; Firestore collection `military_slices_profiles` | YES | BHE | Preserve release evidence |
+| Autonomous behavior beyond chat | Agent proposes structured state movement, calls bounded tools, and reconstitutes the next decision | YES | BHE | Show in demo |
+| Functional/testable project | Zero-traffic HTTPS release candidate is operational; canonical domain is intentionally unmapped | PARTIAL | BHE/Kevin | Human release/domain gate |
+| Free judge access | Anonymous first value with isolated signed sessions passed hosted cold-browser checks | YES | BHE | Confirm after domain cutover |
 | English | UI and submission materials are English | YES | BHE | Regression scan |
 | Repository URL | GitHub/GitLab/Bitbucket URL required | UNKNOWN | Kevin/BHE | Create/publish repository or grant required private access |
 | Private repo access | If private: invite `testing@devpost.com` and `cloudhackathons@google.com` | UNKNOWN | Kevin | Only if private repo chosen |
 | README spin-up instructions | Root README includes local/deploy instructions | YES | BHE | Verify from clean environment |
 | Architecture diagram | Mermaid diagram in README and architecture document | YES | BHE | Add rendered submission image |
-| Hosted-project URL | Required if available; strongly encouraged | PARTIAL | BHE | Deploy candidate and map domain |
-| Text description | Must include features, technologies, data sources, findings/learnings | PARTIAL | BHE | Complete Devpost draft |
+| Hosted-project URL | Release candidate exists; `militaryslices.com` is purchased but not mapped | PARTIAL | BHE/Kevin | Human release/domain gate |
+| Text description | Draft includes features, technologies, data sources, findings, and learnings | YES | BHE | Paste/review in Devpost |
 | Demo video | Public YouTube/Vimeo, English, ≤4 minutes | UNKNOWN | Kevin | Human recording/upload gate |
-| Cloud proof in demo | Show Cloud Run/Vertex/`.run.app` evidence | PARTIAL | BHE/Kevin | Prepare unedited demo sequence |
-| Public demo behavior | Live agent action, database/state proof, no fake execution | PARTIAL | BHE | Hosted demo rehearsal |
+| Cloud proof in demo | Exact Cloud Run, Vertex, model/tool, and Firestore evidence is captured | YES | BHE/Kevin | Show in unedited recording |
+| Public demo behavior | Hosted agent action, Firestore continuity, rejection, and reload were exercised | YES | BHE | Repeat after domain cutover |
 | Third-party authorization/licenses | PyPI dependencies; public official occupational links; Apache-2.0 project | PARTIAL | BHE | Generate dependency/license inventory |
 | AI-generated code disclosure | AI coding assistants explicitly permitted; disclose Codex assistance | YES | BHE | Include in Devpost draft |
 | Prior-work disclosure | HELM methodology/lessons only; no prior proprietary code or data | YES | BHE | Include concise disclosure |
 | Original ownership/IP | Fresh implementation; synthetic fixtures; no employer/government data | PARTIAL | Kevin/BHE | Final human ownership attestation |
 | Demo content/IP | No third-party marks implying endorsement; public-source citations only | PARTIAL | BHE | Final screenshot/video review |
 | Judging: innovation/utility 40% | Cross-domain transition decision loop and human-attention reduction | PARTIAL | BHE | Evidence in demo and submission |
-| Judging: architecture 30% | Typed state, authority, concurrency, idempotency, bounded tools | PARTIAL | BHE | Tests and diagram |
-| Judging: demo/readiness 30% | Public deployment, clean docs, unedited proof of action | PARTIAL | BHE/Kevin | Candidate validation and human video |
+| Judging: architecture 30% | Typed state, authority, concurrency, HTTP idempotency, bounded tools, and diagram | YES | BHE | Present clearly |
+| Judging: demo/readiness 30% | Green zero-traffic candidate and clean docs; video/domain remain human gates | PARTIAL | BHE/Kevin | Domain, rehearsal, video |
 | Final Devpost submission | Binding legal attestation and irreversible submission | UNKNOWN | Kevin | Human-only final gate |
 
 ## Category decision
@@ -47,4 +47,3 @@ State vocabulary: `YES`, `NO`, `PARTIAL`, `UNKNOWN`, `CONFLICTED`.
 ## Fresh-build disclosure
 
 Military SLICES was implemented in a new repository during the contest period. Pre-existing HELM methodology, product lessons, and experimental evidence informed design decisions. No Veteran Slice source code, routes, schemas, data, deployment, domain, or app identity were incorporated. Commodity open-source frameworks and Google services are used under their normal licenses and contest permissions.
-

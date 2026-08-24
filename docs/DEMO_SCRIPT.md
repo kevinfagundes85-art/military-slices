@@ -13,7 +13,8 @@ Target length: 3:35–3:50.
 
 ## Synthetic demo input
 
-> I separate from the Coast Guard in March 2027. I led a maintenance team and coordinated parts, schedules, inspections, and emergency repairs, but I do not want shift work or constant travel. My family needs to stay near Tacoma. I am open to a credential if it can finish before I leave, and I am not sure what civilian job title fits.
+> I separate from the Coast Guard next spring. I led a maintenance team and coordinated parts, schedules, inspections, and emergency repairs, but I do not want shift work or constant travel. My family needs to stay near Tacoma. I am open to a credential if it can finish before I leave, and I am not sure what civilian job title fits.
+
+When the shared timing question appears, enter **2027-03-15**.
 
 No government, employer, or real veteran data is used.
-

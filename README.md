@@ -36,6 +36,8 @@ flowchart LR
 
 The state persists. The decision determines the interface.
 
+![Military SLICES architecture](docs/architecture.svg)
+
 ## Local setup
 
 Prerequisites: Python 3.11+, a Google Cloud project, and Application Default Credentials for live Gemini/Firestore use.
@@ -73,11 +75,13 @@ pip-audit
 gcloud run deploy military-slices \
   --source . \
   --region us-west1 \
+  --service-account military-slices-runtime@YOUR_PROJECT.iam.gserviceaccount.com \
   --allow-unauthenticated \
-  --set-env-vars MILITARY_SLICES_ENV=production,MILITARY_SLICES_STORE=firestore,MILITARY_SLICES_COOKIE_SECURE=true,MILITARY_SLICES_AGENT=adk,GOOGLE_GENAI_USE_VERTEXAI=true,GOOGLE_CLOUD_LOCATION=global,MILITARY_SLICES_MODEL=gemini-3.7-flash
+  --set-env-vars MILITARY_SLICES_ENV=production,MILITARY_SLICES_STORE=firestore,MILITARY_SLICES_COOKIE_SECURE=true,MILITARY_SLICES_AGENT=adk,GOOGLE_GENAI_USE_VERTEXAI=true,GOOGLE_CLOUD_PROJECT=YOUR_PROJECT,GOOGLE_CLOUD_LOCATION=global,MILITARY_SLICES_MODEL=gemini-3.7-flash \
+  --set-secrets MILITARY_SLICES_SESSION_SECRET=military-slices-session-secret:latest
 ```
 
-Set `MILITARY_SLICES_SESSION_SECRET` from Secret Manager in production. Grant the runtime service account Firestore User and Vertex AI User.
+Grant the runtime service account Firestore User, Vertex AI User, and Secret Manager Secret Accessor for the named secret.
 
 ## Data and authority boundary
 
@@ -94,9 +98,8 @@ Set `MILITARY_SLICES_SESSION_SECRET` from Secret Manager in production. Grant th
 - Cloud Run
 - Firestore
 
-See [docs/HACKATHON_COMPLIANCE.md](docs/HACKATHON_COMPLIANCE.md), [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), and [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md).
+See [docs/HACKATHON_COMPLIANCE.md](docs/HACKATHON_COMPLIANCE.md), [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/RELEASE_EVIDENCE_2026-08-23.md](docs/RELEASE_EVIDENCE_2026-08-23.md), and [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md).
 
 ## License
 
 Apache-2.0. Third-party packages retain their respective licenses.
-

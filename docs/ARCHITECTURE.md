@@ -51,9 +51,8 @@ Raw files, unconfirmed input, hidden reasoning, and chain-of-thought are not per
 ## Cost controls
 
 - Deterministic orientation runs before any model call.
-- One Gemini call is allowed per meaningful confirmed input or refinement.
+- One bounded ADK run is allowed per meaningful confirmed input or refinement; it may use one tool turn and one final structured-output turn.
 - State is compact and reused; conversation history is not replayed.
 - Public evidence is purpose-scoped.
 - Firestore stores one compact document per session for the MVP.
 - Cloud Run scales to zero.
-
