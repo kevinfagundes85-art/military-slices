@@ -1,0 +1,299 @@
+{
+  "version": "2026-08-24-v2-shadow-tested",
+  "principle": "HELM bounds agency by purpose",
+  "activation_rule": {
+    "required": [
+      "human_anchor_known_or_current_task_is_anchor_establishment",
+      "task_on_current_service_status_time_path_or_justified_dependency",
+      "task_materially_advances_validates_blocks_or_threatens_human_anchor",
+      "task_advances_or_protects_next_path_target_state"
+    ],
+    "max_primary_gates": 1,
+    "max_active_tasks": 3,
+    "max_supporting_changes_visible": 3,
+    "service_overlay_precedence": "Service/component timing and terminology override canonical window defaults when they conflict.",
+    "volatile_fact_rule": "If an active task depends on a volatile program rule (e.g., SkillBridge/CSP duration, approval authority, portal workflow), query a current authoritative source at execution time rather than relying on static pack text."
+  },
+  "windows": [
+    {
+      "id": "PATH_IDENTITY",
+      "relative_time": "as-needed",
+      "target_state": "PATH_IDENTIFIED",
+      "candidate_tasks": [
+        "resolve service only if needed",
+        "resolve component/status only if needed",
+        "resolve separation vs retirement only if needed",
+        "establish transition date/range if it controls next task",
+        "establish declared post-service target if needed"
+      ]
+    },
+    {
+      "id": "A",
+      "relative_time": "24-18 months",
+      "target_state": "TRANSITION_PATH_ORIENTED",
+      "candidate_tasks": [
+        "begin service transition program where eligible/recommended",
+        "establish transition date/range",
+        "initial self-assessment/counseling",
+        "broad post-service direction",
+        "family/location constraints only if path-shaping",
+        "retirement planning resources for retirees"
+      ]
+    },
+    {
+      "id": "B",
+      "relative_time": "18-12 months / NLT 365 days",
+      "target_state": "MANDATORY_TRANSITION_PATH_ACTIVE",
+      "candidate_tasks": [
+        "self-assessment/IC/IIC",
+        "pre-separation counseling",
+        "start/update ITP",
+        "determine tier/track/equivalent",
+        "establish transition target and major constraints",
+        "retirement action if service rules require"
+      ]
+    },
+    {
+      "id": "C",
+      "relative_time": "12-9 months",
+      "target_state": "PREPARATION_BASELINE_READY",
+      "candidate_tasks": [
+        "core transition curriculum",
+        "occupation/career crosswalk",
+        "financial transition baseline",
+        "career/education evidence gap identification",
+        "master resume/evidence inventory if employment path active",
+        "certification/licensure only if target-relevant",
+        "SkillBridge/CSP research if target-relevant",
+        "records preservation if access loss foreseeable"
+      ]
+    },
+    {
+      "id": "D",
+      "relative_time": "9-6 months",
+      "target_state": "ROUTE_PREREQUISITES_CLOSED",
+      "candidate_tasks": [
+        "remaining DOL/VA/core/track requirements",
+        "education/training target if active",
+        "employment evidence/resume foundation if active",
+        "SkillBridge/CSP application if active",
+        "relocation decision window if target-relevant",
+        "current-source benefits/medical checks when path-critical",
+        "evidence-backed post-transition financial plan"
+      ]
+    },
+    {
+      "id": "E",
+      "relative_time": "180-90 days",
+      "target_state": "CAPSTONE_READY",
+      "candidate_tasks": [
+        "BDD if relevant",
+        "separation/retirement physical and records per current service policy",
+        "approved final-180-day experiential program",
+        "serious job applications if employment path and availability support",
+        "relocation execution if active",
+        "close CRS for Capstone",
+        "review key separation-record data"
+      ]
+    },
+    {
+      "id": "F",
+      "relative_time": "90-30 days",
+      "target_state": "FINAL_OUT_READY",
+      "candidate_tasks": [
+        "Capstone/Commanders Verification",
+        "verify ITP/CRS deliverables",
+        "finalize job/education start plan",
+        "preserve post-CAC account/record access",
+        "review separation-document data where service process permits",
+        "finalize active relocation",
+        "finalize service leave/admin",
+        "verify benefit enrollment windows only when relevant"
+      ]
+    },
+    {
+      "id": "G",
+      "relative_time": "final 30 days / final out",
+      "target_state": "SEPARATION_EXECUTED",
+      "candidate_tasks": [
+        "final out-processing",
+        "preserve records/account access",
+        "verify DD214/service separation record",
+        "ID/CAC/retiree credential actions as applicable",
+        "verify pay/account contact data",
+        "confirm move execution if active",
+        "confirm first post-service job/school/training start if active"
+      ]
+    },
+    {
+      "id": "H",
+      "relative_time": "day 0 through +365",
+      "target_state": "POST_SERVICE_STABLE",
+      "candidate_tasks": [
+        "activate/verify healthcare/benefits when applicable",
+        "follow active VA processes",
+        "stabilize employment/education/relocation",
+        "correct separation records if needed",
+        "close remaining pay/household/admin issues",
+        "reassess career only when user declares new target or plan materially fails"
+      ]
+    }
+  ],
+  "services": {
+    "army": {
+      "display_member": "Soldier",
+      "date_terms": [
+        "ETS",
+        "REFRAD",
+        "retirement date"
+      ],
+      "program": "Army TAP",
+      "office_terms": [
+        "TAP Center",
+        "Transition Center",
+        "RSO"
+      ],
+      "special_terms": [
+        "IIC",
+        "Army Day",
+        "MOS Crosswalk",
+        "CSP",
+        "IPPS-A"
+      ],
+      "timing": {
+        "early_separation": "18 months",
+        "early_retirement": "24 months",
+        "required_start": "NLT 365 days",
+        "capstone": "NLT 90 days"
+      }
+    },
+    "navy": {
+      "display_member": "Sailor",
+      "date_terms": [
+        "EAOS",
+        "resignation",
+        "retirement date"
+      ],
+      "program": "TAP",
+      "office_terms": [
+        "FFSC",
+        "CCC",
+        "Transition Counselor"
+      ],
+      "special_terms": [
+        "IC",
+        "CAPSTONE",
+        "rating",
+        "NEC",
+        "officer designator",
+        "NSIPS",
+        "MyNavy HR"
+      ],
+      "timing": {
+        "required_start": "365 days or more",
+        "capstone": "NLT 90 days"
+      }
+    },
+    "marines": {
+      "display_member": "Marine",
+      "date_terms": [
+        "EAS",
+        "retirement date"
+      ],
+      "program": "Transition Readiness Program (TRP)",
+      "office_terms": [
+        "TRP staff",
+        "UTC",
+        "Transition Office",
+        "IPAC",
+        "S-1"
+      ],
+      "special_terms": [
+        "TRS",
+        "Capstone Review",
+        "Commanders Verification"
+      ],
+      "timing": {
+        "individual_counseling": "24-18 months",
+        "pre_separation": "24-18 months",
+        "TRS": "14-12 months"
+      }
+    },
+    "air_force": {
+      "display_member": "Airman",
+      "date_terms": [
+        "DOS",
+        "retirement date"
+      ],
+      "program": "DAF TAP",
+      "office_terms": [
+        "M&FRC"
+      ],
+      "special_terms": [
+        "Initial Counseling",
+        "Pre-Separation Brief",
+        "Capstone"
+      ],
+      "timing": {
+        "recommended_start": "18-24 months",
+        "required_start": "NLT 365 days",
+        "capstone": "NET 12 months and NLT 90 days"
+      },
+      "volatile_rules": {
+        "skillbridge_2026": "Rank-dependent maximum participation and approval authority changed effective 2026-03-31; query current DAF policy when SkillBridge becomes active."
+      }
+    },
+    "space_force": {
+      "display_member": "Guardian",
+      "date_terms": [
+        "DOS",
+        "retirement date"
+      ],
+      "program": "DAF TAP",
+      "office_terms": [
+        "M&FRC"
+      ],
+      "special_terms": [
+        "use DAF path unless current USSF exception exists"
+      ],
+      "timing": {
+        "recommended_start": "18-24 months",
+        "required_start": "NLT 365 days",
+        "capstone": "NET 12 months and NLT 90 days"
+      },
+      "volatile_rules": {
+        "skillbridge_2026": "USSF SkillBridge has rank-dependent maximum participation and approval authority under DAF policy effective 2026-03-31; query current policy when SkillBridge becomes active."
+      }
+    },
+    "coast_guard": {
+      "display_member": "Coast Guard member",
+      "date_terms": [
+        "separation date",
+        "retirement date"
+      ],
+      "program": "Coast Guard TAP",
+      "office_terms": [
+        "TRM",
+        "HSWL RP",
+        "SPO",
+        "Command"
+      ],
+      "special_terms": [
+        "DHS Transition Day",
+        "Sea Legs"
+      ],
+      "timing": {
+        "current_page_required_start": "365 days prior",
+        "capstone": "NLT 90 days",
+        "legacy_toolkit_conflict": "older ~180-day language exists; do not prefer over current TAP page",
+        "early_separation": "about 12 months / 365 days under current Coast Guard guidance",
+        "early_retirement": "up to 24 months under current PPC Separations guidance"
+      }
+    }
+  },
+  "anchor_model": {
+    "human_anchor": "The user-declared outcome being pursued now. If absent, the only active objective is to establish the smallest useful anchor.",
+    "path_target_state": "The next bounded transition milestone on the service-aware path.",
+    "rule": "A task must map to both the human anchor (or anchor-establishment task) and the next path target state. Process compliance alone is not the user objective."
+  }
+}

@@ -22,6 +22,15 @@ from military_slices.models import (
     SurfaceType,
     utc_now,
 )
+from military_slices.path_runtime import (
+    ANCHOR_OPTIONS,
+    anchor_domain,
+    detect_separation_type,
+    detect_service,
+    extract_human_anchor,
+    normalize_service_choice,
+    refresh_path_state,
+)
 
 ALL_SLICES = [
     SliceName.CAREER,
@@ -169,7 +178,14 @@ def _slice_label(slice_name: SliceName) -> str:
 
 
 def new_state(profile_id: str) -> CanonicalState:
-    return CanonicalState(profile_id=profile_id, projections=_build_projections(None))
+    return refresh_path_state(CanonicalState(profile_id=profile_id, projections=_build_projections(None)))
+
+
+def reconstitute_state(current: CanonicalState) -> CanonicalState:
+    state = refresh_path_state(deepcopy(current))
+    state.gates = _recompute_gates(state)
+    state.projections = _build_projections(state)
+    return state
 
 
 def _extract_transition_date(text: str) -> str | None:
@@ -283,8 +299,13 @@ def apply_confirmed_input(
         return current
     state = deepcopy(current)
     state.original_intents.append(orientation.reviewed_input)
-    if not state.current_goal and orientation.sufficient:
-        state.current_goal = orientation.reviewed_input
+    anchor = extract_human_anchor(orientation)
+    if not state.human_anchor and anchor:
+        state.human_anchor = anchor
+    state.service = state.service or detect_service(orientation.reviewed_input)
+    detected_type = detect_separation_type(orientation.reviewed_input)
+    if state.separation_type is None and detected_type in ("separation", "retirement"):
+        state.separation_type = detected_type
     added = _merge_human_facts(state, orientation)
     extracted_date = _extract_transition_date(orientation.reviewed_input)
     if extracted_date:
@@ -295,6 +316,7 @@ def apply_confirmed_input(
         if conflict not in state.conflicts:
             state.conflicts.append(conflict)
 
+    state = refresh_path_state(state)
     state.gates = _recompute_gates(state)
     state.projections = _build_projections(state)
     consequences = _consequences_for_input(state, orientation, extracted_date)
@@ -334,15 +356,10 @@ def apply_artifact_input(
         evidence_label="Statement from a deliberately submitted artifact",
         max_new_facts=MAX_ARTIFACT_FACTS,
     )
-    if not state.current_goal:
-        state.current_goal = next(
-            (
-                statement.text
-                for statement in orientation.statements
-                if statement.kind == "goal" and statement.affected_slices
-            ),
-            None,
-        )
+    state.service = state.service or detect_service(orientation.reviewed_input)
+    detected_type = detect_separation_type(orientation.reviewed_input)
+    if state.separation_type is None and detected_type in ("separation", "retirement"):
+        state.separation_type = detected_type
     extracted_date = _extract_transition_date(orientation.reviewed_input)
     if extracted_date:
         state.transition_date = extracted_date
@@ -351,6 +368,7 @@ def apply_artifact_input(
         if conflict not in state.conflicts:
             state.conflicts.append(conflict)
 
+    state = refresh_path_state(state)
     state.gates = _recompute_gates(state)
     state.projections = _build_projections(state)
     consequences = _consequences_for_input(state, orientation, extracted_date)
@@ -385,7 +403,35 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
         )
         gates.append(_preserve_resolution(gate, existing))
 
-    if not state.transition_date:
+    domain = anchor_domain(state.human_anchor)
+    if not state.human_anchor:
+        gate = Gate(
+            id="transition-human-anchor",
+            title="Choose the outcome that should lead",
+            question="What should this transition plan help you accomplish next?",
+            why="One outcome keeps useful information from turning into unrelated work.",
+            state=GateState.UNKNOWN,
+            surface=SurfaceType.CHOICE,
+            affected_slices=ALL_SLICES,
+            authority_required=Authority.HUMAN,
+            options=list(ANCHOR_OPTIONS),
+            value_score=100,
+        )
+        gates.append(_preserve_resolution(gate, existing))
+    elif domain == "resume" and state.active_tasks and state.active_tasks[0].title.startswith("Name the role"):
+        gate = Gate(
+            id="resume-target-role",
+            title="Bound the résumé work",
+            question="What role or specific use should this résumé support?",
+            why="The target determines which evidence matters and keeps unrelated career ideas latent.",
+            state=GateState.PARTIAL,
+            surface=SurfaceType.TEXT,
+            affected_slices=[SliceName.RESUME, SliceName.CAREER],
+            authority_required=Authority.HUMAN,
+            value_score=99,
+        )
+        gates.append(_preserve_resolution(gate, existing))
+    elif domain != "resume" and not state.transition_date:
         gate = Gate(
             id="planned-transition-date",
             title="Anchor the timing",
@@ -399,6 +445,21 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
         )
         gates.append(_preserve_resolution(gate, existing))
 
+    if domain not in (None, "resume") and state.transition_date and not state.service:
+        gate = Gate(
+            id="service-path-identity",
+            title="Use the right service path",
+            question="Which service transition path applies to you?",
+            why="The underlying decision stays common, but timing and terminology differ by service.",
+            state=GateState.UNKNOWN,
+            surface=SurfaceType.CHOICE,
+            affected_slices=ALL_SLICES,
+            authority_required=Authority.HUMAN,
+            options=["Army", "Navy", "Marine Corps", "Air Force", "Space Force", "Coast Guard"],
+            value_score=90,
+        )
+        gates.append(_preserve_resolution(gate, existing))
+
     preferences = [
         fact
         for fact in state.facts
@@ -407,7 +468,7 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
             for term in ("want", "prefer", "hate", "won't", "will not", "don't", "do not")
         )
     ]
-    if not preferences:
+    if domain == "employment" and not preferences:
         gate = Gate(
             id="next-work-preferences",
             title="Shape the work around you",
@@ -424,7 +485,7 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
         )
         gates.append(_preserve_resolution(gate, existing))
 
-    if not any(h.status == "accepted" for h in state.career_hypotheses):
+    if domain == "employment" and preferences and not any(h.status == "accepted" for h in state.career_hypotheses):
         gate = Gate(
             id="career-direction",
             title="Choose a direction to test",
@@ -439,6 +500,52 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
             authority_required=Authority.HUMAN,
             options=[h.title for h in state.career_hypotheses if h.status == "candidate"],
             value_score=75,
+        )
+        gates.append(_preserve_resolution(gate, existing))
+
+    if domain == "education" and not any(
+        any(term in fact.statement.casefold() for term in ("degree", "program", "school", "credential", "training"))
+        for fact in state.facts
+    ):
+        gate = Gate(
+            id="education-outcome",
+            title="Define the education outcome",
+            question="What should education or training make possible after service?",
+            why="The outcome is needed before comparing programs, timing, or funding routes.",
+            state=GateState.PARTIAL,
+            surface=SurfaceType.TEXT,
+            affected_slices=[SliceName.EDUCATION],
+            authority_required=Authority.HUMAN,
+            value_score=80,
+        )
+        gates.append(_preserve_resolution(gate, existing))
+
+    if domain == "location" and not any(SliceName.LOCATION in fact.affected_slices for fact in state.facts):
+        gate = Gate(
+            id="location-priority",
+            title="Define the location decision",
+            question="What location condition must the next plan respect?",
+            why="A single governing condition is enough to evaluate the next location decision.",
+            state=GateState.PARTIAL,
+            surface=SurfaceType.TEXT,
+            affected_slices=[SliceName.LOCATION],
+            authority_required=Authority.HUMAN,
+            value_score=80,
+        )
+        gates.append(_preserve_resolution(gate, existing))
+
+    if domain == "undecided" and state.transition_date and state.service:
+        gate = Gate(
+            id="transition-direction",
+            title="Choose one direction to examine",
+            question="Which direction is worth examining first?",
+            why="This is exploration, not a permanent commitment, and it keeps the next step bounded.",
+            state=GateState.PARTIAL,
+            surface=SurfaceType.CHOICE,
+            affected_slices=[SliceName.CAREER, SliceName.EDUCATION, SliceName.LOCATION],
+            authority_required=Authority.HUMAN,
+            options=["Civilian work", "Education or training", "Location and family fit"],
+            value_score=80,
         )
         gates.append(_preserve_resolution(gate, existing))
     return sorted(gates, key=lambda item: item.value_score, reverse=True)
@@ -482,7 +589,29 @@ def apply_decision(
             raise ValueError("Enter a valid transition date.")
         state.transition_date = parsed
         normalized = parsed
+    elif gate_id == "transition-human-anchor":
+        if normalized not in ANCHOR_OPTIONS:
+            raise ValueError("Choose one of the listed transition outcomes.")
+        state.human_anchor = ANCHOR_OPTIONS[normalized]
+        state.current_goal = state.human_anchor
+    elif gate_id == "service-path-identity":
+        state.service = normalize_service_choice(normalized)
+    elif gate_id == "resume-target-role":
+        state.human_anchor = f"Make my résumé submission-ready for {normalized}"
+        state.current_goal = state.human_anchor
+    elif gate_id == "transition-direction":
+        state.human_anchor = {
+            "Civilian work": "Find civilian work",
+            "Education or training": "Choose an education or training path",
+            "Location and family fit": "Make a post-service location decision",
+        }.get(normalized)
+        if state.human_anchor is None:
+            raise ValueError("Choose one of the listed directions.")
+        state.current_goal = state.human_anchor
     elif gate_id == "next-work-preferences":
+        orientation = orient(normalized)
+        _merge_human_facts(state, orientation)
+    elif gate_id in ("education-outcome", "location-priority"):
         orientation = orient(normalized)
         _merge_human_facts(state, orientation)
     elif gate_id == "priority-first-six-months":
@@ -530,12 +659,23 @@ def apply_decision(
         known = {item.title for item in state.career_hypotheses}
         state.career_hypotheses.extend(item for item in replacements if item.title not in known)
         state.career_hypotheses = state.career_hypotheses[:3]
+    state = refresh_path_state(state)
     state.gates = _recompute_gates(state)
     state.projections = _build_projections(state)
     state.processed_keys.append(idempotency_key)
     state.updated_at = utc_now()
     state.version += 1
     return state
+
+
+def career_resolution_required(state: CanonicalState) -> bool:
+    gate = active_gate(state)
+    return bool(
+        anchor_domain(state.human_anchor) == "employment"
+        and gate
+        and gate.id == "career-direction"
+        and not any(item.status == "candidate" for item in state.career_hypotheses)
+    )
 
 
 def _build_projections(state: CanonicalState | None) -> list[SliceProjection]:

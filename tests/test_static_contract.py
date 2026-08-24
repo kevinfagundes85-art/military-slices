@@ -49,3 +49,14 @@ def test_mobile_targets_and_overflow_guards_exist() -> None:
     assert "min-width: 300px" in css
     assert "overflow-wrap: anywhere" in css
     assert "@media (max-width: 480px)" in css
+
+
+def test_transition_path_is_bounded_instead_of_rendered_as_a_dashboard() -> None:
+    html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    assert "Parts of your transition" not in html
+    assert 'id="areas"' not in html
+    assert 'id="current-target"' in html
+    assert 'id="path-position"' in html
+    assert "taskHorizon(state.active_tasks)" in script
+    assert ".slice(0, 3)" in script

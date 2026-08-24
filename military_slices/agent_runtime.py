@@ -78,12 +78,26 @@ def calculate_transition_windows(separation_date: str) -> dict[str, str]:
 
 
 def _minimal_context(state: CanonicalState) -> dict[str, Any]:
+    active_slices = {
+        slice_name
+        for task in state.active_tasks
+        for slice_name in task.affected_slices
+    }
+    relevant_facts = [
+        fact.statement
+        for fact in state.facts
+        if not active_slices or active_slices.intersection(fact.affected_slices)
+    ][-12:]
     return {
-        "confirmed_statements": [fact.statement for fact in state.facts[-12:]],
+        "human_anchor": state.human_anchor,
+        "path_target_state": state.path_target_state,
+        "current_timeline_window": state.current_timeline_window,
+        "active_tasks": [task.title for task in state.active_tasks],
+        "confirmed_statements": relevant_facts,
         "transition_date": state.transition_date,
         "rejected_roles": state.rejected_roles[-12:],
         "conflicts": state.conflicts[-5:],
-        "requested_action": "propose up to three distinct civilian career hypotheses",
+        "requested_action": "propose up to three career hypotheses only for the active employment task",
     }
 
 

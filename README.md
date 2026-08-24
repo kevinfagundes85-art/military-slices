@@ -4,12 +4,16 @@
 
 Military SLICES turns incomplete transition context into one persistent, governed plan. It connects career, education, location, and résumé decisions; lets a bounded Gemini agent close machine-resolvable work; and asks the service member only for the next decision that genuinely requires them.
 
+The installed transition runtime is `2026-08-24-v2-shadow-tested`. It separates the human objective from the next service-aware milestone and keeps the visible task horizon to one gate and no more than three tasks.
+
 This is a fresh competition implementation created during the All Things Agentic Hackathon submission period. It does not contain Veteran Slice code, routes, schemas, deployments, or data.
 
 ## What it proves
 
 - Typed human input becomes reviewable orientation before it becomes state.
 - Deliberately selecting an artifact authorizes one bounded update; the user is not asked to authorize the same résumé twice.
+- An artifact may contribute governed evidence without manufacturing the human's objective. If its desired use is unknown, the next interaction asks one routing question and keeps unrelated recommendations latent.
+- Every visible task must support both the human objective and the next path milestone; relevance alone does not grant execution authority.
 - Confirmed facts retain human authority and provenance.
 - One shared decision can update several transition areas.
 - Typed uncertainty preserves `UNKNOWN`, `PARTIAL`, and `CONFLICTED` instead of manufacturing certainty.
@@ -36,7 +40,7 @@ flowchart LR
     ADK --> GEM[Gemini 3.7 Flash on Vertex AI]
     ADK --> T[Bounded deterministic tools]
     G --> FS[(Firestore canonical state)]
-    FS --> P[Timeline and bounded projections]
+    FS --> P[Path-bounded projection: one gate and one to three tasks]
     P --> UI
 ```
 
@@ -95,6 +99,7 @@ Grant the runtime service account Firestore User, Vertex AI User, and Secret Man
 - Deliberately selecting a supported artifact is the authorization to use it for the current plan update; no redundant confirmation follows.
 - Raw uploaded bytes are ephemeral and are never written to Firestore.
 - The full extracted artifact is not persisted; only decision-relevant statements survive deterministic orientation.
+- The durable cross-service path and source manifest live in `military_slices/data/`; volatile program rules are not treated as timeless truth and must be refreshed from an authoritative source when they become path-critical.
 - Model output is a proposal, never self-authenticating truth.
 - Durable state contains conclusions, provenance, decisions, and minimal feedback—not hidden model reasoning.
 - This product provides transition planning, not legal, medical, financial, clearance, benefits, or employment guarantees.

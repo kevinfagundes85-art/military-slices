@@ -14,6 +14,27 @@ const labels = {
   resume: "Your story",
 };
 
+const serviceLabels = {
+  army: "Army",
+  navy: "Navy",
+  marine_corps: "Marine Corps",
+  air_force: "Air Force",
+  space_force: "Space Force",
+  coast_guard: "Coast Guard",
+};
+
+const windowLabels = {
+  PATH_IDENTITY: "Establishing the next useful starting point",
+  A: "Early preparation · roughly 18–24+ months out",
+  B: "Transition path activation · roughly 12–18 months out",
+  C: "Preparation baseline · roughly 9–12 months out",
+  D: "Closing route prerequisites · roughly 6–9 months out",
+  E: "Time-sensitive execution · roughly 3–6 months out",
+  F: "Final readiness · roughly 1–3 months out",
+  G: "Final-out window · under 30 days",
+  H: "Post-service stabilization",
+};
+
 function idempotencyKey() {
   return crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
 }
@@ -68,7 +89,7 @@ function render(next) {
   envelope = next;
   primary.setAttribute("aria-busy", "false");
   renderTimeline(next.state);
-  renderAreas(next.state.projections);
+  renderPath(next.state);
   renderPrimary(next);
   renderWhy(next.active_gate);
   renderChanged(next.what_changed);
@@ -83,13 +104,21 @@ function renderTimeline(state) {
   });
 }
 
-function renderAreas(projections) {
-  $("#areas").innerHTML = projections.map((item) => `
-    <div class="area" data-status="${escapeHtml(item.status)}">
-      <strong>${escapeHtml(item.label)}</strong>
-      <span>${escapeHtml(item.summary)}</span>
+function renderPath(state) {
+  $("#current-target").textContent = state.human_anchor || "Choose what matters first.";
+  const service = serviceLabels[state.service] || "Service details only when needed";
+  const timing = windowLabels[state.current_timeline_window] || "Current transition window";
+  $("#path-position").textContent = `${service} · ${timing}`;
+}
+
+function taskHorizon(tasks) {
+  if (!tasks?.length) return "";
+  return `
+    <div class="task-horizon" aria-label="Current tasks">
+      <span>Working toward</span>
+      <ol>${tasks.slice(0, 3).map((task) => `<li>${escapeHtml(task.title)}</li>`).join("")}</ol>
     </div>
-  `).join("");
+  `;
 }
 
 function renderPrimary(next) {
@@ -111,6 +140,7 @@ function renderPrimary(next) {
   if (!gate) {
     const accepted = state.career_hypotheses.find((item) => item.status === "accepted");
     primary.innerHTML = `
+      ${taskHorizon(state.active_tasks)}
       <h2 id="primary-title">${accepted ? `Keep testing ${escapeHtml(accepted.title)}.` : "Your plan is caught up for now."}</h2>
       <p class="gate-copy">${accepted ? `Your experience suggests a credible direction. The remaining gaps are hypotheses until you compare them with a real job description.` : "Add something whenever your timing, priorities, work preferences, education, or location changes."}</p>
       <button id="add-more" class="button button-primary" type="button">${accepted ? "Add a job description or update" : "Add something"}</button>
@@ -144,6 +174,7 @@ function renderPrimary(next) {
     control = `<label for="gate-value">Your answer</label><textarea id="gate-value" rows="4" placeholder="A sentence is enough."></textarea>`;
   }
   primary.innerHTML = `
+    ${taskHorizon(state.active_tasks)}
     <h2 id="primary-title">${escapeHtml(gate.question)}</h2>
     <p class="gate-copy">${escapeHtml(gate.why)}</p>
     <form id="gate-form" class="gate-form">

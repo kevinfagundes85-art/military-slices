@@ -44,6 +44,15 @@ class SliceName(StrEnum):
     RESUME = "resume"
 
 
+class ServiceName(StrEnum):
+    ARMY = "army"
+    NAVY = "navy"
+    MARINE_CORPS = "marine_corps"
+    AIR_FORCE = "air_force"
+    SPACE_FORCE = "space_force"
+    COAST_GUARD = "coast_guard"
+
+
 class Evidence(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -110,6 +119,16 @@ class SliceProjection(BaseModel):
     changed: bool = False
 
 
+class ActiveTask(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    id: str
+    title: str
+    reason: str
+    source: str
+    affected_slices: list[SliceName] = Field(default_factory=list)
+
+
 class Decision(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -154,8 +173,17 @@ class CanonicalState(BaseModel):
     updated_at: datetime = Field(default_factory=utc_now)
     original_intents: list[str] = Field(default_factory=list)
     current_goal: str | None = None
+    human_anchor: str | None = None
+    service: ServiceName | None = None
+    component_status: str | None = None
+    separation_type: Literal["separation", "retirement"] | None = None
     transition_date: str | None = None
     stage: Literal["TODAY", "PREPARE", "SEPARATE", "TRANSITION", "STABILIZE"] = "TODAY"
+    current_timeline_window: str = "PATH_IDENTITY"
+    path_target_state: str = "PATH_IDENTIFIED"
+    active_tasks: list[ActiveTask] = Field(default_factory=list)
+    latent_fact_count: int = Field(default=0, ge=0)
+    transition_pack_version: str = "2026-08-24-v2-shadow-tested"
     facts: list[Fact] = Field(default_factory=list)
     evidence: list[Evidence] = Field(default_factory=list)
     gates: list[Gate] = Field(default_factory=list)

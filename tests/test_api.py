@@ -47,7 +47,8 @@ def test_full_feedback_cycle_persists_and_reconstitutes() -> None:
     payload = confirmed.json()
     assert payload["state"]["version"] == 1
     assert payload["what_changed"] is not None
-    assert payload["state"]["telemetry"]["resolver_context_bytes"] > 0
+    assert payload["state"]["telemetry"]["resolver_context_bytes"] == 0
+    assert payload["agent_run"] is None
     assert payload["state"]["telemetry"]["context_reduction_ratio"] >= 0
     reloaded = client.get("/api/state").json()
     assert reloaded["state"]["version"] == 1
@@ -176,9 +177,47 @@ def test_resume_sized_docx_clears_artifact_gate_in_one_request() -> None:
     payload = response.json()
     assert payload["state"]["version"] == 1
     assert len(payload["state"]["facts"]) <= 24
-    assert len(payload["state"]["career_hypotheses"]) == 3
+    assert payload["state"]["career_hypotheses"] == []
     assert "Experience 54" not in response.text
-    assert payload["active_gate"]["id"] in {"planned-transition-date", "next-work-preferences"}
+    assert payload["active_gate"]["id"] == "transition-human-anchor"
+
+
+def test_resume_artifact_routes_to_a_declared_target_without_unrelated_model_work() -> None:
+    client, _ = make_client()
+    upload = client.post(
+        "/api/artifact",
+        data={"expected_version": "0", "idempotency_key": "artifact-route-0001"},
+        files={"file": ("resume.txt", b"Navy analyst. Led planning and executive briefings.", "text/plain")},
+    ).json()
+    assert upload["active_gate"]["id"] == "transition-human-anchor"
+    assert upload["agent_run"] is None
+
+    anchor = client.post(
+        "/api/decision",
+        json={
+            "gate_id": "transition-human-anchor",
+            "value": "Improve a résumé for a specific goal",
+            "expected_version": upload["state"]["version"],
+            "idempotency_key": "artifact-route-0002",
+        },
+    ).json()
+    assert anchor["active_gate"]["id"] == "resume-target-role"
+    assert anchor["agent_run"] is None
+
+    target = client.post(
+        "/api/decision",
+        json={
+            "gate_id": "resume-target-role",
+            "value": "Senior program manager",
+            "expected_version": anchor["state"]["version"],
+            "idempotency_key": "artifact-route-0003",
+        },
+    ).json()
+    assert target["state"]["human_anchor"] == "Make my résumé submission-ready for Senior program manager"
+    assert target["state"]["career_hypotheses"] == []
+    assert 1 <= len(target["state"]["active_tasks"]) <= 3
+    assert target["agent_run"] is None
+    assert target["state"]["telemetry"]["model_calls"] == 0
 
 
 def test_artifact_retry_is_idempotent_and_stale_artifact_is_rejected() -> None:

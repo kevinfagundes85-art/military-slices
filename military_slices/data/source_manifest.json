@@ -1,0 +1,252 @@
+{
+  "research_date": "2026-08-24 (shadow-test refresh)",
+  "authority_order": [
+    "current governing law/instruction",
+    "current service headquarters/program authority",
+    "current service implementation guidance",
+    "older guides",
+    "anecdotal experience"
+  ],
+  "sources": [
+    {
+      "scope": "DoD/common",
+      "title": "DoDI 1332.35 Transition Assistance Program (TAP) for Military Personnel, Change 1",
+      "date": "2025-07-29",
+      "url": "https://www.esd.whs.mil/Portals/54/Documents/DD/issuances/dodi/133235p.PDF",
+      "use": "Governing common TAP baseline; eligibility, CRS, program structure",
+      "authority": "governing"
+    },
+    {
+      "scope": "DoD/common",
+      "title": "DoD/DoW TAP Curriculum Overview",
+      "date": "2026",
+      "url": "https://www.dodtap.mil/dodtap/rest/docs?filename=TAP_Curriculum_Overview.pdf",
+      "use": "Current common curriculum and Transition Day modules",
+      "authority": "program"
+    },
+    {
+      "scope": "DoD/common",
+      "title": "Managing Your Transition Timeline",
+      "date": "2022-12-15",
+      "url": "https://dodtap.mil/dodtap/rest/docs?filename=Managing_Your_Transition_Timeline.pdf",
+      "use": "Cross-service timeline scaffold; use with freshness overlay",
+      "authority": "program/historical"
+    },
+    {
+      "scope": "DoD/common",
+      "title": "DD Form 2648",
+      "date": "current form source",
+      "url": "https://www.dodtap.mil/dodtap/rest/docs?filename=Blank_eForm_PDF_Print_Out.pdf",
+      "use": "Pre-separation counseling and CRS eForm structure",
+      "authority": "form"
+    },
+    {
+      "scope": "DoD/common",
+      "title": "DoW SkillBridge",
+      "date": "current",
+      "url": "https://skillbridge.osd.mil/",
+      "use": "Current common SkillBridge program baseline",
+      "authority": "program"
+    },
+    {
+      "scope": "DOL/common",
+      "title": "Transition Assistance Program / DOL Employment Workshop",
+      "date": "current",
+      "url": "https://www.dol.gov/agencies/vets/programs/tap",
+      "use": "Current employment curriculum and workshop source",
+      "authority": "federal"
+    },
+    {
+      "scope": "VA/common",
+      "title": "Service Members Separating Or Retiring From Service",
+      "date": "current",
+      "url": "https://www.va.gov/service-member-benefits/",
+      "use": "Current VA transition actions; includes BDD 180-90 day window",
+      "authority": "federal"
+    },
+    {
+      "scope": "Army",
+      "title": "Army Transition Assistance Program (TAP) - MyArmyBenefits",
+      "date": "reviewed 2026",
+      "url": "https://myarmybenefits.us.army.mil/Benefit-Library/Federal-Benefits/Army-Transition-Assistance-Program-(TAP)-?serv=122",
+      "use": "Army timing, IIC, Army Day, CRS, eligibility",
+      "authority": "service"
+    },
+    {
+      "scope": "Army",
+      "title": "2026 U.S. Army Retirement Planning Guide",
+      "date": "2026",
+      "url": "https://soldierforlife.army.mil/documents/army%20retirement/retirement%20planning/USArmy_RetirementPlanningGuide.pdf",
+      "use": "Current Army retirement timeline, checklists, RSO ecosystem",
+      "authority": "service"
+    },
+    {
+      "scope": "Army",
+      "title": "Army TAP Commander Fact Sheet",
+      "date": "2026-06",
+      "url": "https://www.armytap.army.mil/sites/default/wcmtfiles/2026-06/Commanders%20Fact%20Sheet_0.pdf",
+      "use": "Current Army program summary and timeline",
+      "authority": "service"
+    },
+    {
+      "scope": "Army",
+      "title": "Army CSP and SkillBridge requests move to IPPS-A",
+      "date": "2026-07",
+      "url": "https://soldierforlife.army.mil/Army-Retirement/Retirement-Planning/Change-of-Mission-2026-07/2026-07-Army-Career-Skills-program-and-DOW-SkillBridge",
+      "use": "2026-specific CSP/SB workflow update",
+      "authority": "service"
+    },
+    {
+      "scope": "Navy",
+      "title": "MyNavy HR Transition TAP",
+      "date": "verified 2026-07-29",
+      "url": "https://www.mynavyhr.navy.mil/Career-Management/Transition/Transition-TAP/",
+      "use": "Current Navy TAP authority, terminology, timing, CRS, Capstone",
+      "authority": "service"
+    },
+    {
+      "scope": "Navy",
+      "title": "MyNavy HR Fleet Reserve Timeline",
+      "date": "current",
+      "url": "https://www.mynavyhr.navy.mil/Career-Management/Retirement/Fleet-Reserve-Timeline/",
+      "use": "Current Navy retirement/Fleet Reserve admin milestones",
+      "authority": "service"
+    },
+    {
+      "scope": "Navy",
+      "title": "Navy Retirement Resource Guide",
+      "date": "2023-01-21",
+      "url": "local:user-uploaded",
+      "use": "Path/task and anecdotal source only; not current authority",
+      "authority": "historical/anecdotal"
+    },
+    {
+      "scope": "Marine Corps",
+      "title": "Transition Readiness Program - TECOM",
+      "date": "current",
+      "url": "https://www.tecom.marines.mil/Units/Headquarters-Battalion/Transition-Readiness-Program/",
+      "use": "Current TRP/TRS terminology and service sequence",
+      "authority": "service"
+    },
+    {
+      "scope": "Marine Corps",
+      "title": "Marine Corps Retirement Planning Guide 18-12 months",
+      "date": "2025-09",
+      "url": "https://www.manpower.marines.mil/Portals/236/Documents/MM/MMSR/marine_retirement_12_18_months.pdf",
+      "use": "Current retirement path detail",
+      "authority": "service"
+    },
+    {
+      "scope": "Marine Corps",
+      "title": "Marine Corps Retirement Planning Guide 12-6 months",
+      "date": "2025-09",
+      "url": "https://www.manpower.marines.mil/Portals/236/Documents/MM/MMSR/marine_retirement_6_12_months.pdf",
+      "use": "Current retirement path detail",
+      "authority": "service"
+    },
+    {
+      "scope": "Marine Corps",
+      "title": "Marine Corps Retirement Planning Guide 6-1 months",
+      "date": "2025-09",
+      "url": "https://www.manpower.marines.mil/Portals/236/Documents/MM/MMSR/retirement_guide_1_6_months.pdf",
+      "use": "Current retirement path detail",
+      "authority": "service"
+    },
+    {
+      "scope": "Marine Corps",
+      "title": "Marine Corps Retirement Planning Guide - Month of Retirement",
+      "date": "2025-09",
+      "url": "https://www.manpower.marines.mil/Portals/236/Documents/MM/MMSR/month_of_retirement.pdf",
+      "use": "Current final-out path detail",
+      "authority": "service"
+    },
+    {
+      "scope": "Air Force / DAF",
+      "title": "AFPC Transition Assistance Program",
+      "date": "current",
+      "url": "https://www.afpc.af.mil/Military-and-Family/Transition-Assistance-Program/",
+      "use": "DAF TAP roadmap and M&FRC support",
+      "authority": "service"
+    },
+    {
+      "scope": "Air Force / DAF",
+      "title": "2026 TAP Commander Fact Sheet",
+      "date": "2026-04-15",
+      "url": "https://www.afpc.af.mil/Portals/70/documents/TRANSITION%20ASSISTANCE/02.%202026%20TAP%20Commander%20Fact%20Sheet%20v2.pdf",
+      "use": "Current DAF timing and Capstone window",
+      "authority": "service"
+    },
+    {
+      "scope": "Air Force / DAF",
+      "title": "Transition Assistance Program Roadmap",
+      "date": "current hosted",
+      "url": "https://www.afpc.af.mil/Portals/70/documents/TRANSITION%20ASSISTANCE/Transition%20Assistance%20Program%20Roadmapv2.pdf",
+      "use": "DAF roadmap visualization and sequence",
+      "authority": "service"
+    },
+    {
+      "scope": "Space Force / DAF",
+      "title": "M&FRC - MyAirForceBenefits (Space Force service filter)",
+      "date": "2025/2026 current",
+      "url": "https://myairforcebenefits.us.af.mil/Benefit-Library/Federal-Benefits/Military-and-Family-Readiness-Center-(MandFRC)?serv=26",
+      "use": "Confirms M&FRC/TAP support for Guardians",
+      "authority": "service"
+    },
+    {
+      "scope": "Space Force / DAF",
+      "title": "AFPC Military & Family Readiness Centers support Airmen and Guardians",
+      "date": "current hosted",
+      "url": "https://www.afpc.af.mil/News/Article/3160954/military-family-readiness-centers-taking-care-of-airmen-guardians-and-families/",
+      "use": "Confirms common DAF readiness infrastructure",
+      "authority": "service"
+    },
+    {
+      "scope": "Coast Guard",
+      "title": "Coast Guard Transition Assistance Program",
+      "date": "current",
+      "url": "https://www.dcms.uscg.mil/Our-Organization/Assistant-Commandant-for-Human-Resources-CG-1/Health-Safety-and-Work-Life-CG-11/Office-of-Work-Life-CG-111/Transition-Assistance-Program/",
+      "use": "Current USCG TAP components, 365-day start, DHS Transition Day, Capstone",
+      "authority": "service"
+    },
+    {
+      "scope": "Coast Guard",
+      "title": "Sea Legs - Leaving the Service",
+      "date": "current",
+      "url": "https://www.dcms.uscg.mil/Our-Organization/Assistant-Commandant-for-Human-Resources-CG-1/Health-Safety-and-Work-Life-CG-11/Office-of-Work-Life-CG-111/Sea-Legs/Leaving-the-Service/",
+      "use": "TRM/SPO/Command terminology and departing path",
+      "authority": "service"
+    },
+    {
+      "scope": "Coast Guard",
+      "title": "Departing the Service Checklist",
+      "date": "current hosted; content may contain older task timing",
+      "url": "https://www.dcms.uscg.mil/Portals/10/CG-1/cg111/docs/sealegs/departing_the_service_checklist.pdf",
+      "use": "USCG task path scaffold; freshness-gate timing",
+      "authority": "service/checklist"
+    },
+    {
+      "scope": "Coast Guard",
+      "title": "TAP Toolkit",
+      "date": "current hosted; contains legacy language",
+      "url": "https://www.dcms.uscg.mil/Our-Organization/Assistant-Commandant-for-Human-Resources-CG-1/Health-Safety-and-Work-Life-CG-11/Office-of-Work-Life-CG-111/Transition-Assistance-Program/TAP-Toolkit/",
+      "use": "Definitions and ITP/CRS resources; do not prefer legacy timing over current TAP page",
+      "authority": "service/mixed-freshness"
+    },
+    {
+      "scope": "Air Force / Space Force / DAF",
+      "title": "DAF updates SkillBridge policy balancing operational readiness, transition assistance",
+      "date": "2026-04-02 (effective 2026-03-31)",
+      "url": "https://www.afpc.af.mil/News/Article-Display/Article/4450650/daf-updates-skillbridge-policy-balancing-operational-readiness-transition-assis/",
+      "use": "Current rank-dependent Air Force and Space Force SkillBridge duration and approval authority; fetch only when SkillBridge is active",
+      "authority": "service/current"
+    },
+    {
+      "scope": "Coast Guard",
+      "title": "PPC Separations overview",
+      "date": "current 2026 hosted",
+      "url": "https://www.dcms.uscg.mil/ppc/Separations/CertificateRequest/",
+      "use": "Current Coast Guard separation/retirement implementation note; authorizes transition start one year out from separation or two years out from retirement and reiterates 365-day TAP requirement",
+      "authority": "service/current"
+    }
+  ]
+}

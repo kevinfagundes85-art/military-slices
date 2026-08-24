@@ -11,7 +11,7 @@ from fastapi import Cookie, FastAPI, File, Form, HTTPException, Request, Respons
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
-from military_slices.agent_runtime import Resolver
+from military_slices.agent_runtime import Resolver, ResolverResult
 from military_slices.artifacts import ArtifactError, extract_artifact, multimodal_extract
 from military_slices.engine import (
     active_gate,
@@ -19,7 +19,9 @@ from military_slices.engine import (
     apply_confirmed_input,
     apply_decision,
     apply_hypotheses,
+    career_resolution_required,
     orient,
+    reconstitute_state,
 )
 from military_slices.models import (
     ConfirmRequest,
@@ -27,6 +29,7 @@ from military_slices.models import (
     OrientRequest,
     StateEnvelope,
 )
+from military_slices.path_runtime import PACK_VERSION
 from military_slices.security import (
     LocalRateLimiter,
     TokenError,
@@ -88,6 +91,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             "service": "military-slices",
             "model": os.getenv("MILITARY_SLICES_MODEL", "gemini-3.7-flash"),
             "agent_framework": "google-adk",
+            "transition_pack": PACK_VERSION,
         }
 
     @application.get("/api/state", response_model=StateEnvelope)
@@ -96,7 +100,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
         military_slices_session: Annotated[str | None, Cookie()] = None,
     ) -> StateEnvelope:
         profile_id = _profile(response, military_slices_session)
-        state = application.state.store.get(profile_id)
+        state = reconstitute_state(application.state.store.get(profile_id))
         return _envelope(state)
 
     @application.post("/api/orient")
@@ -135,7 +139,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             verify_orientation(payload.token, payload.reviewed_input)
         except TokenError as exc:
             raise HTTPException(status_code=400, detail=str(exc)) from exc
-        current = application.state.store.get(profile_id)
+        current = reconstitute_state(application.state.store.get(profile_id))
         if payload.idempotency_key in current.processed_keys:
             return _envelope(current)
         if current.version != payload.expected_version:
@@ -146,8 +150,8 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             oriented,
             idempotency_key=payload.idempotency_key,
         )
-        agent_result = await application.state.resolver.resolve(updated)
-        updated = _apply_agent_result(updated, agent_result)
+        updated, agent_result = await _resolve_current_gate(application, updated)
+        agent_telemetry = agent_result.telemetry if agent_result else {}
         saved = application.state.store.save(updated, expected_version=current.version)
         current_gate = active_gate(saved)
         _event(
@@ -155,25 +159,17 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             profile_id,
             request,
             version=saved.version,
-            agent_provider=agent_result.provider,
-            model_calls=agent_result.telemetry.get("model_calls", 0),
-            tool_calls=agent_result.telemetry.get("tool_calls", 0),
-            input_tokens=agent_result.telemetry.get("input_tokens", 0),
-            output_tokens=agent_result.telemetry.get("output_tokens", 0),
-            latency_ms=agent_result.telemetry.get("latency_ms", 0),
-            context_reduction_ratio=agent_result.telemetry.get("context_reduction_ratio", 0),
-            agent_gates_closed=agent_result.telemetry.get("agent_gates_closed", 0),
+            agent_provider=agent_result.provider if agent_result else "not-required",
+            model_calls=agent_telemetry.get("model_calls", 0),
+            tool_calls=agent_telemetry.get("tool_calls", 0),
+            input_tokens=agent_telemetry.get("input_tokens", 0),
+            output_tokens=agent_telemetry.get("output_tokens", 0),
+            latency_ms=agent_telemetry.get("latency_ms", 0),
+            context_reduction_ratio=agent_telemetry.get("context_reduction_ratio", 0),
+            agent_gates_closed=agent_telemetry.get("agent_gates_closed", 0),
             human_gate=current_gate.id if current_gate else None,
         )
-        return _envelope(
-            saved,
-            agent_run={
-                "provider": agent_result.provider,
-                "latency_ms": agent_result.telemetry.get("latency_ms", 0),
-                "tool_calls": agent_result.telemetry.get("tool_calls", 0),
-                "fallback": agent_result.telemetry.get("fallback", False),
-            },
-        )
+        return _envelope(saved, agent_run=_agent_run(agent_result))
 
     @application.post("/api/decision", response_model=StateEnvelope)
     async def decision(
@@ -184,7 +180,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
     ) -> StateEnvelope:
         profile_id = _profile(response, military_slices_session)
         _rate_limit(application, profile_id)
-        current = application.state.store.get(profile_id)
+        current = reconstitute_state(application.state.store.get(profile_id))
         if payload.idempotency_key in current.processed_keys:
             return _envelope(current)
         if current.version != payload.expected_version:
@@ -198,9 +194,17 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             )
         except ValueError as exc:
             raise HTTPException(status_code=400, detail=str(exc)) from exc
+        updated, agent_result = await _resolve_current_gate(application, updated)
         saved = application.state.store.save(updated, expected_version=current.version)
-        _event("human_decision", profile_id, request, version=saved.version, decision=payload.gate_id)
-        return _envelope(saved)
+        _event(
+            "human_decision",
+            profile_id,
+            request,
+            version=saved.version,
+            decision=payload.gate_id,
+            agent_provider=agent_result.provider if agent_result else "not-required",
+        )
+        return _envelope(saved, agent_run=_agent_run(agent_result))
 
     @application.post("/api/artifact")
     async def artifact(
@@ -213,7 +217,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
     ) -> StateEnvelope:
         profile_id = _profile(response, military_slices_session)
         _rate_limit(application, profile_id)
-        current = application.state.store.get(profile_id)
+        current = reconstitute_state(application.state.store.get(profile_id))
         if idempotency_key in current.processed_keys:
             return _envelope(current)
         if current.version != expected_version:
@@ -236,8 +240,8 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             oriented,
             idempotency_key=idempotency_key,
         )
-        agent_result = await application.state.resolver.resolve(updated)
-        updated = _apply_agent_result(updated, agent_result)
+        updated, agent_result = await _resolve_current_gate(application, updated)
+        agent_telemetry = agent_result.telemetry if agent_result else {}
         saved = application.state.store.save(updated, expected_version=current.version)
         current_gate = active_gate(saved)
         _event(
@@ -248,21 +252,13 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             media_type=extracted.media_type,
             method=extracted.method,
             output_characters=len(text),
-            agent_provider=agent_result.provider,
-            model_calls=agent_result.telemetry.get("model_calls", 0),
-            tool_calls=agent_result.telemetry.get("tool_calls", 0),
-            latency_ms=agent_result.telemetry.get("latency_ms", 0),
+            agent_provider=agent_result.provider if agent_result else "not-required",
+            model_calls=agent_telemetry.get("model_calls", 0),
+            tool_calls=agent_telemetry.get("tool_calls", 0),
+            latency_ms=agent_telemetry.get("latency_ms", 0),
             human_gate=current_gate.id if current_gate else None,
         )
-        return _envelope(
-            saved,
-            agent_run={
-                "provider": agent_result.provider,
-                "latency_ms": agent_result.telemetry.get("latency_ms", 0),
-                "tool_calls": agent_result.telemetry.get("tool_calls", 0),
-                "fallback": agent_result.telemetry.get("fallback", False),
-            },
-        )
+        return _envelope(saved, agent_run=_agent_run(agent_result))
 
     @application.get("/")
     async def root() -> FileResponse:
@@ -321,6 +317,27 @@ def _apply_agent_result(state: Any, agent_result: Any) -> Any:
         agent_result.telemetry.get("context_reduction_ratio", 0)
     )
     return state
+
+
+async def _resolve_current_gate(
+    application: FastAPI,
+    state: Any,
+) -> tuple[Any, ResolverResult | None]:
+    if not career_resolution_required(state):
+        return state, None
+    agent_result = await application.state.resolver.resolve(state)
+    return _apply_agent_result(state, agent_result), agent_result
+
+
+def _agent_run(agent_result: ResolverResult | None) -> dict[str, Any] | None:
+    if agent_result is None:
+        return None
+    return {
+        "provider": agent_result.provider,
+        "latency_ms": agent_result.telemetry.get("latency_ms", 0),
+        "tool_calls": agent_result.telemetry.get("tool_calls", 0),
+        "fallback": agent_result.telemetry.get("fallback", False),
+    }
 
 
 def _event(name: str, profile_id: str, request: Request, **values: Any) -> None:
