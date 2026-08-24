@@ -1,6 +1,31 @@
 # Release Candidate Evidence — 2026-08-23
 
-## Corrected zero-traffic candidate
+## Installed transition-pack candidate
+
+- Deployed source commit: `19a26d4`
+- Cloud Run revision: `military-slices-00012-cof`
+- Traffic: `0%`
+- Tagged URL: <https://competition-rc---military-slices-ztvqlzospa-uw.a.run.app/>
+- Container image: `sha256:419b8ea7c4326c8e1a202bc4f379d9eb9d74c34501fd7da4966f5424cbd17214`
+- Protected service traffic: `military-slices-00001-niw` at `100%`
+- Installed path pack: `2026-08-24-v2-shadow-tested`
+
+### Hosted transition-path proof
+
+- Hosted `/api/state`, DOCX extraction, three governed writes, and reload all returned 200.
+- Version progression was exactly `0 → 1 → 2 → 3 → 3` after reload.
+- The artifact contributed evidence but left `human_anchor` empty, surfaced `transition-human-anchor`, produced zero career hypotheses, and made zero model calls.
+- Choosing résumé work surfaced only `resume-target-role`. Declaring `Senior program manager` produced three bounded résumé tasks, zero career hypotheses, and zero model calls.
+- Reload preserved the declared target and transition-pack version.
+- Hosted `app.js` and `styles.css` hashes matched local tested files exactly; the removed four-area dashboard did not reappear.
+- Candidate readiness is `True`; its post-validation warning/error query returned zero entries.
+- A local wheel inspection proved both executable JSON files are included in the package.
+
+### Zero-traffic failure caught and superseded
+
+`military-slices-00011-qev` passed process health but failed its first Firestore state read. `google-cloud-firestore 2.29.0` and `google-api-core 2.35.0` had been published together earlier on 24 August and routed `(default)` as `%28default%29`; Firestore rejected it. The new candidate pins the immediately previous hosted-known-good versions (`2.28.1` and `2.34.0`). The failed revision received zero production traffic.
+
+## Prior corrected artifact candidate
 
 - Deployed source commit: `11c7a4d`
 - Cloud Run revision: `military-slices-00010-low`
@@ -42,13 +67,13 @@ retained only as rollback evidence.
 
 | File | SHA-256 | Hosted match |
 |---|---|---:|
-| `static/app.js` | `0EC5B4FA75449BD3D8ECD42CB67FA67EACDB1C506778091C394458E7F91E7E24` | YES |
-| `static/styles.css` | `040786480BFAD01AE60D8906737628C286F094A77090C46565E33704555CCB40` | YES |
-| `static/index.html` | `93F63ABC473C13605B5B733CCDED4CD5C4E3DB27221A6E495ABD1F5E68E26133` | YES |
+| `static/app.js` | `E6138E187388020C503432F757D2D7D44EB9DC649125D2C2A07EC9FF306BE4C7` | YES |
+| `static/styles.css` | `0E10E882C16F1639601AF27383DE4A83E58210FB50836CBB0BF33723D532B0AB` | YES |
+| `static/index.html` | `D64D9CC72C2E5C8608D0514607C18A845BB3AF1A80259FF69521E949BB198F5E` | YES |
 
 ## Automated and hosted results
 
-- 42 tests passed.
+- 57 tests passed.
 - Ruff, MyPy, Bandit, JavaScript syntax, diff validation, and dependency audit passed.
 - Dependency audit: no known third-party vulnerabilities; the local package itself is not published to PyPI.
 - Hosted ADK proof: `google-adk/gemini-3.7-flash`, Vertex AI backend, two model turns, four bounded tool calls, version 1 Firestore write.
@@ -80,8 +105,8 @@ retained only as rollback evidence.
 The Devpost draft exists as `1150977-military-slices`; its project name, pitch,
 story, candidate URL, category, Google stack, and testing instructions are
 staged. The architecture PDF is frozen at
-`output/pdf/military-slices-architecture.pdf`. Additional information cannot be
-completed until the required public repository URL exists.
+`output/pdf/military-slices-architecture.pdf`. The public repository exists;
+final attestations and irreversible submission remain intentionally open.
 
 1. Physical Android native picker, keyboard, focus, and touch validation.
 2. Real second-account/device isolation validation.
