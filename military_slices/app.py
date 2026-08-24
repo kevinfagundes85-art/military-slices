@@ -134,6 +134,8 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
         except TokenError as exc:
             raise HTTPException(status_code=400, detail=str(exc)) from exc
         current = application.state.store.get(profile_id)
+        if payload.idempotency_key in current.processed_keys:
+            return _envelope(current)
         if current.version != payload.expected_version:
             raise VersionConflictError("Your plan changed in another tab. Refresh to continue.")
         oriented = orient(payload.reviewed_input)
@@ -178,6 +180,8 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
         profile_id = _profile(response, military_slices_session)
         _rate_limit(application, profile_id)
         current = application.state.store.get(profile_id)
+        if payload.idempotency_key in current.processed_keys:
+            return _envelope(current)
         if current.version != payload.expected_version:
             raise VersionConflictError("Your plan changed in another tab. Refresh to continue.")
         try:

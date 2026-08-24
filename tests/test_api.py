@@ -73,6 +73,47 @@ def test_stale_write_returns_409() -> None:
     assert client.post("/api/confirm", json=body).status_code == 409
 
 
+def test_lost_response_retry_returns_current_state_without_another_write() -> None:
+    client, _ = make_client()
+    initial = client.get("/api/state").json()
+    oriented = client.post("/api/orient", json={"text": "I need stable civilian work."}).json()
+    body = {
+        "token": oriented["token"],
+        "reviewed_input": oriented["reviewed_input"],
+        "expected_version": initial["state"]["version"],
+        "idempotency_key": "confirm-retry-0001",
+    }
+    first = client.post("/api/confirm", json=body)
+    replay = client.post("/api/confirm", json=body)
+    assert first.status_code == replay.status_code == 200
+    assert first.json()["state"]["version"] == replay.json()["state"]["version"] == 1
+
+
+def test_decision_retry_is_idempotent_across_http_boundary() -> None:
+    client, _ = make_client()
+    initial = client.get("/api/state").json()
+    oriented = client.post("/api/orient", json={"text": "I need stable civilian work."}).json()
+    confirmed = client.post(
+        "/api/confirm",
+        json={
+            "token": oriented["token"],
+            "reviewed_input": oriented["reviewed_input"],
+            "expected_version": initial["state"]["version"],
+            "idempotency_key": "decision-setup-0001",
+        },
+    ).json()
+    body = {
+        "gate_id": "planned-transition-date",
+        "value": "2027-06-01",
+        "expected_version": confirmed["state"]["version"],
+        "idempotency_key": "decision-retry-0001",
+    }
+    first = client.post("/api/decision", json=body)
+    replay = client.post("/api/decision", json=body)
+    assert first.status_code == replay.status_code == 200
+    assert first.json()["state"]["version"] == replay.json()["state"]["version"] == 2
+
+
 def test_artifact_cancel_equivalent_creates_no_write() -> None:
     client, _ = make_client()
     before = client.get("/api/state").json()["state"]
