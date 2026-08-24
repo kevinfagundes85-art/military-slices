@@ -60,3 +60,9 @@ def test_transition_path_is_bounded_instead_of_rendered_as_a_dashboard() -> None
     assert 'id="path-position"' in html
     assert "taskHorizon(state.active_tasks)" in script
     assert ".slice(0, 3)" in script
+
+
+def test_firestore_dependency_pair_is_locked_to_the_hosted_known_good_versions() -> None:
+    project = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    assert '"google-cloud-firestore==2.28.1"' in project
+    assert '"google-api-core==2.34.0"' in project

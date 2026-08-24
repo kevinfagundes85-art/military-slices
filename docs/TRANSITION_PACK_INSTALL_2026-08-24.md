@@ -38,3 +38,9 @@ Official-source spot checks confirmed the pack's critical executable examples:
 - Current Coast Guard sources preserve the distinction between the mandatory 365-day process and earlier retirement-planning opportunity.
 
 No price, benefit amount, portal workflow, contractor, or legal conclusion from the historical guide was installed as governing truth.
+
+## Hosted dependency regression caught before traffic
+
+The first zero-traffic build, `military-slices-00011-qev`, caught a same-day upstream dependency regression before release. PyPI published `google-cloud-firestore 2.29.0` and `google-api-core 2.35.0` on 24 August; that pair sent the default database routing value as `%28default%29`, and Firestore rejected the first state read. Production remained on `military-slices-00001-niw` at 100%.
+
+The runtime now pins the immediately preceding hosted-known-good pair (`google-cloud-firestore 2.28.1`, `google-api-core 2.34.0`) and includes a regression contract preventing an unreviewed floating upgrade. The failed revision never received production traffic.

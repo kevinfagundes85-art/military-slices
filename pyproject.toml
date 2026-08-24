@@ -15,7 +15,11 @@ dependencies = [
   "pydantic>=2.11,<3",
   "python-multipart>=0.0.20,<1",
   "google-adk>=1.12,<2",
-  "google-cloud-firestore>=2.21,<3",
+  # 2.29.0 and google-api-core 2.35.0 were published together on 2026-08-24
+  # and percent-encode `(default)` in the routing header against Firestore.
+  # Keep the last hosted-known-good pair until the upstream regression clears.
+  "google-cloud-firestore==2.28.1",
+  "google-api-core==2.34.0",
   "pypdf>=6,<7",
   "pypdfium2>=4.30,<5",
   "python-docx>=1.2,<2",
