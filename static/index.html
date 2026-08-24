@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#08141f">
+    <meta name="description" content="Military SLICES helps U.S. service members connect career, education, location, and résumé decisions into one transition plan.">
+    <title>Military SLICES</title>
+    <link rel="stylesheet" href="/static/styles.css?v=1">
+    <script src="/static/app.js?v=1" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to the next decision</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Military SLICES home">
+        <span class="brand-mark" aria-hidden="true">MS</span>
+        <span>
+          <strong>Military SLICES</strong>
+          <small>Your transition, connected.</small>
+        </span>
+      </a>
+      <button id="add-context-top" class="button button-quiet" type="button">Add something</button>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <section class="orientation-shell" aria-labelledby="transition-title">
+        <div class="section-kicker">Your transition</div>
+        <h1 id="transition-title">One plan that changes with you.</h1>
+        <div class="timeline" aria-label="Transition timeline">
+          <span class="timeline-step active" data-stage="TODAY">Today</span>
+          <span class="timeline-line" aria-hidden="true"></span>
+          <span class="timeline-step" data-stage="PREPARE">Prepare</span>
+          <span class="timeline-line" aria-hidden="true"></span>
+          <span class="timeline-step" data-stage="SEPARATE">Separate</span>
+          <span class="timeline-line" aria-hidden="true"></span>
+          <span class="timeline-step" data-stage="TRANSITION">Transition</span>
+          <span class="timeline-line" aria-hidden="true"></span>
+          <span class="timeline-step" data-stage="STABILIZE">Stabilize</span>
+        </div>
+        <div id="areas" class="areas" aria-label="Parts of your transition"></div>
+      </section>
+
+      <div class="content-grid">
+        <section id="primary" class="primary-card" aria-labelledby="primary-title">
+          <div class="section-kicker">What matters now</div>
+          <div id="primary-content" aria-live="polite" aria-busy="true">
+            <h2 id="primary-title">Loading your next step…</h2>
+          </div>
+        </section>
+
+        <aside class="context-column">
+          <section id="why-panel" class="support-card" hidden>
+            <div class="section-kicker">Why this matters</div>
+            <p id="why-copy"></p>
+            <div id="affected-areas" class="affected-areas"></div>
+          </section>
+
+          <section id="changed-panel" class="support-card changed-card" hidden>
+            <div class="section-kicker">What changed</div>
+            <h2 id="changed-title"></h2>
+            <ul id="changed-list"></ul>
+          </section>
+
+          <details class="support-card quiet-card">
+            <summary>Review what I’ve shared</summary>
+            <div id="history-content" class="history-content"></div>
+          </details>
+        </aside>
+      </div>
+
+      <section id="add-panel" class="add-panel" hidden aria-labelledby="add-title">
+        <button id="close-add" class="icon-button" type="button" aria-label="Close">×</button>
+        <div class="section-kicker">Start with what you have</div>
+        <h2 id="add-title">Tell me something or add a document.</h2>
+        <p class="muted">A sentence is enough. A résumé, screenshot, or document works too.</p>
+        <form id="input-form">
+          <label for="input-text">What should your transition plan understand?</label>
+          <textarea id="input-text" maxlength="12000" rows="7" placeholder="For example: I leave the Coast Guard next spring. I need steady work near Tacoma, but I don’t know what civilian roles fit my experience."></textarea>
+          <div class="input-actions">
+            <label class="button button-secondary file-button" for="artifact-file">Add a file</label>
+            <input id="artifact-file" class="visually-hidden" type="file" accept=".txt,.pdf,.docx,.png,.jpg,.jpeg,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/png,image/jpeg">
+            <span id="file-status" class="file-status" aria-live="polite">PDF, DOCX, TXT, PNG, or JPG · 5 MB max</span>
+            <button class="button button-primary" type="submit">Continue</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="review-panel" class="review-panel" hidden aria-labelledby="review-title">
+        <div class="section-kicker">Here’s what I’m hearing</div>
+        <h2 id="review-title">Check this before it shapes your plan.</h2>
+        <p id="review-summary" class="review-summary"></p>
+        <ul id="review-statements" class="review-statements"></ul>
+        <label for="review-text">Correct anything that is off</label>
+        <textarea id="review-text" maxlength="12000" rows="7"></textarea>
+        <p class="trust-note">Nothing is saved until you confirm. AI suggestions never become facts on their own.</p>
+        <div class="button-row">
+          <button id="cancel-review" class="button button-quiet" type="button">Go back</button>
+          <button id="confirm-review" class="button button-primary" type="button">Use this in my plan</button>
+        </div>
+      </section>
+    </main>
+
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+
+    <footer>
+      <p>Planning support, not legal, medical, benefits, financial, or employment advice.</p>
+      <details>
+        <summary>How it works</summary>
+        <p>Powered by HELM, Google ADK, Gemini 3.7 Flash, Cloud Run, and Firestore. Your confirmed information is reused so the next interaction can be smaller and smarter.</p>
+      </details>
+    </footer>
+  </body>
+</html>
+

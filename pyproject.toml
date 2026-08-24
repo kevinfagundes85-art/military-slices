@@ -1,0 +1,54 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "military-slices"
+version = "0.1.0"
+description = "Military SLICES — adaptive, governed transition planning"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+dependencies = [
+  "fastapi>=0.116,<1",
+  "uvicorn[standard]>=0.35,<1",
+  "pydantic>=2.11,<3",
+  "python-multipart>=0.0.20,<1",
+  "google-adk>=1.12,<2",
+  "google-cloud-firestore>=2.21,<3",
+  "pypdf>=6,<7",
+  "pypdfium2>=4.30,<5",
+  "python-docx>=1.2,<2",
+  "Pillow>=12.3,<13",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=9.0.3,<10",
+  "pytest-cov>=6.2,<7",
+  "httpx>=0.28,<1",
+  "ruff>=0.12,<1",
+  "mypy>=1.17,<2",
+  "bandit>=1.8,<2",
+  "pip-audit>=2.9,<3",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["military_slices"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers -p no:cacheprovider"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "S"]
+ignore = ["S101"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+plugins = ["pydantic.mypy"]
