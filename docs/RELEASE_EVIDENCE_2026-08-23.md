@@ -1,6 +1,6 @@
 # Release Candidate Evidence — 2026-08-23
 
-## Locked candidate
+## Superseded candidate
 
 - Deployed source commit: `c85ee82`
 - Cloud Run revision: `military-slices-00008-mov`
@@ -9,6 +9,12 @@
 - Container image: `sha256:16dabfe9b1a9e30c5a97654364d7febe886d606c58b03db7f2f43be91c7752c0`
 - Immediate rollback candidates: `military-slices-00007-qob` and `military-slices-00006-yes`
 - Custom domain: purchased, intentionally unmapped pending human release approval
+
+This candidate failed the physical artifact gate: its upload request reached the
+resolver but the unbounded ADK tool loop returned a Cloud Run `504` after about
+120 seconds. It also treated deliberate file selection as extraction-only and
+required a redundant second authorization. It remains at zero traffic and is
+retained only as rollback evidence.
 
 ## Exact hosted bundle
 
@@ -29,9 +35,9 @@
 - Hosted idempotency proof: identical replay returned version 1 with no second agent run.
 - Hosted persistence: confirmed state, rejection, and refinement survived reload.
 - Hosted isolation: two independent signed sessions produced distinct profile IDs; the untouched session remained version 0 with zero facts.
-- Firestore: `military_slices_profiles`; artifact-only calls created zero documents or version changes.
+- Firestore: `military_slices_profiles`; on this superseded candidate, artifact-only calls created zero documents or version changes.
 - Hosted artifact matrix: TXT, DOCX, PDF, scanned PDF, PNG, JPG/JPEG, and imperfect provider MIME passed. Corrupt PDF, oversized TXT, executable, and spoofed JPG failed clearly.
-- Raw artifact bytes were not written to Firestore or application logs. Extracted text remained editable and ungoverned until confirmation.
+- Raw artifact bytes were not written to Firestore or application logs. This superseded flow kept extracted text ungoverned until a redundant confirmation; the corrected contract treats deliberate file selection as authority for one bounded update while keeping raw bytes and full extracted text ephemeral.
 - Mobile 375×812: no horizontal overflow; primary visible controls measured 48–72 px high.
 - Ambiguous input remained reviewable and disappeared on reload before confirmation.
 - `/api/health` returned 200 with the intended model/framework identity and security headers.
@@ -59,7 +65,7 @@ completed until the required public repository URL exists.
 2. Real second-account/device isolation validation.
 3. Founder cold-user/adult-tone convergence.
 4. Eligibility, ownership, team roster, and third-party-content attestations.
-5. GitHub account creation, terms acceptance, username selection, and public repository URL.
+5. Public repository exists at <https://github.com/kevinfagundes85-art/military-slices>; final public-content review remains open.
 6. Canonical-domain cutover and post-cutover smoke test.
 7. Unedited public demo recording of four minutes or less.
 8. Final Devpost review and irreversible submission.

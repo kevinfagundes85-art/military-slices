@@ -19,22 +19,35 @@ function idempotencyKey() {
 }
 
 async function api(path, options = {}) {
-  const response = await fetch(path, {
-    credentials: "same-origin",
-    headers: options.body instanceof FormData ? {} : { "Content-Type": "application/json" },
-    ...options,
-  });
-  if (!response.ok) {
-    let detail = "Something went wrong. Please try again.";
-    try {
-      const payload = await response.json();
-      detail = payload.detail || detail;
-    } catch (_) {}
-    const error = new Error(detail);
-    error.status = response.status;
+  const { timeoutMs = 25000, ...requestOptions } = options;
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(path, {
+      credentials: "same-origin",
+      headers: requestOptions.body instanceof FormData ? {} : { "Content-Type": "application/json" },
+      ...requestOptions,
+      signal: controller.signal,
+    });
+    if (!response.ok) {
+      let detail = "Something went wrong. Please try again.";
+      try {
+        const payload = await response.json();
+        detail = payload.detail || detail;
+      } catch (_) {}
+      const error = new Error(detail);
+      error.status = response.status;
+      throw error;
+    }
+    return response.json();
+  } catch (error) {
+    if (error.name === "AbortError") {
+      throw new Error("This took too long. Your plan was not left spinning; reload to check the current state.");
+    }
     throw error;
+  } finally {
+    window.clearTimeout(timeout);
   }
-  return response.json();
 }
 
 function announce(message, error = false) {
@@ -310,6 +323,11 @@ async function submitDecision(event) {
 async function uploadArtifact(event) {
   const file = event.target.files?.[0];
   if (!file) return;
+  if (!envelope) {
+    announce("Your plan is still loading. Try the file again in a moment.", true);
+    event.target.value = "";
+    return;
+  }
   if (file.size > 5 * 1024 * 1024) {
     announce("That file is larger than the 5 MB limit.", true);
     event.target.value = "";
@@ -317,15 +335,20 @@ async function uploadArtifact(event) {
   }
   const form = new FormData();
   form.append("file", file);
-  $("#file-status").textContent = `Reading ${file.name}…`;
+  form.append("expected_version", String(envelope.state.version));
+  form.append("idempotency_key", idempotencyKey());
+  $("#file-status").textContent = `Using ${file.name} to update your plan…`;
   try {
-    const result = await api("/api/artifact", { method: "POST", body: form });
-    $("#input-text").value = result.text;
-    $("#file-status").textContent = `${result.filename} · ready to review`;
-    $("#input-text").focus();
-    announce("The file was converted to editable text. Review it before continuing.");
+    const next = await api("/api/artifact", { method: "POST", body: form });
+    addPanel.hidden = true;
+    contentGrid.hidden = false;
+    render(next);
+    $("#primary").scrollIntoView({ behavior: "smooth", block: "start" });
+    $("#main").focus();
+    announce(next.agent_run?.fallback ? "Your document updated the plan using the safe fallback." : "Your document updated the plan and changed what comes next.");
   } catch (error) {
     $("#file-status").textContent = "PDF, DOCX, TXT, PNG, or JPG · 5 MB max";
+    if (error.status === 409) await loadState();
     announce(error.message, true);
   } finally {
     event.target.value = "";

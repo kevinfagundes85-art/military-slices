@@ -221,7 +221,12 @@ def _fact_kind(statement: OrientedStatement) -> str:
     return "human_context"
 
 
-def _merge_human_facts(state: CanonicalState, orientation: OrientationResult) -> list[str]:
+def _merge_human_facts(
+    state: CanonicalState,
+    orientation: OrientationResult,
+    *,
+    evidence_label: str = "Confirmed transition statement",
+) -> list[str]:
     added: list[str] = []
     for statement in orientation.statements:
         if not statement.affected_slices:
@@ -234,7 +239,7 @@ def _merge_human_facts(state: CanonicalState, orientation: OrientationResult) ->
         state.evidence.append(
             Evidence(
                 id=evidence_id,
-                label="Confirmed transition statement",
+                label=evidence_label,
                 authority=Authority.HUMAN,
                 purpose="transition planning",
             )
@@ -283,6 +288,60 @@ def apply_confirmed_input(
         FeedbackEvent(
             id=stable_id("feedback", state.profile_id, idempotency_key),
             headline=headline,
+            consequences=consequences,
+        )
+    )
+    state.processed_keys.append(idempotency_key)
+    state.updated_at = utc_now()
+    state.version += 1
+    return state
+
+
+def apply_artifact_input(
+    current: CanonicalState,
+    orientation: OrientationResult,
+    *,
+    idempotency_key: str,
+) -> CanonicalState:
+    """Apply a deliberately supplied artifact without a redundant confirmation.
+
+    Selecting a file is the human authorization to use it for this decision.
+    Only decision-relevant statements survive orientation; raw bytes, contact-only
+    text, and the full extracted document are not persisted.
+    """
+    if idempotency_key in current.processed_keys:
+        return current
+    state = deepcopy(current)
+    state.original_intents.append("Shared a document to update my transition plan.")
+    added = _merge_human_facts(
+        state,
+        orientation,
+        evidence_label="Statement from a deliberately submitted artifact",
+    )
+    if not state.current_goal:
+        state.current_goal = next(
+            (
+                statement.text
+                for statement in orientation.statements
+                if statement.kind == "goal" and statement.affected_slices
+            ),
+            None,
+        )
+    extracted_date = _extract_transition_date(orientation.reviewed_input)
+    if extracted_date:
+        state.transition_date = extracted_date
+    if _has_income_education_conflict(orientation.reviewed_input):
+        conflict = "Immediate income and full-time education overlap in the first transition period."
+        if conflict not in state.conflicts:
+            state.conflicts.append(conflict)
+
+    state.gates = _recompute_gates(state)
+    state.projections = _build_projections(state)
+    consequences = _consequences_for_input(state, orientation, extracted_date)
+    state.feedback.append(
+        FeedbackEvent(
+            id=stable_id("feedback", state.profile_id, idempotency_key),
+            headline="Your document changed what comes next." if added else "Your existing plan was reused.",
             consequences=consequences,
         )
     )

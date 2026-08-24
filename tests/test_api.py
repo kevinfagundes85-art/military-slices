@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import io
+
+from docx import Document
 from fastapi.testclient import TestClient
 
 from military_slices.agent_runtime import Resolver
@@ -123,18 +126,73 @@ def test_artifact_cancel_equivalent_creates_no_write() -> None:
     assert before["version"] == after["version"] == 0
 
 
-def test_txt_artifact_is_editable_and_not_persisted() -> None:
+def test_deliberately_selected_artifact_updates_plan_without_second_confirmation() -> None:
     client, _ = make_client()
     before = client.get("/api/state").json()["state"]
     response = client.post(
         "/api/artifact",
-        files={"file": ("resume.txt", b"Led maintenance schedules.", "text/plain")},
+        data={"expected_version": "0", "idempotency_key": "artifact-direct-0001"},
+        files={
+            "file": (
+                "resume.txt",
+                b"Kevin kevin@example.com. Led maintenance schedules and want remote work.",
+                "text/plain",
+            )
+        },
     )
     assert response.status_code == 200
-    assert response.json()["text"] == "Led maintenance schedules."
-    assert "Nothing has been saved" in response.json()["notice"]
+    payload = response.json()
+    assert payload["state"]["version"] == 1
+    assert payload["state"]["facts"]
+    assert payload["what_changed"]["headline"] == "Your document changed what comes next."
+    serialized = response.text
+    assert "kevin@example.com" not in serialized
+    assert payload["state"]["original_intents"] == ["Shared a document to update my transition plan."]
     after = client.get("/api/state").json()["state"]
-    assert after["version"] == before["version"]
+    assert after["version"] == before["version"] + 1
+
+
+def test_resume_sized_docx_clears_artifact_gate_in_one_request() -> None:
+    client, _ = make_client()
+    document = Document()
+    for index in range(55):
+        document.add_paragraph(
+            f"Experience {index}: led intelligence analysis, planning, and executive briefings for operational work."
+        )
+    output = io.BytesIO()
+    document.save(output)
+    response = client.post(
+        "/api/artifact",
+        data={"expected_version": "0", "idempotency_key": "artifact-docx-0001"},
+        files={
+            "file": (
+                "resume.docx",
+                output.getvalue(),
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            )
+        },
+    )
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["state"]["version"] == 1
+    assert len(payload["state"]["career_hypotheses"]) == 3
+    assert payload["active_gate"]["id"] in {"planned-transition-date", "next-work-preferences"}
+
+
+def test_artifact_retry_is_idempotent_and_stale_artifact_is_rejected() -> None:
+    client, _ = make_client()
+    body = {"expected_version": "0", "idempotency_key": "artifact-retry-0001"}
+    upload = {"file": ("resume.txt", b"Led military logistics work.", "text/plain")}
+    first = client.post("/api/artifact", data=body, files=upload)
+    replay = client.post("/api/artifact", data=body, files=upload)
+    assert first.status_code == replay.status_code == 200
+    assert first.json()["state"]["version"] == replay.json()["state"]["version"] == 1
+    stale = client.post(
+        "/api/artifact",
+        data={"expected_version": "0", "idempotency_key": "artifact-retry-0002"},
+        files=upload,
+    )
+    assert stale.status_code == 409
 
 
 def test_security_headers_and_health_evidence() -> None:

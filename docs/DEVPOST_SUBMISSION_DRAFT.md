@@ -25,7 +25,7 @@ After confirmation, a bounded Google ADK agent using Gemini 3.7 Flash investigat
 - Firestore for canonical, versioned state
 - Secret Manager and a dedicated least-privilege runtime identity
 - Deterministic orientation, time-window calculation, output validation, optimistic concurrency, and idempotent writes
-- Ephemeral TXT, DOCX, PDF, scanned-PDF, PNG, and JPG/JPEG extraction with human review before persistence
+- Ephemeral TXT, DOCX, PDF, scanned-PDF, PNG, and JPG/JPEG extraction where deliberate file selection authorizes one bounded update; only decision-relevant statements persist
 
 ## Data and evidence
 

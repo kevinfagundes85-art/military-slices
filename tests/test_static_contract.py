@@ -32,6 +32,17 @@ def test_rich_artifact_contract_cannot_regress_to_text_only() -> None:
     assert "100 KB" not in html
 
 
+def test_file_selection_is_the_artifact_authorization_boundary() -> None:
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    assert 'form.append("expected_version"' in script
+    assert 'form.append("idempotency_key"' in script
+    artifact_flow = script[script.index("async function uploadArtifact") :]
+    assert 'api("/api/artifact"' in artifact_flow
+    assert "showReview" not in artifact_flow
+    assert "ready to review" not in artifact_flow
+    assert "Your document updated the plan" in artifact_flow
+
+
 def test_mobile_targets_and_overflow_guards_exist() -> None:
     css = (ROOT / "static" / "styles.css").read_text(encoding="utf-8")
     assert "min-height: 46px" in css

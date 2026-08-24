@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import os
@@ -114,9 +115,20 @@ def _extract_json(text: str) -> dict[str, Any]:
 
 
 class Resolver:
-    def __init__(self, mode: str | None = None, model: str | None = None) -> None:
+    def __init__(
+        self,
+        mode: str | None = None,
+        model: str | None = None,
+        *,
+        timeout_seconds: float | None = None,
+        max_llm_calls: int = 3,
+    ) -> None:
         self.mode = mode or os.getenv("MILITARY_SLICES_AGENT", "deterministic")
         self.model = model or os.getenv("MILITARY_SLICES_MODEL", "gemini-3.7-flash")
+        self.timeout_seconds = timeout_seconds or float(
+            os.getenv("MILITARY_SLICES_RESOLVER_TIMEOUT_SECONDS", "18")
+        )
+        self.max_llm_calls = max_llm_calls
 
     async def resolve(self, state: CanonicalState) -> ResolverResult:
         fallback = deterministic_hypotheses(" ".join(fact.statement for fact in state.facts), state.rejected_roles)
@@ -136,7 +148,8 @@ class Resolver:
 
         started = time.perf_counter()
         try:
-            proposal, event_telemetry = await self._run_adk(state)
+            async with asyncio.timeout(self.timeout_seconds):
+                proposal, event_telemetry = await self._run_adk(state)
             hypotheses: list[CareerHypothesis] = []
             rejected = {title.casefold() for title in state.rejected_roles}
             for item in proposal.hypotheses:
@@ -189,6 +202,7 @@ class Resolver:
 
     async def _run_adk(self, state: CanonicalState) -> tuple[ResolverProposal, dict[str, Any]]:
         from google.adk.agents import Agent
+        from google.adk.agents.run_config import RunConfig
         from google.adk.runners import Runner
         from google.adk.sessions import InMemorySessionService
         from google.genai import types
@@ -239,6 +253,7 @@ class Resolver:
             user_id=state.profile_id,
             session_id=session_id,
             new_message=message,
+            run_config=RunConfig(max_llm_calls=self.max_llm_calls),
         ):
             content = getattr(event, "content", None)
             parts = getattr(content, "parts", []) or []

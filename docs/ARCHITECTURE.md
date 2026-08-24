@@ -5,10 +5,14 @@
 Military SLICES is one web service with one canonical state. Career, Education, Location, and Your Story are bounded projections, not independent applications or agents.
 
 ```text
-human input
+typed human input
   → stateless orientation
   → human review
   → governed promotion
+deliberately selected artifact
+  → safe ephemeral extraction
+  → decision-relevant orientation
+  → governed promotion without redundant confirmation
   → deterministic + ADK/Gemini resolution
   → Firestore versioned state
   → time/relationship evaluation
@@ -22,12 +26,14 @@ human input
 
 1. Input is untrusted.
 2. Orientation extracts only statements the human actually supplied.
-3. Nothing is persisted until the human confirms or corrects.
-4. Gemini returns bounded proposals, not truth.
-5. Deterministic validation filters proposals before persistence.
-6. Facts retain their authority and evidence identifiers.
-7. Firestore writes use optimistic concurrency.
-8. Replayed idempotency keys do not create new versions.
+3. Typed input is not persisted until the human confirms or corrects it.
+4. Deliberately selecting a supported artifact authorizes one plan update; it is not presented for redundant confirmation.
+5. Raw bytes, contact-only text, and the full extracted artifact are not persisted.
+6. Gemini returns bounded proposals, not truth.
+7. Deterministic validation filters proposals before persistence.
+8. Facts retain their authority and evidence identifiers.
+9. Firestore writes use optimistic concurrency.
+10. Replayed idempotency keys do not create new versions.
 
 ## Persistence
 
@@ -46,12 +52,12 @@ One document per signed anonymous browser session contains:
 - aggregate-safe telemetry;
 - version and timestamps.
 
-Raw files, unconfirmed input, hidden reasoning, and chain-of-thought are not persisted.
+Raw files, full extracted artifacts, unconfirmed typed input, hidden reasoning, and chain-of-thought are not persisted.
 
 ## Cost controls
 
 - Deterministic orientation runs before any model call.
-- One bounded ADK run is allowed per meaningful confirmed input or refinement; it may use one tool turn and one final structured-output turn.
+- One bounded ADK run is allowed per meaningful input or refinement. It is limited to three model calls and an 18-second wall-clock budget; failure deterministically falls back instead of leaving the human waiting.
 - State is compact and reused; conversation history is not replayed.
 - Public evidence is purpose-scoped.
 - Firestore stores one compact document per session for the MVP.

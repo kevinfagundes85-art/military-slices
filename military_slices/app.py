@@ -7,7 +7,7 @@ import time
 from pathlib import Path
 from typing import Annotated, Any, cast
 
-from fastapi import Cookie, FastAPI, File, HTTPException, Request, Response, UploadFile
+from fastapi import Cookie, FastAPI, File, Form, HTTPException, Request, Response, UploadFile
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -15,6 +15,7 @@ from military_slices.agent_runtime import Resolver
 from military_slices.artifacts import ArtifactError, extract_artifact, multimodal_extract
 from military_slices.engine import (
     active_gate,
+    apply_artifact_input,
     apply_confirmed_input,
     apply_decision,
     apply_hypotheses,
@@ -146,18 +147,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             idempotency_key=payload.idempotency_key,
         )
         agent_result = await application.state.resolver.resolve(updated)
-        updated = apply_hypotheses(updated, agent_result.hypotheses)
-        updated.telemetry.model_calls += int(agent_result.telemetry.get("model_calls", 0))
-        updated.telemetry.tool_calls += int(agent_result.telemetry.get("tool_calls", 0))
-        updated.telemetry.input_tokens += int(agent_result.telemetry.get("input_tokens", 0))
-        updated.telemetry.output_tokens += int(agent_result.telemetry.get("output_tokens", 0))
-        updated.telemetry.agent_gates_closed += int(agent_result.telemetry.get("agent_gates_closed", 0))
-        updated.telemetry.total_agent_latency_ms += int(agent_result.telemetry.get("latency_ms", 0))
-        updated.telemetry.resolver_context_bytes = int(agent_result.telemetry.get("resolver_context_bytes", 0))
-        updated.telemetry.state_bytes_avoided += int(agent_result.telemetry.get("state_bytes_avoided", 0))
-        updated.telemetry.context_reduction_ratio = float(
-            agent_result.telemetry.get("context_reduction_ratio", 0)
-        )
+        updated = _apply_agent_result(updated, agent_result)
         saved = application.state.store.save(updated, expected_version=current.version)
         current_gate = active_gate(saved)
         _event(
@@ -217,10 +207,17 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
         request: Request,
         response: Response,
         file: Annotated[UploadFile, File()],
+        expected_version: Annotated[int, Form()],
+        idempotency_key: Annotated[str, Form(min_length=8, max_length=128)],
         military_slices_session: Annotated[str | None, Cookie()] = None,
-    ) -> dict[str, Any]:
+    ) -> StateEnvelope:
         profile_id = _profile(response, military_slices_session)
         _rate_limit(application, profile_id)
+        current = application.state.store.get(profile_id)
+        if idempotency_key in current.processed_keys:
+            return _envelope(current)
+        if current.version != expected_version:
+            raise VersionConflictError("Your plan changed in another tab. Refresh to continue.")
         data = await file.read(5 * 1024 * 1024 + 1)
         try:
             extracted = extract_artifact(file.filename or "artifact", data, file.content_type)
@@ -233,20 +230,39 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             raise HTTPException(status_code=400, detail=str(exc)) from exc
         finally:
             data = b""
+        oriented = orient(text)
+        updated = apply_artifact_input(
+            current,
+            oriented,
+            idempotency_key=idempotency_key,
+        )
+        agent_result = await application.state.resolver.resolve(updated)
+        updated = _apply_agent_result(updated, agent_result)
+        saved = application.state.store.save(updated, expected_version=current.version)
+        current_gate = active_gate(saved)
         _event(
-            "artifact_extracted",
+            "artifact_applied",
             profile_id,
             request,
+            version=saved.version,
             media_type=extracted.media_type,
             method=extracted.method,
             output_characters=len(text),
+            agent_provider=agent_result.provider,
+            model_calls=agent_result.telemetry.get("model_calls", 0),
+            tool_calls=agent_result.telemetry.get("tool_calls", 0),
+            latency_ms=agent_result.telemetry.get("latency_ms", 0),
+            human_gate=current_gate.id if current_gate else None,
         )
-        return {
-            "filename": extracted.filename,
-            "text": text,
-            "method": extracted.method,
-            "notice": "Review and edit this text. Nothing has been saved yet.",
-        }
+        return _envelope(
+            saved,
+            agent_run={
+                "provider": agent_result.provider,
+                "latency_ms": agent_result.telemetry.get("latency_ms", 0),
+                "tool_calls": agent_result.telemetry.get("tool_calls", 0),
+                "fallback": agent_result.telemetry.get("fallback", False),
+            },
+        )
 
     @application.get("/")
     async def root() -> FileResponse:
@@ -289,6 +305,22 @@ def _envelope(state: Any, agent_run: dict[str, Any] | None = None) -> StateEnvel
         what_changed=state.feedback[-1] if state.feedback else None,
         agent_run=agent_run,
     )
+
+
+def _apply_agent_result(state: Any, agent_result: Any) -> Any:
+    state = apply_hypotheses(state, agent_result.hypotheses)
+    state.telemetry.model_calls += int(agent_result.telemetry.get("model_calls", 0))
+    state.telemetry.tool_calls += int(agent_result.telemetry.get("tool_calls", 0))
+    state.telemetry.input_tokens += int(agent_result.telemetry.get("input_tokens", 0))
+    state.telemetry.output_tokens += int(agent_result.telemetry.get("output_tokens", 0))
+    state.telemetry.agent_gates_closed += int(agent_result.telemetry.get("agent_gates_closed", 0))
+    state.telemetry.total_agent_latency_ms += int(agent_result.telemetry.get("latency_ms", 0))
+    state.telemetry.resolver_context_bytes = int(agent_result.telemetry.get("resolver_context_bytes", 0))
+    state.telemetry.state_bytes_avoided += int(agent_result.telemetry.get("state_bytes_avoided", 0))
+    state.telemetry.context_reduction_ratio = float(
+        agent_result.telemetry.get("context_reduction_ratio", 0)
+    )
+    return state
 
 
 def _event(name: str, profile_id: str, request: Request, **values: Any) -> None:
