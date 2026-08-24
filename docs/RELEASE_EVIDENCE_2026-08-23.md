@@ -1,5 +1,27 @@
 # Release Candidate Evidence — 2026-08-23
 
+## Corrected zero-traffic candidate
+
+- Deployed source commit: `11c7a4d`
+- Cloud Run revision: `military-slices-00010-low`
+- Traffic: `0%`
+- Tagged URL: <https://competition-rc---military-slices-ztvqlzospa-uw.a.run.app/>
+- Container image: `sha256:58ed946eaa261cec8673ad9b723aab732525be7a2a1acc01137ad94159bd47ee`
+- Protected service traffic: `military-slices-00001-niw` at `100%`
+- Immediate candidate rollback evidence: `military-slices-00008-mov` and `military-slices-00009-nap`
+
+### Artifact gate correction
+
+- A deliberate file selection now authorizes one bounded plan update; the Career path does not ask the human to approve the same résumé again.
+- Resolver work is capped at three model calls and 18 seconds, after which deterministic hypotheses preserve the decision path instead of leaving a spinner or returning a `504`.
+- A résumé-sized hosted DOCX completed in 13.45 seconds using `google-adk/gemini-3.7-flash`, advanced state from version 0 to 1, produced three hypotheses, and surfaced the next human gate.
+- Identical replay returned version 1 without a second write or model run.
+- Artifact-derived governed facts are priority-ranked and capped at 24; a 55-statement stress fixture did not retain its omitted tail.
+- Raw bytes and full extracted documents remain ephemeral. File cancel sends no request and therefore creates no write.
+- Hosted `app.js`, `styles.css`, and `index.html` hashes match the locally tested files exactly.
+- Candidate health returned 200; environment, session secret binding, runtime service account, Gemini model, and Google ADK identity match the intended configuration.
+- Candidate warning/error log query returned zero entries after the hosted test.
+
 ## Superseded candidate
 
 - Deployed source commit: `c85ee82`
@@ -26,7 +48,7 @@ retained only as rollback evidence.
 
 ## Automated and hosted results
 
-- 38 tests passed.
+- 42 tests passed.
 - Ruff, MyPy, Bandit, JavaScript syntax, diff validation, and dependency audit passed.
 - Dependency audit: no known third-party vulnerabilities; the local package itself is not published to PyPI.
 - Hosted ADK proof: `google-adk/gemini-3.7-flash`, Vertex AI backend, two model turns, four bounded tool calls, version 1 Firestore write.
