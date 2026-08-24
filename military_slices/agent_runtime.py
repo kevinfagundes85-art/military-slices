@@ -21,6 +21,8 @@ class RoleProposal(BaseModel):
     title: str = Field(min_length=2, max_length=100)
     rationale: str = Field(min_length=10, max_length=400)
     evidence_family: str = Field(min_length=2, max_length=100)
+    capability_matches: list[str] = Field(min_length=1, max_length=4)
+    possible_gaps: list[str] = Field(min_length=1, max_length=4)
 
 
 class ResolverProposal(BaseModel):
@@ -122,8 +124,9 @@ class Resolver:
         try:
             proposal, event_telemetry = await self._run_adk(state)
             hypotheses: list[CareerHypothesis] = []
+            rejected = {title.casefold() for title in state.rejected_roles}
             for item in proposal.hypotheses:
-                if item.title in state.rejected_roles:
+                if item.title.casefold() in rejected:
                     continue
                 evidence = authoritative_role_evidence(item.evidence_family)
                 hypotheses.append(
@@ -135,8 +138,8 @@ class Resolver:
                             f"O*NET {evidence['onet_code']}" if evidence["onet_code"] else "O*NET role-family search",
                             "BLS Occupational Outlook Handbook",
                         ],
-                        capability_matches=_capabilities_for_role(item.title),
-                        possible_gaps=_gaps_for_role(item.title),
+                        capability_matches=item.capability_matches,
+                        possible_gaps=item.possible_gaps,
                     )
                 )
             if not hypotheses:
@@ -183,9 +186,11 @@ class Resolver:
                 "military title to the nearest civilian title. Respect every rejected role. Use "
                 "authoritative_role_evidence for each role family you propose. If a confirmed transition date "
                 "exists, use calculate_transition_windows once. Never claim qualification, salary, clearance, "
-                "benefits, legal status, or guaranteed outcomes. Return JSON only with keys hypotheses, "
-                "machine_closed, and remaining_uncertainty. Each hypothesis must have title, rationale, and "
-                "evidence_family."
+                "benefits, legal status, local job availability, employer presence, or guaranteed outcomes. "
+                "Do not invent industries, locations, duties, credentials, or experience absent from the "
+                "confirmed statements or tool output. Each capability match must be a cautious translation of "
+                "something actually present in the confirmed statements; each possible gap must remain a "
+                "question to verify. Return the governed output schema exactly."
             ),
             tools=[authoritative_role_evidence, calculate_transition_windows],
             output_schema=ResolverProposal,

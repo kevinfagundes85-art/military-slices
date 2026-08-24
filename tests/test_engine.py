@@ -128,6 +128,7 @@ def test_explicit_rejection_changes_later_reasoning_without_looping() -> None:
     )
     assert rejected_title in updated.rejected_roles
     assert rejected_title not in [item.title for item in updated.career_hypotheses]
+    assert len(updated.career_hypotheses) <= 3
     career_gate = next(gate for gate in updated.gates if gate.id == "career-direction")
     assert career_gate.state == GateState.PARTIAL
     assert rejected_title not in career_gate.options

@@ -454,6 +454,7 @@ def apply_decision(
         replacements = deterministic_hypotheses(" ".join(fact.statement for fact in state.facts), state.rejected_roles)
         known = {item.title for item in state.career_hypotheses}
         state.career_hypotheses.extend(item for item in replacements if item.title not in known)
+        state.career_hypotheses = state.career_hypotheses[:3]
     state.gates = _recompute_gates(state)
     state.projections = _build_projections(state)
     state.processed_keys.append(idempotency_key)

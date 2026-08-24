@@ -14,6 +14,8 @@ def test_governed_agent_json_accepts_fenced_final_response() -> None:
                 "title": "Maintenance Planner",
                 "rationale": "Uses scheduling and inspection experience.",
                 "evidence_family": "maintenance",
+                "capability_matches": ["Scheduling experience"],
+                "possible_gaps": ["Civilian maintenance terminology"],
             }
         ],
         "machine_closed": ["occupational source located"],
@@ -22,6 +24,7 @@ def test_governed_agent_json_accepts_fenced_final_response() -> None:
     payload = _extract_json(f"```json\n{json.dumps(raw)}\n```")
     proposal = ResolverProposal.model_validate(payload)
     assert proposal.hypotheses[0].title == "Maintenance Planner"
+    assert proposal.hypotheses[0].capability_matches == ["Scheduling experience"]
 
 
 def test_governed_agent_json_rejects_non_json_chatter() -> None:
