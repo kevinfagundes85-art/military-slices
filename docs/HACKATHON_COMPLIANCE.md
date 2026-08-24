@@ -16,7 +16,7 @@ State vocabulary: `YES`, `NO`, `PARTIAL`, `UNKNOWN`, `CONFLICTED`.
 | Team structure | Individual entry currently assumed | PARTIAL | Kevin | Confirm final entrant/team roster |
 | Gemini 3.5+ | Hosted `gemini-3.7-flash` execution through Vertex AI; release-candidate logs record two model turns | YES | BHE | Preserve release evidence |
 | Google agent framework | Hosted Google ADK agent used four bounded tool calls in the release-candidate proof | YES | BHE | Preserve release evidence |
-| Google Cloud infrastructure | Cloud Run revision `military-slices-00007-qob`; Firestore collection `military_slices_profiles` | YES | BHE | Preserve release evidence |
+| Google Cloud infrastructure | Cloud Run revision `military-slices-00008-mov`; Firestore collection `military_slices_profiles` | YES | BHE | Preserve release evidence |
 | Autonomous behavior beyond chat | Agent proposes structured state movement, calls bounded tools, and reconstitutes the next decision | YES | BHE | Show in demo |
 | Functional/testable project | Zero-traffic HTTPS release candidate is operational; canonical domain is intentionally unmapped | PARTIAL | BHE/Kevin | Human release/domain gate |
 | Free judge access | Anonymous first value with isolated signed sessions passed hosted cold-browser checks | YES | BHE | Confirm after domain cutover |
