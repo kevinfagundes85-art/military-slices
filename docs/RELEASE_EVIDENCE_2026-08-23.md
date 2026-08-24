@@ -49,6 +49,12 @@
 
 ## Remaining human gates
 
+The Devpost draft exists as `1150977-military-slices`; its project name, pitch,
+story, candidate URL, category, Google stack, and testing instructions are
+staged. The architecture PDF is frozen at
+`output/pdf/military-slices-architecture.pdf`. Additional information cannot be
+completed until the required public repository URL exists.
+
 1. Physical Android native picker, keyboard, focus, and touch validation.
 2. Real second-account/device isolation validation.
 3. Founder cold-user/adult-tone convergence.

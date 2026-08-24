@@ -19,6 +19,9 @@ This is a fresh competition implementation created during the All Things Agentic
 
 ## Architecture
 
+The submission-ready architecture diagram is available as
+[`output/pdf/military-slices-architecture.pdf`](output/pdf/military-slices-architecture.pdf).
+
 ```mermaid
 flowchart LR
     H[Service member] --> UI[Adaptive web interface]
