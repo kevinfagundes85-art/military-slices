@@ -18,7 +18,7 @@
 - Cancel creates no request and no write.
 - Extraction, deterministic orientation, bounded resolution, and the Firestore write occur in one optimistic-concurrency/idempotency boundary.
 - Raw bytes are cleared after extraction.
-- The full extracted document and contact-only text are not persisted; only decision-relevant statements and evidence links survive.
+- The full extracted document and contact-only text are not persisted; only priority-ranked decision-relevant statements and evidence links survive, capped at 24 artifact facts per update.
 - The resolver is limited to three model calls and 18 seconds, then returns deterministic fallback rather than spinning.
 - The browser aborts after 25 seconds with an actionable message and reload guidance.
 

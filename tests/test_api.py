@@ -175,7 +175,9 @@ def test_resume_sized_docx_clears_artifact_gate_in_one_request() -> None:
     assert response.status_code == 200
     payload = response.json()
     assert payload["state"]["version"] == 1
+    assert len(payload["state"]["facts"]) <= 24
     assert len(payload["state"]["career_hypotheses"]) == 3
+    assert "Experience 54" not in response.text
     assert payload["active_gate"]["id"] in {"planned-transition-date", "next-work-preferences"}
 
 

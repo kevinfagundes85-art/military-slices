@@ -28,7 +28,7 @@ deliberately selected artifact
 2. Orientation extracts only statements the human actually supplied.
 3. Typed input is not persisted until the human confirms or corrects it.
 4. Deliberately selecting a supported artifact authorizes one plan update; it is not presented for redundant confirmation.
-5. Raw bytes, contact-only text, and the full extracted artifact are not persisted.
+5. Raw bytes, contact-only text, and the full extracted artifact are not persisted. Artifact-derived governed facts are priority-ranked and capped at 24 per update so a document cannot be reconstructed as an unbounded fact list.
 6. Gemini returns bounded proposals, not truth.
 7. Deterministic validation filters proposals before persistence.
 8. Facts retain their authority and evidence identifiers.

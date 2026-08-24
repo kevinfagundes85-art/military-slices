@@ -30,6 +30,8 @@ ALL_SLICES = [
     SliceName.RESUME,
 ]
 
+MAX_ARTIFACT_FACTS = 24
+
 
 def stable_id(prefix: str, *parts: str) -> str:
     digest = hashlib.sha256("\x1f".join(parts).encode()).hexdigest()[:16]
@@ -226,11 +228,24 @@ def _merge_human_facts(
     orientation: OrientationResult,
     *,
     evidence_label: str = "Confirmed transition statement",
+    max_new_facts: int | None = None,
 ) -> list[str]:
     added: list[str] = []
-    for statement in orientation.statements:
-        if not statement.affected_slices:
-            continue
+    statements = [statement for statement in orientation.statements if statement.affected_slices]
+    if max_new_facts is not None:
+        priority = {"preference": 0, "goal": 0, "date": 0, "conflict": 0, "unknown": 1, "fact": 2}
+        statements = [
+            statement
+            for _, statement in sorted(
+                enumerate(statements),
+                key=lambda item: (
+                    priority[item[1].kind],
+                    -len(item[1].affected_slices),
+                    item[0],
+                ),
+            )[:max_new_facts]
+        ]
+    for statement in statements:
         fact_id = stable_id("fact", _fact_kind(statement), statement.text.casefold())
         if any(existing.id == fact_id for existing in state.facts):
             state.telemetry.duplicate_questions_avoided += 1
@@ -317,6 +332,7 @@ def apply_artifact_input(
         state,
         orientation,
         evidence_label="Statement from a deliberately submitted artifact",
+        max_new_facts=MAX_ARTIFACT_FACTS,
     )
     if not state.current_goal:
         state.current_goal = next(
