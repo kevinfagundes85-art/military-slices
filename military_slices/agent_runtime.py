@@ -188,6 +188,7 @@ class Resolver:
                 "evidence_family."
             ),
             tools=[authoritative_role_evidence, calculate_transition_windows],
+            output_schema=ResolverProposal,
         )
         session_service = InMemorySessionService()  # type: ignore[no-untyped-call]
         app_name = "military_slices"
@@ -208,6 +209,7 @@ class Resolver:
         )
         final_text = ""
         tool_calls = 0
+        model_calls = 0
         input_tokens = 0
         output_tokens = 0
         async for event in runner.run_async(
@@ -225,14 +227,15 @@ class Resolver:
                 final_text = "".join(str(part.text) for part in parts if getattr(part, "text", None))
             usage = getattr(event, "usage_metadata", None)
             if usage:
-                input_tokens = max(input_tokens, int(getattr(usage, "prompt_token_count", 0) or 0))
-                output_tokens = max(output_tokens, int(getattr(usage, "candidates_token_count", 0) or 0))
+                model_calls += 1
+                input_tokens += int(getattr(usage, "prompt_token_count", 0) or 0)
+                output_tokens += int(getattr(usage, "candidates_token_count", 0) or 0)
         try:
             proposal = ResolverProposal.model_validate(_extract_json(final_text))
         except (ValidationError, ValueError, json.JSONDecodeError) as exc:
             raise ValueError("Agent proposal failed the governed output contract.") from exc
         return proposal, {
-            "model_calls": 1,
+            "model_calls": model_calls,
             "tool_calls": tool_calls,
             "input_tokens": input_tokens,
             "output_tokens": output_tokens,
