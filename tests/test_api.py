@@ -142,3 +142,6 @@ def test_security_headers_and_health_evidence() -> None:
     assert response.json()["agent_framework"] == "google-adk"
     assert response.headers["x-content-type-options"] == "nosniff"
     assert "frame-ancestors 'none'" in response.headers["content-security-policy"]
+    public_response = client.get("/api/health")
+    assert public_response.status_code == 200
+    assert public_response.json() == response.json()

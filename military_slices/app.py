@@ -79,6 +79,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
     async def version_conflict(_: Request, exc: VersionConflictError) -> JSONResponse:
         return JSONResponse(status_code=409, content={"detail": str(exc)})
 
+    @application.get("/api/health")
     @application.get("/healthz")
     async def health() -> dict[str, str]:
         return {
