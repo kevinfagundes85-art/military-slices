@@ -149,8 +149,10 @@ class Resolver:
             )
         except Exception as exc:  # provider failure must not dead-end the user
             LOGGER.warning(
-                "resolver_fallback",
-                extra={"reason": type(exc).__name__, "profile": state.profile_id[:12]},
+                "resolver_fallback reason=%s detail=%s profile=%s",
+                type(exc).__name__,
+                str(exc)[:240],
+                state.profile_id[:12],
             )
             return ResolverResult(
                 hypotheses=fallback,
@@ -214,11 +216,13 @@ class Resolver:
             new_message=message,
         ):
             content = getattr(event, "content", None)
-            for part in getattr(content, "parts", []) or []:
+            parts = getattr(content, "parts", []) or []
+            for part in parts:
                 if getattr(part, "function_call", None):
                     tool_calls += 1
-                if getattr(part, "text", None):
-                    final_text += part.text
+            is_final = getattr(event, "is_final_response", None)
+            if callable(is_final) and is_final():
+                final_text = "".join(str(part.text) for part in parts if getattr(part, "text", None))
             usage = getattr(event, "usage_metadata", None)
             if usage:
                 input_tokens = max(input_tokens, int(getattr(usage, "prompt_token_count", 0) or 0))

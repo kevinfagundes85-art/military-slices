@@ -34,6 +34,11 @@ def test_unclear_input_remains_unclear() -> None:
     assert result.clarification_question is not None
 
 
+def test_stay_near_location_language_is_not_lost() -> None:
+    result = orient("I need to stay near Tacoma and want steady work.")
+    assert SliceName.LOCATION in result.affected_slices
+
+
 def test_shared_transition_gate_is_one_date_interaction() -> None:
     state = apply_confirmed_input(
         new_state("ms-test"),

@@ -75,6 +75,9 @@ def _slice_hits(statement: str) -> list[SliceName]:
             "city",
             "state",
             "family",
+            "stay near",
+            "stay in",
+            "near ",
         ),
         SliceName.RESUME: (
             "resume",
