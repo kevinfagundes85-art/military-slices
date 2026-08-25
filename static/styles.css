@@ -181,9 +181,18 @@ h3 { margin: 0; font-size: 1.05rem; }
 .lens-button span { font-weight: 800; }
 .lens-button small { margin-top: 0.15rem; color: var(--muted); }
 .lens-button:hover, .lens-button[aria-expanded="true"] { border-color: var(--accent); background: var(--panel-strong); }
+.lens-button[data-impact="true"] { border-color: rgba(242, 196, 94, 0.72); }
+.lens-button[data-impact="true"] small { color: var(--accent); }
 .lens-preview { position: relative; margin-top: 0.45rem; padding: 1rem 3rem 1rem 1rem; border: 1px solid var(--accent); border-radius: 0.8rem; background: var(--panel); }
 .lens-preview p { margin: 0.45rem 0 0.8rem; }
 .lens-counts, .latent-note { color: var(--muted); font-size: 0.84rem; }
+.impact-note { margin-top: 0.55rem; color: var(--accent); font-size: 0.84rem; font-weight: 750; }
+.impact-card { border-color: rgba(242, 196, 94, 0.72); }
+.impact-card h2 { margin: 0.35rem 0 0.85rem; font-size: 1.08rem; }
+.impact-card p { margin-bottom: 0.35rem; color: var(--muted); }
+.impact-update { display: grid; gap: 0.5rem; margin-top: 0.75rem; }
+.impact-update[hidden] { display: none; }
+.impact-option { width: 100%; text-align: left; }
 .preview-close { position: absolute; top: 0.3rem; right: 0.4rem; width: 44px; height: 44px; color: var(--ink); background: transparent; border: 0; cursor: pointer; font-size: 1.4rem; }
 
 .area {

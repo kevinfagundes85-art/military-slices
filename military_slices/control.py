@@ -21,6 +21,7 @@ from military_slices.models import (
     utc_now,
 )
 from military_slices.path_runtime import anchor_domain
+from military_slices.temporal import propagate_temporal_changes
 
 SLICE_LABELS = {
     SliceName.CAREER: "Career",
@@ -168,6 +169,7 @@ def lens_projections(state: CanonicalState) -> list[LensProjection]:
         active_slices.update(task.affected_slices)
     result: list[LensProjection] = []
     for slice_name in SliceName:
+        pending_impact = next((item for item in state.impacts if item.affected_slice == slice_name), None)
         fact_slices = {slice_name}
         if slice_name == SliceName.CAREER and anchor_domain(state.human_anchor) == "resume":
             fact_slices.add(SliceName.RESUME)
@@ -188,7 +190,9 @@ def lens_projections(state: CanonicalState) -> list[LensProjection]:
         ]
         conflicted = sum(item.state == GateState.CONFLICTED for item in open_gates)
         path_relevant = slice_name in active_slices
-        if path_relevant and open_gates:
+        if pending_impact:
+            summary = pending_impact.message
+        elif path_relevant and open_gates:
             summary = f"This area matters because {open_gates[0].why[:1].lower() + open_gates[0].why[1:]}"
         elif path_relevant:
             summary = "This area supports the current target, but it does not need another decision now."
@@ -209,6 +213,7 @@ def lens_projections(state: CanonicalState) -> list[LensProjection]:
                 summary=summary,
                 facts=facts[-6:],
                 decisions=decisions[-6:],
+                may_have_changed=pending_impact is not None,
             )
         )
     return result
@@ -405,6 +410,7 @@ def promote_what_if(
     )
     if branch.conflicts and branch.modification_kind != "relocation_willingness":
         state.conflicts.extend(item for item in branch.conflicts if item not in state.conflicts)
+    state = propagate_temporal_changes(current, state)
     state = recompute_state(state)
     state.feedback.append(
         FeedbackEvent(

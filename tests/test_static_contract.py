@@ -83,5 +83,17 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert "Use this plan" in script
     assert "Keep my current plan" in script
     assert ".lens-nav { grid-template-columns: repeat(2" in css
-    assert "/static/app.js?v=2" in html
-    assert "/static/styles.css?v=2" in html
+    assert "/static/app.js?v=3" in html
+    assert "/static/styles.css?v=3" in html
+
+
+def test_temporal_impact_surface_is_natural_bounded_and_deterministic() -> None:
+    html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    assert 'id="impact-panel"' in html
+    assert "Because of your last decision" in html
+    assert 'api("/api/revalidate"' in script
+    assert "May have changed" in script
+    assert "Still planning to stay local?" not in html
+    for forbidden in ("dependency invalidated", "TTL", "receipt refresh", "freshness class"):
+        assert forbidden not in html

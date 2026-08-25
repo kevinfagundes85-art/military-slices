@@ -6,8 +6,8 @@
     <meta name="theme-color" content="#08141f">
     <meta name="description" content="Military SLICES helps U.S. service members connect career, education, location, and résumé decisions into one transition plan.">
     <title>Military SLICES</title>
-    <link rel="stylesheet" href="/static/styles.css?v=2">
-    <script src="/static/app.js?v=2" defer></script>
+    <link rel="stylesheet" href="/static/styles.css?v=3">
+    <script src="/static/app.js?v=3" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the next decision</a>
@@ -70,6 +70,13 @@
         </section>
 
         <aside class="context-column">
+          <section id="impact-panel" class="support-card impact-card" hidden aria-labelledby="impact-question">
+            <div class="section-kicker">Because of your last decision</div>
+            <p id="impact-message"></p>
+            <h2 id="impact-question"></h2>
+            <div id="impact-actions"></div>
+          </section>
+
           <section id="why-panel" class="support-card" hidden>
             <div class="section-kicker">Why this matters</div>
             <p id="why-copy"></p>

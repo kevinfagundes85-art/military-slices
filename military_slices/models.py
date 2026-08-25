@@ -61,6 +61,18 @@ class StateCategory(StrEnum):
     ACTIVE = "active"
 
 
+class FreshnessStatus(StrEnum):
+    VALID = "valid"
+    STALE = "stale"
+
+
+class FreshnessClass(StrEnum):
+    STABLE = "stable"
+    SLOW = "slow"
+    VOLATILE = "volatile"
+    EXTERNAL_EXPIRING = "external_expiring"
+
+
 class Evidence(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -83,6 +95,10 @@ class Fact(BaseModel):
     effective_at: str | None = None
     affected_slices: list[SliceName] = Field(default_factory=list)
     confidence: float = Field(ge=0, le=1, default=1)
+    field_key: str = "general_context"
+    status: FreshnessStatus = FreshnessStatus.VALID
+    last_validated_at: datetime = Field(default_factory=utc_now)
+    freshness_class: FreshnessClass = FreshnessClass.STABLE
 
 
 class Gate(BaseModel):
@@ -168,6 +184,34 @@ class LensProjection(BaseModel):
     summary: str
     facts: list[str] = Field(default_factory=list, max_length=6)
     decisions: list[str] = Field(default_factory=list, max_length=6)
+    may_have_changed: bool = False
+
+
+class ReceiptPatch(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    path: str
+    operation: Literal["replace", "remove"] = "replace"
+    value: str | None = None
+    reason: str
+    created_at: datetime = Field(default_factory=utc_now)
+
+
+class ImpactItem(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    id: str
+    source_field: str
+    dependent_field: str
+    fact_id: str
+    affected_slice: SliceName
+    message: str
+    question: str
+    confirm_label: str
+    update_label: str
+    update_options: list[str] = Field(default_factory=list, max_length=4)
+    blocking: bool = False
+    created_at: datetime = Field(default_factory=utc_now)
 
 
 class HistoryEntry(BaseModel):
@@ -194,6 +238,16 @@ class WhatIfPromotionRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     token: str
+    expected_version: int = Field(ge=0)
+    idempotency_key: str = Field(min_length=8, max_length=128)
+
+
+class RevalidationRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    impact_id: str
+    action: Literal["confirm", "update", "dismiss"]
+    value: str | None = Field(default=None, max_length=2_000)
     expected_version: int = Field(ge=0)
     idempotency_key: str = Field(min_length=8, max_length=128)
 
@@ -254,6 +308,18 @@ class TelemetrySummary(BaseModel):
     state_bytes_avoided: int = 0
     context_reduction_ratio: float = 0
     estimated_cost_usd: float = 0
+    temporal_dependencies_evaluated: int = 0
+    temporal_fields_marked_stale: int = 0
+    temporal_fields_silently_refreshed: int = 0
+    temporal_human_prompts: int = 0
+    temporal_one_tap_confirmations: int = 0
+    temporal_bounded_update_flows: int = 0
+    temporal_freshness_model_calls: int = 0
+    temporal_patch_bytes: int = 0
+    temporal_patch_count: int = 0
+    temporal_full_rebuilds: int = 0
+    temporal_latency_ms: int = 0
+    temporal_errors: int = 0
 
 
 class CanonicalState(BaseModel):
@@ -266,6 +332,7 @@ class CanonicalState(BaseModel):
     original_intents: list[str] = Field(default_factory=list)
     current_goal: str | None = None
     human_anchor: str | None = None
+    career_target: str | None = None
     service: ServiceName | None = None
     component_status: str | None = None
     separation_type: Literal["separation", "retirement"] | None = None
@@ -285,6 +352,8 @@ class CanonicalState(BaseModel):
     rejected_roles: list[str] = Field(default_factory=list)
     projections: list[SliceProjection] = Field(default_factory=list)
     feedback: list[FeedbackEvent] = Field(default_factory=list)
+    impacts: list[ImpactItem] = Field(default_factory=list)
+    receipt_deltas: list[ReceiptPatch] = Field(default_factory=list)
     processed_keys: list[str] = Field(default_factory=list)
     telemetry: TelemetrySummary = Field(default_factory=TelemetrySummary)
 
@@ -341,4 +410,5 @@ class StateEnvelope(BaseModel):
     what_changed: FeedbackEvent | None
     progress: PathProgress
     lenses: list[LensProjection]
+    impact: ImpactItem | None = None
     agent_run: dict[str, Any] | None = None

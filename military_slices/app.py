@@ -20,6 +20,7 @@ from military_slices.engine import (
     apply_confirmed_input,
     apply_decision,
     apply_hypotheses,
+    apply_revalidation,
     career_resolution_required,
     orient,
     reconstitute_state,
@@ -28,6 +29,7 @@ from military_slices.models import (
     ConfirmRequest,
     DecisionRequest,
     OrientRequest,
+    RevalidationRequest,
     SliceName,
     StateEnvelope,
     WhatIfPromotionRequest,
@@ -45,6 +47,7 @@ from military_slices.security import (
     verify_what_if,
 )
 from military_slices.store import FirestoreStore, MemoryStore, StateStore, VersionConflictError
+from military_slices.temporal import changed_fields, current_impact
 
 LOGGER = logging.getLogger("military_slices")
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"), format="%(message)s")
@@ -242,6 +245,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             version=saved.version,
             modification=branch.modification_kind,
             agent_provider=agent_result.provider if agent_result else "not-required",
+            **_temporal_delta(current, saved),
         )
         return _envelope(saved, agent_run=_agent_run(agent_result))
 
@@ -310,6 +314,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             context_reduction_ratio=agent_telemetry.get("context_reduction_ratio", 0),
             agent_gates_closed=agent_telemetry.get("agent_gates_closed", 0),
             human_gate=current_gate.id if current_gate else None,
+            **_temporal_delta(current, saved),
         )
         return _envelope(saved, agent_run=_agent_run(agent_result))
 
@@ -345,8 +350,76 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             version=saved.version,
             decision=payload.gate_id,
             agent_provider=agent_result.provider if agent_result else "not-required",
+            **_temporal_delta(current, saved),
         )
         return _envelope(saved, agent_run=_agent_run(agent_result))
+
+    @application.post("/api/revalidate", response_model=StateEnvelope)
+    async def revalidate(
+        payload: RevalidationRequest,
+        request: Request,
+        response: Response,
+        military_slices_session: Annotated[str | None, Cookie()] = None,
+    ) -> StateEnvelope:
+        profile_id = _profile(response, military_slices_session)
+        _rate_limit(application, profile_id)
+        current = reconstitute_state(application.state.store.get(profile_id))
+        if payload.idempotency_key in current.processed_keys:
+            return _envelope(current)
+        if current.version != payload.expected_version:
+            raise VersionConflictError("Your plan changed in another tab. Refresh to continue.")
+        impact = next((item for item in current.impacts if item.id == payload.impact_id), None)
+        try:
+            updated, changed = apply_revalidation(
+                current,
+                impact_id=payload.impact_id,
+                action=payload.action,
+                value=payload.value,
+                idempotency_key=payload.idempotency_key,
+            )
+        except ValueError as exc:
+            _event(
+                "temporal_revalidation_failed",
+                profile_id,
+                request,
+                version=current.version,
+                impact_id=payload.impact_id,
+                action=payload.action,
+                temporal_errors=1,
+            )
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        if not changed:
+            return _envelope(current)
+        saved = application.state.store.save(updated, expected_version=current.version)
+        _event(
+            "temporal_revalidation",
+            profile_id,
+            request,
+            version=saved.version,
+            canonical_field=impact.dependent_field if impact else None,
+            action=payload.action,
+            dependencies_evaluated=(
+                saved.telemetry.temporal_dependencies_evaluated
+                - current.telemetry.temporal_dependencies_evaluated
+            ),
+            fields_marked_stale=(
+                saved.telemetry.temporal_fields_marked_stale
+                - current.telemetry.temporal_fields_marked_stale
+            ),
+            silently_refreshed=(
+                saved.telemetry.temporal_fields_silently_refreshed
+                - current.telemetry.temporal_fields_silently_refreshed
+            ),
+            human_prompts=(
+                saved.telemetry.temporal_human_prompts - current.telemetry.temporal_human_prompts
+            ),
+            receipt_patch_bytes=(
+                saved.telemetry.temporal_patch_bytes - current.telemetry.temporal_patch_bytes
+            ),
+            freshness_model_calls=0,
+            full_receipt_rebuilds=0,
+        )
+        return _envelope(saved)
 
     @application.post("/api/artifact")
     async def artifact(
@@ -399,6 +472,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             tool_calls=agent_telemetry.get("tool_calls", 0),
             latency_ms=agent_telemetry.get("latency_ms", 0),
             human_gate=current_gate.id if current_gate else None,
+            **_temporal_delta(current, saved),
         )
         return _envelope(saved, agent_run=_agent_run(agent_result))
 
@@ -443,6 +517,7 @@ def _envelope(state: Any, agent_run: dict[str, Any] | None = None) -> StateEnvel
         what_changed=state.feedback[-1] if state.feedback else None,
         progress=path_progress(state),
         lenses=lens_projections(state),
+        impact=current_impact(state),
         agent_run=agent_run,
     )
 
@@ -481,6 +556,32 @@ def _agent_run(agent_result: ResolverResult | None) -> dict[str, Any] | None:
         "latency_ms": agent_result.telemetry.get("latency_ms", 0),
         "tool_calls": agent_result.telemetry.get("tool_calls", 0),
         "fallback": agent_result.telemetry.get("fallback", False),
+    }
+
+
+def _temporal_delta(before: Any, after: Any) -> dict[str, Any]:
+    return {
+        "canonical_fields_changed": sorted(changed_fields(before, after)),
+        "dependencies_evaluated": (
+            after.telemetry.temporal_dependencies_evaluated
+            - before.telemetry.temporal_dependencies_evaluated
+        ),
+        "fields_marked_stale": (
+            after.telemetry.temporal_fields_marked_stale
+            - before.telemetry.temporal_fields_marked_stale
+        ),
+        "fields_silently_refreshed": (
+            after.telemetry.temporal_fields_silently_refreshed
+            - before.telemetry.temporal_fields_silently_refreshed
+        ),
+        "human_revalidation_prompts": (
+            after.telemetry.temporal_human_prompts - before.telemetry.temporal_human_prompts
+        ),
+        "freshness_model_calls": 0,
+        "receipt_patch_bytes": (
+            after.telemetry.temporal_patch_bytes - before.telemetry.temporal_patch_bytes
+        ),
+        "full_receipt_rebuilds": 0,
     }
 
 

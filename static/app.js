@@ -95,7 +95,8 @@ function render(next) {
   renderProgress(next.progress);
   renderLenses(next.lenses);
   renderPrimary(next);
-  renderWhy(next.active_gate);
+  renderImpact(next.impact);
+  renderWhy(next.impact?.blocking ? null : next.active_gate);
   renderChanged(next.what_changed);
   renderHistory(next.state);
 }
@@ -116,6 +117,7 @@ function showLensPreview(lens, trigger) {
     <button id="dismiss-lens-preview" class="preview-close" type="button" aria-label="Dismiss preview">×</button>
     <strong>${escapeHtml(lens.label)}</strong>
     <div class="lens-counts">${lens.fact_count} relevant facts · ${lens.closed_gates} settled · ${lens.open_gates} open</div>
+    ${lens.may_have_changed ? '<div class="impact-note">A recent decision may affect this part of your plan.</div>' : ""}
     <p>${escapeHtml(lens.summary)}</p>
     ${lens.latent_dependencies ? `<p class="latent-note">${lens.latent_dependencies} known details remain in the background.</p>` : ""}
     <button id="open-lens-detail" class="button button-secondary" type="button">Open ${escapeHtml(lens.label)}</button>
@@ -132,9 +134,9 @@ function showLensPreview(lens, trigger) {
 function renderLenses(lenses) {
   const nav = $("#lens-nav");
   nav.innerHTML = lenses.map((lens) => `
-    <button class="lens-button" data-lens="${escapeHtml(lens.name)}" type="button" aria-expanded="false">
+    <button class="lens-button" data-lens="${escapeHtml(lens.name)}" data-impact="${lens.may_have_changed}" type="button" aria-expanded="false">
       <span>${escapeHtml(lens.label)}</span>
-      <small>${lens.path_relevant ? "Supports now" : "Look only"}</small>
+      <small>${lens.may_have_changed ? "May have changed" : (lens.path_relevant ? "Supports now" : "Look only")}</small>
     </button>
   `).join("");
   nav.querySelectorAll(".lens-button").forEach((button) => {
@@ -236,6 +238,107 @@ function renderPrimary(next) {
   document.querySelectorAll(".hypothesis-choice").forEach((button) => {
     button.addEventListener("click", () => submitDecision({ preventDefault() {}, currentTarget: button }));
   });
+}
+
+function impactUpdateMarkup(impact) {
+  if (impact.update_options?.length) {
+    return `<div class="impact-update" hidden>${impact.update_options.map((option) => (
+      `<button class="button button-secondary impact-option" data-value="${escapeHtml(option)}" type="button">${escapeHtml(option)}</button>`
+    )).join("")}</div>`;
+  }
+  return `<div class="impact-update" hidden>
+    <label for="impact-value">What changed?</label>
+    <textarea id="impact-value" rows="3" placeholder="A sentence is enough."></textarea>
+    <button class="button button-primary impact-save" type="button">Use this update</button>
+  </div>`;
+}
+
+function impactControls(impact) {
+  return `
+    <div class="button-row align-start impact-buttons">
+      <button class="button button-primary impact-confirm" type="button">${escapeHtml(impact.confirm_label)}</button>
+      <button class="button button-quiet impact-update-open" type="button">${escapeHtml(impact.update_label)}</button>
+      ${impact.blocking ? "" : '<button class="button button-quiet impact-dismiss" type="button">Not now</button>'}
+    </div>
+    ${impactUpdateMarkup(impact)}
+  `;
+}
+
+function wireImpact(root, impact) {
+  root.querySelector(".impact-confirm").addEventListener("click", () => submitRevalidation(impact, "confirm"));
+  root.querySelector(".impact-update-open").addEventListener("click", () => {
+    const update = root.querySelector(".impact-update");
+    update.hidden = false;
+    update.querySelector("button, textarea")?.focus();
+  });
+  root.querySelector(".impact-dismiss")?.addEventListener("click", () => submitRevalidation(impact, "dismiss"));
+  root.querySelectorAll(".impact-option").forEach((button) => {
+    button.addEventListener("click", () => submitRevalidation(impact, "update", button.dataset.value));
+  });
+  root.querySelector(".impact-save")?.addEventListener("click", () => {
+    const value = root.querySelector("#impact-value")?.value?.trim();
+    if (!value) {
+      announce("Add the update first.", true);
+      return;
+    }
+    submitRevalidation(impact, "update", value);
+  });
+}
+
+function renderImpact(impact) {
+  const panel = $("#impact-panel");
+  if (!impact) {
+    panel.hidden = true;
+    return;
+  }
+  if (impact.blocking) {
+    panel.hidden = true;
+    primary.innerHTML = `
+      ${taskHorizon(envelope.state.active_tasks)}
+      <h2 id="primary-title">${escapeHtml(impact.question)}</h2>
+      <p class="gate-copy">${escapeHtml(impact.message)}</p>
+      <div id="blocking-impact-actions">${impactControls(impact)}</div>
+    `;
+    wireImpact($("#blocking-impact-actions"), impact);
+    return;
+  }
+  panel.hidden = false;
+  $("#impact-message").textContent = impact.message;
+  $("#impact-question").textContent = impact.question;
+  $("#impact-actions").innerHTML = impactControls(impact);
+  wireImpact($("#impact-actions"), impact);
+}
+
+async function submitRevalidation(impact, action, value = null) {
+  document.querySelectorAll(".impact-card button, #blocking-impact-actions button").forEach((button) => {
+    button.disabled = true;
+  });
+  try {
+    const next = await api("/api/revalidate", {
+      method: "POST",
+      body: JSON.stringify({
+        impact_id: impact.id,
+        action,
+        value,
+        expected_version: envelope.state.version,
+        idempotency_key: idempotencyKey(),
+      }),
+    });
+    render(next);
+    $("#primary").scrollIntoView({ behavior: "smooth", block: "start" });
+    $("#main").focus();
+    announce(
+      action === "confirm"
+        ? "Confirmed. Your plan can keep moving."
+        : (action === "dismiss" ? "Set aside. Your current decision did not change." : "Updated. Only the affected part of your plan changed."),
+    );
+  } catch (error) {
+    if (error.status === 409) await loadState();
+    announce(error.message, true);
+    document.querySelectorAll(".impact-card button, #blocking-impact-actions button").forEach((button) => {
+      button.disabled = false;
+    });
+  }
 }
 
 function renderWhy(gate) {

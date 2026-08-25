@@ -31,6 +31,13 @@ from military_slices.path_runtime import (
     normalize_service_choice,
     refresh_path_state,
 )
+from military_slices.temporal import (
+    apply_revalidation_delta,
+    evaluate_elapsed_freshness,
+    fact_is_usable,
+    infer_fact_metadata,
+    propagate_temporal_changes,
+)
 
 ALL_SLICES = [
     SliceName.CAREER,
@@ -88,6 +95,8 @@ def _slice_hits(statement: str) -> list[SliceName]:
             "family",
             "stay near",
             "stay in",
+            "stay local",
+            "remain local",
             "near ",
         ),
         SliceName.RESUME: (
@@ -185,7 +194,7 @@ def new_state(profile_id: str) -> CanonicalState:
 
 
 def reconstitute_state(current: CanonicalState) -> CanonicalState:
-    state = refresh_path_state(deepcopy(current))
+    state = refresh_path_state(evaluate_elapsed_freshness(current))
     state.gates = _recompute_gates(state)
     state.projections = _build_projections(state)
     return state
@@ -223,6 +232,43 @@ def _extract_transition_date(text: str) -> str | None:
     if month_year:
         return date(int(month_year.group(2)), months[month_year.group(1).lower()], 1).isoformat()
     return None
+
+
+def _extract_career_target(text: str) -> str | None:
+    match = re.search(
+        r"\b(?:career target|target role|job target|change (?:my )?(?:career|role))\s*(?:is|to|:)\s*([^.!?\n]{3,120})",
+        text,
+        flags=re.IGNORECASE,
+    )
+    return match.group(1).strip() if match else None
+
+
+def _set_explicit_career_target(state: CanonicalState, target: str) -> None:
+    state.career_target = target
+    state.rejected_roles = [item for item in state.rejected_roles if item.casefold() != target.casefold()]
+    selected = next(
+        (item for item in state.career_hypotheses if item.title.casefold() == target.casefold()),
+        None,
+    )
+    for hypothesis in state.career_hypotheses:
+        if hypothesis.status == "accepted":
+            hypothesis.status = "candidate"
+    if selected is None:
+        selected = CareerHypothesis(
+            id=stable_id("career", state.profile_id, target.casefold()),
+            title=target,
+            rationale="This is the direction you explicitly chose to test.",
+            evidence=["Your confirmed career target"],
+            next_step="Compare this direction with a real civilian job description.",
+            status="accepted",
+        )
+        state.career_hypotheses.insert(0, selected)
+    else:
+        selected.status = "accepted"
+    state.career_hypotheses = [
+        selected,
+        *(item for item in state.career_hypotheses if item.id != selected.id),
+    ][:3]
 
 
 def _has_income_education_conflict(text: str) -> bool:
@@ -286,6 +332,8 @@ def _merge_human_facts(
                 authority=Authority.HUMAN,
                 evidence_ids=[evidence_id],
                 affected_slices=statement.affected_slices,
+                field_key=infer_fact_metadata(statement.text, statement.affected_slices, statement.kind)[0],
+                freshness_class=infer_fact_metadata(statement.text, statement.affected_slices, statement.kind)[1],
             )
         )
         added.append(statement.text)
@@ -313,12 +361,16 @@ def apply_confirmed_input(
     extracted_date = _extract_transition_date(orientation.reviewed_input)
     if extracted_date:
         state.transition_date = extracted_date
+    explicit_target = _extract_career_target(orientation.reviewed_input)
+    if explicit_target:
+        _set_explicit_career_target(state, explicit_target)
 
     if _has_income_education_conflict(orientation.reviewed_input):
         conflict = "Immediate income and full-time education overlap in the first transition period."
         if conflict not in state.conflicts:
             state.conflicts.append(conflict)
 
+    state = propagate_temporal_changes(current, state)
     state = refresh_path_state(state)
     state.gates = _recompute_gates(state)
     state.projections = _build_projections(state)
@@ -366,11 +418,15 @@ def apply_artifact_input(
     extracted_date = _extract_transition_date(orientation.reviewed_input)
     if extracted_date:
         state.transition_date = extracted_date
+    explicit_target = _extract_career_target(orientation.reviewed_input)
+    if explicit_target:
+        _set_explicit_career_target(state, explicit_target)
     if _has_income_education_conflict(orientation.reviewed_input):
         conflict = "Immediate income and full-time education overlap in the first transition period."
         if conflict not in state.conflicts:
             state.conflicts.append(conflict)
 
+    state = propagate_temporal_changes(current, state)
     state = refresh_path_state(state)
     state.gates = _recompute_gates(state)
     state.projections = _build_projections(state)
@@ -466,7 +522,8 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
     preferences = [
         fact
         for fact in state.facts
-        if any(
+        if fact_is_usable(fact)
+        and any(
             term in fact.statement.lower()
             for term in ("want", "prefer", "hate", "won't", "will not", "don't", "do not")
         )
@@ -634,6 +691,7 @@ def apply_decision(
                     state.rejected_roles.append(hypothesis.title)
             else:
                 hypothesis.status = "accepted"
+                state.career_target = hypothesis.title
         if not matched:
             raise ValueError("That direction is no longer available. Refresh to see current options.")
         normalized = ("Not for me: " if rejecting else "Explore: ") + chosen
@@ -663,6 +721,7 @@ def apply_decision(
         known = {item.title for item in state.career_hypotheses}
         state.career_hypotheses.extend(item for item in replacements if item.title not in known)
         state.career_hypotheses = state.career_hypotheses[:3]
+    state = propagate_temporal_changes(current, state)
     state = refresh_path_state(state)
     state.gates = _recompute_gates(state)
     state.projections = _build_projections(state)
@@ -688,6 +747,26 @@ def recompute_state(state: CanonicalState) -> CanonicalState:
     state.gates = _recompute_gates(state)
     state.projections = _build_projections(state)
     return state
+
+
+def apply_revalidation(
+    current: CanonicalState,
+    *,
+    impact_id: str,
+    action: str,
+    value: str | None,
+    idempotency_key: str,
+) -> tuple[CanonicalState, bool]:
+    state, changed = apply_revalidation_delta(
+        current,
+        impact_id=impact_id,
+        action=action,
+        value=value,
+        idempotency_key=idempotency_key,
+    )
+    if not changed:
+        return state, False
+    return recompute_state(state), True
 
 
 def _build_projections(state: CanonicalState | None) -> list[SliceProjection]:

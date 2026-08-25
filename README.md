@@ -17,6 +17,7 @@ This is a fresh competition implementation created during the All Things Agentic
 - Current-path readiness counts only decisions material to the declared target; it is not a master transition checklist.
 - Career, Education, Location, and Your Story can be inspected without activating work or invoking Gemini.
 - Historical versions are read-only. What-If branches remain signed, ephemeral hypotheses until the human explicitly promotes one.
+- Temporal revalidation marks only mapped downstream assumptions, uses bounded receipt patches, and makes zero Gemini calls for freshness detection.
 - Confirmed facts retain human authority and provenance.
 - One shared decision can update several transition areas.
 - Typed uncertainty preserves `UNKNOWN`, `PARTIAL`, and `CONFLICTED` instead of manufacturing certainty.
