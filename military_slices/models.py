@@ -59,6 +59,19 @@ class ServiceName(StrEnum):
     COAST_GUARD = "coast_guard"
 
 
+class PlanningActor(StrEnum):
+    UNKNOWN = "unknown"
+    SERVICE_MEMBER = "service_member"
+    VETERAN = "veteran"
+    MILITARY_SPOUSE = "military_spouse"
+
+
+class MilitaryStateSubject(StrEnum):
+    UNKNOWN = "unknown"
+    PLANNING_ACTOR = "planning_actor"
+    PLANNING_ACTOR_SPOUSE = "planning_actor_spouse"
+
+
 class StateCategory(StrEnum):
     CANONICAL = "canonical"
     HISTORICAL = "historical"
@@ -360,6 +373,8 @@ class CanonicalState(BaseModel):
     current_goal: str | None = None
     human_anchor: str | None = None
     career_target: str | None = None
+    planning_actor: PlanningActor = PlanningActor.UNKNOWN
+    military_state_subject: MilitaryStateSubject = MilitaryStateSubject.UNKNOWN
     service: ServiceName | None = None
     component_status: str | None = None
     separation_type: Literal["separation", "retirement"] | None = None

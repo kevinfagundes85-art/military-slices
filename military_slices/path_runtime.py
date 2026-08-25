@@ -17,7 +17,9 @@ from military_slices.models import (
     ExecutionStatus,
     FreshnessStatus,
     GateState,
+    MilitaryStateSubject,
     OrientationResult,
+    PlanningActor,
     ServiceName,
     SliceName,
     utc_now,
@@ -111,6 +113,19 @@ def detect_separation_type(text: str) -> Literal["separation", "retirement"] | N
     return None
 
 
+def detect_planning_parties(text: str) -> tuple[PlanningActor, MilitaryStateSubject]:
+    """Identify only an explicit spouse-as-planner/service-member-as-subject statement."""
+    lower = re.sub(r"\s+", " ", text.casefold())
+    spouse_subject = re.search(
+        r"\bmy\s+(?:spouse|husband|wife|partner)\b[^.!?]{0,100}"
+        r"\b(?:active[ -]?duty|serv(?:es|ing)\s+(?:on\s+)?active[ -]?duty)\b",
+        lower,
+    )
+    if spouse_subject:
+        return PlanningActor.MILITARY_SPOUSE, MilitaryStateSubject.PLANNING_ACTOR_SPOUSE
+    return PlanningActor.UNKNOWN, MilitaryStateSubject.UNKNOWN
+
+
 @dataclass(frozen=True)
 class AnchorResolution:
     anchor: str | None
@@ -198,6 +213,7 @@ def _anchor_candidate(clause: str) -> tuple[int, int, str, str] | None:
     explicit_objective = bool(
         explicit_target
         or re.search(r"\bi\s+(?:want|need|plan|hope)\s+to\b", lower)
+        or re.search(r"\bi\s+(?:want|need)\s+(?:my|a|the)\s+(?:resume|résumé|cv)\b", lower)
         or re.search(r"\bi\s+(?:want|need)\s+[^.!?]{0,40}\b(?:civilian\s+)?(?:work|employment|job)\b", lower)
         or re.search(r"\bwe\s+(?:want|need|plan)\s+to\b", lower)
     )
@@ -596,6 +612,14 @@ def _domain_fallback(domain: str) -> str:
 
 def refresh_path_state(state: CanonicalState, *, today: date | None = None) -> CanonicalState:
     text = " ".join([*(fact.statement for fact in state.facts[-30:]), *state.original_intents[-5:]])
+    detected_actor, detected_subject = detect_planning_parties(text)
+    if state.planning_actor == PlanningActor.UNKNOWN and detected_actor != PlanningActor.UNKNOWN:
+        state.planning_actor = detected_actor
+    if (
+        state.military_state_subject == MilitaryStateSubject.UNKNOWN
+        and detected_subject != MilitaryStateSubject.UNKNOWN
+    ):
+        state.military_state_subject = detected_subject
     state.service = state.service or detect_service(text)
     detected_type = detect_separation_type(text)
     if state.separation_type is None and detected_type in ("separation", "retirement"):
@@ -629,6 +653,12 @@ def refresh_path_state(state: CanonicalState, *, today: date | None = None) -> C
     elif domain == "resume":
         state.path_target_state = "PREPARATION_BASELINE_READY"
         tasks = _resume_tasks(state.human_anchor or "")
+    elif (
+        window_id == "PATH_IDENTITY"
+        and state.military_state_subject == MilitaryStateSubject.PLANNING_ACTOR_SPOUSE
+    ):
+        state.path_target_state = "PATH_IDENTIFIED"
+        tasks = [_domain_fallback(domain)]
     elif window_id == "PATH_IDENTITY":
         state.path_target_state = "PATH_IDENTIFIED"
         tasks = ["Confirm the working transition date or date range"]
@@ -636,7 +666,11 @@ def refresh_path_state(state: CanonicalState, *, today: date | None = None) -> C
         window = _window(window_id)
         state.path_target_state = str(window["target_state"])
         tasks = []
-        service_task = _service_path_task(state.service, window_id)
+        service_task = (
+            None
+            if state.military_state_subject == MilitaryStateSubject.PLANNING_ACTOR_SPOUSE
+            else _service_path_task(state.service, window_id)
+        )
         if service_task:
             tasks.append(service_task)
         tasks.extend(task for task in window["candidate_tasks"] if _task_matches(domain, task))

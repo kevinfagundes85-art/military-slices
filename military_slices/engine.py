@@ -15,8 +15,10 @@ from military_slices.models import (
     FeedbackEvent,
     Gate,
     GateState,
+    MilitaryStateSubject,
     OrientationResult,
     OrientedStatement,
+    PlanningActor,
     SliceName,
     SliceProjection,
     SurfaceType,
@@ -26,6 +28,7 @@ from military_slices.path_runtime import (
     ANCHOR_OPTIONS,
     anchor_domain,
     derive_execution_state,
+    detect_planning_parties,
     detect_separation_type,
     detect_service,
     normalize_service_choice,
@@ -383,13 +386,18 @@ def apply_confirmed_input(
         not state.human_anchor or current.execution.state.value == "COMPLETE"
     ):
         state.human_anchor = anchor_resolution.anchor
+    detected_actor, detected_subject = detect_planning_parties(orientation.reviewed_input)
+    if detected_actor != PlanningActor.UNKNOWN:
+        state.planning_actor = detected_actor
+    if detected_subject != MilitaryStateSubject.UNKNOWN:
+        state.military_state_subject = detected_subject
     state.service = state.service or detect_service(orientation.reviewed_input)
     detected_type = detect_separation_type(orientation.reviewed_input)
     if state.separation_type is None and detected_type in ("separation", "retirement"):
         state.separation_type = detected_type
     added = _merge_human_facts(state, orientation)
     extracted_date = _extract_transition_date(orientation.reviewed_input)
-    if extracted_date:
+    if extracted_date and state.military_state_subject != MilitaryStateSubject.PLANNING_ACTOR_SPOUSE:
         state.transition_date = extracted_date
     explicit_target = _extract_career_target(orientation.reviewed_input)
     if _clears_career_target(orientation.reviewed_input):
@@ -454,12 +462,17 @@ def apply_artifact_input(
         evidence_label="Statement from a deliberately submitted artifact",
         max_new_facts=MAX_ARTIFACT_FACTS,
     )
+    detected_actor, detected_subject = detect_planning_parties(orientation.reviewed_input)
+    if detected_actor != PlanningActor.UNKNOWN:
+        state.planning_actor = detected_actor
+    if detected_subject != MilitaryStateSubject.UNKNOWN:
+        state.military_state_subject = detected_subject
     state.service = state.service or detect_service(orientation.reviewed_input)
     detected_type = detect_separation_type(orientation.reviewed_input)
     if state.separation_type is None and detected_type in ("separation", "retirement"):
         state.separation_type = detected_type
     extracted_date = _extract_transition_date(orientation.reviewed_input)
-    if extracted_date:
+    if extracted_date and state.military_state_subject != MilitaryStateSubject.PLANNING_ACTOR_SPOUSE:
         state.transition_date = extracted_date
     explicit_target = _extract_career_target(orientation.reviewed_input)
     if explicit_target:
@@ -534,7 +547,11 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
             value_score=99,
         )
         gates.append(_preserve_resolution(gate, existing))
-    elif domain != "resume" and not state.transition_date:
+    elif (
+        domain != "resume"
+        and not state.transition_date
+        and state.military_state_subject != MilitaryStateSubject.PLANNING_ACTOR_SPOUSE
+    ):
         gate = Gate(
             id="planned-transition-date",
             title="Anchor the timing",
@@ -548,7 +565,12 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
         )
         gates.append(_preserve_resolution(gate, existing))
 
-    if domain not in (None, "resume") and state.transition_date and not state.service:
+    if (
+        domain not in (None, "resume")
+        and state.transition_date
+        and not state.service
+        and state.military_state_subject != MilitaryStateSubject.PLANNING_ACTOR_SPOUSE
+    ):
         gate = Gate(
             id="service-path-identity",
             title="Use the right service path",

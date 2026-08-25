@@ -13,7 +13,7 @@ from military_slices.engine import (
     orient,
     reconstitute_state,
 )
-from military_slices.models import ServiceName
+from military_slices.models import MilitaryStateSubject, PlanningActor, ServiceName
 from military_slices.path_runtime import PACK_VERSION, path_boundaries, refresh_path_state
 
 
@@ -73,6 +73,47 @@ def test_generic_resume_anchor_requests_target_without_reauthorizing_document() 
     assert active_gate(state) is None
     assert len(state.active_tasks) == 3
     assert state.career_hypotheses == []
+
+
+def test_explicit_resume_readiness_intent_routes_directly_to_missing_target_role() -> None:
+    state = apply_confirmed_input(
+        new_state("ms-resume-readiness-contract"),
+        orient("I want my résumé ready, but I haven’t picked a target role yet."),
+        idempotency_key="resume-readiness-contract-0001",
+    )
+
+    assert state.human_anchor == "Make my résumé ready for a specific target"
+    assert state.current_goal == state.human_anchor
+    assert active_gate(state).id == "resume-target-role"
+    assert all(gate.id != "transition-human-anchor" for gate in state.gates)
+
+
+def test_spouse_pcs_planner_is_not_given_service_member_separation_milestones() -> None:
+    state = apply_confirmed_input(
+        new_state("ms-spouse-pcs-contract"),
+        orient(
+            "My spouse is active-duty Army and we PCS to Colorado Springs in eight months. "
+            "I need to protect my nursing career and resolve Colorado licensing before the move."
+        ),
+        idempotency_key="spouse-pcs-contract-0001",
+    )
+
+    assert state.planning_actor == PlanningActor.MILITARY_SPOUSE
+    assert state.military_state_subject == MilitaryStateSubject.PLANNING_ACTOR_SPOUSE
+    assert state.service == ServiceName.ARMY
+    assert state.transition_date is None
+    assert active_gate(state).id == "transition-human-anchor"
+
+    state = apply_decision(
+        state,
+        gate_id="transition-human-anchor",
+        value="Plan where to live",
+        idempotency_key="spouse-pcs-contract-0002",
+    )
+
+    assert all(gate.id != "planned-transition-date" for gate in state.gates)
+    assert all("leave active service" not in gate.question.casefold() for gate in state.gates)
+    assert all("tap" not in task.title.casefold() for task in state.active_tasks)
 
 
 def test_legacy_artifact_only_goal_is_not_migrated_as_human_authority() -> None:
