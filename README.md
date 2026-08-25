@@ -14,6 +14,9 @@ This is a fresh competition implementation created during the All Things Agentic
 - Deliberately selecting an artifact authorizes one bounded update; the user is not asked to authorize the same résumé twice.
 - An artifact may contribute governed evidence without manufacturing the human's objective. If its desired use is unknown, the next interaction asks one routing question and keeps unrelated recommendations latent.
 - Every visible task must support both the human objective and the next path milestone; relevance alone does not grant execution authority.
+- Current-path readiness counts only decisions material to the declared target; it is not a master transition checklist.
+- Career, Education, Location, and Your Story can be inspected without activating work or invoking Gemini.
+- Historical versions are read-only. What-If branches remain signed, ephemeral hypotheses until the human explicitly promotes one.
 - Confirmed facts retain human authority and provenance.
 - One shared decision can update several transition areas.
 - Typed uncertainty preserves `UNKNOWN`, `PARTIAL`, and `CONFLICTED` instead of manufacturing certainty.
@@ -102,6 +105,7 @@ Grant the runtime service account Firestore User, Vertex AI User, and Secret Man
 - The durable cross-service path and source manifest live in `military_slices/data/`; volatile program rules are not treated as timeless truth and must be refreshed from an authoritative source when they become path-critical.
 - Model output is a proposal, never self-authenticating truth.
 - Durable state contains conclusions, provenance, decisions, and minimal feedback—not hidden model reasoning.
+- Lenses inspect canonical state; History inspects prior canonical state; What-If creates hypothetical state. Only explicit governed promotion changes canonical truth.
 - This product provides transition planning, not legal, medical, financial, clearance, benefits, or employment guarantees.
 
 ## Competition technology

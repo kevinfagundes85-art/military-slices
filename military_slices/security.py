@@ -90,6 +90,40 @@ def verify_orientation(token: str, text: str) -> None:
         raise TokenError("The reviewed text changed. Orient it again before confirming.")
 
 
+def issue_what_if(
+    *,
+    profile_id: str,
+    source_version: int,
+    modification_kind: str,
+    modification_value: str,
+    statement: str,
+    ttl_seconds: int = 1800,
+) -> str:
+    return _encode(
+        {
+            "kind": "what-if",
+            "sub": profile_id,
+            "source_version": source_version,
+            "modification_kind": modification_kind,
+            "modification_value": modification_value,
+            "statement": statement,
+            "exp": int(time.time()) + ttl_seconds,
+        }
+    )
+
+
+def verify_what_if(token: str, *, profile_id: str) -> dict[str, Any]:
+    payload = _decode(token)
+    if payload.get("kind") != "what-if" or payload.get("sub") != profile_id:
+        raise TokenError("That hypothetical branch does not belong to this plan.")
+    if int(payload.get("exp", 0)) < int(time.time()):
+        raise TokenError("That hypothetical branch expired. Explore it again before using it.")
+    required = ("source_version", "modification_kind", "modification_value", "statement")
+    if any(key not in payload for key in required):
+        raise TokenError("Invalid hypothetical branch token.")
+    return payload
+
+
 @dataclass
 class RateBucket:
     window_started: float

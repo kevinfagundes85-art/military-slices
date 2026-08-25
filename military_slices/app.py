@@ -13,6 +13,7 @@ from fastapi.staticfiles import StaticFiles
 
 from military_slices.agent_runtime import Resolver, ResolverResult
 from military_slices.artifacts import ArtifactError, extract_artifact, multimodal_extract
+from military_slices.control import create_what_if, history_entry, lens_projections, path_progress, promote_what_if
 from military_slices.engine import (
     active_gate,
     apply_artifact_input,
@@ -27,7 +28,10 @@ from military_slices.models import (
     ConfirmRequest,
     DecisionRequest,
     OrientRequest,
+    SliceName,
     StateEnvelope,
+    WhatIfPromotionRequest,
+    WhatIfRequest,
 )
 from military_slices.path_runtime import PACK_VERSION
 from military_slices.security import (
@@ -35,8 +39,10 @@ from military_slices.security import (
     TokenError,
     issue_orientation,
     issue_session,
+    issue_what_if,
     verify_orientation,
     verify_session,
+    verify_what_if,
 )
 from military_slices.store import FirestoreStore, MemoryStore, StateStore, VersionConflictError
 
@@ -102,6 +108,142 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
         profile_id = _profile(response, military_slices_session)
         state = reconstitute_state(application.state.store.get(profile_id))
         return _envelope(state)
+
+    @application.get("/api/lenses")
+    async def lenses(
+        response: Response,
+        military_slices_session: Annotated[str | None, Cookie()] = None,
+    ) -> dict[str, Any]:
+        profile_id = _profile(response, military_slices_session)
+        state = reconstitute_state(application.state.store.get(profile_id))
+        return {"version": state.version, "lenses": [item.model_dump(mode="json") for item in lens_projections(state)]}
+
+    @application.get("/api/lenses/{slice_name}")
+    async def lens_detail(
+        slice_name: SliceName,
+        response: Response,
+        military_slices_session: Annotated[str | None, Cookie()] = None,
+    ) -> dict[str, Any]:
+        profile_id = _profile(response, military_slices_session)
+        state = reconstitute_state(application.state.store.get(profile_id))
+        lens = next(item for item in lens_projections(state) if item.name == slice_name)
+        return {"version": state.version, "lens": lens.model_dump(mode="json")}
+
+    @application.get("/api/history")
+    async def history(
+        response: Response,
+        military_slices_session: Annotated[str | None, Cookie()] = None,
+    ) -> dict[str, Any]:
+        profile_id = _profile(response, military_slices_session)
+        states = application.state.store.history(profile_id)
+        current_version = states[-1].version
+        return {
+            "category": "historical",
+            "current_version": current_version,
+            "entries": [
+                history_entry(state, current=state.version == current_version).model_dump(mode="json")
+                for state in states
+            ],
+        }
+
+    @application.get("/api/history/{version}")
+    async def history_version(
+        version: int,
+        response: Response,
+        military_slices_session: Annotated[str | None, Cookie()] = None,
+    ) -> dict[str, Any]:
+        profile_id = _profile(response, military_slices_session)
+        state = application.state.store.get_version(profile_id, version)
+        if state is None:
+            raise HTTPException(status_code=404, detail="That earlier version is not available.")
+        return {
+            "category": "historical",
+            "entry": history_entry(state).model_dump(mode="json"),
+            "progress": path_progress(state).model_dump(mode="json"),
+            "lenses": [item.model_dump(mode="json") for item in lens_projections(state)],
+        }
+
+    @application.post("/api/what-if")
+    async def what_if(
+        payload: WhatIfRequest,
+        request: Request,
+        response: Response,
+        military_slices_session: Annotated[str | None, Cookie()] = None,
+    ) -> dict[str, Any]:
+        profile_id = _profile(response, military_slices_session)
+        _rate_limit(application, profile_id)
+        current = application.state.store.get(profile_id)
+        source_version = current.version if payload.source_version is None else payload.source_version
+        source = application.state.store.get_version(profile_id, source_version)
+        if source is None:
+            raise HTTPException(status_code=404, detail="That source version is not available.")
+        try:
+            branch = create_what_if(source, payload.text)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        branch.token = issue_what_if(
+            profile_id=profile_id,
+            source_version=branch.source_version,
+            modification_kind=branch.modification_kind,
+            modification_value=branch.modification_value,
+            statement=branch.statement,
+        )
+        _event(
+            "what_if_created",
+            profile_id,
+            request,
+            source_version=source_version,
+            modification=branch.modification_kind,
+            model_calls=0,
+            production_mutations=0,
+        )
+        return branch.model_dump(mode="json")
+
+    @application.post("/api/what-if/promote", response_model=StateEnvelope)
+    async def promote_branch(
+        payload: WhatIfPromotionRequest,
+        request: Request,
+        response: Response,
+        military_slices_session: Annotated[str | None, Cookie()] = None,
+    ) -> StateEnvelope:
+        profile_id = _profile(response, military_slices_session)
+        _rate_limit(application, profile_id)
+        try:
+            token_payload = verify_what_if(payload.token, profile_id=profile_id)
+        except TokenError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        current = reconstitute_state(application.state.store.get(profile_id))
+        if payload.idempotency_key in current.processed_keys:
+            return _envelope(current)
+        if current.version != payload.expected_version:
+            raise VersionConflictError(
+                "Your plan changed after this exploration. Explore it again from the current plan."
+            )
+        source = application.state.store.get_version(profile_id, int(token_payload["source_version"]))
+        if source is None:
+            raise HTTPException(status_code=404, detail="The source version for that exploration is unavailable.")
+        try:
+            branch = create_what_if(source, str(token_payload["statement"]))
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        if (
+            branch.modification_kind != token_payload["modification_kind"]
+            or branch.modification_value != token_payload["modification_value"]
+        ):
+            raise HTTPException(status_code=400, detail="That hypothetical branch failed integrity validation.")
+        updated = promote_what_if(current, branch, idempotency_key=payload.idempotency_key)
+        updated, agent_result = await _resolve_current_gate(application, updated)
+        saved = application.state.store.save(updated, expected_version=current.version)
+        _event(
+            "what_if_promoted",
+            profile_id,
+            request,
+            source_version=branch.source_version,
+            version=saved.version,
+            modification=branch.modification_kind,
+            agent_provider=agent_result.provider if agent_result else "not-required",
+        )
+        return _envelope(saved, agent_run=_agent_run(agent_result))
 
     @application.post("/api/orient")
     async def orientation(
@@ -299,6 +441,8 @@ def _envelope(state: Any, agent_run: dict[str, Any] | None = None) -> StateEnvel
         state=state,
         active_gate=active_gate(state),
         what_changed=state.feedback[-1] if state.feedback else None,
+        progress=path_progress(state),
+        lenses=lens_projections(state),
         agent_run=agent_run,
     )
 

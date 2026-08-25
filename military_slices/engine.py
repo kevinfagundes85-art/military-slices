@@ -178,7 +178,10 @@ def _slice_label(slice_name: SliceName) -> str:
 
 
 def new_state(profile_id: str) -> CanonicalState:
-    return refresh_path_state(CanonicalState(profile_id=profile_id, projections=_build_projections(None)))
+    state = refresh_path_state(CanonicalState(profile_id=profile_id, projections=_build_projections(None)))
+    state.gates = _recompute_gates(state)
+    state.projections = _build_projections(state)
+    return state
 
 
 def reconstitute_state(current: CanonicalState) -> CanonicalState:
@@ -553,10 +556,11 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
 
 def _preserve_resolution(gate: Gate, existing: dict[str, Gate]) -> Gate:
     previous = existing.get(gate.id)
-    if previous and previous.state in (GateState.YES, GateState.NO):
-        gate.state = previous.state
-        gate.resolved_value = previous.resolved_value
+    if previous:
         gate.updated_at = previous.updated_at
+        if previous.state in (GateState.YES, GateState.NO):
+            gate.state = previous.state
+            gate.resolved_value = previous.resolved_value
     return gate
 
 
@@ -676,6 +680,14 @@ def career_resolution_required(state: CanonicalState) -> bool:
         and gate.id == "career-direction"
         and not any(item.status == "candidate" for item in state.career_hypotheses)
     )
+
+
+def recompute_state(state: CanonicalState) -> CanonicalState:
+    """Recompute deterministic path projections without persistence or model work."""
+    state = refresh_path_state(state)
+    state.gates = _recompute_gates(state)
+    state.projections = _build_projections(state)
+    return state
 
 
 def _build_projections(state: CanonicalState | None) -> list[SliceProjection]:

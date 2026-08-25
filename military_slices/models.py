@@ -53,6 +53,14 @@ class ServiceName(StrEnum):
     COAST_GUARD = "coast_guard"
 
 
+class StateCategory(StrEnum):
+    CANONICAL = "canonical"
+    HISTORICAL = "historical"
+    HYPOTHETICAL = "hypothetical"
+    LATENT = "latent"
+    ACTIVE = "active"
+
+
 class Evidence(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -127,6 +135,90 @@ class ActiveTask(BaseModel):
     reason: str
     source: str
     affected_slices: list[SliceName] = Field(default_factory=list)
+
+
+class ProgressItem(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    id: str
+    label: str
+    state: GateState
+
+
+class PathProgress(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    target: str
+    closed: int = Field(ge=0)
+    total: int = Field(ge=1)
+    items: list[ProgressItem]
+
+
+class LensProjection(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    name: SliceName
+    label: str
+    path_relevant: bool
+    fact_count: int = Field(ge=0)
+    closed_gates: int = Field(ge=0)
+    open_gates: int = Field(ge=0)
+    conflicted_gates: int = Field(ge=0)
+    latent_dependencies: int = Field(ge=0)
+    summary: str
+    facts: list[str] = Field(default_factory=list, max_length=6)
+    decisions: list[str] = Field(default_factory=list, max_length=6)
+
+
+class HistoryEntry(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    version: int = Field(ge=0)
+    recorded_at: datetime
+    human_anchor: str | None
+    path_target_state: str
+    open_gates: list[str]
+    closed_decisions: list[str]
+    change_summary: str
+    current: bool = False
+
+
+class WhatIfRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    text: str = Field(min_length=3, max_length=2_000)
+    source_version: int | None = Field(default=None, ge=0)
+
+
+class WhatIfPromotionRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    token: str
+    expected_version: int = Field(ge=0)
+    idempotency_key: str = Field(min_length=8, max_length=128)
+
+
+class WhatIfBranch(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    id: str
+    category: Literal[StateCategory.HYPOTHETICAL] = StateCategory.HYPOTHETICAL
+    source_version: int = Field(ge=0)
+    human_anchor: str | None
+    path_target_state: str
+    modification_kind: Literal["relocation_willingness", "education_priority", "transition_date"]
+    modification_value: str
+    statement: str
+    affected_gates: list[str]
+    affected_slices: list[SliceName]
+    consequences: list[str]
+    evidence_basis: list[str]
+    uncertainty: list[str]
+    conflicts: list[str]
+    current_summary: list[str]
+    hypothetical_summary: list[str]
+    created_at: datetime = Field(default_factory=utc_now)
+    token: str = ""
 
 
 class Decision(BaseModel):
@@ -247,4 +339,6 @@ class StateEnvelope(BaseModel):
     state: CanonicalState
     active_gate: Gate | None
     what_changed: FeedbackEvent | None
+    progress: PathProgress
+    lenses: list[LensProjection]
     agent_run: dict[str, Any] | None = None

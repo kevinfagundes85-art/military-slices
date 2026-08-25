@@ -6,6 +6,8 @@ const statusBox = $("#status");
 const contentGrid = $(".content-grid");
 let envelope = null;
 let pendingOrientation = null;
+let pendingWhatIf = null;
+let whatIfSourceVersion = null;
 
 const labels = {
   career: "Work",
@@ -90,10 +92,57 @@ function render(next) {
   primary.setAttribute("aria-busy", "false");
   renderTimeline(next.state);
   renderPath(next.state);
+  renderProgress(next.progress);
+  renderLenses(next.lenses);
   renderPrimary(next);
   renderWhy(next.active_gate);
   renderChanged(next.what_changed);
   renderHistory(next.state);
+}
+
+function renderProgress(progress) {
+  $("#readiness-count").textContent = `${progress.closed} / ${progress.total} decisions settled`;
+  $("#readiness-marks").innerHTML = progress.items.map((item) => (
+    `<span class="readiness-mark" data-state="${escapeHtml(item.state)}" title="${escapeHtml(item.label)}"></span>`
+  )).join("");
+}
+
+function showLensPreview(lens, trigger) {
+  const preview = $("#lens-preview");
+  document.querySelectorAll(".lens-button").forEach((button) => {
+    button.setAttribute("aria-expanded", String(button === trigger));
+  });
+  preview.innerHTML = `
+    <button id="dismiss-lens-preview" class="preview-close" type="button" aria-label="Dismiss preview">×</button>
+    <strong>${escapeHtml(lens.label)}</strong>
+    <div class="lens-counts">${lens.fact_count} relevant facts · ${lens.closed_gates} settled · ${lens.open_gates} open</div>
+    <p>${escapeHtml(lens.summary)}</p>
+    ${lens.latent_dependencies ? `<p class="latent-note">${lens.latent_dependencies} known details remain in the background.</p>` : ""}
+    <button id="open-lens-detail" class="button button-secondary" type="button">Open ${escapeHtml(lens.label)}</button>
+  `;
+  preview.hidden = false;
+  $("#dismiss-lens-preview").addEventListener("click", () => {
+    preview.hidden = true;
+    trigger.setAttribute("aria-expanded", "false");
+    trigger.focus();
+  });
+  $("#open-lens-detail").addEventListener("click", () => openLensDetail(lens));
+}
+
+function renderLenses(lenses) {
+  const nav = $("#lens-nav");
+  nav.innerHTML = lenses.map((lens) => `
+    <button class="lens-button" data-lens="${escapeHtml(lens.name)}" type="button" aria-expanded="false">
+      <span>${escapeHtml(lens.label)}</span>
+      <small>${lens.path_relevant ? "Supports now" : "Look only"}</small>
+    </button>
+  `).join("");
+  nav.querySelectorAll(".lens-button").forEach((button) => {
+    const lens = lenses.find((item) => item.name === button.dataset.lens);
+    button.addEventListener("mouseenter", () => showLensPreview(lens, button));
+    button.addEventListener("focus", () => showLensPreview(lens, button));
+    button.addEventListener("click", () => showLensPreview(lens, button));
+  });
 }
 
 function renderTimeline(state) {
@@ -222,6 +271,173 @@ function renderHistory(state) {
     ${intents.map((item) => `<div class="history-item">${escapeHtml(item)}</div>`).join("")}
     ${decisions.map((item) => `<div class="history-item"><strong>Decision:</strong> ${escapeHtml(item.value)}</div>`).join("")}
   `;
+}
+
+function showInspection(panel) {
+  [addPanel, reviewPanel, $("#lens-panel"), $("#history-panel"), $("#what-if-panel")].forEach((item) => {
+    item.hidden = item !== panel;
+  });
+  contentGrid.hidden = true;
+  panel.hidden = false;
+  panel.scrollIntoView({ behavior: "smooth", block: "start" });
+  panel.querySelector("h2")?.focus?.();
+}
+
+function closeInspection(panel, returnTo) {
+  panel.hidden = true;
+  contentGrid.hidden = false;
+  returnTo?.focus();
+}
+
+function openLensDetail(lens) {
+  const panel = $("#lens-panel");
+  $("#lens-title").textContent = lens.label;
+  $("#lens-detail").innerHTML = `
+    <p>${escapeHtml(lens.summary)}</p>
+    <dl class="lens-metrics">
+      <div><dt>Relevant facts</dt><dd>${lens.fact_count}</dd></div>
+      <div><dt>Settled decisions</dt><dd>${lens.closed_gates}</dd></div>
+      <div><dt>Open here</dt><dd>${lens.open_gates}</dd></div>
+    </dl>
+    ${lens.facts.length ? `<h3>Known</h3><ul>${lens.facts.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : "<p>No governed facts are needed here yet.</p>"}
+    ${lens.decisions.length ? `<h3>Prior decisions</h3><ul>${lens.decisions.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
+    ${lens.latent_dependencies ? `<h3>In the background</h3><p>${lens.latent_dependencies} known details remain latent because they do not advance the current target.</p>` : ""}
+    <p class="trust-note">Looking here did not change your target, gates, tasks, or plan version.</p>
+  `;
+  showInspection(panel);
+}
+
+async function openHistory() {
+  const panel = $("#history-panel");
+  showInspection(panel);
+  $("#history-list").innerHTML = "<p>Loading earlier plans…</p>";
+  $("#history-detail").hidden = true;
+  try {
+    const history = await api("/api/history");
+    $("#history-list").innerHTML = history.entries.slice().reverse().map((entry) => `
+      <button class="history-version" data-version="${entry.version}" type="button">
+        <strong>${entry.current ? "Current" : "Earlier"} · version ${entry.version}</strong>
+        <span>${escapeHtml(entry.human_anchor || "No target declared")}</span>
+        <small>${escapeHtml(entry.change_summary)}</small>
+      </button>
+    `).join("");
+    document.querySelectorAll(".history-version").forEach((button) => {
+      button.addEventListener("click", () => inspectHistoryVersion(Number(button.dataset.version)));
+    });
+  } catch (error) {
+    $("#history-list").innerHTML = `<p>${escapeHtml(error.message)}</p>`;
+  }
+}
+
+async function inspectHistoryVersion(version) {
+  try {
+    const result = await api(`/api/history/${version}`);
+    const entry = result.entry;
+    const detail = $("#history-detail");
+    detail.hidden = false;
+    detail.innerHTML = `
+      <div class="history-snapshot">
+        <div class="section-kicker">Read-only version ${entry.version}</div>
+        <h3>${escapeHtml(entry.human_anchor || "No target was declared")}</h3>
+        <p>${entry.open_gates.length ? `Open then: ${escapeHtml(entry.open_gates.join(" · "))}` : "No open gate was recorded."}</p>
+        <p>${entry.closed_decisions.length ? `Decisions then: ${escapeHtml(entry.closed_decisions.join(" · "))}` : "No decision was recorded yet."}</p>
+        <p class="trust-note">Your current plan remains version ${envelope.state.version}.</p>
+        <button id="what-if-from-history" class="button button-secondary" type="button">What if from here?</button>
+      </div>
+    `;
+    $("#what-if-from-history").addEventListener("click", () => {
+      whatIfSourceVersion = version;
+      openWhatIf();
+    });
+  } catch (error) {
+    announce(error.message, true);
+  }
+}
+
+function openWhatIf() {
+  pendingWhatIf = null;
+  const panel = $("#what-if-panel");
+  $("#what-if-result").hidden = true;
+  $("#what-if-form").hidden = false;
+  $("#what-if-text").value = "";
+  showInspection(panel);
+  $("#what-if-text").focus();
+}
+
+async function createWhatIf(event) {
+  event.preventDefault();
+  const text = $("#what-if-text").value.trim();
+  if (!text) {
+    announce("Add one change to explore.", true);
+    return;
+  }
+  const button = event.submitter;
+  button.disabled = true;
+  try {
+    pendingWhatIf = await api("/api/what-if", {
+      method: "POST",
+      body: JSON.stringify({ text, source_version: whatIfSourceVersion }),
+    });
+    renderWhatIf(pendingWhatIf);
+  } catch (error) {
+    announce(error.message, true);
+  } finally {
+    button.disabled = false;
+  }
+}
+
+function renderWhatIf(branch) {
+  $("#what-if-form").hidden = true;
+  const result = $("#what-if-result");
+  result.hidden = false;
+  result.innerHTML = `
+    <div class="comparison-grid">
+      <section><div class="section-kicker">Current</div><ul>${branch.current_summary.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></section>
+      <section><div class="section-kicker">Hypothetical</div><ul>${branch.hypothetical_summary.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></section>
+    </div>
+    ${branch.conflicts.length ? `<div class="conflict-note"><strong>Conflict to resolve</strong><ul>${branch.conflicts.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div>` : ""}
+    <h3>If you use this plan</h3>
+    <ul>${branch.consequences.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+    <p class="trust-note">This remains hypothetical until you choose “Use this plan.”</p>
+    <div class="button-row">
+      <button id="discard-what-if" class="button button-quiet" type="button">Keep my current plan</button>
+      <button id="promote-what-if" class="button button-primary" type="button">Use this plan</button>
+    </div>
+  `;
+  $("#discard-what-if").addEventListener("click", () => {
+    pendingWhatIf = null;
+    whatIfSourceVersion = null;
+    closeInspection($("#what-if-panel"), $("#open-what-if"));
+    announce("Hypothetical discarded. Your current plan did not change.");
+  });
+  $("#promote-what-if").addEventListener("click", promoteWhatIf);
+}
+
+async function promoteWhatIf() {
+  if (!pendingWhatIf) return;
+  const button = $("#promote-what-if");
+  button.disabled = true;
+  try {
+    const next = await api("/api/what-if/promote", {
+      method: "POST",
+      body: JSON.stringify({
+        token: pendingWhatIf.token,
+        expected_version: envelope.state.version,
+        idempotency_key: idempotencyKey(),
+      }),
+    });
+    pendingWhatIf = null;
+    whatIfSourceVersion = null;
+    $("#what-if-panel").hidden = true;
+    contentGrid.hidden = false;
+    render(next);
+    $("#main").focus();
+    announce("You made the explored change part of your current plan.");
+  } catch (error) {
+    if (error.status === 409) await loadState();
+    announce(error.message, true);
+    button.disabled = false;
+  }
 }
 
 function openAdd(fileFirst) {
@@ -405,5 +621,18 @@ $("#cancel-review").addEventListener("click", () => {
   $("#input-text").focus();
 });
 $("#confirm-review").addEventListener("click", confirmReview);
+$("#open-history").addEventListener("click", openHistory);
+$("#open-what-if").addEventListener("click", () => {
+  whatIfSourceVersion = null;
+  openWhatIf();
+});
+$("#close-lens").addEventListener("click", () => closeInspection($("#lens-panel"), $("#lens-nav .lens-button")));
+$("#close-history").addEventListener("click", () => closeInspection($("#history-panel"), $("#open-history")));
+$("#close-what-if").addEventListener("click", () => {
+  pendingWhatIf = null;
+  whatIfSourceVersion = null;
+  closeInspection($("#what-if-panel"), $("#open-what-if"));
+});
+$("#what-if-form").addEventListener("submit", createWhatIf);
 
 loadState();

@@ -47,6 +47,18 @@
             <strong id="path-position">Start with what you know.</strong>
           </div>
         </div>
+        <div class="readiness" aria-labelledby="readiness-label">
+          <div>
+            <span id="readiness-label">Path readiness</span>
+            <strong id="readiness-count">0 / 1 decisions settled</strong>
+          </div>
+          <div id="readiness-marks" class="readiness-marks" aria-hidden="true"></div>
+        </div>
+        <div class="lens-shell">
+          <div class="lens-heading">Look across your plan without changing it</div>
+          <nav id="lens-nav" class="lens-nav" aria-label="Inspect parts of your current plan"></nav>
+          <div id="lens-preview" class="lens-preview" hidden></div>
+        </div>
       </section>
 
       <div class="content-grid">
@@ -77,6 +89,11 @@
         </aside>
       </div>
 
+      <nav class="control-nav" aria-label="Plan inspection and exploration">
+        <button id="open-history" class="button button-quiet" type="button">← History</button>
+        <button id="open-what-if" class="button button-quiet" type="button">What if? →</button>
+      </nav>
+
       <section id="add-panel" class="add-panel" hidden aria-labelledby="add-title">
         <button id="close-add" class="icon-button" type="button" aria-label="Close">×</button>
         <div class="section-kicker">Start with what you have</div>
@@ -106,6 +123,35 @@
           <button id="cancel-review" class="button button-quiet" type="button">Go back</button>
           <button id="confirm-review" class="button button-primary" type="button">Use this in my plan</button>
         </div>
+      </section>
+
+      <section id="lens-panel" class="inspection-panel" hidden aria-labelledby="lens-title">
+        <button id="close-lens" class="icon-button" type="button" aria-label="Close inspection">×</button>
+        <div class="section-kicker">Looking without changing</div>
+        <h2 id="lens-title">Plan detail</h2>
+        <div id="lens-detail"></div>
+      </section>
+
+      <section id="history-panel" class="inspection-panel" hidden aria-labelledby="history-title">
+        <button id="close-history" class="icon-button" type="button" aria-label="Close history">×</button>
+        <div class="section-kicker">Earlier governed plans</div>
+        <h2 id="history-title">See where this plan has been.</h2>
+        <p class="muted">Looking here never replaces your current plan.</p>
+        <div id="history-list"></div>
+        <div id="history-detail" hidden></div>
+      </section>
+
+      <section id="what-if-panel" class="inspection-panel" hidden aria-labelledby="what-if-title">
+        <button id="close-what-if" class="icon-button" type="button" aria-label="Close What if">×</button>
+        <div class="section-kicker">Hypothetical — nothing changes yet</div>
+        <h2 id="what-if-title">What would you like to test?</h2>
+        <p class="muted">Try a relocation choice, full-time school first, or a different transition date.</p>
+        <form id="what-if-form" class="gate-form">
+          <label for="what-if-text">What if…</label>
+          <textarea id="what-if-text" rows="4" maxlength="2000" placeholder="For example: What if I were willing to relocate?"></textarea>
+          <button class="button button-primary" type="submit">Compare without changing my plan</button>
+        </form>
+        <div id="what-if-result" hidden></div>
       </section>
     </main>
 

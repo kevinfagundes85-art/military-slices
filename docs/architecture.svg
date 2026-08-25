@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="700" viewBox="0 0 1400 700" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
   <title id="title">Military SLICES architecture</title>
-  <desc id="desc">Typed input is reviewed before a governed transition. Deliberately selected artifacts authorize one bounded evidence update without manufacturing a human objective. A deterministic service-aware path joins the human objective to the next milestone. Google ADK and Gemini run only for an authorized career gate, Firestore persists canonical state, and the adaptive interface renders one decision and no more than three tasks.</desc>
+  <desc id="desc">Typed input is reviewed before a governed transition. Deliberately selected artifacts authorize one bounded evidence update without manufacturing a human objective. A deterministic service-aware path joins the human objective to the next milestone. Firestore persists canonical and historical state. Lenses observe, History inspects, and What-If creates an ephemeral branch. Only explicit human promotion can create a new canonical version.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0d1b2a"/><stop offset="1" stop-color="#132d46"/></linearGradient>
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-opacity=".24"/></filter>
@@ -8,13 +8,16 @@
     <style>
       .box{fill:#1e3a53;stroke:#7198b8;stroke-width:2;rx:20;filter:url(#shadow)}
       .core{fill:#274c67;stroke:#f2c45e;stroke-width:3;rx:20;filter:url(#shadow)}
+      .control{fill:#142f45;stroke:#65d5c5;stroke-width:2;rx:18;filter:url(#shadow)}
       .label{fill:#f7f3e8;font:700 24px system-ui,sans-serif;text-anchor:middle}
       .small{fill:#cfdae4;font:18px system-ui,sans-serif;text-anchor:middle}
       .eyebrow{fill:#f2c45e;font:700 16px system-ui,sans-serif;letter-spacing:2px;text-anchor:middle}
       .line{stroke:#f2c45e;stroke-width:4;fill:none;marker-end:url(#arrow)}
+      .observe{stroke:#65d5c5;stroke-width:3;fill:none;marker-end:url(#arrow)}
+      .promote{stroke:#f2c45e;stroke-width:3;stroke-dasharray:9 7;fill:none;marker-end:url(#arrow)}
     </style>
   </defs>
-  <rect width="1400" height="700" rx="32" fill="url(#bg)"/>
+  <rect width="1400" height="900" rx="32" fill="url(#bg)"/>
   <text x="700" y="62" class="label" font-size="34">Military SLICES</text>
   <text x="700" y="94" class="small">One canonical transition plan · one next useful interaction</text>
 
@@ -45,11 +48,33 @@
 
   <path class="line" d="M310 245H385"/><path class="line" d="M650 245H725"/><path class="line" d="M1040 245H1115"/>
 
-  <rect class="core" x="410" y="455" width="580" height="150"/>
-  <text class="eyebrow" x="700" y="497">ADAPTIVE INTERFACE ON CLOUD RUN</text>
-  <text class="label" x="700" y="540">What matters now</text>
-  <text class="small" x="700" y="574">One gate + one to three tasks → human decision → recompute</text>
-  <path class="line" d="M1235 320V395H990V445"/>
-  <path class="line" d="M410 530H185V335"/>
-  <text x="700" y="662" class="small">Career · Education · Location · Your story are bounded projections, not separate agents.</text>
+  <rect class="core" x="410" y="430" width="580" height="150"/>
+  <text class="eyebrow" x="700" y="472">ADAPTIVE INTERFACE ON CLOUD RUN</text>
+  <text class="label" x="700" y="515">What matters now</text>
+  <text class="small" x="700" y="549">One gate + one to three tasks → human decision → recompute</text>
+  <path class="line" d="M1235 320V385H990V420"/>
+  <path class="line" d="M410 505H185V335"/>
+
+  <rect class="control" x="175" y="670" width="270" height="115"/>
+  <text class="eyebrow" x="310" y="708">LENSES</text>
+  <text class="label" x="310" y="744">Observe current state</text>
+  <text class="small" x="310" y="772">No activation · no model call</text>
+
+  <rect class="control" x="565" y="670" width="270" height="115"/>
+  <text class="eyebrow" x="700" y="708">HISTORY</text>
+  <text class="label" x="700" y="744">Inspect prior state</text>
+  <text class="small" x="700" y="772">Read-only canonical versions</text>
+
+  <rect class="control" x="955" y="670" width="270" height="115"/>
+  <text class="eyebrow" x="1090" y="708">WHAT-IF</text>
+  <text class="label" x="1090" y="744">Hypothetical branch</text>
+  <text class="small" x="1090" y="772">Explore ≠ commit</text>
+
+  <path class="observe" d="M560 580V625H310V660"/>
+  <path class="observe" d="M700 580V660"/>
+  <path class="observe" d="M840 580V625H1090V660"/>
+  <path class="promote" d="M1225 727H1305V350H1250"/>
+  <text class="small" x="1287" y="535" transform="rotate(-90 1287 535)">explicit human promotion only</text>
+
+  <text x="700" y="858" class="small">Observe ≠ activate · Explore ≠ commit · Only governed promotion changes canonical truth.</text>
 </svg>

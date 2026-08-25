@@ -66,3 +66,20 @@ def test_firestore_dependency_pair_is_locked_to_the_hosted_known_good_versions()
     project = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
     assert '"google-cloud-firestore==2.28.1"' in project
     assert '"google-api-core==2.34.0"' in project
+
+
+def test_human_control_layer_stays_bounded_and_explicit() -> None:
+    html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    css = (ROOT / "static" / "styles.css").read_text(encoding="utf-8")
+    assert 'id="readiness-count"' in html
+    assert 'id="lens-nav"' in html
+    assert 'id="open-history"' in html
+    assert 'id="open-what-if"' in html
+    assert "Looking without changing" in html
+    assert "Hypothetical — nothing changes yet" in html
+    assert 'api("/api/what-if"' in script
+    assert 'api("/api/what-if/promote"' in script
+    assert "Use this plan" in script
+    assert "Keep my current plan" in script
+    assert ".lens-nav { grid-template-columns: repeat(2" in css

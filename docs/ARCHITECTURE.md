@@ -11,6 +11,15 @@ The transition runtime carries two distinct anchors:
 
 A task becomes active only when it is eligible on the current service/time path and materially advances or protects the human anchor. The runtime emits no more than three active tasks, and the interface foregrounds only one active gate.
 
+The human control layer is deliberately asymmetric:
+
+- **Lenses inspect canonical state.**
+- **History inspects prior canonical state.**
+- **What-If creates hypothetical state.**
+- **Only explicit governed promotion changes canonical truth.**
+
+Observe does not activate. Explore does not commit. Relevant information remains latent until it materially advances, validates, blocks, or threatens the current path.
+
 ```text
 typed human input
   → stateless orientation
@@ -60,6 +69,18 @@ One document per signed anonymous browser session contains:
 - aggregate-safe telemetry;
 - version and timestamps.
 
+Each canonical write also preserves the immediately previous canonical document in the profile's `versions` subcollection. Historical reads never replace the current document. A What-If branch is returned to the browser with a short-lived, profile-bound HMAC token and is not written to Firestore. Promotion verifies ownership, expiry, source version, current-version concurrency, and branch integrity before it creates a new canonical version.
+
+## State classifications
+
+- **Canonical:** governed truth for the current active plan.
+- **Historical:** immutable prior canonical versions retained for lineage and inspection.
+- **Hypothetical:** ephemeral What-If branches derived from an identified canonical snapshot.
+- **Latent:** known context that is relevant but not actionable under the current path.
+- **Active:** context promoted because it materially affects the next path decision.
+
+These categories are explicit in the models and must not be serialized into one another by observation alone.
+
 Raw files, full extracted artifacts, unconfirmed typed input, hidden reasoning, and chain-of-thought are not persisted.
 
 The installed machine-readable path is `military_slices/data/service_path_boundaries.json`. Its durable task structure is executable; its source manifest is provenance metadata. Historical guides, prices, portal mechanics, and volatile service-program details are not bundled as governing runtime truth.
@@ -67,6 +88,7 @@ The installed machine-readable path is `military_slices/data/service_path_bounda
 ## Cost controls
 
 - Deterministic orientation runs before any model call.
+- Progress, Lens previews, Slice detail, history, and initial What-If recomputation are deterministic and make zero model calls.
 - One bounded ADK run is allowed per meaningful input or refinement. It is limited to three model calls and an 18-second wall-clock budget; failure deterministically falls back instead of leaving the human waiting.
 - State is compact and reused; conversation history is not replayed.
 - Public evidence is purpose-scoped.
