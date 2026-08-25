@@ -231,6 +231,8 @@ def test_lens_cloud_is_deterministic_bounded_and_non_mutating_until_explicit_act
     assert topics.count("label:") == 8
     assert ".slice(0, 10)" in build
     assert "Math.random" not in build
+    assert 'rule.label === "PCS and moving"' in build
+    assert "touches pcs and moving" not in script
     assert "api(" not in build
     assert "api(" not in preview
     assert "api(" not in render

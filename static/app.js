@@ -257,7 +257,7 @@ function buildLensTopics(state, lenses) {
     byId.set(rule.id, {
       ...rule,
       summary: relevantFacts.length
-        ? `Information you supplied touches ${rule.label.toLowerCase()}. Looking here does not change your plan.`
+        ? `Information you supplied touches ${rule.label === "PCS and moving" ? rule.label : rule.label.toLowerCase()}. Looking here does not change your plan.`
         : `${rule.label} may affect timing or another choice already in view. Looking here does not change your plan.`,
       facts: relevantFacts.slice(-2).map((fact) => fact.statement),
       score: 65 + Math.min(relevantFacts.length, 4) * 5,
