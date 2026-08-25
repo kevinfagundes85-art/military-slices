@@ -1,0 +1,427 @@
+{
+  "attempted": 4,
+  "completed": 3,
+  "driver_errors": [
+    {
+      "error": "ReadTimeout: The read operation timed out",
+      "scenario_id": "H02"
+    }
+  ],
+  "estimated_cost": 0.02,
+  "input_tokens": 0,
+  "model_calls": 2,
+  "output_tokens": 0,
+  "results": [
+    {
+      "active_tasks_max": 3,
+      "artifacts_used": [
+        "docx"
+      ],
+      "conflicts": [],
+      "dependency_evaluations": 6,
+      "deterministic_latencies": [
+        0.3086176999931922
+      ],
+      "estimated_cost": 0.01,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": {
+            "fallback": true,
+            "latency_ms": 18003,
+            "provider": "deterministic-fallback",
+            "tool_calls": 1
+          },
+          "input": "I separate from the Army in June 2027. I want stable civilian work with less travel and no shift work. I am unsure which career fits my logistics and operations background.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I separate from the Army in June 2027. I want stable civilian work with less travel and no shift work. I am unsure which career fits my logistics and operations background.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I separate from the Army in June 2027."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "goal",
+                "text": "I want stable civilian work with less travel and no shift work."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "I am unsure which career fits my logistics and operations background."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzExNzgsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjMwNjAyMmMzMzgyYTk5MWMzNzhkOGNkOGUyNjIzODJhMDA4MzQ4MTBhZDUxYTUyMTA5YWRkZWIyMDMyN2FjYjEifQ.d0d36050f00e31381ff1707bfd329c37874b81856d38a6c044f77739a8da471f"
+          },
+          "version": 1
+        },
+        {
+          "action": "artifact",
+          "agent_run": null,
+          "type": "docx",
+          "version": 2
+        },
+        {
+          "action": "reload",
+          "version": 2
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 2,
+      "human_anchor": "Find civilian work",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.309989500005031
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.045990500002517365
+        },
+        {
+          "kind": "confirm",
+          "model": true,
+          "seconds": 18.485895699996036
+        },
+        {
+          "kind": "artifact:docx",
+          "model": false,
+          "seconds": 0.3086176999931922
+        },
+        {
+          "kind": "reload",
+          "model": false,
+          "seconds": 0.09763970000494737
+        }
+      ],
+      "latency": 19.4451,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [
+        18.485895699996036
+      ],
+      "model_calls": 1,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 8557,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "heavy-career-resolution",
+      "scenario_id": "H01",
+      "service": "Army",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "tool_calls": 1,
+      "transition_stage": "6\u201312 months",
+      "turns": 3,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 2,
+      "artifacts_used": [
+        "png"
+      ],
+      "conflicts": [],
+      "dependency_evaluations": 6,
+      "deterministic_latencies": [
+        2.684463700003107
+      ],
+      "estimated_cost": 0.01,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": {
+            "fallback": true,
+            "latency_ms": 18063,
+            "provider": "deterministic-fallback",
+            "tool_calls": 1
+          },
+          "input": "I leave the Coast Guard in January 2027. I want mission-driven civilian work near Portland with a steady schedule, but I do not know which direction fits.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I leave the Coast Guard in January 2027. I want mission-driven civilian work near Portland with a steady schedule, but I do not know which direction fits.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I leave the Coast Guard in January 2027."
+              },
+              {
+                "affected_slices": [
+                  "career",
+                  "location"
+                ],
+                "kind": "unknown",
+                "text": "I want mission-driven civilian work near Portland with a steady schedule, but I do not know which direction fits."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzExNzgsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6Ijg4MzI5ZjY2Y2I3YjVmNjU1ZmZmZTc5YWU1ZjZmODIxYmZjOGQ0N2JhN2JkYTY1YjFlNWFiZjNhMzdkOWIzMTcifQ.fbf1316365546828e03f752d6550d1bb4ad8e48bdb56610be200c0497456803a"
+          },
+          "version": 1
+        },
+        {
+          "action": "artifact",
+          "agent_run": null,
+          "type": "png",
+          "version": 2
+        },
+        {
+          "action": "reload",
+          "version": 2
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 2,
+      "human_anchor": "Find civilian work",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.32115849999536294
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.08944500000507105
+        },
+        {
+          "kind": "confirm",
+          "model": true,
+          "seconds": 19.76702159999695
+        },
+        {
+          "kind": "artifact:png",
+          "model": false,
+          "seconds": 2.684463700003107
+        },
+        {
+          "kind": "reload",
+          "model": false,
+          "seconds": 0.08935300000302959
+        }
+      ],
+      "latency": 23.3284,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [
+        19.76702159999695
+      ],
+      "model_calls": 1,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 7349,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "heavy-multimodal-resolution",
+      "scenario_id": "H03",
+      "service": "Coast Guard",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "tool_calls": 1,
+      "transition_stage": "90\u2013180 days",
+      "turns": 3,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 1,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 0,
+      "deterministic_latencies": [
+        0.298645500006387,
+        0.21486170000571292
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I recently left the Air Force. I want to compare program delivery and customer success work, keep normal daytime hours, and use my training leadership experience.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "education",
+              "resume"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I recently left the Air Force. I want to compare program delivery and customer success work, keep normal daytime hours, and use my training leadership experience.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "fact",
+                "text": "I recently left the Air Force."
+              },
+              {
+                "affected_slices": [
+                  "career",
+                  "education",
+                  "resume"
+                ],
+                "kind": "goal",
+                "text": "I want to compare program delivery and customer success work, keep normal daytime hours, and use my training leadership experience."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, education, your experience story.",
+            "token": "eyJleHAiOjE3ODc2MzExNzgsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImE3MmM5OGIyODEzZGI1NWFhM2EwYWFmYjc5MDhiNDVhYTRjOTAzYzIwMzQ1NmIxNjNjM2NlZjI3MDEwODY1YmMifQ.5ce1965cbb28838c45a9f9d33fb9afba4afe715b41582d4f5ca1bd8c2c15e3bb"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "A job posting asks for stakeholder coordination, delivery schedules, risk tracking, and executive briefings. Use it as evidence, not as permission to change my anchor.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "A job posting asks for stakeholder coordination, delivery schedules, risk tracking, and executive briefings. Use it as evidence, not as permission to change my anchor.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "A job posting asks for stakeholder coordination, delivery schedules, risk tracking, and executive briefings."
+              },
+              {
+                "affected_slices": [],
+                "kind": "fact",
+                "text": "Use it as evidence, not as permission to change my anchor."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzExODAsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjUyNTIwZmEwM2QxZWUxNTYwZDY4MjkyZWI1NTZiNDE1NTU5NWQ5Zjk1MzBlNjBlMGFjMTA1MTIxYzQ3ZDAyMmQifQ.208735df2c7cc7380ba61f86ad3b7cd90d293da52f14159c496a0f371a24603e"
+          },
+          "version": 2
+        },
+        {
+          "action": "reload",
+          "version": 2
+        }
+      ],
+      "failure_codes": [
+        "ANCHOR_DRIFT"
+      ],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 1,
+      "human_anchor": null,
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.2368889999925159
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.08309210000152234
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.298645500006387
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 1.6074837000051048
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.21486170000571292
+        },
+        {
+          "kind": "reload",
+          "model": false,
+          "seconds": 0.08508450000954326
+        }
+      ],
+      "latency": 2.766,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "recent veteran",
+      "receipt_bytes_end": 5596,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "job-posting-resolution",
+      "scenario_id": "H04",
+      "service": "Air Force",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "tool_calls": 0,
+      "transition_stage": "post-transition",
+      "turns": 3,
+      "unrelated_slice_activations": 0
+    }
+  ],
+  "start_timestamp": "2026-08-25T03:57:57.571205+00:00",
+  "tool_calls": 2,
+  "wall_seconds": 65.59
+}

@@ -1,0 +1,1404 @@
+{
+  "attempted": 13,
+  "completed": 13,
+  "driver_errors": [],
+  "estimated_cost": 0.058144,
+  "input_tokens": 2416,
+  "model_calls": 3,
+  "output_tokens": 414,
+  "results": [
+    {
+      "active_tasks_max": 2,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 4,
+      "deterministic_latencies": [
+        0.7774438000051305
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My spouse is Army and our next PCS is to Fort Liberty in November 2027. My anchor is choose a neighborhood and school plan while keeping my remote job.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "education",
+              "location"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My spouse is Army and our next PCS is to Fort Liberty in November 2027. My anchor is choose a neighborhood and school plan while keeping my remote job.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "My spouse is Army and our next PCS is to Fort Liberty in November 2027."
+              },
+              {
+                "affected_slices": [
+                  "career",
+                  "education",
+                  "location"
+                ],
+                "kind": "goal",
+                "text": "My anchor is choose a neighborhood and school plan while keeping my remote job."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, education, location.",
+            "token": "eyJleHAiOjE3ODc2MzE2NjMsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImNjZmQ0ZmUwYTI4ZjJiODMxNDAxMjhiZmM5NWQ1MTRlZGRlNjE4NzIxYTM0NzA1M2MyNmI1YTI3MmJjOTE0YTYifQ.7b7eade899149790f639288925a576135ed771e8ec9c6bd702db1b9b37f5da21"
+          },
+          "version": 1
+        },
+        {
+          "action": "reload",
+          "version": 1
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 1,
+      "human_anchor": "Choose an education or training path",
+      "human_gates": 0,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.4025562000024365
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.09092669999517966
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.7774438000051305
+        },
+        {
+          "kind": "reload",
+          "model": false,
+          "seconds": 0.38678170001367107
+        }
+      ],
+      "latency": 1.8079,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "military spouse",
+      "receipt_bytes_end": 4198,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "location-first-family",
+      "scenario_id": "A01",
+      "service": "Army",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        1
+      ],
+      "tool_calls": 0,
+      "transition_stage": "PCS-driven",
+      "turns": 2,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 2,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 4,
+      "deterministic_latencies": [
+        0.9064523999986704
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I separate from the Navy in February 2028. My anchor is choose a data analytics degree and verify the current education-benefit rules before committing.",
+          "orientation": {
+            "affected_slices": [
+              "education"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I separate from the Navy in February 2028. My anchor is choose a data analytics degree and verify the current education-benefit rules before committing.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I separate from the Navy in February 2028."
+              },
+              {
+                "affected_slices": [
+                  "education"
+                ],
+                "kind": "fact",
+                "text": "My anchor is choose a data analytics degree and verify the current education-benefit rules before committing."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape education.",
+            "token": "eyJleHAiOjE3ODc2MzE2NjMsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjU2NTQzNTA1YjcxNGNiNjk0NmJhNjhhMzY0ZWE3ZGYxODI3MWMxZWZmNmQ5MmI2YzVmY2Q4MDFkYzE5NjZlYjcifQ.a9daefbe8ad727aeb92a8b20a4d38de2699de31d6e576f1b557d85621118f31c"
+          },
+          "version": 1
+        },
+        {
+          "action": "reload",
+          "version": 1
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 1,
+      "human_anchor": "Choose an education or training path",
+      "human_gates": 0,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.4129314999881899
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.12955729999521282
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.9064523999986704
+        },
+        {
+          "kind": "reload",
+          "model": false,
+          "seconds": 0.26467989999218844
+        }
+      ],
+      "latency": 2.0906,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 4172,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "education-benefit-first",
+      "scenario_id": "A02",
+      "service": "Navy",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        1
+      ],
+      "tool_calls": 0,
+      "transition_stage": "12\u201318 months",
+      "turns": 2,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 1,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 0,
+      "deterministic_latencies": [
+        0.4838564999954542
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I am on terminal leave from the Marine Corps. My anchor is launch a mobile equipment repair business; I do not want civilian job recommendations.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I am on terminal leave from the Marine Corps. My anchor is launch a mobile equipment repair business; I do not want civilian job recommendations.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "fact",
+                "text": "I am on terminal leave from the Marine Corps."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "goal",
+                "text": "My anchor is launch a mobile equipment repair business; I do not want civilian job recommendations."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE2NjMsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjBkN2U3NGZkM2FlMmFlMTE1ZDExOWM3OWZjZjUyMWVlYTNhYmRiODRjODFhMjJhZjVlNTExOWZiYTJjYWZiN2IifQ.6d1ee49bb039ab007677c6b25823b710cee4b9a4d3022432758b9f28685d6ccc"
+          },
+          "version": 1
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 3,
+      "human_anchor": "Find civilian work",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.23507889999018516
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.17178489999787416
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.4838564999954542
+        }
+      ],
+      "latency": 1.0884,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 4653,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "entrepreneurship-terminal",
+      "scenario_id": "A03",
+      "service": "Marine Corps",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1
+      ],
+      "tool_calls": 0,
+      "transition_stage": "terminal period",
+      "turns": 1,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 3,
+      "artifacts_used": [
+        "docx",
+        "png"
+      ],
+      "conflicts": [],
+      "dependency_evaluations": 4,
+      "deterministic_latencies": [
+        0.8015147999976762,
+        0.5622198000055505,
+        3.242150700010825
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My anchor is make my resume ready for Aviation Safety Manager roles.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "resume"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My anchor is make my resume ready for Aviation Safety Manager roles.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career",
+                  "resume"
+                ],
+                "kind": "fact",
+                "text": "My anchor is make my resume ready for Aviation Safety Manager roles."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, your experience story.",
+            "token": "eyJleHAiOjE3ODc2MzE2NjMsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjAyZDI4NDJiOTc0ZWE4OWEzYzMyYTE1OTc1ZWVlZjU3NDNlNjM2MzU5MmQyYmNjN2U2ZGM0OGIzMjM0MzlmNjQifQ.07dea872f8da6dd9f909600fa8e9eb1d65e3de15a9eb67fabab47cd5c7f49708"
+          },
+          "version": 1
+        },
+        {
+          "action": "artifact",
+          "agent_run": null,
+          "type": "docx",
+          "version": 2
+        },
+        {
+          "action": "artifact",
+          "agent_run": null,
+          "type": "png",
+          "version": 3
+        },
+        {
+          "action": "reload",
+          "version": 3
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 1,
+      "human_anchor": "Make my r\u00e9sum\u00e9 submission-ready for Aviation Safety Manager roles",
+      "human_gates": 0,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.36219790000177454
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.04557610000483692
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.8015147999976762
+        },
+        {
+          "kind": "artifact:docx",
+          "model": false,
+          "seconds": 0.5622198000055505
+        },
+        {
+          "kind": "artifact:png",
+          "model": false,
+          "seconds": 3.242150700010825
+        },
+        {
+          "kind": "reload",
+          "model": false,
+          "seconds": 0.08625839999876916
+        }
+      ],
+      "latency": 5.3321,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "retiring member",
+      "receipt_bytes_end": 7222,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "irrelevant-evidence-control",
+      "scenario_id": "A04",
+      "service": "Air Force",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        3,
+        3
+      ],
+      "tool_calls": 0,
+      "transition_stage": "6\u201312 months",
+      "turns": 4,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 2,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 7,
+      "deterministic_latencies": [
+        0.8914100999973016
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I leave the Space Force from an OCONUS assignment in August 2028. My career target is Space Systems Program Analyst, and I am open to relocating CONUS.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "I leave the Space Force from an OCONUS assignment in August 2028. My career target is Space Systems Program Analyst, and I am open to relocating CONUS.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I leave the Space Force from an OCONUS assignment in August 2028."
+              },
+              {
+                "affected_slices": [
+                  "career",
+                  "location"
+                ],
+                "kind": "fact",
+                "text": "My career target is Space Systems Program Analyst, and I am open to relocating CONUS."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE2NjMsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImRhOTNiZTc4Nzc0MzM0NDc5MzA5NjA3NDViZjMwOWQ3NzFiYmRjNjYxZDlkMmI0ZTk4YWI1ODQ1NmZlNzZlOTIifQ.3753826c51efe3ecdc7ab99fbe4774e8b6faa37ad17d4b506cc5b232255b887b"
+          },
+          "version": 1
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 2,
+      "human_anchor": "Find civilian work",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.4075767000031192
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.13271530000201892
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.8914100999973016
+        }
+      ],
+      "latency": 1.8115,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 5084,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "oconus-conus",
+      "scenario_id": "A05",
+      "service": "Space Force",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1
+      ],
+      "tool_calls": 0,
+      "transition_stage": ">18 months",
+      "turns": 1,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 1,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 0,
+      "deterministic_latencies": [
+        0.7623636999924202,
+        0.30814290000125766
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I recently left the Coast Guard. I want steady emergency management work near Boston with minimal travel.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I recently left the Coast Guard. I want steady emergency management work near Boston with minimal travel.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "fact",
+                "text": "I recently left the Coast Guard."
+              },
+              {
+                "affected_slices": [
+                  "career",
+                  "location"
+                ],
+                "kind": "goal",
+                "text": "I want steady emergency management work near Boston with minimal travel."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE2NjMsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjQ1MWRjNGVlM2UxYmZjMzA2Y2MzMDRmMjg4OTgyODA0ODg5N2Y2YTVmMzhiNDRjMzQ0Y2ZlZDY4MzQ1YWExZmMifQ.3a7b9b9f2a8b8c0b0f3f2af82a24b32939e4c916b0335e141592075ed216929a"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "To restate it: steady emergency management work near Boston, and little travel.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "To restate it: steady emergency management work near Boston, and little travel.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career",
+                  "location"
+                ],
+                "kind": "fact",
+                "text": "To restate it: steady emergency management work near Boston, and little travel."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE2NjUsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImU5MmU2MzRiOThkZDRiMmY1NjQ4MTg4OTZlNjYxNTBjOGE3ZGZiZjM3NTZmMjJiMDcyOTEwZjliZGFkMzk3OTEifQ.6e06b72a7e1b52f08c0a80269fba4dda0892475b346bd2ecbf5fe80597372ebb"
+          },
+          "version": 2
+        },
+        {
+          "action": "reload",
+          "version": 2
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 3,
+      "human_anchor": "Find civilian work",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.4029601999936858
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.13607610001054127
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.7623636999924202
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.5404827000020305
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.30814290000125766
+        },
+        {
+          "kind": "reload",
+          "model": false,
+          "seconds": 0.26616939999803435
+        }
+      ],
+      "latency": 2.6971,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "recent veteran",
+      "receipt_bytes_end": 5599,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "semantic-reentry",
+      "scenario_id": "A06",
+      "service": "Coast Guard",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "tool_calls": 0,
+      "transition_stage": "recently separated",
+      "turns": 3,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 2,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 5,
+      "deterministic_latencies": [
+        0.3984989000018686
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I separate from the Army in December 2026. I want work immediately, need at least 95000 dollars, cannot relocate because of shared custody, and prefer program operations.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I separate from the Army in December 2026. I want work immediately, need at least 95000 dollars, cannot relocate because of shared custody, and prefer program operations.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I separate from the Army in December 2026."
+              },
+              {
+                "affected_slices": [
+                  "career",
+                  "location"
+                ],
+                "kind": "preference",
+                "text": "I want work immediately, need at least 95000 dollars, cannot relocate because of shared custody, and prefer program operations."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE2NjUsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6Ijc1ZTYyODJiNGY2NjI1YTExYzRjOTZmZmEwMGM4Yjc0NGVhMzMwZTRjM2NhY2EzNGMwODZkYWNkODUzNWNjZmUifQ.65e77c2c751493730f9ddb6aeea261a0ee5609eff6d0f5b1e25a54d5f3506374"
+          },
+          "version": 1
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 1,
+      "human_anchor": "Make a post-service location decision",
+      "human_gates": 0,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.671592700004112
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.35179049998987466
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.3984989000018686
+        }
+      ],
+      "latency": 1.5382,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 4207,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "compensation-family-conflict",
+      "scenario_id": "A07",
+      "service": "Army",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1
+      ],
+      "tool_calls": 0,
+      "transition_stage": "90\u2013180 days",
+      "turns": 1,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 3,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 4,
+      "deterministic_latencies": [],
+      "estimated_cost": 0.048144,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": {
+            "fallback": false,
+            "latency_ms": 13565,
+            "provider": "google-adk/gemini-3.7-flash",
+            "tool_calls": 4
+          },
+          "input": "I retire from the Navy in July 2027 after a long technical career. I want meaningful civilian work with normal hours and less travel, my spouse has a local business, one child starts high school, I enjoy restoring motorcycles, and I cannot tell whether operations leadership or compliance work fits best.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "education"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I retire from the Navy in July 2027 after a long technical career. I want meaningful civilian work with normal hours and less travel, my spouse has a local business, one child starts high school, I enjoy restoring motorcycles, and I cannot tell whether operations leadership or compliance work fits best.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "date",
+                "text": "I retire from the Navy in July 2027 after a long technical career."
+              },
+              {
+                "affected_slices": [
+                  "career",
+                  "education"
+                ],
+                "kind": "preference",
+                "text": "I want meaningful civilian work with normal hours and less travel, my spouse has a local business, one child starts high school, I enjoy restoring motorcycles, and I cannot tell whether operations leadership or compliance work fits best."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, education.",
+            "token": "eyJleHAiOjE3ODc2MzE2NjUsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjAwMWFlZDM5NTc1YWQzMzNiNWY2NDExNGQzZGM4MWY1MGZhYTgxNWVmNzY5ZWJkZjNmYmIzNTM5MmNiZWIxMmUifQ.0c6c956e7146d6212f50fd62b1b21b1d1b5388a8633cd091eca2c80c6695c448"
+          },
+          "version": 1
+        },
+        {
+          "action": "reload",
+          "version": 1
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 3,
+      "gates_evaluated": 2,
+      "human_anchor": "Find civilian work",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 2416,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.30270919999748
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.3045240999927046
+        },
+        {
+          "kind": "confirm",
+          "model": true,
+          "seconds": 13.824294799997006
+        },
+        {
+          "kind": "reload",
+          "model": false,
+          "seconds": 0.08807810000143945
+        }
+      ],
+      "latency": 14.8018,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [
+        13.824294799997006
+      ],
+      "model_calls": 2,
+      "output_tokens": 414,
+      "paralyzed_transitions": 0,
+      "persona_type": "retiring member",
+      "receipt_bytes_end": 8132,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "long-messy-bounded",
+      "scenario_id": "A08",
+      "service": "Navy",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        1
+      ],
+      "tool_calls": 4,
+      "transition_stage": "6\u201312 months",
+      "turns": 2,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 1,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 0,
+      "deterministic_latencies": [
+        0.41057910000381526
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "We PCS to California in nine months. I am a military spouse and licensed clinical social worker; my anchor is preserve my career through the licensing transfer and avoid an employment gap.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "We PCS to California in nine months. I am a military spouse and licensed clinical social worker; my anchor is preserve my career through the licensing transfer and avoid an employment gap.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "fact",
+                "text": "We PCS to California in nine months."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "I am a military spouse and licensed clinical social worker; my anchor is preserve my career through the licensing transfer and avoid an employment gap."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE2NjUsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjY3MDRhODg2MDBhOGI3YTExYjZjMjVmNjM3NWQ3NGQ2ZmQ4NjhmZjZjMmE1MmFiYzFkMDlkNjc0MzgyMTE2OGYifQ.598e047a185e9be808f0443e346bb12c97db9e608e001af3002952848f590e9f"
+          },
+          "version": 1
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 3,
+      "human_anchor": "Find civilian work",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.30543580000812653
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.26464569999370724
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.41057910000381526
+        }
+      ],
+      "latency": 1.2946,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "military spouse",
+      "receipt_bytes_end": 4807,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "licensed-spouse",
+      "scenario_id": "A09",
+      "service": "Air Force",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1
+      ],
+      "tool_calls": 0,
+      "transition_stage": "PCS-driven",
+      "turns": 1,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 1,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 4,
+      "deterministic_latencies": [
+        0.496914100003778
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "We are dual military. One Guardian separates in May 2028 while the other remains active. Our anchor is coordinate one civilian career start without disrupting the active-duty assignment or childcare.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "resume"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "We are dual military. One Guardian separates in May 2028 while the other remains active. Our anchor is coordinate one civilian career start without disrupting the active-duty assignment or childcare.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "fact",
+                "text": "We are dual military."
+              },
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "One Guardian separates in May 2028 while the other remains active."
+              },
+              {
+                "affected_slices": [
+                  "career",
+                  "resume"
+                ],
+                "kind": "fact",
+                "text": "Our anchor is coordinate one civilian career start without disrupting the active-duty assignment or childcare."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, your experience story.",
+            "token": "eyJleHAiOjE3ODc2MzE2NjUsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImM0NTU4NTUyODEwNWI1NmM1OTE4OTIwMGIwODM2MTE5MWI2OWExM2RhYjE3ZWFiZGJkZDAwOTRlZjkxMzM0ZDAifQ.e0f148f3ab43be2cc1e00fa69d671a67410437ef83dc3447594c2c28e2e1db58"
+          },
+          "version": 1
+        }
+      ],
+      "failure_codes": [
+        "ANCHOR_DRIFT"
+      ],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 1,
+      "human_anchor": null,
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.33162569999694824
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.2636603999999352
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.496914100003778
+        }
+      ],
+      "latency": 1.184,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "dual-military household",
+      "receipt_bytes_end": 4490,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "dual-military-timing",
+      "scenario_id": "A10",
+      "service": "Space Force",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1
+      ],
+      "tool_calls": 0,
+      "transition_stage": "12\u201318 months",
+      "turns": 1,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 3,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 4,
+      "deterministic_latencies": [
+        0.23081150000507478
+      ],
+      "estimated_cost": 0.01,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": {
+            "fallback": true,
+            "latency_ms": 11871,
+            "provider": "deterministic-fallback",
+            "tool_calls": 1
+          },
+          "input": "I leave the Coast Guard in June 2027. I want operations work with predictable hours and I am deciding between emergency planning and compliance.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I leave the Coast Guard in June 2027. I want operations work with predictable hours and I am deciding between emergency planning and compliance.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I leave the Coast Guard in June 2027."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "goal",
+                "text": "I want operations work with predictable hours and I am deciding between emergency planning and compliance."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE2NjYsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjRhZDFjNzNhNWExOTllMmM0ZDUyYTQxM2IyYTExNWRmZTYwYTA3Yzc4YjQ5NjAzZmJiZTdhNjgyMzMyM2RmZjMifQ.d024ca0f109485efa51e5a8b6a40f8f0a8b343d1649021186abdb1d61ad353db"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "A real posting requires exercise planning, regulatory documentation, incident coordination, and briefings. Treat this only as evidence for the current career decision.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "A real posting requires exercise planning, regulatory documentation, incident coordination, and briefings. Treat this only as evidence for the current career decision.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "goal",
+                "text": "A real posting requires exercise planning, regulatory documentation, incident coordination, and briefings."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "Treat this only as evidence for the current career decision."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE2NzgsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImQyYmZlOTVhMTE1ZTQ2OTkxMzEwOTVlNjM5NWZlY2ZiZjU3MWQ2ZjA2ZmJlM2YzZWUwY2M3ZWEzYTEwNGEwODgifQ.20dd3d1fc47b88622e983e377a97171a5e95efec572a002ef5da93d10591fd6c"
+          },
+          "version": 2
+        },
+        {
+          "action": "reload",
+          "version": 2
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 2,
+      "human_anchor": "Find civilian work",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.47950960000162013
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.1635210999957053
+        },
+        {
+          "kind": "confirm",
+          "model": true,
+          "seconds": 12.24848569999449
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.06167880000430159
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.23081150000507478
+        },
+        {
+          "kind": "reload",
+          "model": false,
+          "seconds": 0.10015389999898616
+        }
+      ],
+      "latency": 13.5103,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [
+        12.24848569999449
+      ],
+      "model_calls": 1,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 7305,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "job-posting-evidence",
+      "scenario_id": "A11",
+      "service": "Coast Guard",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "tool_calls": 1,
+      "transition_stage": "6\u201312 months",
+      "turns": 3,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 1,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 3,
+      "deterministic_latencies": [
+        0.20608370000263676,
+        0.2109340000024531
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Warehouse Operations Manager and I will stay local.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Warehouse Operations Manager and I will stay local.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career",
+                  "location"
+                ],
+                "kind": "fact",
+                "text": "My career target is Warehouse Operations Manager and I will stay local."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE2NjYsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImI2NzY1NzhlYzA3MjA3ZjM1Nzg3ZTIxMTE5NmEyNTgxMjU2N2NiZDg1YTNmNjBmNzgzYzkzMjFlN2YxOTViMDkifQ.314b36990148bc1b4a3d8f044e3c1b3ff6c8e64ab1da37c5607d2b594dbde985"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My anchor has changed: education comes first now, and I want a teaching credential before returning to full-time work.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "education"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "My anchor has changed: education comes first now, and I want a teaching credential before returning to full-time work.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career",
+                  "education"
+                ],
+                "kind": "goal",
+                "text": "My anchor has changed: education comes first now, and I want a teaching credential before returning to full-time work."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, education.",
+            "token": "eyJleHAiOjE3ODc2MzE2NjYsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImEwODUwNmZjODYzYjk2MjhkY2UwNTYxMzJmYjM3MGI3MDA4NWYzMWYyY2U5Y2RkYThjZDUyOWVkNjI3YjYzNzcifQ.cc1cd6d4fa1f633f48fcbfe72784762abd9bab7adddeef3832acf006f88cde71"
+          },
+          "version": 2
+        },
+        {
+          "action": "reload",
+          "version": 2
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 3,
+      "human_anchor": "Find civilian work",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.3992081999895163
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.1677985999995144
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.20608370000263676
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.06247809999331366
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.2109340000024531
+        },
+        {
+          "kind": "reload",
+          "model": false,
+          "seconds": 0.08935550000751391
+        }
+      ],
+      "latency": 1.3435,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "veteran",
+      "receipt_bytes_end": 5656,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "anchor-change",
+      "scenario_id": "A12",
+      "service": "Marine Corps",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "tool_calls": 0,
+      "transition_stage": "post-transition",
+      "turns": 3,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "bounded_updates": 1,
+      "estimated_cost": 0,
+      "failure_codes": [],
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "input_tokens": 0,
+      "latency": 1.3947,
+      "model_calls": 0,
+      "other_profile": "ms-276d944681614f939407124920b48c1e",
+      "output_tokens": 0,
+      "owner_profile": "ms-9a3ab61a569249678f47b9727b66dbec",
+      "persona_type": "separating member",
+      "receipt_patch_bytes": 656,
+      "receipt_patch_count": 4,
+      "scenario_family": "bounded-update-second-user-isolation",
+      "scenario_id": "A13",
+      "service": "Army",
+      "state_versions": [
+        0,
+        2,
+        3,
+        3
+      ],
+      "tool_calls": 0,
+      "transition_stage": "6\u201312 months"
+    }
+  ],
+  "start_timestamp": "2026-08-25T04:06:03.117589+00:00",
+  "tool_calls": 5,
+  "wall_seconds": 18.007
+}

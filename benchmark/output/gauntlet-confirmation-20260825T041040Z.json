@@ -1,0 +1,4344 @@
+{
+  "attempted": 30,
+  "completed": 30,
+  "cost_rail_usd": 5.0,
+  "driver_errors": [],
+  "estimated_cost": 0.0,
+  "input_tokens": 0,
+  "invariant_clean": 30,
+  "model_calls": 0,
+  "output_tokens": 0,
+  "results": [
+    {
+      "active_tasks_max": 1,
+      "artifacts_used": [
+        "txt"
+      ],
+      "conflicts": [],
+      "dependency_evaluations": 4,
+      "deterministic_latencies": [
+        0.26977529999567196,
+        0.8041708000091603
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Program Manager.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Program Manager.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Program Manager."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NTMsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjM5NjVhYzQ4OGEyOTc4NTZjZTExMDZjOWFlMmIwZGU5ZjQyMGE3ZTc0NmU3MjcwMTc5OWNjNGY0MDM5Y2U4YzAifQ.18261462cecd95ce7e42870230b930d75e74240e255c16c27cce5c1280862764"
+          },
+          "version": 1
+        },
+        {
+          "action": "artifact",
+          "agent_run": null,
+          "type": "txt",
+          "version": 2
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 3,
+      "human_anchor": "Find civilian work",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.2990894999966258
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.6679436999984318
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.26977529999567196
+        },
+        {
+          "kind": "artifact:txt",
+          "model": false,
+          "seconds": 0.8041708000091603
+        }
+      ],
+      "latency": 2.2987,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 6384,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "artifact-txt",
+      "scenario_id": "C-A1",
+      "service": "Army",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2
+      ],
+      "tool_calls": 0,
+      "transition_stage": "12\u201318 months",
+      "turns": 2,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 1,
+      "artifacts_used": [
+        "docx"
+      ],
+      "conflicts": [],
+      "dependency_evaluations": 4,
+      "deterministic_latencies": [
+        0.4534511000092607,
+        0.7919662000058452
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Program Manager.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Program Manager.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Program Manager."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NTQsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjM5NjVhYzQ4OGEyOTc4NTZjZTExMDZjOWFlMmIwZGU5ZjQyMGE3ZTc0NmU3MjcwMTc5OWNjNGY0MDM5Y2U4YzAifQ.523f32b9ecb7fd7875cf2b88b6fc52327c10cd470ca047d6e5b9c4de90c613d9"
+          },
+          "version": 1
+        },
+        {
+          "action": "artifact",
+          "agent_run": null,
+          "type": "docx",
+          "version": 2
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 3,
+      "human_anchor": "Find civilian work",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.2646771000145236
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.4850969000108307
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.4534511000092607
+        },
+        {
+          "kind": "artifact:docx",
+          "model": false,
+          "seconds": 0.7919662000058452
+        }
+      ],
+      "latency": 2.8169,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "retiring member",
+      "receipt_bytes_end": 6440,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "artifact-docx",
+      "scenario_id": "C-A2",
+      "service": "Navy",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2
+      ],
+      "tool_calls": 0,
+      "transition_stage": "6\u201312 months",
+      "turns": 2,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 1,
+      "artifacts_used": [
+        "pdf"
+      ],
+      "conflicts": [],
+      "dependency_evaluations": 4,
+      "deterministic_latencies": [
+        0.8222260000038659,
+        4.680582900007721
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Operations Manager.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Operations Manager.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Operations Manager."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NTUsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImJlNWM0NDkwYjFhNjcyNzJiMDYwNTBjM2U5MGMxMmYyZjk3YjM4NmEzYzlmYTE2NTNiYzlkZjdkY2M1NmRkOWUifQ.05064435d10f0c5bceeed5650a814222c38fc8dd965f2b74890f3a1a1a21c099"
+          },
+          "version": 1
+        },
+        {
+          "action": "artifact",
+          "agent_run": null,
+          "type": "pdf",
+          "version": 2
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 3,
+      "human_anchor": "Find civilian work",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.768882799995481
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.4898594999976922
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.8222260000038659
+        },
+        {
+          "kind": "artifact:pdf",
+          "model": false,
+          "seconds": 4.680582900007721
+        }
+      ],
+      "latency": 7.1317,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 6740,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "artifact-pdf",
+      "scenario_id": "C-A3",
+      "service": "Marine Corps",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2
+      ],
+      "tool_calls": 0,
+      "transition_stage": "<90 days",
+      "turns": 2,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 1,
+      "artifacts_used": [
+        "png"
+      ],
+      "conflicts": [],
+      "dependency_evaluations": 2,
+      "deterministic_latencies": [
+        0.8222116999968421,
+        4.535434000004898
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Emergency Planning Manager.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Emergency Planning Manager.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "goal",
+                "text": "My career target is Emergency Planning Manager."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NTUsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjliZTk4OThlYzU2NTFhNGE4YzA2ZDJkZjAyNzdkMDIyMzJlMDExMTIwODg4MDU1MjE5ZTQ2NWM2ZGM5YWU3MzgifQ.f2d38f25e97ed6df99925514920b33496c65fae0a66954a7b22c16686a7a0f0a"
+          },
+          "version": 1
+        },
+        {
+          "action": "artifact",
+          "agent_run": null,
+          "type": "png",
+          "version": 2
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 3,
+      "human_anchor": "Find civilian work",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.42859880000469275
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.2790622999891639
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.8222116999968421
+        },
+        {
+          "kind": "artifact:png",
+          "model": false,
+          "seconds": 4.535434000004898
+        }
+      ],
+      "latency": 6.3934,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "military spouse",
+      "receipt_bytes_end": 6146,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "artifact-image",
+      "scenario_id": "C-A4",
+      "service": "Coast Guard",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2
+      ],
+      "tool_calls": 0,
+      "transition_stage": "PCS-driven",
+      "turns": 2,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 1,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 0,
+      "deterministic_latencies": [
+        0.4396688999986509
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I want civilian work with predictable hours.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I want civilian work with predictable hours.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "goal",
+                "text": "I want civilian work with predictable hours."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NTIsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImE1MzAxYWIzZDM2NGRkMzBlNjdhYWY2MGY1ODc2MDFhNDc0OGI0M2UxOWVmODNkODcwMTcyNjIzOGVmMzA4ZDYifQ.24fefe736d2ed319385a31787e9348892d9b3314a95848d936ba4379f43f9d43"
+          },
+          "version": 1
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 3,
+      "human_anchor": "Find civilian work",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.5596950000035577
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.07164290000218898
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.4396688999986509
+        }
+      ],
+      "latency": 1.3665,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 4433,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "execution-active",
+      "scenario_id": "C-E1",
+      "service": "Coast Guard",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1
+      ],
+      "tool_calls": 0,
+      "transition_stage": "90\u2013180 days",
+      "turns": 1,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 1,
+      "artifacts_used": [],
+      "conflicts": [
+        "Immediate income and full-time education overlap in the first transition period."
+      ],
+      "dependency_evaluations": 0,
+      "deterministic_latencies": [
+        0.2794564000068931,
+        0.4872890999977244
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I want civilian work with predictable hours.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I want civilian work with predictable hours.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "goal",
+                "text": "I want civilian work with predictable hours."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NTIsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImE1MzAxYWIzZDM2NGRkMzBlNjdhYWY2MGY1ODc2MDFhNDc0OGI0M2UxOWVmODNkODcwMTcyNjIzOGVmMzA4ZDYifQ.24fefe736d2ed319385a31787e9348892d9b3314a95848d936ba4379f43f9d43"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I need immediate income and full-time education in the same first six months.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "education"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I need immediate income and full-time education in the same first six months.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career",
+                  "education"
+                ],
+                "kind": "goal",
+                "text": "I need immediate income and full-time education in the same first six months."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, education.",
+            "token": "eyJleHAiOjE3ODc2MzE5NTMsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6Ijc0ZTk3OWRkYzQwODI1YzY2MDIwZGJmODk2NTBiOTE0ZmYwYzUzZmIxMjQ4N2M4ZmJhNGMxZmNmNjk4OTMwZWMifQ.d80b5a1f980d9ca06239ea73e29cf4b04d4da48bc5fac99cd3d3f8b02d540052"
+          },
+          "version": 2
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "PARALYZED",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 4,
+      "human_anchor": "Find civilian work",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.3797426999954041
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.3691372000030242
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.2794564000068931
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.7084501999925124
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.4872890999977244
+        }
+      ],
+      "latency": 2.4686,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 1,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 6166,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "execution-paralyzed",
+      "scenario_id": "C-E2",
+      "service": "Army",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2
+      ],
+      "tool_calls": 0,
+      "transition_stage": "12\u201318 months",
+      "turns": 2,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 1,
+      "artifacts_used": [],
+      "conflicts": [
+        "Immediate income and full-time education overlap in the first transition period."
+      ],
+      "dependency_evaluations": 0,
+      "deterministic_latencies": [
+        0.7475528000068152,
+        0.8038568000047235,
+        0.2936706999898888
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I want civilian work with predictable hours.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I want civilian work with predictable hours.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "goal",
+                "text": "I want civilian work with predictable hours."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NTIsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImE1MzAxYWIzZDM2NGRkMzBlNjdhYWY2MGY1ODc2MDFhNDc0OGI0M2UxOWVmODNkODcwMTcyNjIzOGVmMzA4ZDYifQ.24fefe736d2ed319385a31787e9348892d9b3314a95848d936ba4379f43f9d43"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I need immediate income and full-time education in the same first six months.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "education"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I need immediate income and full-time education in the same first six months.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career",
+                  "education"
+                ],
+                "kind": "goal",
+                "text": "I need immediate income and full-time education in the same first six months."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, education.",
+            "token": "eyJleHAiOjE3ODc2MzE5NTMsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6Ijc0ZTk3OWRkYzQwODI1YzY2MDIwZGJmODk2NTBiOTE0ZmYwYzUzZmIxMjQ4N2M4ZmJhNGMxZmNmNjk4OTMwZWMifQ.d80b5a1f980d9ca06239ea73e29cf4b04d4da48bc5fac99cd3d3f8b02d540052"
+          },
+          "version": 2
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I led 20 people and managed operational schedules.",
+          "orientation": {
+            "affected_slices": [
+              "resume"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I led 20 people and managed operational schedules.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "resume"
+                ],
+                "kind": "fact",
+                "text": "I led 20 people and managed operational schedules."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape your experience story.",
+            "token": "eyJleHAiOjE3ODc2MzE5NTUsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjU1MDlmMjE0MDNmYTMwNDE0OGY0NjcxMzYyNmEzMzNiZDgxNmM2Mjc2NjYxNDhiYzcyOWQ2MzJlZDkzNTI1MDkifQ.93a2e5e8fecbf852d2f882e051e9616d09b1c84a6108f4cf2c6eade9f5fb4424"
+          },
+          "version": 3
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "PARALYZED",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 4,
+      "human_anchor": "Find civilian work",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.38122090000251774
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.3703712999995332
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.7475528000068152
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.28209700000297744
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.8038568000047235
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.4081268000009004
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.2936706999898888
+        }
+      ],
+      "latency": 4.0342,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 1,
+      "persona_type": "retiring member",
+      "receipt_bytes_end": 7138,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "execution-scoped-paralysis",
+      "scenario_id": "C-E3",
+      "service": "Navy",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "tool_calls": 0,
+      "transition_stage": "6\u201312 months",
+      "turns": 3,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 1,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 0,
+      "deterministic_latencies": [
+        0.7146372999995947,
+        0.8029836999921827,
+        0.37872750000678934
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I want civilian work with predictable hours.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I want civilian work with predictable hours.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "goal",
+                "text": "I want civilian work with predictable hours."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NTIsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImE1MzAxYWIzZDM2NGRkMzBlNjdhYWY2MGY1ODc2MDFhNDc0OGI0M2UxOWVmODNkODcwMTcyNjIzOGVmMzA4ZDYifQ.24fefe736d2ed319385a31787e9348892d9b3314a95848d936ba4379f43f9d43"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I need immediate income and full-time education in the same first six months.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "education"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I need immediate income and full-time education in the same first six months.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career",
+                  "education"
+                ],
+                "kind": "goal",
+                "text": "I need immediate income and full-time education in the same first six months."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, education.",
+            "token": "eyJleHAiOjE3ODc2MzE5NTMsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6Ijc0ZTk3OWRkYzQwODI1YzY2MDIwZGJmODk2NTBiOTE0ZmYwYzUzZmIxMjQ4N2M4ZmJhNGMxZmNmNjk4OTMwZWMifQ.d80b5a1f980d9ca06239ea73e29cf4b04d4da48bc5fac99cd3d3f8b02d540052"
+          },
+          "version": 2
+        },
+        {
+          "action": "decide",
+          "gate_id": "priority-first-six-months",
+          "version": 3
+        },
+        {
+          "action": "reload",
+          "version": 3
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 4,
+      "human_anchor": "Find civilian work",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.3256447999883676
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.3691027999884682
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.7146372999995947
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.2839550000062445
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.8029836999921827
+        },
+        {
+          "kind": "decide",
+          "model": false,
+          "seconds": 0.37872750000678934
+        },
+        {
+          "kind": "reload",
+          "model": false,
+          "seconds": 0.28209560000686906
+        }
+      ],
+      "latency": 3.6853,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 5951,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "execution-clearance",
+      "scenario_id": "C-E4",
+      "service": "Marine Corps",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        3,
+        3
+      ],
+      "tool_calls": 0,
+      "transition_stage": "<90 days",
+      "turns": 4,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 1,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 0,
+      "deterministic_latencies": [
+        0.3427713999990374,
+        0.781629500008421
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I want civilian work with predictable hours.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I want civilian work with predictable hours.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "goal",
+                "text": "I want civilian work with predictable hours."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NTIsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImE1MzAxYWIzZDM2NGRkMzBlNjdhYWY2MGY1ODc2MDFhNDc0OGI0M2UxOWVmODNkODcwMTcyNjIzOGVmMzA4ZDYifQ.24fefe736d2ed319385a31787e9348892d9b3314a95848d936ba4379f43f9d43"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I accepted a civilian job as Program Manager. This goal is complete.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "I accepted a civilian job as Program Manager. This goal is complete.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "I accepted a civilian job as Program Manager."
+              },
+              {
+                "affected_slices": [],
+                "kind": "goal",
+                "text": "This goal is complete."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NTMsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6Ijk4MDQ1YWU4MTc4MWY2YjEyZmQ2YmYzZWRhZTY0NTFkYzA5Y2U0ZjMxYTRhMDI3YzU1Y2M4OWE3YjQ4ODBmOTUifQ.0b5a2622be714de49a1f78e215d02d04a6944e6a5d8042ed0ef9ac28ec18f1b2"
+          },
+          "version": 2
+        },
+        {
+          "action": "reload",
+          "version": 2
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "COMPLETE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 3,
+      "human_anchor": "Find civilian work",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.4350397999951383
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.21741100000508595
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.3427713999990374
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.11023569999088068
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.781629500008421
+        },
+        {
+          "kind": "reload",
+          "model": false,
+          "seconds": 0.4161547999974573
+        }
+      ],
+      "latency": 3.3444,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "veteran",
+      "receipt_bytes_end": 5023,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "execution-complete",
+      "scenario_id": "C-E5",
+      "service": "Air Force",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "tool_calls": 0,
+      "transition_stage": "post-transition",
+      "turns": 3,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 2,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 9,
+      "deterministic_latencies": [
+        0.4983795000007376,
+        0.8119974000001093,
+        0.404957499995362
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I am leaving the Army in December 2028. My career target is Logistics Manager. I will stay local and want predictable hours.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I am leaving the Army in December 2028. My career target is Logistics Manager. I will stay local and want predictable hours.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I am leaving the Army in December 2028."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Logistics Manager."
+              },
+              {
+                "affected_slices": [
+                  "location"
+                ],
+                "kind": "goal",
+                "text": "I will stay local and want predictable hours."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDgsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjlhOWI3ZWFmZGRjNTY4ODYwYjM3MDk4NTIyMGM0NjRhOGJlNjU1ODhkZmZiZTc0ZDcwYjdkNzhlMDU4MTFkNTkifQ.710f71a9db789cef949d267a19b4c28fba956d3e87a60336f59cea79e13c41f0"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Senior Logistics Manager.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Senior Logistics Manager.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Senior Logistics Manager."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDgsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjExZmI2NGIwNTUwNzcwNDA0NWZhZTNkYTc4MGY2ZWNhZTY4ZTFjMWEyZGNlZTg2OTJkZTZhZGI2ZjJlNmNhNjgifQ.9553d8d302531382c18af1157d7e498fcb3836858103dc881a384d4642758c67"
+          },
+          "version": 2
+        },
+        {
+          "action": "revalidate",
+          "impact": {
+            "affected_slice": "location",
+            "blocking": false,
+            "confirm_label": "Yes, still staying local",
+            "created_at": "2026-08-25T04:10:49.831981Z",
+            "dependent_field": "relocation_willingness",
+            "fact_id": "fact_f94fae8f866479d3",
+            "id": "impact_ed1a14eb2d9978f5",
+            "message": "Your new career direction may affect your location plans.",
+            "question": "Still planning to stay local?",
+            "source_field": "career_target",
+            "update_label": "Update location",
+            "update_options": [
+              "Stay local",
+              "Open to relocating",
+              "Only for the right role"
+            ]
+          },
+          "version": 3
+        },
+        {
+          "action": "reload",
+          "version": 3
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 2,
+      "human_anchor": "Find civilian work",
+      "human_gates": 0,
+      "human_revalidations": 1,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.772622999997111
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.7794274000043515
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.4983795000007376
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.050584900003741495
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.8119974000001093
+        },
+        {
+          "kind": "revalidate",
+          "model": false,
+          "seconds": 0.404957499995362
+        },
+        {
+          "kind": "reload",
+          "model": false,
+          "seconds": 0.4740279000106966
+        }
+      ],
+      "latency": 4.2307,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 7085,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 509,
+      "receipt_patch_count": 3,
+      "scenario_family": "exact-frozen-matrix-failure",
+      "scenario_id": "C-M1",
+      "service": "Army",
+      "stale_facts": 1,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        3,
+        3
+      ],
+      "tool_calls": 0,
+      "transition_stage": "mixed",
+      "turns": 4,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 2,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 9,
+      "deterministic_latencies": [
+        0.24880850000772625,
+        0.40546909999102354,
+        0.4739199000032386
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I am leaving the Navy in June 2028. My career target is Technical Program Manager. I will stay local and want predictable hours.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I am leaving the Navy in June 2028. My career target is Technical Program Manager. I will stay local and want predictable hours.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I am leaving the Navy in June 2028."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Technical Program Manager."
+              },
+              {
+                "affected_slices": [
+                  "location"
+                ],
+                "kind": "goal",
+                "text": "I will stay local and want predictable hours."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDgsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImQ2MTk4NDgwMjMwMjM5ODdhOTYzODFlODIxMGM3OGFkYjdjNmYyZTU0M2M3ZDU5ODc0MWQ1MjUzYWJjNWQyYzcifQ.bf16644eebb4d42eec8a9da8ea77d8d75a9e4c7816afc3dcd6b88a7485377b28"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Senior Technical Program Manager.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Senior Technical Program Manager.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Senior Technical Program Manager."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDksImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjU3MTNjYzBhOTIxZjZjN2M2MTE4MjM4ODdlMzE3OGY0NGI0ZTc2NmU5ZjFjOTgyY2RhNjRiYzAxOGZhOGRhMWIifQ.cd1b2a092a759a2092b3b9f5c6451ff06cec598a9b2d336fd121fb0eb89a0b9e"
+          },
+          "version": 2
+        },
+        {
+          "action": "revalidate",
+          "impact": {
+            "affected_slice": "location",
+            "blocking": false,
+            "confirm_label": "Yes, still staying local",
+            "created_at": "2026-08-25T04:10:50.059531Z",
+            "dependent_field": "relocation_willingness",
+            "fact_id": "fact_f94fae8f866479d3",
+            "id": "impact_b688bf730c736ed8",
+            "message": "Your new career direction may affect your location plans.",
+            "question": "Still planning to stay local?",
+            "source_field": "career_target",
+            "update_label": "Update location",
+            "update_options": [
+              "Stay local",
+              "Open to relocating",
+              "Only for the right role"
+            ]
+          },
+          "version": 3
+        },
+        {
+          "action": "reload",
+          "version": 3
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 2,
+      "human_anchor": "Find civilian work",
+      "human_gates": 0,
+      "human_revalidations": 1,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.7558300999953644
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.32971700000052806
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.24880850000772625
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.11159279999264982
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.40546909999102354
+        },
+        {
+          "kind": "revalidate",
+          "model": false,
+          "seconds": 0.4739199000032386
+        },
+        {
+          "kind": "reload",
+          "model": false,
+          "seconds": 0.5046986999950605
+        }
+      ],
+      "latency": 3.9372,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 7177,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 509,
+      "receipt_patch_count": 3,
+      "scenario_family": "exact-frozen-matrix-failure",
+      "scenario_id": "C-M2",
+      "service": "Navy",
+      "stale_facts": 1,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        3,
+        3
+      ],
+      "tool_calls": 0,
+      "transition_stage": "mixed",
+      "turns": 4,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 2,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 9,
+      "deterministic_latencies": [
+        0.6321231000038097,
+        0.6756115999887697,
+        0.6450585999991745
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I am leaving the Air Force in January 2027. My career target is Aviation Safety Manager. I will stay local and want predictable hours.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I am leaving the Air Force in January 2027. My career target is Aviation Safety Manager. I will stay local and want predictable hours.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I am leaving the Air Force in January 2027."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Aviation Safety Manager."
+              },
+              {
+                "affected_slices": [
+                  "location"
+                ],
+                "kind": "goal",
+                "text": "I will stay local and want predictable hours."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDgsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImE0NzI0YWE2ODVhYzFiNjk5ZTFjZDBmYzk5NGFjZmQxYmQ2YmM2YTc3YTRiY2RlNGYzN2QzNmJjMWY3ZmRmNDAifQ.0b46a453b3721da3bcffab700085583729f69c678a4844fb53228820d2e04bb3"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Senior Aviation Safety Manager.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Senior Aviation Safety Manager.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Senior Aviation Safety Manager."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NTAsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImU4YWIyM2JhNzRlYmZhMTNmZDI5NmEzNzY5Mzg5ODkzY2YyOTEwYzI5MDkyZGNiNjExOTU0MGU0YmM1NmU1ZWUifQ.087dfd706cd6e828146c703cd4e477b12ba65a2422d4f2c80e59a6a710c9f867"
+          },
+          "version": 2
+        },
+        {
+          "action": "revalidate",
+          "impact": {
+            "affected_slice": "location",
+            "blocking": false,
+            "confirm_label": "Yes, still staying local",
+            "created_at": "2026-08-25T04:10:51.106586Z",
+            "dependent_field": "relocation_willingness",
+            "fact_id": "fact_f94fae8f866479d3",
+            "id": "impact_f8e4de5683640007",
+            "message": "Your new career direction may affect your location plans.",
+            "question": "Still planning to stay local?",
+            "source_field": "career_target",
+            "update_label": "Update location",
+            "update_options": [
+              "Stay local",
+              "Open to relocating",
+              "Only for the right role"
+            ]
+          },
+          "version": 3
+        },
+        {
+          "action": "reload",
+          "version": 3
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 2,
+      "human_anchor": "Find civilian work",
+      "human_gates": 0,
+      "human_revalidations": 1,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.32007899999734946
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.3200271000096109
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.6321231000038097
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.22425310000835452
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.6756115999887697
+        },
+        {
+          "kind": "revalidate",
+          "model": false,
+          "seconds": 0.6450585999991745
+        },
+        {
+          "kind": "reload",
+          "model": false,
+          "seconds": 0.08689350000349805
+        }
+      ],
+      "latency": 3.902,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 7150,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 509,
+      "receipt_patch_count": 3,
+      "scenario_family": "exact-frozen-matrix-failure",
+      "scenario_id": "C-M3",
+      "service": "Air Force",
+      "stale_facts": 1,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        3,
+        3
+      ],
+      "tool_calls": 0,
+      "transition_stage": "mixed",
+      "turns": 4,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 2,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 9,
+      "deterministic_latencies": [
+        0.5642744000069797,
+        0.6399766999966232,
+        0.25797390000661835
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I am leaving the Space Force in November 2026. My career target is Space Systems Analyst. I will stay local and want predictable hours.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I am leaving the Space Force in November 2026. My career target is Space Systems Analyst. I will stay local and want predictable hours.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I am leaving the Space Force in November 2026."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Space Systems Analyst."
+              },
+              {
+                "affected_slices": [
+                  "location"
+                ],
+                "kind": "goal",
+                "text": "I will stay local and want predictable hours."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDgsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjhhNTZmMzQwMDU4NjFjNTJkYzU4MDJmZmFlNDQzNDBkNDM2N2YwNzJhNjMxMDE1ODYyNGFmMGQ2ZmE2YmZkZTYifQ.47575fb4944bed6cbc068e46bf3bad07c07f30fcf0ae9433ffe676173676236e"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Senior Space Systems Analyst.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Senior Space Systems Analyst.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Senior Space Systems Analyst."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NTAsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjVmOTljNTIzMWY1OTM5YjQxZDlkYzE5M2U2ZDUzODYzNjUwYjBkOGU0YmY3NmNlNGZjOTFhYmZiNTU4NTBiZmQifQ.9a2328ebb68244e54c953ee5618e344f9156e32e0f23f58734429d51ab891871"
+          },
+          "version": 2
+        },
+        {
+          "action": "revalidate",
+          "impact": {
+            "affected_slice": "location",
+            "blocking": false,
+            "confirm_label": "Yes, still staying local",
+            "created_at": "2026-08-25T04:10:50.927932Z",
+            "dependent_field": "relocation_willingness",
+            "fact_id": "fact_f94fae8f866479d3",
+            "id": "impact_637e7fb760b65171",
+            "message": "Your new career direction may affect your location plans.",
+            "question": "Still planning to stay local?",
+            "source_field": "career_target",
+            "update_label": "Update location",
+            "update_options": [
+              "Stay local",
+              "Open to relocating",
+              "Only for the right role"
+            ]
+          },
+          "version": 3
+        },
+        {
+          "action": "reload",
+          "version": 3
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 2,
+      "human_anchor": "Find civilian work",
+      "human_gates": 0,
+      "human_revalidations": 1,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.5337796000094386
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.07315899999230169
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.5642744000069797
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.29071549999935087
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.6399766999966232
+        },
+        {
+          "kind": "revalidate",
+          "model": false,
+          "seconds": 0.25797390000661835
+        },
+        {
+          "kind": "reload",
+          "model": false,
+          "seconds": 0.45720600000640843
+        }
+      ],
+      "latency": 3.8124,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 7099,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 509,
+      "receipt_patch_count": 3,
+      "scenario_family": "exact-frozen-matrix-failure",
+      "scenario_id": "C-M4",
+      "service": "Space Force",
+      "stale_facts": 1,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        3,
+        3
+      ],
+      "tool_calls": 0,
+      "transition_stage": "mixed",
+      "turns": 4,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 1,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 2,
+      "deterministic_latencies": [
+        0.598395499997423
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My anchor is make my resume submission-ready, but I have not named the target role yet.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "resume"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My anchor is make my resume submission-ready, but I have not named the target role yet.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career",
+                  "resume"
+                ],
+                "kind": "fact",
+                "text": "My anchor is make my resume submission-ready, but I have not named the target role yet."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, your experience story.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDgsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImQ2MGVhOGQwMzVhMTc4MTJiOWM4ZjBjNjZiNDc0MjE0YTIwYmQ1NWFmY2QwMGZkMTQyMjEzZjM0Mjk5NjFhMTEifQ.ad0c1cd5718c342ff5529703b88ab6721d2a2df9c8811318ee717fa62108e91b"
+          },
+          "version": 1
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 2,
+      "human_anchor": "Make my r\u00e9sum\u00e9 ready for a specific target",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.5325833000097191
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.0731314000004204
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.598395499997423
+        }
+      ],
+      "latency": 1.5702,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "retiring member",
+      "receipt_bytes_end": 4263,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "resume-generic-target",
+      "scenario_id": "C-R1",
+      "service": "Navy",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1
+      ],
+      "tool_calls": 0,
+      "transition_stage": "6\u201312 months",
+      "turns": 1,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 1,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 2,
+      "deterministic_latencies": [
+        0.7022117000014987
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "Make my r\u00e9sum\u00e9 ready, but I don't have a target role yet.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "resume"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "Make my r\u00e9sum\u00e9 ready, but I don't have a target role yet.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career",
+                  "resume"
+                ],
+                "kind": "fact",
+                "text": "Make my r\u00e9sum\u00e9 ready, but I don't have a target role yet."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, your experience story.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDksImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjJmOTExODM3NGY3OTRmYzQyZTA2YzQzOWIzMmYwODk1ZjI0MTE2ZjQ2OGUyOGY1OTQ2OWUyMWUzODlkZmIxNGEifQ.2a0154d6a9ff1ccc4af0c426814eded43c6da12ca58c56cca1f5d02d90632d01"
+          },
+          "version": 1
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 2,
+      "human_anchor": "Make my r\u00e9sum\u00e9 ready for a specific target",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.31987710000248626
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.3518439000035869
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.7022117000014987
+        }
+      ],
+      "latency": 2.1969,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 4193,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "resume-negated-target",
+      "scenario_id": "C-R2",
+      "service": "Marine Corps",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1
+      ],
+      "tool_calls": 0,
+      "transition_stage": "<90 days",
+      "turns": 1,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 3,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 0,
+      "deterministic_latencies": [
+        0.6423288999940269
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "Make my r\u00e9sum\u00e9 submission-ready for Senior Program Manager.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "resume"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "Make my r\u00e9sum\u00e9 submission-ready for Senior Program Manager.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career",
+                  "resume"
+                ],
+                "kind": "fact",
+                "text": "Make my r\u00e9sum\u00e9 submission-ready for Senior Program Manager."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, your experience story.",
+            "token": "eyJleHAiOjE3ODc2MzE5NTAsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjAxMmZiYmViYjRhYzFlZWJiYjBjMTA2MDE4YWM5ZDY4NDQ3YzQ5MWNkNDNmMjg3M2U1YTI5YWRlODBiM2Q0OGUifQ.04c022fe212437c1d7a07591ee99ee7fba3e2e1a4f7aec33646fe4bd5e48db4a"
+          },
+          "version": 1
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 1,
+      "human_anchor": "Make my r\u00e9sum\u00e9 submission-ready for Senior Program Manager",
+      "human_gates": 0,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.23981919999641832
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.8295111999905203
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.6423288999940269
+        }
+      ],
+      "latency": 2.24,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "veteran",
+      "receipt_bytes_end": 4355,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "resume-concrete-target",
+      "scenario_id": "C-R3",
+      "service": "Army",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1
+      ],
+      "tool_calls": 0,
+      "transition_stage": "post-transition",
+      "turns": 1,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 3,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 0,
+      "deterministic_latencies": [
+        0.3219907000020612
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "Make my r\u00e9sum\u00e9 ready for this uploaded job posting.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "resume"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "Make my r\u00e9sum\u00e9 ready for this uploaded job posting.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career",
+                  "resume"
+                ],
+                "kind": "fact",
+                "text": "Make my r\u00e9sum\u00e9 ready for this uploaded job posting."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, your experience story.",
+            "token": "eyJleHAiOjE3ODc2MzE5NTEsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjUyYjQzOGE3N2NiZTkyYWMwNjFjYWMwODNjYmZlY2M4YjU5MDdmYTcyYjZkYmUxOTIzNjc4ZmY4MzZiN2M2MTAifQ.ca2b8754ac0626a67aef33caf8e1fca2206948d37d32843491b6429e53ff44cc"
+          },
+          "version": 1
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 1,
+      "human_anchor": "Make my r\u00e9sum\u00e9 submission-ready for this uploaded job posting",
+      "human_gates": 0,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.5377391000074567
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.29586270000436343
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.3219907000020612
+        }
+      ],
+      "latency": 1.6361,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "military spouse",
+      "receipt_bytes_end": 4337,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "resume-posting-target",
+      "scenario_id": "C-R4",
+      "service": "Air Force",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1
+      ],
+      "tool_calls": 0,
+      "transition_stage": "PCS-driven",
+      "turns": 1,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 3,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 2,
+      "deterministic_latencies": [
+        0.4384557000012137,
+        0.7127648000023328
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "Make my r\u00e9sum\u00e9 submission-ready for Space Systems Analyst.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "resume"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "Make my r\u00e9sum\u00e9 submission-ready for Space Systems Analyst.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career",
+                  "resume"
+                ],
+                "kind": "fact",
+                "text": "Make my r\u00e9sum\u00e9 submission-ready for Space Systems Analyst."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, your experience story.",
+            "token": "eyJleHAiOjE3ODc2MzE5NTEsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjRjYjVlZjhjNGEzZTI0NDZlNWMxZjA3ZDY4MDAwNTg5NWEzMDE2ZjAyYThmNjRjYjBhZGY2NDNiNDNkNDY4MTYifQ.0a7dc9bf61a450d44d947a8b99f17a4d4ef04340cea445944762f7d857c1bb04"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "Clear my target role; I have not chosen the specific role.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "Clear my target role; I have not chosen the specific role.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "Clear my target role; I have not chosen the specific role."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NTIsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImUzNTAyZjZhMjU1MDIxYTZiOTBmZTViOTdmMmFmOTYxNDMyZjhjZTY3YjQ5NGNhNDI0NGRhZjA2NmJiNDZlZDgifQ.16bf69eba331ce34446c45bda5babefa1106edc2fc0ff5f83e811ccfe60c7ec3"
+          },
+          "version": 2
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 2,
+      "human_anchor": "Make my r\u00e9sum\u00e9 ready for a specific target",
+      "human_gates": 1,
+      "human_revalidations": 0,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.49176609999267384
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.6382730000041192
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.4384557000012137
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.04798210000444669
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.7127648000023328
+        }
+      ],
+      "latency": 2.8428,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 5076,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 0,
+      "receipt_patch_count": 0,
+      "scenario_family": "resume-target-cleared",
+      "scenario_id": "C-R5",
+      "service": "Space Force",
+      "stale_facts": 0,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2
+      ],
+      "tool_calls": 0,
+      "transition_stage": ">18 months",
+      "turns": 2,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 3,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 9,
+      "deterministic_latencies": [
+        0.7599634999933187,
+        0.8998512999969535,
+        0.7759821000072407
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I leave the Army in June 2027. My career target is Program Manager. I will stay local and want predictable hours.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I leave the Army in June 2027. My career target is Program Manager. I will stay local and want predictable hours.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I leave the Army in June 2027."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Program Manager."
+              },
+              {
+                "affected_slices": [
+                  "location"
+                ],
+                "kind": "goal",
+                "text": "I will stay local and want predictable hours."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDAsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjE4MDNkZmZhNTIzMzVhZDlmYWU0NmIyZThjYjEyZGI2MjNmMTc4NDZmMTQyNzU0N2NkNzY0OTUyODQ1Mzk2NDQifQ.e0b5c3fb1dd8a1cc4565b690d606b490628f96b76fda708e9a5b8a4c87aec02c"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Defense Program Manager.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Defense Program Manager.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Defense Program Manager."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDIsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImI4OWVhNmY2ZDY4NGE2OWRmNWU5YTU3YzEwMmZhMzljNjRmNjYxNjIxMjQ1ZGM3MDY1NTlkZDUyMjEwNGZjYzAifQ.a6923b343c34754355ccfdd226d26faa779f513c4d1d86cec181342813837e24"
+          },
+          "version": 2
+        },
+        {
+          "action": "revalidate",
+          "impact": {
+            "affected_slice": "location",
+            "blocking": false,
+            "confirm_label": "Yes, still staying local",
+            "created_at": "2026-08-25T04:10:43.512847Z",
+            "dependent_field": "relocation_willingness",
+            "fact_id": "fact_f94fae8f866479d3",
+            "id": "impact_764d8c0d211d2388",
+            "message": "Your new career direction may affect your location plans.",
+            "question": "Still planning to stay local?",
+            "source_field": "career_target",
+            "update_label": "Update location",
+            "update_options": [
+              "Stay local",
+              "Open to relocating",
+              "Only for the right role"
+            ]
+          },
+          "version": 3
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 2,
+      "human_anchor": "Find civilian work",
+      "human_gates": 0,
+      "human_revalidations": 1,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.35990749999473337
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.1216201000061119
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.7599634999933187
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.21010240000032354
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.8998512999969535
+        },
+        {
+          "kind": "revalidate",
+          "model": false,
+          "seconds": 0.7759821000072407
+        }
+      ],
+      "latency": 4.169,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 7275,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 509,
+      "receipt_patch_count": 3,
+      "scenario_family": "anchor-order-preference-last",
+      "scenario_id": "O1A",
+      "service": "Army",
+      "stale_facts": 1,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "tool_calls": 0,
+      "transition_stage": "6\u201312 months",
+      "turns": 3,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 3,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 9,
+      "deterministic_latencies": [
+        0.7193538999999873,
+        0.9468130000022938,
+        0.874975099999574
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I leave the Army in June 2027. I want civilian work with predictable hours. My career target is Program Manager. I will stay local.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I leave the Army in June 2027. I want civilian work with predictable hours. My career target is Program Manager. I will stay local.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I leave the Army in June 2027."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "goal",
+                "text": "I want civilian work with predictable hours."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Program Manager."
+              },
+              {
+                "affected_slices": [
+                  "location"
+                ],
+                "kind": "fact",
+                "text": "I will stay local."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDAsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjBkYTZlZjNhZDJkM2M0MWRiMWEwNzMwNDFjNGQxYjZjODc0MDlmM2Q2OTIyNDM3ZWUxNWFmM2VmMzJlYTAzNGIifQ.3f3ab0525485ec6582eaf5e9c40deb63cb1dbc457ed20450a8f29a6dd3539eba"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Defense Program Manager.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Defense Program Manager.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Defense Program Manager."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDIsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImI4OWVhNmY2ZDY4NGE2OWRmNWU5YTU3YzEwMmZhMzljNjRmNjYxNjIxMjQ1ZGM3MDY1NTlkZDUyMjEwNGZjYzAifQ.a6923b343c34754355ccfdd226d26faa779f513c4d1d86cec181342813837e24"
+          },
+          "version": 2
+        },
+        {
+          "action": "revalidate",
+          "impact": {
+            "affected_slice": "location",
+            "blocking": false,
+            "confirm_label": "Yes, still staying local",
+            "created_at": "2026-08-25T04:10:42.959041Z",
+            "dependent_field": "relocation_willingness",
+            "fact_id": "fact_949cb4e77e5c9263",
+            "id": "impact_53a20b6fe6df03a5",
+            "message": "Your new career direction may affect your location plans.",
+            "question": "Still planning to stay local?",
+            "source_field": "career_target",
+            "update_label": "Update location",
+            "update_options": [
+              "Stay local",
+              "Open to relocating",
+              "Only for the right role"
+            ]
+          },
+          "version": 3
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 1,
+      "human_anchor": "Find civilian work",
+      "human_gates": 0,
+      "human_revalidations": 1,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.3509994000050938
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.1252228999946965
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.7193538999999873
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.3597883000038564
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.9468130000022938
+        },
+        {
+          "kind": "revalidate",
+          "model": false,
+          "seconds": 0.874975099999574
+        }
+      ],
+      "latency": 3.919,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 7800,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 509,
+      "receipt_patch_count": 3,
+      "scenario_family": "anchor-order-employment-first",
+      "scenario_id": "O1B",
+      "service": "Army",
+      "stale_facts": 1,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "tool_calls": 0,
+      "transition_stage": "6\u201312 months",
+      "turns": 3,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 3,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 9,
+      "deterministic_latencies": [
+        0.7212144999939483,
+        0.9488210999988951,
+        0.9062947999918833
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I leave the Navy in June 2027. My career target is Program Manager. I will stay local and want predictable hours.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I leave the Navy in June 2027. My career target is Program Manager. I will stay local and want predictable hours.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I leave the Navy in June 2027."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Program Manager."
+              },
+              {
+                "affected_slices": [
+                  "location"
+                ],
+                "kind": "goal",
+                "text": "I will stay local and want predictable hours."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDAsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImJjMDIzNjNmZjVjODYwMzc5YmUxMmVkOGI4NzZmZGIxODIyYjgyMDI5ZThjYjQ2MzVkODVhY2UwMTM3OGI2ZWYifQ.2cb2f437b9e3ad75d6ed9fd007dbe4dca007bc98d9cc3ea48a2cc336dd0d8ee7"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Defense Program Manager.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Defense Program Manager.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Defense Program Manager."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDIsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImI4OWVhNmY2ZDY4NGE2OWRmNWU5YTU3YzEwMmZhMzljNjRmNjYxNjIxMjQ1ZGM3MDY1NTlkZDUyMjEwNGZjYzAifQ.a6923b343c34754355ccfdd226d26faa779f513c4d1d86cec181342813837e24"
+          },
+          "version": 2
+        },
+        {
+          "action": "revalidate",
+          "impact": {
+            "affected_slice": "location",
+            "blocking": false,
+            "confirm_label": "Yes, still staying local",
+            "created_at": "2026-08-25T04:10:42.782410Z",
+            "dependent_field": "relocation_willingness",
+            "fact_id": "fact_f94fae8f866479d3",
+            "id": "impact_e01bede71e863fa3",
+            "message": "Your new career direction may affect your location plans.",
+            "question": "Still planning to stay local?",
+            "source_field": "career_target",
+            "update_label": "Update location",
+            "update_options": [
+              "Stay local",
+              "Open to relocating",
+              "Only for the right role"
+            ]
+          },
+          "version": 3
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 2,
+      "human_anchor": "Find civilian work",
+      "human_gates": 0,
+      "human_revalidations": 1,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.3499273000052199
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.12388230000215117
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.7212144999939483
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.3593745999969542
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.9488210999988951
+        },
+        {
+          "kind": "revalidate",
+          "model": false,
+          "seconds": 0.9062947999918833
+        }
+      ],
+      "latency": 3.9135,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 7275,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 509,
+      "receipt_patch_count": 3,
+      "scenario_family": "anchor-order-preference-last",
+      "scenario_id": "O2A",
+      "service": "Navy",
+      "stale_facts": 1,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "tool_calls": 0,
+      "transition_stage": "6\u201312 months",
+      "turns": 3,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 3,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 9,
+      "deterministic_latencies": [
+        0.7635679000086384,
+        0.9431235000083689,
+        0.9073623000003863
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I leave the Navy in June 2027. I want civilian work with predictable hours. My career target is Program Manager. I will stay local.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I leave the Navy in June 2027. I want civilian work with predictable hours. My career target is Program Manager. I will stay local.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I leave the Navy in June 2027."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "goal",
+                "text": "I want civilian work with predictable hours."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Program Manager."
+              },
+              {
+                "affected_slices": [
+                  "location"
+                ],
+                "kind": "fact",
+                "text": "I will stay local."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDAsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImU2YTJjMTA3ZjU0ZDg2OWYwYjdiMzY1M2RkZWQzZjMzYjA1ZWVlZmVmOGIwNWQzZWU0YzI0N2ZhMjBiM2QyMDEifQ.e0473d84035a5852049e5e2bd2cd799dbb046572beef73ebbb18f67132e43a25"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Defense Program Manager.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Defense Program Manager.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Defense Program Manager."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDIsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImI4OWVhNmY2ZDY4NGE2OWRmNWU5YTU3YzEwMmZhMzljNjRmNjYxNjIxMjQ1ZGM3MDY1NTlkZDUyMjEwNGZjYzAifQ.a6923b343c34754355ccfdd226d26faa779f513c4d1d86cec181342813837e24"
+          },
+          "version": 2
+        },
+        {
+          "action": "revalidate",
+          "impact": {
+            "affected_slice": "location",
+            "blocking": false,
+            "confirm_label": "Yes, still staying local",
+            "created_at": "2026-08-25T04:10:43.133917Z",
+            "dependent_field": "relocation_willingness",
+            "fact_id": "fact_949cb4e77e5c9263",
+            "id": "impact_f9ffcfce4dfef5a3",
+            "message": "Your new career direction may affect your location plans.",
+            "question": "Still planning to stay local?",
+            "source_field": "career_target",
+            "update_label": "Update location",
+            "update_options": [
+              "Stay local",
+              "Open to relocating",
+              "Only for the right role"
+            ]
+          },
+          "version": 3
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 1,
+      "human_anchor": "Find civilian work",
+      "human_gates": 0,
+      "human_revalidations": 1,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.3535140999883879
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.12410450000606943
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.7635679000086384
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.3610671999922488
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.9431235000083689
+        },
+        {
+          "kind": "revalidate",
+          "model": false,
+          "seconds": 0.9073623000003863
+        }
+      ],
+      "latency": 3.9484,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 7800,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 509,
+      "receipt_patch_count": 3,
+      "scenario_family": "anchor-order-employment-first",
+      "scenario_id": "O2B",
+      "service": "Navy",
+      "stale_facts": 1,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "tool_calls": 0,
+      "transition_stage": "6\u201312 months",
+      "turns": 3,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 3,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 9,
+      "deterministic_latencies": [
+        0.2376217999990331,
+        0.3910126999981003,
+        0.5073971999954665
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I leave the Marine Corps in June 2027. My career target is Program Manager. I will stay local and want predictable hours.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I leave the Marine Corps in June 2027. My career target is Program Manager. I will stay local and want predictable hours.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I leave the Marine Corps in June 2027."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Program Manager."
+              },
+              {
+                "affected_slices": [
+                  "location"
+                ],
+                "kind": "goal",
+                "text": "I will stay local and want predictable hours."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDAsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImQ0ZjljMGY4MTkzZWU4ZTcwZWU2Yjg5ZDI1MjgxZTMxOWU3MjBlMmM0NDczN2QzOGMyMzJhY2Q4ZWI1YWY0NWMifQ.eb0b78cd844bfe3c32484e2c7a2fe7198350a43547116f19af8cefe7163c8904"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Defense Program Manager.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Defense Program Manager.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Defense Program Manager."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDEsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImI4OWVhNmY2ZDY4NGE2OWRmNWU5YTU3YzEwMmZhMzljNjRmNjYxNjIxMjQ1ZGM3MDY1NTlkZDUyMjEwNGZjYzAifQ.76c47e02a407b88f5484d3691a69da7f872aca4347d4ec7afe5efc9571c6255c"
+          },
+          "version": 2
+        },
+        {
+          "action": "revalidate",
+          "impact": {
+            "affected_slice": "location",
+            "blocking": false,
+            "confirm_label": "Yes, still staying local",
+            "created_at": "2026-08-25T04:10:42.068632Z",
+            "dependent_field": "relocation_willingness",
+            "fact_id": "fact_f94fae8f866479d3",
+            "id": "impact_55e70d15506fcaaa",
+            "message": "Your new career direction may affect your location plans.",
+            "question": "Still planning to stay local?",
+            "source_field": "career_target",
+            "update_label": "Update location",
+            "update_options": [
+              "Stay local",
+              "Open to relocating",
+              "Only for the right role"
+            ]
+          },
+          "version": 3
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 2,
+      "human_anchor": "Find civilian work",
+      "human_gates": 0,
+      "human_revalidations": 1,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.21015109999279957
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.14313460000266787
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.2376217999990331
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.2655380999931367
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.3910126999981003
+        },
+        {
+          "kind": "revalidate",
+          "model": false,
+          "seconds": 0.5073971999954665
+        }
+      ],
+      "latency": 2.4864,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 7299,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 509,
+      "receipt_patch_count": 3,
+      "scenario_family": "anchor-order-preference-last",
+      "scenario_id": "O3A",
+      "service": "Marine Corps",
+      "stale_facts": 1,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "tool_calls": 0,
+      "transition_stage": "6\u201312 months",
+      "turns": 3,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 3,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 9,
+      "deterministic_latencies": [
+        0.4635738999932073,
+        0.5007718000124441,
+        0.9019465000019409
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I leave the Marine Corps in June 2027. I want civilian work with predictable hours. My career target is Program Manager. I will stay local.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I leave the Marine Corps in June 2027. I want civilian work with predictable hours. My career target is Program Manager. I will stay local.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I leave the Marine Corps in June 2027."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "goal",
+                "text": "I want civilian work with predictable hours."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Program Manager."
+              },
+              {
+                "affected_slices": [
+                  "location"
+                ],
+                "kind": "fact",
+                "text": "I will stay local."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDAsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImIzMDNhMjExYzkwYjMzZDkzNDY0MjIxYTI3NGM4YWU2MTI1OWQxNDk0NmMxODc4OWUxMDRjZDRmZTY2MTNjMTcifQ.d04aa3a51032b437a763dc7755fe4d0220e91050ab07c344164565eb244ecdc2"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Defense Program Manager.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Defense Program Manager.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Defense Program Manager."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDEsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImI4OWVhNmY2ZDY4NGE2OWRmNWU5YTU3YzEwMmZhMzljNjRmNjYxNjIxMjQ1ZGM3MDY1NTlkZDUyMjEwNGZjYzAifQ.76c47e02a407b88f5484d3691a69da7f872aca4347d4ec7afe5efc9571c6255c"
+          },
+          "version": 2
+        },
+        {
+          "action": "revalidate",
+          "impact": {
+            "affected_slice": "location",
+            "blocking": false,
+            "confirm_label": "Yes, still staying local",
+            "created_at": "2026-08-25T04:10:42.435617Z",
+            "dependent_field": "relocation_willingness",
+            "fact_id": "fact_949cb4e77e5c9263",
+            "id": "impact_1a13e4a5a408395a",
+            "message": "Your new career direction may affect your location plans.",
+            "question": "Still planning to stay local?",
+            "source_field": "career_target",
+            "update_label": "Update location",
+            "update_options": [
+              "Stay local",
+              "Open to relocating",
+              "Only for the right role"
+            ]
+          },
+          "version": 3
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 1,
+      "human_anchor": "Find civilian work",
+      "human_gates": 0,
+      "human_revalidations": 1,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.31756660000246484
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.046018399996683
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.4635738999932073
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.7541343000048073
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.5007718000124441
+        },
+        {
+          "kind": "revalidate",
+          "model": false,
+          "seconds": 0.9019465000019409
+        }
+      ],
+      "latency": 3.3812,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 7824,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 509,
+      "receipt_patch_count": 3,
+      "scenario_family": "anchor-order-employment-first",
+      "scenario_id": "O3B",
+      "service": "Marine Corps",
+      "stale_facts": 1,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "tool_calls": 0,
+      "transition_stage": "6\u201312 months",
+      "turns": 3,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 3,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 9,
+      "deterministic_latencies": [
+        0.3523821999988286,
+        0.6441611000045668,
+        0.7893427000090014
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I leave the Air Force in June 2027. My career target is Program Manager. I will stay local and want predictable hours.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I leave the Air Force in June 2027. My career target is Program Manager. I will stay local and want predictable hours.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I leave the Air Force in June 2027."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Program Manager."
+              },
+              {
+                "affected_slices": [
+                  "location"
+                ],
+                "kind": "goal",
+                "text": "I will stay local and want predictable hours."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDQsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjVhMmZiMWNiZWVlNzI1MWY5MmExYWU4ZjIyNmQ5MGYxYmQ0NDY1ZTA0N2E3N2JiZGY2OTgwODA4M2VhYTU2ZjAifQ.e80bd3d4d07c129053aebeacb6c335c213c6e235b125e8387aaf1eb83a8e5d32"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Defense Program Manager.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Defense Program Manager.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Defense Program Manager."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDUsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImI4OWVhNmY2ZDY4NGE2OWRmNWU5YTU3YzEwMmZhMzljNjRmNjYxNjIxMjQ1ZGM3MDY1NTlkZDUyMjEwNGZjYzAifQ.e6c060dc137057d49b67c481b40ad714039dbda817835eaf6f23dac5ec819b95"
+          },
+          "version": 2
+        },
+        {
+          "action": "revalidate",
+          "impact": {
+            "affected_slice": "location",
+            "blocking": false,
+            "confirm_label": "Yes, still staying local",
+            "created_at": "2026-08-25T04:10:46.309905Z",
+            "dependent_field": "relocation_willingness",
+            "fact_id": "fact_f94fae8f866479d3",
+            "id": "impact_8a8268e4d4dd7c41",
+            "message": "Your new career direction may affect your location plans.",
+            "question": "Still planning to stay local?",
+            "source_field": "career_target",
+            "update_label": "Update location",
+            "update_options": [
+              "Stay local",
+              "Open to relocating",
+              "Only for the right role"
+            ]
+          },
+          "version": 3
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 2,
+      "human_anchor": "Find civilian work",
+      "human_gates": 0,
+      "human_revalidations": 1,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.8873499000037555
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.743614199993317
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.3523821999988286
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.5971851000067545
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.6441611000045668
+        },
+        {
+          "kind": "revalidate",
+          "model": false,
+          "seconds": 0.7893427000090014
+        }
+      ],
+      "latency": 4.6698,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 7284,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 509,
+      "receipt_patch_count": 3,
+      "scenario_family": "anchor-order-preference-last",
+      "scenario_id": "O4A",
+      "service": "Air Force",
+      "stale_facts": 1,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "tool_calls": 0,
+      "transition_stage": "6\u201312 months",
+      "turns": 3,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 3,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 9,
+      "deterministic_latencies": [
+        0.36094269999011885,
+        0.43816140000126325,
+        0.4279145000036806
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I leave the Air Force in June 2027. I want civilian work with predictable hours. My career target is Program Manager. I will stay local.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I leave the Air Force in June 2027. I want civilian work with predictable hours. My career target is Program Manager. I will stay local.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I leave the Air Force in June 2027."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "goal",
+                "text": "I want civilian work with predictable hours."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Program Manager."
+              },
+              {
+                "affected_slices": [
+                  "location"
+                ],
+                "kind": "fact",
+                "text": "I will stay local."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDQsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjU4NjYxZjJhYmQzOGRmNjYzOWIwMmNhZmIxNGQwYzg4MDJkMjQzYTIwMjdkYjM2MGYwNGEzNGE4MzA2NzY5MjEifQ.5763b59145f83b0c520b8a87ae3b7d3cfd5a303fabee53920c6613be51d7d679"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Defense Program Manager.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Defense Program Manager.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Defense Program Manager."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDUsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImI4OWVhNmY2ZDY4NGE2OWRmNWU5YTU3YzEwMmZhMzljNjRmNjYxNjIxMjQ1ZGM3MDY1NTlkZDUyMjEwNGZjYzAifQ.e6c060dc137057d49b67c481b40ad714039dbda817835eaf6f23dac5ec819b95"
+          },
+          "version": 2
+        },
+        {
+          "action": "revalidate",
+          "impact": {
+            "affected_slice": "location",
+            "blocking": false,
+            "confirm_label": "Yes, still staying local",
+            "created_at": "2026-08-25T04:10:46.020334Z",
+            "dependent_field": "relocation_willingness",
+            "fact_id": "fact_949cb4e77e5c9263",
+            "id": "impact_55eaf6b885972910",
+            "message": "Your new career direction may affect your location plans.",
+            "question": "Still planning to stay local?",
+            "source_field": "career_target",
+            "update_label": "Update location",
+            "update_options": [
+              "Stay local",
+              "Open to relocating",
+              "Only for the right role"
+            ]
+          },
+          "version": 3
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 1,
+      "human_anchor": "Find civilian work",
+      "human_gates": 0,
+      "human_revalidations": 1,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.7296378000028199
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.1394399999990128
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.36094269999011885
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.4437547999987146
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.43816140000126325
+        },
+        {
+          "kind": "revalidate",
+          "model": false,
+          "seconds": 0.4279145000036806
+        }
+      ],
+      "latency": 2.9772,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 7809,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 509,
+      "receipt_patch_count": 3,
+      "scenario_family": "anchor-order-employment-first",
+      "scenario_id": "O4B",
+      "service": "Air Force",
+      "stale_facts": 1,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "tool_calls": 0,
+      "transition_stage": "6\u201312 months",
+      "turns": 3,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 3,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 9,
+      "deterministic_latencies": [
+        0.6034823000081815,
+        0.9290641000116011,
+        0.9544011000107275
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I leave the Space Force in June 2027. My career target is Program Manager. I will stay local and want predictable hours.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I leave the Space Force in June 2027. My career target is Program Manager. I will stay local and want predictable hours.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I leave the Space Force in June 2027."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Program Manager."
+              },
+              {
+                "affected_slices": [
+                  "location"
+                ],
+                "kind": "goal",
+                "text": "I will stay local and want predictable hours."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDQsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjkxMDZlNWJmMjY1MDRkMzRkYjhhM2I0YTRkNDNjZGI0ZmJmNmJhYTkxYTExM2ZhZGJjNzI0MzM1MDhlMTY4MWEifQ.6cd98a5b54848950c8b7d547612232229087daeb0fb06c6305d1909af9ea268d"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Defense Program Manager.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Defense Program Manager.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Defense Program Manager."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDUsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImI4OWVhNmY2ZDY4NGE2OWRmNWU5YTU3YzEwMmZhMzljNjRmNjYxNjIxMjQ1ZGM3MDY1NTlkZDUyMjEwNGZjYzAifQ.e6c060dc137057d49b67c481b40ad714039dbda817835eaf6f23dac5ec819b95"
+          },
+          "version": 2
+        },
+        {
+          "action": "revalidate",
+          "impact": {
+            "affected_slice": "location",
+            "blocking": false,
+            "confirm_label": "Yes, still staying local",
+            "created_at": "2026-08-25T04:10:46.671313Z",
+            "dependent_field": "relocation_willingness",
+            "fact_id": "fact_f94fae8f866479d3",
+            "id": "impact_84bce705454261c3",
+            "message": "Your new career direction may affect your location plans.",
+            "question": "Still planning to stay local?",
+            "source_field": "career_target",
+            "update_label": "Update location",
+            "update_options": [
+              "Stay local",
+              "Open to relocating",
+              "Only for the right role"
+            ]
+          },
+          "version": 3
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 2,
+      "human_anchor": "Find civilian work",
+      "human_gates": 0,
+      "human_revalidations": 1,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.2962961000012001
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.050133899989305064
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.6034823000081815
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.5036593999975594
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.9290641000116011
+        },
+        {
+          "kind": "revalidate",
+          "model": false,
+          "seconds": 0.9544011000107275
+        }
+      ],
+      "latency": 3.9749,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 7288,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 509,
+      "receipt_patch_count": 3,
+      "scenario_family": "anchor-order-preference-last",
+      "scenario_id": "O5A",
+      "service": "Space Force",
+      "stale_facts": 1,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "tool_calls": 0,
+      "transition_stage": "6\u201312 months",
+      "turns": 3,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 3,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 9,
+      "deterministic_latencies": [
+        0.6086769000103232,
+        0.934266900003422,
+        0.9837376000068616
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I leave the Space Force in June 2027. I want civilian work with predictable hours. My career target is Program Manager. I will stay local.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I leave the Space Force in June 2027. I want civilian work with predictable hours. My career target is Program Manager. I will stay local.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I leave the Space Force in June 2027."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "goal",
+                "text": "I want civilian work with predictable hours."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Program Manager."
+              },
+              {
+                "affected_slices": [
+                  "location"
+                ],
+                "kind": "fact",
+                "text": "I will stay local."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDQsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImM2MTY2N2QzOTM2NTNmOWZlZjQzNDA2MmRkOWJjOTAzNDZlMmJiNzY4OTBjMjZmNDRjZTMwYjJhNzUwNjQ5ZTMifQ.d8511b496c6a06c309cf4187eb0c09ba224ab11b9f788cd748ea65ee71389bc9"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Defense Program Manager.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Defense Program Manager.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Defense Program Manager."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDUsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImI4OWVhNmY2ZDY4NGE2OWRmNWU5YTU3YzEwMmZhMzljNjRmNjYxNjIxMjQ1ZGM3MDY1NTlkZDUyMjEwNGZjYzAifQ.e6c060dc137057d49b67c481b40ad714039dbda817835eaf6f23dac5ec819b95"
+          },
+          "version": 2
+        },
+        {
+          "action": "revalidate",
+          "impact": {
+            "affected_slice": "location",
+            "blocking": false,
+            "confirm_label": "Yes, still staying local",
+            "created_at": "2026-08-25T04:10:46.847406Z",
+            "dependent_field": "relocation_willingness",
+            "fact_id": "fact_949cb4e77e5c9263",
+            "id": "impact_95f362607908c85d",
+            "message": "Your new career direction may affect your location plans.",
+            "question": "Still planning to stay local?",
+            "source_field": "career_target",
+            "update_label": "Update location",
+            "update_options": [
+              "Stay local",
+              "Open to relocating",
+              "Only for the right role"
+            ]
+          },
+          "version": 3
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 1,
+      "human_anchor": "Find civilian work",
+      "human_gates": 0,
+      "human_revalidations": 1,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.2959810999891488
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.050928700002259575
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.6086769000103232
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.5024335999914911
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.934266900003422
+        },
+        {
+          "kind": "revalidate",
+          "model": false,
+          "seconds": 0.9837376000068616
+        }
+      ],
+      "latency": 4.0051,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 7813,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 509,
+      "receipt_patch_count": 3,
+      "scenario_family": "anchor-order-employment-first",
+      "scenario_id": "O5B",
+      "service": "Space Force",
+      "stale_facts": 1,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "tool_calls": 0,
+      "transition_stage": "6\u201312 months",
+      "turns": 3,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 3,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 9,
+      "deterministic_latencies": [
+        0.26192509999964386,
+        0.9612935999903129,
+        0.9548594999941997
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I leave the Coast Guard in June 2027. My career target is Program Manager. I will stay local and want predictable hours.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I leave the Coast Guard in June 2027. My career target is Program Manager. I will stay local and want predictable hours.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I leave the Coast Guard in June 2027."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Program Manager."
+              },
+              {
+                "affected_slices": [
+                  "location"
+                ],
+                "kind": "goal",
+                "text": "I will stay local and want predictable hours."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDQsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjMzNDQ5OWJlMTM1MTg0NzI5ZmZhOGRjZjg3YWIwNjYzMWQwZjEwZDAxZDM0ODJjNWQzMDQ3NDAwMmFlOWNkNzQifQ.95e55aa4484ccd82f656e4a46ef51948e37b39214852d5410df168a339b04bfc"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Defense Program Manager.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Defense Program Manager.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Defense Program Manager."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDUsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImI4OWVhNmY2ZDY4NGE2OWRmNWU5YTU3YzEwMmZhMzljNjRmNjYxNjIxMjQ1ZGM3MDY1NTlkZDUyMjEwNGZjYzAifQ.e6c060dc137057d49b67c481b40ad714039dbda817835eaf6f23dac5ec819b95"
+          },
+          "version": 2
+        },
+        {
+          "action": "revalidate",
+          "impact": {
+            "affected_slice": "location",
+            "blocking": false,
+            "confirm_label": "Yes, still staying local",
+            "created_at": "2026-08-25T04:10:47.025918Z",
+            "dependent_field": "relocation_willingness",
+            "fact_id": "fact_f94fae8f866479d3",
+            "id": "impact_f789b8e4ccd535cb",
+            "message": "Your new career direction may affect your location plans.",
+            "question": "Still planning to stay local?",
+            "source_field": "career_target",
+            "update_label": "Update location",
+            "update_options": [
+              "Stay local",
+              "Open to relocating",
+              "Only for the right role"
+            ]
+          },
+          "version": 3
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 2,
+      "human_anchor": "Find civilian work",
+      "human_gates": 0,
+      "human_revalidations": 1,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.29278489999705926
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.3422303999977885
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.26192509999964386
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.27948250000190455
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.9612935999903129
+        },
+        {
+          "kind": "revalidate",
+          "model": false,
+          "seconds": 0.9548594999941997
+        }
+      ],
+      "latency": 3.9761,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 7307,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 509,
+      "receipt_patch_count": 3,
+      "scenario_family": "anchor-order-preference-last",
+      "scenario_id": "O6A",
+      "service": "Coast Guard",
+      "stale_facts": 1,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "tool_calls": 0,
+      "transition_stage": "6\u201312 months",
+      "turns": 3,
+      "unrelated_slice_activations": 0
+    },
+    {
+      "active_tasks_max": 3,
+      "artifacts_used": [],
+      "conflicts": [],
+      "dependency_evaluations": 9,
+      "deterministic_latencies": [
+        0.503872399989632,
+        0.9537160000036238,
+        0.29776590000255965
+      ],
+      "estimated_cost": 0.0,
+      "events": [
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "I leave the Coast Guard in June 2027. I want civilian work with predictable hours. My career target is Program Manager. I will stay local.",
+          "orientation": {
+            "affected_slices": [
+              "career",
+              "location"
+            ],
+            "clarification_question": null,
+            "reviewed_input": "I leave the Coast Guard in June 2027. I want civilian work with predictable hours. My career target is Program Manager. I will stay local.",
+            "statements": [
+              {
+                "affected_slices": [],
+                "kind": "date",
+                "text": "I leave the Coast Guard in June 2027."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "goal",
+                "text": "I want civilian work with predictable hours."
+              },
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Program Manager."
+              },
+              {
+                "affected_slices": [
+                  "location"
+                ],
+                "kind": "fact",
+                "text": "I will stay local."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work, location.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDQsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6IjQ2NGY2YWEzYWY1YjI0ZWI0NmU1YzY1YThkYmZjMDg0ODY1YjM5ZmE4YWQ2YjE5ZTcyM2JlZmI4NWZhZjhhM2IifQ.0b2d18dd8a66124dfa276080bb33a56cab58d5f9f1e0a20ded15d609bdb54505"
+          },
+          "version": 1
+        },
+        {
+          "action": "text",
+          "agent_run": null,
+          "input": "My career target is Defense Program Manager.",
+          "orientation": {
+            "affected_slices": [
+              "career"
+            ],
+            "clarification_question": "What would you like more or less of in your next work?",
+            "reviewed_input": "My career target is Defense Program Manager.",
+            "statements": [
+              {
+                "affected_slices": [
+                  "career"
+                ],
+                "kind": "fact",
+                "text": "My career target is Defense Program Manager."
+              }
+            ],
+            "sufficient": true,
+            "summary": "This could shape work.",
+            "token": "eyJleHAiOjE3ODc2MzE5NDYsImtpbmQiOiJvcmllbnRhdGlvbiIsInNoYTI1NiI6ImI4OWVhNmY2ZDY4NGE2OWRmNWU5YTU3YzEwMmZhMzljNjRmNjYxNjIxMjQ1ZGM3MDY1NTlkZDUyMjEwNGZjYzAifQ.124b695222427ad316c83aef485b008415e36301a50a9ee6a028cb1708444a4d"
+          },
+          "version": 2
+        },
+        {
+          "action": "revalidate",
+          "impact": {
+            "affected_slice": "location",
+            "blocking": false,
+            "confirm_label": "Yes, still staying local",
+            "created_at": "2026-08-25T04:10:48.010812Z",
+            "dependent_field": "relocation_willingness",
+            "fact_id": "fact_949cb4e77e5c9263",
+            "id": "impact_0bff8e00fc660bbc",
+            "message": "Your new career direction may affect your location plans.",
+            "question": "Still planning to stay local?",
+            "source_field": "career_target",
+            "update_label": "Update location",
+            "update_options": [
+              "Stay local",
+              "Open to relocating",
+              "Only for the right role"
+            ]
+          },
+          "version": 3
+        }
+      ],
+      "failure_codes": [],
+      "final_status": "ACTIVE",
+      "freshness_model_calls": 0,
+      "full_receipt_rebuilds": 0,
+      "gates_closed_machine": 0,
+      "gates_evaluated": 1,
+      "human_anchor": "Find civilian work",
+      "human_gates": 0,
+      "human_revalidations": 1,
+      "input_tokens": 0,
+      "interaction_latencies": [
+        {
+          "kind": "state",
+          "model": false,
+          "seconds": 0.1922204000002239
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.3931085000076564
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.503872399989632
+        },
+        {
+          "kind": "orient",
+          "model": false,
+          "seconds": 0.6372637000022223
+        },
+        {
+          "kind": "confirm",
+          "model": false,
+          "seconds": 0.9537160000036238
+        },
+        {
+          "kind": "revalidate",
+          "model": false,
+          "seconds": 0.29776590000255965
+        }
+      ],
+      "latency": 4.0542,
+      "machine_revalidations": 0,
+      "model_backed_latencies": [],
+      "model_calls": 0,
+      "output_tokens": 0,
+      "paralyzed_transitions": 0,
+      "persona_type": "separating member",
+      "receipt_bytes_end": 7832,
+      "receipt_bytes_start": 3165,
+      "receipt_patch_bytes": 509,
+      "receipt_patch_count": 3,
+      "scenario_family": "anchor-order-employment-first",
+      "scenario_id": "O6B",
+      "service": "Coast Guard",
+      "stale_facts": 1,
+      "starting_state_version": 0,
+      "state_versions": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "tool_calls": 0,
+      "transition_stage": "6\u201312 months",
+      "turns": 3,
+      "unrelated_slice_activations": 0
+    }
+  ],
+  "start_timestamp": "2026-08-25T04:10:40.183568+00:00",
+  "time_rail_seconds": 900,
+  "tool_calls": 0,
+  "wall_seconds": 21.339,
+  "within_cost_rail": true,
+  "within_time_rail": true
+}
