@@ -6,8 +6,8 @@
     <meta name="theme-color" content="#08141f">
     <meta name="description" content="Military SLICES helps U.S. service members connect career, education, location, and résumé decisions into one transition plan.">
     <title>Military SLICES</title>
-    <link rel="stylesheet" href="/static/styles.css?v=3">
-    <script src="/static/app.js?v=3" defer></script>
+    <link rel="stylesheet" href="/static/styles.css?v=4">
+    <script src="/static/app.js?v=4" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the next decision</a>
@@ -19,15 +19,20 @@
           <small>Your transition, connected.</small>
         </span>
       </a>
-      <button id="add-context-top" class="button button-quiet" type="button">Add something</button>
+      <button id="add-context-top" class="button button-quiet" type="button" hidden>Add an update</button>
     </header>
 
     <main id="main" tabindex="-1">
-      <section class="orientation-shell" aria-labelledby="transition-title">
+      <section id="boot-shell" class="boot-shell" aria-live="polite">
+        <span class="processing-dot" aria-hidden="true"></span>
+        <span>Opening your plan…</span>
+      </section>
+
+      <section id="orientation-shell" class="orientation-shell" aria-labelledby="transition-title" hidden>
         <div class="section-kicker">Your transition</div>
         <h1 id="transition-title">One plan that changes with you.</h1>
         <div class="timeline" aria-label="Transition timeline">
-          <span class="timeline-step active" data-stage="TODAY">Today</span>
+          <span class="timeline-step active" data-stage="TODAY">Now</span>
           <span class="timeline-line" aria-hidden="true"></span>
           <span class="timeline-step" data-stage="PREPARE">Prepare</span>
           <span class="timeline-line" aria-hidden="true"></span>
@@ -47,26 +52,25 @@
             <strong id="path-position">Start with what you know.</strong>
           </div>
         </div>
-        <div class="readiness" aria-labelledby="readiness-label">
+        <div id="readiness" class="readiness" aria-labelledby="readiness-label" hidden>
           <div>
-            <span id="readiness-label">Path readiness</span>
-            <strong id="readiness-count">0 / 1 decisions settled</strong>
+            <span id="readiness-label">Plan status</span>
+            <strong id="readiness-count">Your next choice is ready.</strong>
           </div>
           <div id="readiness-marks" class="readiness-marks" aria-hidden="true"></div>
         </div>
         <div class="lens-shell">
-          <div class="lens-heading">Look across your plan without changing it</div>
+          <div class="lens-heading">Look at another part of your plan</div>
           <nav id="lens-nav" class="lens-nav" aria-label="Inspect parts of your current plan"></nav>
           <div id="lens-preview" class="lens-preview" hidden></div>
         </div>
       </section>
 
-      <div class="content-grid">
+      <div class="content-grid" hidden>
         <section id="primary" class="primary-card" aria-labelledby="primary-title">
           <div class="section-kicker">What matters now</div>
-          <div id="primary-content" aria-live="polite" aria-busy="true">
-            <h2 id="primary-title">Loading your next step…</h2>
-          </div>
+          <div id="processing-status" class="processing-inline" role="status" aria-live="polite" hidden></div>
+          <div id="primary-content" aria-live="polite" aria-busy="true"></div>
         </section>
 
         <aside class="context-column">
@@ -77,34 +81,24 @@
             <div id="impact-actions"></div>
           </section>
 
-          <section id="why-panel" class="support-card" hidden>
-            <div class="section-kicker">Why this matters</div>
-            <p id="why-copy"></p>
-            <div id="affected-areas" class="affected-areas"></div>
-          </section>
-
           <section id="changed-panel" class="support-card changed-card" hidden>
             <div class="section-kicker">What changed</div>
             <h2 id="changed-title"></h2>
             <ul id="changed-list"></ul>
           </section>
 
-          <details class="support-card quiet-card">
-            <summary>Review what I’ve shared</summary>
-            <div id="history-content" class="history-content"></div>
-          </details>
         </aside>
       </div>
 
-      <nav class="control-nav" aria-label="Plan inspection and exploration">
-        <button id="open-history" class="button button-quiet" type="button">← History</button>
-        <button id="open-what-if" class="button button-quiet" type="button">What if? →</button>
+      <nav class="control-nav" aria-label="Review and explore your plan" hidden>
+        <button id="open-history" class="button button-quiet" type="button">Review earlier plans</button>
+        <button id="open-what-if" class="button button-quiet" type="button">Explore a different choice</button>
       </nav>
 
       <section id="add-panel" class="add-panel" hidden aria-labelledby="add-title">
         <button id="close-add" class="icon-button" type="button" aria-label="Close">×</button>
         <div class="section-kicker">Start with what you have</div>
-        <h2 id="add-title">Tell me something or add a document.</h2>
+        <h2 id="add-title">What should your plan understand?</h2>
         <p class="muted">A sentence is enough. A résumé, screenshot, or document works too.</p>
         <form id="input-form">
           <label for="input-text">What should your transition plan understand?</label>
@@ -116,6 +110,7 @@
             <button class="button button-primary" type="submit">Continue</button>
           </div>
         </form>
+        <p class="trust-note">You decide what to add. Choosing a file lets Military SLICES use relevant details from it to update this step.</p>
       </section>
 
       <section id="review-panel" class="review-panel" hidden aria-labelledby="review-title">
@@ -125,7 +120,7 @@
         <ul id="review-statements" class="review-statements"></ul>
         <label for="review-text">Correct anything that is off</label>
         <textarea id="review-text" maxlength="12000" rows="7"></textarea>
-        <p class="trust-note">Nothing is saved until you confirm. AI suggestions never become facts on their own.</p>
+        <p class="trust-note">Reviewing this does not change your plan. Choose “Use this in my plan” to save it. AI suggestions never become facts on their own.</p>
         <div class="button-row">
           <button id="cancel-review" class="button button-quiet" type="button">Go back</button>
           <button id="confirm-review" class="button button-primary" type="button">Use this in my plan</button>
@@ -141,9 +136,9 @@
 
       <section id="history-panel" class="inspection-panel" hidden aria-labelledby="history-title">
         <button id="close-history" class="icon-button" type="button" aria-label="Close history">×</button>
-        <div class="section-kicker">Earlier governed plans</div>
-        <h2 id="history-title">See where this plan has been.</h2>
-        <p class="muted">Looking here never replaces your current plan.</p>
+        <div class="section-kicker">Earlier plans</div>
+        <h2 id="history-title">See what changed over time.</h2>
+        <p class="muted">These are read-only snapshots. Your current plan stays current.</p>
         <div id="history-list"></div>
         <div id="history-detail" hidden></div>
       </section>

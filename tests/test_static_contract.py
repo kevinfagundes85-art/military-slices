@@ -20,6 +20,25 @@ def test_cold_path_avoids_architecture_language() -> None:
         assert term not in visible
 
 
+def test_dynamic_backend_copy_is_projected_into_human_language() -> None:
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    assert "function humanCopy" in script
+    for replacement in (
+        '.replace(/\\blatent\\b/gi, "in the background")',
+        '.replace(/\\bcanonical\\b/gi, "current")',
+        '.replace(/\\bgoverned\\b/gi, "saved")',
+        '.replace(/\\bstale\\b/gi, "ready for another look")',
+        '.replace(/\\bdependencies?\\b/gi, "related choices")',
+        '.replace(/\\bexecution state\\b/gi, "plan status")',
+        '.replace(/\\bresolver\\b/gi, "system")',
+    ):
+        assert replacement in script
+    assert "humanCopy(gate.question)" in script
+    assert "humanCopy(gate.why)" in script
+    assert "humanCopy(lens.summary)" in script
+    assert "humanCopy(feedback.headline)" in script
+
+
 def test_rich_artifact_contract_cannot_regress_to_text_only() -> None:
     html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
     assert ".pdf" in html
@@ -72,7 +91,6 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
     script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
     css = (ROOT / "static" / "styles.css").read_text(encoding="utf-8")
-    assert 'id="readiness-count"' in html
     assert 'id="lens-nav"' in html
     assert 'id="open-history"' in html
     assert 'id="open-what-if"' in html
@@ -83,8 +101,8 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert "Use this plan" in script
     assert "Keep my current plan" in script
     assert ".lens-nav { grid-template-columns: repeat(2" in css
-    assert "/static/app.js?v=3" in html
-    assert "/static/styles.css?v=3" in html
+    assert "/static/app.js?v=4" in html
+    assert "/static/styles.css?v=4" in html
 
 
 def test_temporal_impact_surface_is_natural_bounded_and_deterministic() -> None:
@@ -93,7 +111,83 @@ def test_temporal_impact_surface_is_natural_bounded_and_deterministic() -> None:
     assert 'id="impact-panel"' in html
     assert "Because of your last decision" in html
     assert 'api("/api/revalidate"' in script
-    assert "May have changed" in script
+    assert "Needs a quick check" in script
     assert "Still planning to stay local?" not in html
     for forbidden in ("dependency invalidated", "TTL", "receipt refresh", "freshness class"):
         assert forbidden not in html
+
+
+def test_cold_start_renders_intake_without_plan_machinery() -> None:
+    html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    assert 'id="orientation-shell"' in html and 'aria-labelledby="transition-title" hidden' in html
+    assert '<div class="content-grid" hidden>' in html
+    assert 'id="add-context-top"' in html and 'type="button" hidden' in html
+    assert "if (state.version === 0)" in script
+    fresh = script[script.index("if (state.version === 0)") : script.index('if (mode === "COMPLETE")')]
+    assert "What’s going on?" in fresh
+    assert "Tell me what you’re trying to figure out" in fresh
+    assert 'id="cold-input-form"' in fresh
+    assert fresh.count('type="submit"') == 1
+    for premature in ("Path readiness", "decisions settled", "Loading your next step", "Because of your last decision"):
+        assert premature not in fresh
+
+
+def test_pre_anchor_state_renders_the_backend_question_without_plan_scaffolding() -> None:
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    assert "return state.version > 0 && Boolean(state.human_anchor)" in script
+    assert "if (state.version === 0)" in script
+    assert '$("#orientation-shell").hidden = !started' in script
+    assert '<h2 id="primary-title">${escapeHtml(humanCopy(gate.question))}</h2>' in script
+
+
+def test_progressive_disclosure_and_feedback_are_state_earned() -> None:
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    assert "function applyProgressiveDisclosure" in script
+    assert '$("#orientation-shell").hidden = !started' in script
+    assert '$(".control-nav").hidden = !started' in script
+    assert '$(".context-column").hidden = !contextVisible' in script
+    assert "hasRendered && next.state.version !== previousVersion" in script
+    assert "renderChanged(visibleFeedback)" in script
+    assert 'render(await api("/api/state"), { showFeedback: false })' in script
+
+
+def test_execution_state_projection_is_human_facing() -> None:
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    assert 'if (mode === "COMPLETE")' in script
+    assert "You’ve completed this goal." in script
+    assert 'mode === "PARALYZED"' in script
+    assert "These choices cannot both guide the next step" in script
+    for forbidden_copy in (">PARALYZED<", ">ACTIVE<", ">COMPLETE<"):
+        assert forbidden_copy not in script
+
+
+def test_trust_boundary_copy_distinguishes_text_and_artifact_authority() -> None:
+    html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    combined = html + script
+    assert "Nothing is saved until you confirm" not in combined
+    assert "Reviewing this does not change your plan" in html
+    assert "Choosing a file lets Military SLICES use relevant details" in combined
+    assert 'api("/api/artifact"' in script
+
+
+def test_lens_preview_and_what_if_keep_observe_separate_from_commit() -> None:
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    preview = script[script.index("function showLensPreview") : script.index("function renderLenses")]
+    assert "Preview only — nothing changed" in preview
+    assert "api(" not in preview
+    assert "Review ${escapeHtml(lens.label)}" in preview
+    assert "This remains hypothetical until you choose" in script
+    assert "Keep my current plan" in script
+    assert "Use this plan" in script
+
+
+def test_loading_preserves_stable_content_and_never_exposes_processing_steps() -> None:
+    html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    assert 'id="processing-status"' in html
+    assert "Working through this…" in script
+    assert "setProcessing" in script
+    for forbidden in ("calling model", "running resolver", "writing firestore", "recomputing gates"):
+        assert forbidden not in (html + script).casefold()

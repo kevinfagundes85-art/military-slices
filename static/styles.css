@@ -27,6 +27,7 @@ body {
     radial-gradient(circle at 80% 0%, rgba(50, 116, 135, 0.18), transparent 35rem),
     linear-gradient(180deg, #091722 0%, var(--bg) 45%);
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
 button, textarea, input { font: inherit; }
@@ -93,7 +94,30 @@ main {
   margin: 0 auto;
 }
 
-.orientation-shell { padding: clamp(2rem, 5vw, 4.5rem) 0 2rem; }
+.boot-shell {
+  display: flex;
+  min-height: 34vh;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  color: var(--muted);
+}
+
+.processing-dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  flex: 0 0 auto;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: processing-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes processing-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.82); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+.orientation-shell { padding: clamp(1.6rem, 4vw, 3rem) 0 1.5rem; }
 
 .section-kicker {
   color: var(--accent);
@@ -107,9 +131,9 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
 
 h1 {
   max-width: 760px;
-  margin: 0.35rem 0 2rem;
-  font-size: clamp(2.35rem, 7vw, 5.6rem);
-  line-height: 0.96;
+  margin: 0.35rem 0 1.4rem;
+  font-size: clamp(2.15rem, 5vw, 3.8rem);
+  line-height: 1;
   letter-spacing: -0.055em;
 }
 
@@ -209,6 +233,8 @@ h3 { margin: 0; font-size: 1.05rem; }
 .area[data-status="CONFLICTED"] { border-color: var(--danger); }
 
 .content-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(260px, 0.8fr); gap: 1rem; align-items: start; }
+.content-grid.fresh-start { grid-template-columns: minmax(0, 760px); justify-content: center; padding-top: clamp(2rem, 7vw, 5rem); }
+.content-grid.fresh-start .primary-card { min-height: 0; }
 
 .primary-card,
 .support-card,
@@ -222,9 +248,12 @@ h3 { margin: 0; font-size: 1.05rem; }
 }
 
 .primary-card { min-height: 330px; padding: clamp(1.35rem, 4vw, 2.4rem); }
-.task-horizon { margin: 0 0 1.35rem; padding: 0 0 1rem; border-bottom: 1px solid var(--line); }
+.processing-inline { display: flex; min-height: 44px; align-items: center; gap: 0.65rem; margin: -0.35rem 0 1rem; padding: 0.65rem 0.8rem; color: var(--muted); background: rgba(8, 20, 31, 0.5); border: 1px solid var(--line); border-radius: 0.7rem; }
+.task-horizon { margin: 1.35rem 0 0; padding-top: 0.45rem; border-top: 1px solid var(--line); }
+.task-horizon summary { color: var(--muted); }
 .task-horizon ol { display: grid; gap: 0.45rem; margin: 0; padding-left: 1.35rem; }
 .task-horizon li { color: var(--ink); }
+.task-horizon + .button { margin-top: 1rem; }
 .support-card { padding: 1.2rem; }
 .context-column { display: grid; gap: 1rem; }
 .changed-card { border-color: rgba(101, 213, 197, 0.5); }
@@ -258,6 +287,13 @@ summary { min-height: 44px; display: flex; align-items: center; cursor: pointer;
 .button:hover:not(:disabled) { filter: brightness(1.08); }
 .button-row { display: flex; flex-wrap: wrap; gap: 0.7rem; justify-content: flex-end; }
 .button-row.align-start { justify-content: flex-start; margin-top: 1.5rem; }
+
+.cold-file-entry { display: grid; gap: 0.5rem; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+.cold-file-entry > span { color: var(--muted); font-size: 0.9rem; }
+.cold-file-entry .file-button { justify-self: start; }
+.cold-file-entry small { color: var(--muted); }
+.attention-note { margin-bottom: 1rem; padding: 0.9rem 1rem; color: var(--ink); background: rgba(255, 158, 142, 0.1); border: 1px solid var(--danger); border-radius: 0.75rem; }
+.completion-mark { display: grid; width: 3rem; height: 3rem; margin-bottom: 1rem; place-items: center; color: var(--accent-ink); background: var(--sea); border-radius: 50%; font-size: 1.5rem; font-weight: 900; }
 
 .gate-form { display: grid; gap: 1rem; margin-top: 1.5rem; }
 .gate-form label { font-weight: 750; }
@@ -347,8 +383,11 @@ footer details { max-width: 700px; }
   .input-actions .button, .button-row .button { width: 100%; }
   .input-actions .button-primary { margin-left: 0; }
   .timeline-step { font-size: 0.66rem; padding-inline: 0.5rem; }
+  textarea, input[type="date"], input[type="text"] { font-size: 16px; }
+  .content-grid.fresh-start { padding-top: 1.2rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+  .processing-dot { animation: none; opacity: 1; }
 }

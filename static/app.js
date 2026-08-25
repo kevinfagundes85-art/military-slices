@@ -8,6 +8,8 @@ let envelope = null;
 let pendingOrientation = null;
 let pendingWhatIf = null;
 let whatIfSourceVersion = null;
+let hasRendered = false;
+let reviewReturn = "plan";
 
 const labels = {
   career: "Work",
@@ -41,6 +43,16 @@ function idempotencyKey() {
   return crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
 }
 
+function humanError(message, status = 0) {
+  if (status === 409) return "Your plan changed somewhere else. The newest version is loaded; try this choice again.";
+  if (status === 429) return "Too many updates arrived at once. Wait a moment, then try again.";
+  if (status === 413) return "That file is larger than the 5 MB limit.";
+  if (/provider|gemini|firestore|resolver|model route|stack trace|internal server/i.test(message || "")) {
+    return "We couldn’t finish this step. Your earlier plan is unchanged, so you can safely try again.";
+  }
+  return message || "Something went wrong. Your earlier plan is unchanged; try again.";
+}
+
 async function api(path, options = {}) {
   const { timeoutMs = 25000, ...requestOptions } = options;
   const controller = new AbortController();
@@ -58,7 +70,7 @@ async function api(path, options = {}) {
         const payload = await response.json();
         detail = payload.detail || detail;
       } catch (_) {}
-      const error = new Error(detail);
+      const error = new Error(humanError(detail, response.status));
       error.status = response.status;
       throw error;
     }
@@ -66,6 +78,9 @@ async function api(path, options = {}) {
   } catch (error) {
     if (error.name === "AbortError") {
       throw new Error("This took too long. Your plan was not left spinning; reload to check the current state.");
+    }
+    if (error instanceof TypeError) {
+      throw new Error("The connection was interrupted. Your earlier plan is unchanged; check your connection and try again.");
     }
     throw error;
   } finally {
@@ -81,31 +96,112 @@ function announce(message, error = false) {
   announce.timeout = window.setTimeout(() => statusBox.classList.remove("visible"), 5000);
 }
 
+function clearAnnouncement() {
+  window.clearTimeout(announce.timeout);
+  statusBox.classList.remove("visible", "error");
+  statusBox.textContent = "";
+}
+
 function escapeHtml(value) {
   const element = document.createElement("div");
   element.textContent = value ?? "";
   return element.innerHTML;
 }
 
-function render(next) {
-  envelope = next;
-  primary.setAttribute("aria-busy", "false");
-  renderTimeline(next.state);
-  renderPath(next.state);
-  renderProgress(next.progress);
-  renderLenses(next.lenses);
-  renderPrimary(next);
-  renderImpact(next.impact);
-  renderWhy(next.impact?.blocking ? null : next.active_gate);
-  renderChanged(next.what_changed);
-  renderHistory(next.state);
+function humanCopy(value) {
+  return String(value ?? "")
+    .replace(/\blatent\b/gi, "in the background")
+    .replace(/\bcanonical\b/gi, "current")
+    .replace(/\bgoverned\b/gi, "saved")
+    .replace(/\bstale\b/gi, "ready for another look")
+    .replace(/\bdependencies?\b/gi, "related choices")
+    .replace(/\bexecution state\b/gi, "plan status")
+    .replace(/\bauthority governor\b/gi, "your control")
+    .replace(/\bresolver\b/gi, "system")
+    .replace(/initial saved state/gi, "Plan created");
 }
 
-function renderProgress(progress) {
-  $("#readiness-count").textContent = `${progress.closed} / ${progress.total} decisions settled`;
-  $("#readiness-marks").innerHTML = progress.items.map((item) => (
-    `<span class="readiness-mark" data-state="${escapeHtml(item.state)}" title="${escapeHtml(item.label)}"></span>`
-  )).join("");
+function whatIfCopy(value) {
+  const copy = humanCopy(value)
+    .replace(/^Path milestone:/i, "Current step:")
+    .replace(/^Active gate:/i, "Current question:");
+  if (/^Current question:\s*none$/i.test(copy)) return "No question is waiting.";
+  return copy.replace(/^Current step:\s*([A-Z0-9_]+)$/i, (_, step) => (
+    `Current step: ${step.toLowerCase().replaceAll("_", " ")}.`
+  ));
+}
+
+function planHasStarted(state) {
+  return state.version > 0 && Boolean(state.human_anchor);
+}
+
+function executionMode(state) {
+  return state.execution?.state || "ACTIVE";
+}
+
+function setProcessing(message = "", button = null) {
+  const indicator = $("#processing-status");
+  indicator.hidden = !message;
+  indicator.innerHTML = message
+    ? `<span class="processing-dot" aria-hidden="true"></span><span>${escapeHtml(message)}</span>`
+    : "";
+  if (button) button.disabled = Boolean(message);
+}
+
+function focusPrimary() {
+  const heading = $("#primary-title");
+  heading?.setAttribute("tabindex", "-1");
+  heading?.focus({ preventScroll: true });
+}
+
+function transitionAnnouncement(next, activeMessage) {
+  if (executionMode(next.state) === "COMPLETE") return "Goal complete. No new task was created.";
+  if (executionMode(next.state) === "PARALYZED") return "Your plan needs one choice before it can continue.";
+  return activeMessage;
+}
+
+function applyProgressiveDisclosure(next, showFeedback) {
+  const started = planHasStarted(next.state);
+  const contextVisible = started && Boolean(next.impact || (showFeedback && next.what_changed));
+  $("#boot-shell").hidden = true;
+  $("#orientation-shell").hidden = !started;
+  $("#add-context-top").hidden = !started;
+  $(".control-nav").hidden = !started;
+  $(".context-column").hidden = !contextVisible;
+  contentGrid.hidden = false;
+  contentGrid.classList.toggle("fresh-start", !started);
+  document.body.dataset.planState = started ? executionMode(next.state).toLowerCase() : "fresh";
+}
+
+function render(next, options = {}) {
+  const previousVersion = envelope?.state?.version;
+  const showFeedback = options.showFeedback ?? (hasRendered && next.state.version !== previousVersion);
+  envelope = next;
+  primary.setAttribute("aria-busy", "false");
+  applyProgressiveDisclosure(next, showFeedback);
+  renderTimeline(next.state);
+  renderPath(next.state);
+  renderProgress(next.progress, next.state, next.active_gate);
+  renderLenses(planHasStarted(next.state) ? next.lenses : []);
+  renderPrimary(next);
+  renderImpact(next.impact);
+  const visibleFeedback = executionMode(next.state) === "COMPLETE" ? null : (showFeedback ? next.what_changed : null);
+  renderChanged(visibleFeedback);
+  $(".context-column").hidden = !planHasStarted(next.state) || (!next.impact && !visibleFeedback);
+  hasRendered = true;
+}
+
+function renderProgress(_progress, state, gate) {
+  const readiness = $("#readiness");
+  readiness.hidden = true;
+  if (executionMode(state) === "COMPLETE") {
+    $("#readiness-count").textContent = "This goal is complete.";
+  } else if (executionMode(state) === "PARALYZED") {
+    $("#readiness-count").textContent = "One choice needs your attention.";
+  } else {
+    $("#readiness-count").textContent = gate ? `Next: ${gate.question}` : "No immediate choice is waiting.";
+  }
+  $("#readiness-marks").innerHTML = "";
 }
 
 function showLensPreview(lens, trigger) {
@@ -115,12 +211,11 @@ function showLensPreview(lens, trigger) {
   });
   preview.innerHTML = `
     <button id="dismiss-lens-preview" class="preview-close" type="button" aria-label="Dismiss preview">×</button>
+    <div class="section-kicker">Preview only — nothing changed</div>
     <strong>${escapeHtml(lens.label)}</strong>
-    <div class="lens-counts">${lens.fact_count} relevant facts · ${lens.closed_gates} settled · ${lens.open_gates} open</div>
     ${lens.may_have_changed ? '<div class="impact-note">A recent decision may affect this part of your plan.</div>' : ""}
-    <p>${escapeHtml(lens.summary)}</p>
-    ${lens.latent_dependencies ? `<p class="latent-note">${lens.latent_dependencies} known details remain in the background.</p>` : ""}
-    <button id="open-lens-detail" class="button button-secondary" type="button">Open ${escapeHtml(lens.label)}</button>
+    <p>${escapeHtml(humanCopy(lens.summary))}</p>
+    <button id="open-lens-detail" class="button button-secondary" type="button">Review ${escapeHtml(lens.label)}</button>
   `;
   preview.hidden = false;
   $("#dismiss-lens-preview").addEventListener("click", () => {
@@ -133,16 +228,16 @@ function showLensPreview(lens, trigger) {
 
 function renderLenses(lenses) {
   const nav = $("#lens-nav");
+  $(".lens-shell").hidden = !lenses.length;
+  $("#lens-preview").hidden = true;
   nav.innerHTML = lenses.map((lens) => `
     <button class="lens-button" data-lens="${escapeHtml(lens.name)}" data-impact="${lens.may_have_changed}" type="button" aria-expanded="false">
       <span>${escapeHtml(lens.label)}</span>
-      <small>${lens.may_have_changed ? "May have changed" : (lens.path_relevant ? "Supports now" : "Look only")}</small>
+      <small>${lens.may_have_changed ? "Needs a quick check" : "Preview"}</small>
     </button>
   `).join("");
   nav.querySelectorAll(".lens-button").forEach((button) => {
     const lens = lenses.find((item) => item.name === button.dataset.lens);
-    button.addEventListener("mouseenter", () => showLensPreview(lens, button));
-    button.addEventListener("focus", () => showLensPreview(lens, button));
     button.addEventListener("click", () => showLensPreview(lens, button));
   });
 }
@@ -157,44 +252,70 @@ function renderTimeline(state) {
 
 function renderPath(state) {
   $("#current-target").textContent = state.human_anchor || "Choose what matters first.";
-  const service = serviceLabels[state.service] || "Service details only when needed";
-  const timing = windowLabels[state.current_timeline_window] || "Current transition window";
-  $("#path-position").textContent = `${service} · ${timing}`;
+  const service = serviceLabels[state.service];
+  const timing = windowLabels[state.current_timeline_window];
+  if (!service && state.current_timeline_window === "PATH_IDENTITY") {
+    $("#path-position").textContent = "Timing details will be added only when they affect the plan.";
+  } else {
+    $("#path-position").textContent = [service, timing].filter(Boolean).join(" · ") || "Current transition timing";
+  }
 }
 
-function taskHorizon(tasks) {
+function taskHorizon(tasks, expanded = false) {
   if (!tasks?.length) return "";
   return `
-    <div class="task-horizon" aria-label="Current tasks">
-      <span>Working toward</span>
-      <ol>${tasks.slice(0, 3).map((task) => `<li>${escapeHtml(task.title)}</li>`).join("")}</ol>
-    </div>
+    <details class="task-horizon" ${expanded ? "open" : ""}>
+      <summary>What this choice is working toward</summary>
+      <ol>${tasks.slice(0, 3).map((task) => `<li>${escapeHtml(humanCopy(task.title))}</li>`).join("")}</ol>
+    </details>
   `;
 }
 
 function renderPrimary(next) {
   const state = next.state;
   const gate = next.active_gate;
+  const mode = executionMode(state);
   if (state.version === 0) {
     primary.innerHTML = `
-      <h2 id="primary-title">Start with what you have.</h2>
-      <p class="gate-copy">Tell us what is changing, what you know, or what you are unsure about. You do not need to understand the system or complete an intake form first.</p>
-      <div class="button-row align-start">
-        <button id="start-text" class="button button-primary" type="button">Tell me something</button>
-        <button id="start-file" class="button button-secondary" type="button">Add a résumé or screenshot</button>
+      <div class="section-kicker">Start here</div>
+      <h2 id="primary-title">What’s going on?</h2>
+      <p class="gate-copy">Tell me what you’re trying to figure out. A sentence is enough.</p>
+      <form id="cold-input-form" class="gate-form">
+        <label class="visually-hidden" for="cold-input-text">What are you trying to figure out?</label>
+        <textarea id="cold-input-text" maxlength="12000" rows="5" placeholder="For example: I leave the Coast Guard next spring. I need steady work near Tacoma, but I don’t know what civilian roles fit my experience."></textarea>
+        <button class="button button-primary" type="submit">Continue</button>
+      </form>
+      <div class="cold-file-entry">
+        <span>Or start with something you already have.</span>
+        <label class="button button-quiet file-button" for="cold-artifact-file">Add a résumé, document, or screenshot</label>
+        <input id="cold-artifact-file" class="visually-hidden" type="file" accept=".txt,.pdf,.docx,.png,.jpg,.jpeg,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/png,image/jpeg">
+        <small>PDF, DOCX, TXT, PNG, or JPG · 5 MB max</small>
       </div>
+      <p class="trust-note">You stay in control of what becomes part of your plan. Choosing a file lets Military SLICES use relevant details from it for this step.</p>
     `;
-    $("#start-text").addEventListener("click", () => openAdd(false));
-    $("#start-file").addEventListener("click", () => openAdd(true));
+    $("#cold-input-form").addEventListener("submit", orientColdInput);
+    $("#cold-artifact-file").addEventListener("change", uploadArtifact);
+    $("#cold-input-text").focus({ preventScroll: true });
+    return;
+  }
+  if (mode === "COMPLETE") {
+    primary.innerHTML = `
+      <div class="completion-mark" aria-hidden="true">✓</div>
+      <h2 id="primary-title">You’ve completed this goal.</h2>
+      <p class="gate-copy">There is no unfinished task waiting here. Your plan remains available if something changes.</p>
+      <button id="add-after-complete" class="button button-quiet" type="button">Add an update</button>
+    `;
+    $("#add-after-complete").addEventListener("click", () => openAdd(false));
     return;
   }
   if (!gate) {
     const accepted = state.career_hypotheses.find((item) => item.status === "accepted");
+    const hasTasks = Boolean(state.active_tasks?.length);
     primary.innerHTML = `
-      ${taskHorizon(state.active_tasks)}
-      <h2 id="primary-title">${accepted ? `Keep testing ${escapeHtml(accepted.title)}.` : "Your plan is caught up for now."}</h2>
-      <p class="gate-copy">${accepted ? `Your experience suggests a credible direction. The remaining gaps are hypotheses until you compare them with a real job description.` : "Add something whenever your timing, priorities, work preferences, education, or location changes."}</p>
-      <button id="add-more" class="button button-primary" type="button">${accepted ? "Add a job description or update" : "Add something"}</button>
+      <h2 id="primary-title">${accepted ? `Keep testing ${escapeHtml(accepted.title)}.` : (hasTasks ? "Your next steps are ready." : "Your plan is caught up for now.")}</h2>
+      <p class="gate-copy">${accepted ? `Your experience suggests a credible direction. The remaining gaps are hypotheses until you compare them with a real job description.` : (hasTasks ? "Work through these steps in the order that fits your timing. Add an update when something changes." : "Add something whenever your timing, priorities, work preferences, education, or location changes.")}</p>
+      ${taskHorizon(state.active_tasks, true)}
+      <button id="add-more" class="button ${hasTasks ? "button-quiet" : "button-primary"}" type="button">${accepted ? "Add a job description or update" : "Add an update"}</button>
     `;
     $("#add-more").addEventListener("click", () => openAdd(false));
     return;
@@ -205,16 +326,16 @@ function renderPrimary(next) {
     control = `<label for="gate-value">Expected date</label><input id="gate-value" type="date" min="${new Date().toISOString().slice(0, 10)}">`;
   } else if ((gate.surface === "choice" || gate.surface === "conflict") && gate.options.length) {
     control = `<div class="choice-grid">${gate.options.map((option, index) => `
-      <label class="choice-option"><input type="radio" name="gate-choice" value="${escapeHtml(option)}" ${index === 0 ? "checked" : ""}><span>${escapeHtml(option)}</span></label>
+      <label class="choice-option"><input type="radio" name="gate-choice" value="${escapeHtml(option)}" ${index === 0 ? "checked" : ""}><span>${escapeHtml(humanCopy(option))}</span></label>
     `).join("")}</div>`;
   } else if (gate.surface === "compare" && hypotheses.length) {
     control = `<div class="hypothesis-grid">${hypotheses.map((item) => `
       <article class="hypothesis">
         <h3>${escapeHtml(item.title)}</h3>
-        <p>${escapeHtml(item.rationale)}</p>
-        <p><strong>What may already fit</strong><br>${escapeHtml(item.capability_matches.join(" · "))}</p>
-        <p><strong>What to verify</strong><br>${escapeHtml(item.possible_gaps.join(" · "))}</p>
-        <div class="evidence-note">Explore with ${escapeHtml(item.evidence.join(" · "))}</div>
+        <p>${escapeHtml(humanCopy(item.rationale))}</p>
+        <p><strong>What may already fit</strong><br>${escapeHtml(humanCopy(item.capability_matches.join(" · ")))}</p>
+        <p><strong>What to verify</strong><br>${escapeHtml(humanCopy(item.possible_gaps.join(" · ")))}</p>
+        <div class="evidence-note">Explore with ${escapeHtml(humanCopy(item.evidence.join(" · ")))}</div>
         <div class="hypothesis-actions">
           <button class="button button-secondary hypothesis-choice" data-value="explore:${escapeHtml(item.title)}" type="button">Test this direction</button>
           <button class="button button-quiet hypothesis-choice" data-value="reject:${escapeHtml(item.title)}" type="button">Not for me</button>
@@ -225,13 +346,14 @@ function renderPrimary(next) {
     control = `<label for="gate-value">Your answer</label><textarea id="gate-value" rows="4" placeholder="A sentence is enough."></textarea>`;
   }
   primary.innerHTML = `
-    ${taskHorizon(state.active_tasks)}
-    <h2 id="primary-title">${escapeHtml(gate.question)}</h2>
-    <p class="gate-copy">${escapeHtml(gate.why)}</p>
+    ${mode === "PARALYZED" ? '<div class="attention-note">These choices cannot both guide the next step. Your answer below will clear the conflict.</div>' : ""}
+    <h2 id="primary-title">${escapeHtml(humanCopy(gate.question))}</h2>
+    <p class="gate-copy">${escapeHtml(humanCopy(gate.why))}</p>
     <form id="gate-form" class="gate-form">
       ${control}
       ${gate.surface === "compare" && hypotheses.length ? "" : '<button class="button button-primary" type="submit">Use this decision</button>'}
     </form>
+    ${taskHorizon(state.active_tasks)}
   `;
   const form = $("#gate-form");
   form.addEventListener("submit", submitDecision);
@@ -295,16 +417,16 @@ function renderImpact(impact) {
     panel.hidden = true;
     primary.innerHTML = `
       ${taskHorizon(envelope.state.active_tasks)}
-      <h2 id="primary-title">${escapeHtml(impact.question)}</h2>
-      <p class="gate-copy">${escapeHtml(impact.message)}</p>
+      <h2 id="primary-title">${escapeHtml(humanCopy(impact.question))}</h2>
+      <p class="gate-copy">${escapeHtml(humanCopy(impact.message))}</p>
       <div id="blocking-impact-actions">${impactControls(impact)}</div>
     `;
     wireImpact($("#blocking-impact-actions"), impact);
     return;
   }
   panel.hidden = false;
-  $("#impact-message").textContent = impact.message;
-  $("#impact-question").textContent = impact.question;
+  $("#impact-message").textContent = humanCopy(impact.message);
+  $("#impact-question").textContent = humanCopy(impact.question);
   $("#impact-actions").innerHTML = impactControls(impact);
   wireImpact($("#impact-actions"), impact);
 }
@@ -313,6 +435,7 @@ async function submitRevalidation(impact, action, value = null) {
   document.querySelectorAll(".impact-card button, #blocking-impact-actions button").forEach((button) => {
     button.disabled = true;
   });
+  setProcessing("Updating only the part of your plan affected by this choice…");
   try {
     const next = await api("/api/revalidate", {
       method: "POST",
@@ -324,9 +447,9 @@ async function submitRevalidation(impact, action, value = null) {
         idempotency_key: idempotencyKey(),
       }),
     });
-    render(next);
+    render(next, { showFeedback: true });
     $("#primary").scrollIntoView({ behavior: "smooth", block: "start" });
-    $("#main").focus();
+    focusPrimary();
     announce(
       action === "confirm"
         ? "Confirmed. Your plan can keep moving."
@@ -338,18 +461,9 @@ async function submitRevalidation(impact, action, value = null) {
     document.querySelectorAll(".impact-card button, #blocking-impact-actions button").forEach((button) => {
       button.disabled = false;
     });
+  } finally {
+    setProcessing();
   }
-}
-
-function renderWhy(gate) {
-  const panel = $("#why-panel");
-  if (!gate) {
-    panel.hidden = true;
-    return;
-  }
-  panel.hidden = false;
-  $("#why-copy").textContent = gate.why;
-  $("#affected-areas").innerHTML = gate.affected_slices.map((name) => `<span class="affected-area">${escapeHtml(labels[name])}</span>`).join("");
 }
 
 function renderChanged(feedback) {
@@ -359,36 +473,32 @@ function renderChanged(feedback) {
     return;
   }
   panel.hidden = false;
-  $("#changed-title").textContent = feedback.headline;
-  $("#changed-list").innerHTML = feedback.consequences.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
-}
-
-function renderHistory(state) {
-  const intents = state.original_intents.slice(-5).reverse();
-  const decisions = state.decisions.slice(-5).reverse();
-  if (!intents.length && !decisions.length) {
-    $("#history-content").textContent = "Nothing has been saved yet.";
-    return;
-  }
-  $("#history-content").innerHTML = `
-    ${intents.map((item) => `<div class="history-item">${escapeHtml(item)}</div>`).join("")}
-    ${decisions.map((item) => `<div class="history-item"><strong>Decision:</strong> ${escapeHtml(item.value)}</div>`).join("")}
-  `;
+  $("#changed-title").textContent = humanCopy(feedback.headline);
+  $("#changed-list").innerHTML = feedback.consequences.map((item) => `<li>${escapeHtml(humanCopy(item))}</li>`).join("");
 }
 
 function showInspection(panel) {
+  clearAnnouncement();
   [addPanel, reviewPanel, $("#lens-panel"), $("#history-panel"), $("#what-if-panel")].forEach((item) => {
     item.hidden = item !== panel;
   });
   contentGrid.hidden = true;
+  $(".control-nav").hidden = true;
+  $("#orientation-shell").hidden = true;
+  document.body.classList.add("inspection-open");
   panel.hidden = false;
   panel.scrollIntoView({ behavior: "smooth", block: "start" });
-  panel.querySelector("h2")?.focus?.();
+  const heading = panel.querySelector("h2");
+  heading?.setAttribute("tabindex", "-1");
+  heading?.focus({ preventScroll: true });
 }
 
 function closeInspection(panel, returnTo) {
   panel.hidden = true;
+  document.body.classList.remove("inspection-open");
   contentGrid.hidden = false;
+  $("#orientation-shell").hidden = !planHasStarted(envelope.state);
+  $(".control-nav").hidden = !planHasStarted(envelope.state);
   returnTo?.focus();
 }
 
@@ -396,16 +506,10 @@ function openLensDetail(lens) {
   const panel = $("#lens-panel");
   $("#lens-title").textContent = lens.label;
   $("#lens-detail").innerHTML = `
-    <p>${escapeHtml(lens.summary)}</p>
-    <dl class="lens-metrics">
-      <div><dt>Relevant facts</dt><dd>${lens.fact_count}</dd></div>
-      <div><dt>Settled decisions</dt><dd>${lens.closed_gates}</dd></div>
-      <div><dt>Open here</dt><dd>${lens.open_gates}</dd></div>
-    </dl>
-    ${lens.facts.length ? `<h3>Known</h3><ul>${lens.facts.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : "<p>No governed facts are needed here yet.</p>"}
-    ${lens.decisions.length ? `<h3>Prior decisions</h3><ul>${lens.decisions.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
-    ${lens.latent_dependencies ? `<h3>In the background</h3><p>${lens.latent_dependencies} known details remain latent because they do not advance the current target.</p>` : ""}
-    <p class="trust-note">Looking here did not change your target, gates, tasks, or plan version.</p>
+    <p class="trust-note">You are reviewing this part of your plan. Nothing changes until you deliberately add or choose something.</p>
+    <p>${escapeHtml(humanCopy(lens.summary))}</p>
+    ${lens.facts.length ? `<h3>Relevant details</h3><ul>${lens.facts.map((item) => `<li>${escapeHtml(humanCopy(item))}</li>`).join("")}</ul>` : "<p>No additional details are needed here right now.</p>"}
+    ${lens.decisions.length ? `<h3>Choices you made</h3><ul>${lens.decisions.map((item) => `<li>${escapeHtml(humanCopy(item))}</li>`).join("")}</ul>` : ""}
   `;
   showInspection(panel);
 }
@@ -419,9 +523,9 @@ async function openHistory() {
     const history = await api("/api/history");
     $("#history-list").innerHTML = history.entries.slice().reverse().map((entry) => `
       <button class="history-version" data-version="${entry.version}" type="button">
-        <strong>${entry.current ? "Current" : "Earlier"} · version ${entry.version}</strong>
-        <span>${escapeHtml(entry.human_anchor || "No target declared")}</span>
-        <small>${escapeHtml(entry.change_summary)}</small>
+        <strong>${entry.current ? "Current plan" : "Earlier plan"}</strong>
+        <span>${escapeHtml(humanCopy(entry.human_anchor || "No target declared"))}</span>
+        <small>${escapeHtml(humanCopy(entry.change_summary))}</small>
       </button>
     `).join("");
     document.querySelectorAll(".history-version").forEach((button) => {
@@ -440,11 +544,11 @@ async function inspectHistoryVersion(version) {
     detail.hidden = false;
     detail.innerHTML = `
       <div class="history-snapshot">
-        <div class="section-kicker">Read-only version ${entry.version}</div>
-        <h3>${escapeHtml(entry.human_anchor || "No target was declared")}</h3>
-        <p>${entry.open_gates.length ? `Open then: ${escapeHtml(entry.open_gates.join(" · "))}` : "No open gate was recorded."}</p>
-        <p>${entry.closed_decisions.length ? `Decisions then: ${escapeHtml(entry.closed_decisions.join(" · "))}` : "No decision was recorded yet."}</p>
-        <p class="trust-note">Your current plan remains version ${envelope.state.version}.</p>
+        <div class="section-kicker">Read-only earlier plan</div>
+        <h3>${escapeHtml(humanCopy(entry.human_anchor || "No target was declared"))}</h3>
+        <p>${entry.open_gates.length ? `Still unresolved then: ${escapeHtml(humanCopy(entry.open_gates.join(" · ")))}` : "Nothing unresolved was recorded."}</p>
+        <p>${entry.closed_decisions.length ? `Choices then: ${escapeHtml(humanCopy(entry.closed_decisions.join(" · ")))}` : "No choice was recorded yet."}</p>
+        <p class="trust-note">Your current plan has not changed.</p>
         <button id="what-if-from-history" class="button button-secondary" type="button">What if from here?</button>
       </div>
     `;
@@ -495,12 +599,12 @@ function renderWhatIf(branch) {
   result.hidden = false;
   result.innerHTML = `
     <div class="comparison-grid">
-      <section><div class="section-kicker">Current</div><ul>${branch.current_summary.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></section>
-      <section><div class="section-kicker">Hypothetical</div><ul>${branch.hypothetical_summary.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></section>
+      <section><div class="section-kicker">Current</div><ul>${branch.current_summary.map((item) => `<li>${escapeHtml(whatIfCopy(item))}</li>`).join("")}</ul></section>
+      <section><div class="section-kicker">Hypothetical</div><ul>${branch.hypothetical_summary.map((item) => `<li>${escapeHtml(whatIfCopy(item))}</li>`).join("")}</ul></section>
     </div>
-    ${branch.conflicts.length ? `<div class="conflict-note"><strong>Conflict to resolve</strong><ul>${branch.conflicts.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div>` : ""}
+    ${branch.conflicts.length ? `<div class="conflict-note"><strong>Conflict to resolve</strong><ul>${branch.conflicts.map((item) => `<li>${escapeHtml(whatIfCopy(item))}</li>`).join("")}</ul></div>` : ""}
     <h3>If you use this plan</h3>
-    <ul>${branch.consequences.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+    <ul>${branch.consequences.map((item) => `<li>${escapeHtml(whatIfCopy(item))}</li>`).join("")}</ul>
     <p class="trust-note">This remains hypothetical until you choose “Use this plan.”</p>
     <div class="button-row">
       <button id="discard-what-if" class="button button-quiet" type="button">Keep my current plan</button>
@@ -533,8 +637,9 @@ async function promoteWhatIf() {
     whatIfSourceVersion = null;
     $("#what-if-panel").hidden = true;
     contentGrid.hidden = false;
-    render(next);
-    $("#main").focus();
+    document.body.classList.remove("inspection-open");
+    render(next, { showFeedback: true });
+    focusPrimary();
     announce("You made the explored change part of your current plan.");
   } catch (error) {
     if (error.status === 409) await loadState();
@@ -544,6 +649,7 @@ async function promoteWhatIf() {
 }
 
 function openAdd(fileFirst) {
+  reviewReturn = "add";
   reviewPanel.hidden = true;
   contentGrid.hidden = true;
   addPanel.hidden = false;
@@ -569,27 +675,45 @@ async function orientInput(event) {
     $("#input-text").focus();
     return;
   }
-  const submit = event.submitter;
-  if (submit) submit.disabled = true;
+  reviewReturn = "add";
+  await requestOrientation(text, event.submitter);
+}
+
+async function orientColdInput(event) {
+  event.preventDefault();
+  const text = $("#cold-input-text").value.trim();
+  if (!text) {
+    announce("Add a sentence first.", true);
+    $("#cold-input-text").focus();
+    return;
+  }
+  reviewReturn = "cold";
+  await requestOrientation(text, event.submitter);
+}
+
+async function requestOrientation(text, submit) {
+  if (submit) {
+    submit.disabled = true;
+    submit.textContent = "Working through this…";
+  }
   try {
     pendingOrientation = await api("/api/orient", { method: "POST", body: JSON.stringify({ text }) });
     showReview(pendingOrientation);
   } catch (error) {
     announce(error.message, true);
   } finally {
-    if (submit) submit.disabled = false;
+    if (submit) {
+      submit.disabled = false;
+      submit.textContent = "Continue";
+    }
   }
 }
 
 function showReview(result) {
-  addPanel.hidden = true;
-  contentGrid.hidden = true;
-  reviewPanel.hidden = false;
   $("#review-summary").textContent = result.summary;
   $("#review-statements").innerHTML = result.statements.map((item) => `<li>${escapeHtml(item.text)}</li>`).join("") || "<li>We need one clarification before this can shape your plan.</li>";
   $("#review-text").value = result.reviewed_input;
-  reviewPanel.scrollIntoView({ behavior: "smooth", block: "start" });
-  $("#review-title").focus?.();
+  showInspection(reviewPanel);
 }
 
 async function confirmReview() {
@@ -620,11 +744,17 @@ async function confirmReview() {
     });
     reviewPanel.hidden = true;
     contentGrid.hidden = false;
+    document.body.classList.remove("inspection-open");
     pendingOrientation = null;
-    render(next);
+    render(next, { showFeedback: true });
     $("#primary").scrollIntoView({ behavior: "smooth", block: "start" });
-    $("#main").focus();
-    announce(next.agent_run?.fallback ? "Your plan updated. Live research was unavailable, so the safe fallback kept you moving." : "Your plan updated and the next decision is ready.");
+    focusPrimary();
+    announce(transitionAnnouncement(
+      next,
+      next.agent_run?.fallback
+        ? "Your plan updated. Live research was unavailable, so the safe fallback kept you moving."
+        : "Your plan updated and the next decision is ready.",
+    ));
   } catch (error) {
     if (error.status === 409) await loadState();
     announce(error.message, true);
@@ -649,6 +779,7 @@ async function submitDecision(event) {
   }
   const buttons = document.querySelectorAll("#gate-form button");
   buttons.forEach((button) => { button.disabled = true; });
+  setProcessing("Working through this…");
   try {
     const next = await api("/api/decision", {
       method: "POST",
@@ -659,14 +790,15 @@ async function submitDecision(event) {
         idempotency_key: idempotencyKey(),
       }),
     });
-    render(next);
-    $("#main").focus();
-    announce("Decision saved. Your next step changed.");
+    render(next, { showFeedback: true });
+    focusPrimary();
+    announce(transitionAnnouncement(next, "Decision saved. Your next step changed."));
   } catch (error) {
     if (error.status === 409) await loadState();
     announce(error.message, true);
   } finally {
     buttons.forEach((button) => { button.disabled = false; });
+    setProcessing();
   }
 }
 
@@ -687,27 +819,37 @@ async function uploadArtifact(event) {
   form.append("file", file);
   form.append("expected_version", String(envelope.state.version));
   form.append("idempotency_key", idempotencyKey());
-  $("#file-status").textContent = `Using ${file.name} to update your plan…`;
+  const fileStatus = event.target.id === "cold-artifact-file" ? null : $("#file-status");
+  if (fileStatus) fileStatus.textContent = `Using ${file.name} to update your plan…`;
+  setProcessing("Reading the relevant details and updating this step…");
   try {
     const next = await api("/api/artifact", { method: "POST", body: form });
     addPanel.hidden = true;
+    reviewPanel.hidden = true;
     contentGrid.hidden = false;
-    render(next);
+    document.body.classList.remove("inspection-open");
+    render(next, { showFeedback: true });
     $("#primary").scrollIntoView({ behavior: "smooth", block: "start" });
-    $("#main").focus();
-    announce(next.agent_run?.fallback ? "Your document updated the plan using the safe fallback." : "Your document updated the plan and changed what comes next.");
+    focusPrimary();
+    announce(transitionAnnouncement(
+      next,
+      next.agent_run?.fallback
+        ? "Your document updated the plan using the safe fallback."
+        : "Your document updated the plan and changed what comes next.",
+    ));
   } catch (error) {
-    $("#file-status").textContent = "PDF, DOCX, TXT, PNG, or JPG · 5 MB max";
+    if (fileStatus) fileStatus.textContent = "PDF, DOCX, TXT, PNG, or JPG · 5 MB max";
     if (error.status === 409) await loadState();
     announce(error.message, true);
   } finally {
+    setProcessing();
     event.target.value = "";
   }
 }
 
 async function loadState() {
   try {
-    render(await api("/api/state"));
+    render(await api("/api/state"), { showFeedback: false });
   } catch (error) {
     primary.innerHTML = `<h2 id="primary-title">We couldn’t load your plan.</h2><p>${escapeHtml(error.message)}</p><button id="retry" class="button button-primary">Try again</button>`;
     $("#retry").addEventListener("click", loadState);
@@ -720,8 +862,16 @@ $("#input-form").addEventListener("submit", orientInput);
 $("#artifact-file").addEventListener("change", uploadArtifact);
 $("#cancel-review").addEventListener("click", () => {
   reviewPanel.hidden = true;
-  addPanel.hidden = false;
-  $("#input-text").focus();
+  document.body.classList.remove("inspection-open");
+  if (reviewReturn === "add") {
+    addPanel.hidden = false;
+    $("#input-text").focus();
+  } else {
+    contentGrid.hidden = false;
+    $("#orientation-shell").hidden = !planHasStarted(envelope.state);
+    $(".control-nav").hidden = !planHasStarted(envelope.state);
+    $("#cold-input-text")?.focus();
+  }
 });
 $("#confirm-review").addEventListener("click", confirmReview);
 $("#open-history").addEventListener("click", openHistory);
