@@ -7,7 +7,11 @@ Date: 2026-08-25
 - Frozen behavioral source: `military-slices-00019-ved` / `fe29bc8`
 - Production: `military-slices-00001-niw` at 100%; unchanged
 - Backend semantics, Firestore structure, routing policy, and production profiles: unchanged
-- Candidate deployment: zero traffic; recorded after hosted verification below
+- Candidate: `military-slices-00020-tez` at 0% traffic
+- Source commit: `3c12b910b01eb96cc238bd67d8b27f54f3434c0b`
+- Candidate tags:
+  - `https://competition-rc---military-slices-ztvqlzospa-uw.a.run.app/`
+  - isolated cold-test tag: `https://frontend-rc---military-slices-ztvqlzospa-uw.a.run.app/`
 
 ## Initial cold-user observation
 
@@ -108,6 +112,23 @@ These were not silently corrected because the execution order freezes backend se
 - dependency audit: no known vulnerabilities (editable local distribution skipped)
 - Frozen backend files changed: none
 
+## Hosted candidate verification
+
+- Cloud Run revision Ready: PASS
+- Cloud Run container health condition: PASS; container became healthy in 4.56 seconds
+- Production traffic: `military-slices-00001-niw` at 100%
+- Candidate traffic: `military-slices-00020-tez` at 0%
+- Runtime/service account/environment parity with `00019`: PASS
+- Container digest: `sha256:6e3febcb2c4dc58ccfa21f2c77adf2be4b38cac5d526893c4b81547c44816226`
+- Exact hosted asset read-back:
+  - `app.js?v=4` local/hosted SHA-256 `A930486D03B062B5624D0ECCA0F2AC6A8F54E4416CD4517D4812FBF955EFE545`
+  - `styles.css?v=4` local/hosted SHA-256 `AF15A5ECD8875250BD516B963F3AFF42DB8C394178F918CE911B992699F01342`
+- Hosted isolated cold start: PASS
+- Hosted stateless messy-input orientation: PASS
+- Hosted cancel + reload returned to `fresh`: PASS; no governed write was made
+- Hosted 320 px review: no overflow, 16 px textarea, minimum visible target 48.35 px
+- Hosted browser warning/error console: zero
+
 ## Verdict
 
 `PARTIAL`
@@ -121,4 +142,3 @@ These are recommendations only and were not implemented beyond this order:
 1. Run an unbriefed-adult comprehension session and tune only the copy that causes observed hesitation.
 2. Add a browser-level visual-regression harness for the three execution states and 320/375/414 px widths.
 3. Add an explicit in-product retry affordance beside long-running model-backed actions, while retaining idempotency.
-
