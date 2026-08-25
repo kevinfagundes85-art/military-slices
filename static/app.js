@@ -18,6 +18,27 @@ const labels = {
   resume: "Your story",
 };
 
+const starterLensTopics = [
+  { id: "career", label: "Work", slice: "career", summary: "Explore civilian work, career direction, and the conditions that make work fit." },
+  { id: "education", label: "Education", slice: "education", summary: "Explore school, training, credentials, and what they should make possible." },
+  { id: "location", label: "Location", slice: "location", summary: "Explore where you may live, commute, or relocate and what the choice needs to respect." },
+  { id: "family", label: "Family and household", slice: "location", summary: "Explore household needs that may shape timing, location, work, or education." },
+  { id: "resume", label: "Résumé", slice: "resume", summary: "Explore how your experience could support a specific civilian role or use." },
+  { id: "timing", label: "Timing", slice: "location", summary: "Explore the dates, deadlines, moves, and transitions that could change what comes first." },
+  { id: "training", label: "Training", slice: "education", summary: "Explore certifications, licenses, and focused training without assuming another degree is required." },
+  { id: "work-needs", label: "Work needs", slice: "career", summary: "Explore schedule, travel, commute, pace, environment, and flexibility without explaining why you need them." },
+];
+
+const contextualLensRules = [
+  { id: "family", label: "Family and household", slice: "location", terms: ["spouse", "family", "household", "child", "caregiver"] },
+  { id: "pcs", label: "PCS and moving", slice: "location", terms: ["pcs", "move", "moving", "relocat"] },
+  { id: "timing", label: "Timing", slice: "location", terms: ["date", "month", "year", "before", "deadline", "separate", "retire"] },
+  { id: "training", label: "Training", slice: "education", terms: ["training", "certif", "credential", "license", "degree", "school"] },
+  { id: "pay", label: "Pay and income", slice: "career", terms: ["salary", "pay", "income", "compensation"] },
+  { id: "clearance", label: "Clearance", slice: "career", terms: ["clearance", "classified", "security eligibility"] },
+  { id: "work-needs", label: "Work needs", slice: "career", terms: ["shift", "schedule", "travel", "remote", "hybrid", "commute", "pace"] },
+];
+
 const serviceLabels = {
   army: "Army",
   navy: "Navy",
@@ -187,7 +208,7 @@ function render(next, options = {}) {
   renderTimeline(next.state);
   renderPath(next.state);
   renderProgress(next.progress, next.state, next.active_gate);
-  renderLenses(planHasStarted(next.state) ? next.lenses : []);
+  renderLenses(next.state, next.lenses);
   renderPrimary(next);
   renderImpact(next.impact);
   const visibleFeedback = executionMode(next.state) === "COMPLETE" ? null : (showFeedback ? next.what_changed : null);
@@ -209,41 +230,114 @@ function renderProgress(_progress, state, gate) {
   $("#readiness-marks").innerHTML = "";
 }
 
-function showLensPreview(lens, trigger) {
+function buildLensTopics(state, lenses) {
+  if (state.version === 0) {
+    return starterLensTopics.map((topic, index) => ({ ...topic, score: 80 - index, facts: [], fresh: true }));
+  }
+  const facts = (state.facts || []).filter((fact) => fact.status !== "stale");
+  const knownText = facts.map((fact) => fact.statement).join(" ").toLowerCase();
+  const byId = new Map();
+  lenses.forEach((lens) => {
+    const score = (lens.may_have_changed ? 120 : 0) + (lens.path_relevant ? 80 : 30) + Math.min(lens.fact_count, 6) * 4;
+    byId.set(lens.name, {
+      id: lens.name,
+      label: lens.label,
+      slice: lens.name,
+      summary: humanCopy(lens.summary),
+      facts: lens.facts.slice(-2),
+      score,
+      mayHaveChanged: lens.may_have_changed,
+    });
+  });
+  contextualLensRules.forEach((rule) => {
+    const matched = rule.terms.some((term) => knownText.includes(term));
+    const explicitTiming = rule.id === "timing" && Boolean(state.transition_date || state.pcs_relocation_date);
+    if (!matched && !explicitTiming) return;
+    const relevantFacts = facts.filter((fact) => rule.terms.some((term) => fact.statement.toLowerCase().includes(term)));
+    byId.set(rule.id, {
+      ...rule,
+      summary: relevantFacts.length
+        ? `Information you supplied touches ${rule.label.toLowerCase()}. Looking here does not change your plan.`
+        : `${rule.label} may affect timing or another choice already in view. Looking here does not change your plan.`,
+      facts: relevantFacts.slice(-2).map((fact) => fact.statement),
+      score: 65 + Math.min(relevantFacts.length, 4) * 5,
+      mayHaveChanged: false,
+    });
+  });
+  starterLensTopics.forEach((topic, index) => {
+    if (byId.size >= 6 || byId.has(topic.id)) return;
+    byId.set(topic.id, { ...topic, score: 20 - index, facts: [] });
+  });
+  return [...byId.values()]
+    .sort((left, right) => right.score - left.score || left.label.localeCompare(right.label))
+    .slice(0, 10);
+}
+
+function openTopicUpdate(topic) {
+  if (envelope.state.version === 0) {
+    renderColdTextEntry(topic);
+    return;
+  }
+  openAdd(false);
+  $("#input-text").value = "";
+  $("#input-text").placeholder = `What changed about ${topic.label.toLowerCase()}? A sentence is enough.`;
+  $("#input-text").focus();
+}
+
+function showLensPreview(topic, trigger) {
   const preview = $("#lens-preview");
   document.querySelectorAll(".lens-button").forEach((button) => {
     button.setAttribute("aria-expanded", String(button === trigger));
   });
+  const mode = executionMode(envelope.state);
+  const matchingImpact = envelope.impact?.affected_slice === topic.slice ? envelope.impact : null;
+  const canBeginUpdate = mode === "ACTIVE";
+  const factMarkup = topic.facts?.length
+    ? `<ul class="lens-facts">${topic.facts.map((fact) => `<li>${escapeHtml(humanCopy(fact))}</li>`).join("")}</ul>`
+    : "";
+  const actionMarkup = matchingImpact
+    ? `<div id="lens-impact-actions">${impactControls(matchingImpact)}</div>`
+    : (canBeginUpdate
+      ? `<button id="update-lens-topic" class="button button-secondary" type="button">${topic.fresh ? "Start with this" : "Update this"}</button>`
+      : "");
   preview.innerHTML = `
     <button id="dismiss-lens-preview" class="preview-close" type="button" aria-label="Dismiss preview">×</button>
     <div class="section-kicker">Preview only — nothing changed</div>
-    <strong>${escapeHtml(lens.label)}</strong>
-    ${lens.may_have_changed ? '<div class="impact-note">A recent decision may affect this part of your plan.</div>' : ""}
-    <p>${escapeHtml(humanCopy(lens.summary))}</p>
-    <button id="open-lens-detail" class="button button-secondary" type="button">Review ${escapeHtml(lens.label)}</button>
+    <h3>${escapeHtml(topic.label)}</h3>
+    ${topic.mayHaveChanged ? '<div class="impact-note">A recent decision may make this worth checking.</div>' : ""}
+    <p>${escapeHtml(topic.summary)}</p>
+    ${factMarkup}
+    <p class="trust-note">Closing this preview returns you to the same plan and question.</p>
+    ${actionMarkup}
   `;
   preview.hidden = false;
+  preview.scrollIntoView({ behavior: "smooth", block: "nearest" });
   $("#dismiss-lens-preview").addEventListener("click", () => {
     preview.hidden = true;
     trigger.setAttribute("aria-expanded", "false");
     trigger.focus();
   });
-  $("#open-lens-detail").addEventListener("click", () => openLensDetail(lens));
+  if (matchingImpact) {
+    wireImpact($("#lens-impact-actions"), matchingImpact);
+  } else {
+    $("#update-lens-topic")?.addEventListener("click", () => openTopicUpdate(topic));
+  }
 }
 
-function renderLenses(lenses) {
+function renderLenses(state, lenses) {
+  const topics = buildLensTopics(state, lenses);
   const nav = $("#lens-nav");
-  $(".lens-shell").hidden = !lenses.length;
+  $("#lens-cloud-shell").hidden = !topics.length;
   $("#lens-preview").hidden = true;
-  nav.innerHTML = lenses.map((lens) => `
-    <button class="lens-button" data-lens="${escapeHtml(lens.name)}" data-impact="${lens.may_have_changed}" type="button" aria-expanded="false">
-      <span>${escapeHtml(lens.label)}</span>
-      <small>${lens.may_have_changed ? "Needs a quick check" : "Preview"}</small>
+  nav.innerHTML = topics.map((topic, index) => `
+    <button class="lens-button" data-lens="${escapeHtml(topic.id)}" data-weight="${index < 2 ? "3" : (index < 5 ? "2" : "1")}" data-impact="${Boolean(topic.mayHaveChanged)}" type="button" aria-expanded="false">
+      <span>${escapeHtml(topic.label)}</span>
+      <small>${topic.mayHaveChanged ? "Worth checking" : "Look without changing"}</small>
     </button>
   `).join("");
   nav.querySelectorAll(".lens-button").forEach((button) => {
-    const lens = lenses.find((item) => item.name === button.dataset.lens);
-    button.addEventListener("click", () => showLensPreview(lens, button));
+    const topic = topics.find((item) => item.id === button.dataset.lens);
+    button.addEventListener("click", () => showLensPreview(topic, button));
   });
 }
 
@@ -276,31 +370,84 @@ function taskHorizon(tasks, expanded = false) {
   `;
 }
 
+function renderColdTextEntry(topic = null) {
+  primary.innerHTML = `
+    <button id="back-to-front-door" class="button button-quiet back-to-front" type="button">← Choose another way to start</button>
+    <div class="section-kicker">Start with a thought</div>
+    <h2 id="primary-title">${topic ? `What’s going on with ${escapeHtml(topic.label.toLowerCase())}?` : "What’s going on?"}</h2>
+    <p class="gate-copy">A sentence is enough. You do not need to organize it first.</p>
+    <form id="cold-input-form" class="gate-form">
+      <label for="cold-input-text">Tell Military SLICES what you are trying to figure out</label>
+      <textarea id="cold-input-text" maxlength="12000" rows="5" placeholder="For example: I leave the Coast Guard next spring. I need steady work near Tacoma, but I don’t know what civilian roles fit my experience."></textarea>
+      <button class="button button-primary" type="submit">See what matters first</button>
+    </form>
+    <p class="trust-note">Nothing changes until you review what the system heard and choose to use it in your plan.</p>
+  `;
+  $("#cold-input-form").addEventListener("submit", orientColdInput);
+  $("#back-to-front-door").addEventListener("click", renderColdFrontDoor);
+  $("#cold-input-text").focus({ preventScroll: true });
+}
+
+function chooseColdEntry(kind) {
+  if (kind === "thought") {
+    renderColdTextEntry();
+    return;
+  }
+  const input = $("#cold-artifact-file");
+  input.accept = kind === "image"
+    ? ".png,.jpg,.jpeg,image/png,image/jpeg"
+    : ".txt,.pdf,.docx,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+  input.click();
+}
+
+function renderColdFrontDoor() {
+  primary.innerHTML = `
+    <div class="front-door-copy">
+      <div class="section-kicker">Start with what you have</div>
+      <h2 id="primary-title">You do not need to have your transition figured out.</h2>
+      <p class="gate-copy">Bring a document, a screenshot, or one unpolished thought. Military SLICES will help identify one useful next step.</p>
+    </div>
+    <div class="entry-story" role="list" aria-label="Choose how to start">
+      <article class="entry-card" role="listitem">
+        <img src="/static/images/start-document.webp" alt="A woman reviewing documents beside her laptop at a kitchen table" width="960" height="640">
+        <div class="entry-card-copy">
+          <h3>I have a document</h3>
+          <p>Résumé, orders, or another file you already use.</p>
+          <button class="button button-secondary entry-choice" data-entry="document" type="button">Start with a document</button>
+        </div>
+      </article>
+      <article class="entry-card" role="listitem">
+        <img src="/static/images/start-image.webp" alt="A man comparing a phone screenshot with information on his laptop" width="960" height="640">
+        <div class="entry-card-copy">
+          <h3>I have a screenshot</h3>
+          <p>A job post, profile, orders, or anything useful in an image.</p>
+          <button class="button button-secondary entry-choice" data-entry="image" type="button">Start with an image</button>
+        </div>
+      </article>
+      <article class="entry-card" role="listitem">
+        <img src="/static/images/start-thought.webp" alt="A military-connected couple talking through a move and career decision at home" width="960" height="640">
+        <div class="entry-card-copy">
+          <h3>I just want to explain</h3>
+          <p>Say what is happening in your own words. It can be messy.</p>
+          <button class="button button-primary entry-choice" data-entry="thought" type="button">Tell me what’s going on</button>
+        </div>
+      </article>
+    </div>
+    <input id="cold-artifact-file" type="file" hidden aria-hidden="true" tabindex="-1">
+    <p class="trust-note front-door-trust">Looking around does not change a plan. Choosing a file or writing a thought only starts the existing review process.</p>
+  `;
+  primary.querySelectorAll(".entry-choice").forEach((button) => {
+    button.addEventListener("click", () => chooseColdEntry(button.dataset.entry));
+  });
+  $("#cold-artifact-file").addEventListener("change", uploadArtifact);
+}
+
 function renderPrimary(next) {
   const state = next.state;
   const gate = next.active_gate;
   const mode = executionMode(state);
   if (state.version === 0) {
-    primary.innerHTML = `
-      <div class="section-kicker">Start here</div>
-      <h2 id="primary-title">What’s going on?</h2>
-      <p class="gate-copy">Tell me what you’re trying to figure out. A sentence is enough.</p>
-      <form id="cold-input-form" class="gate-form">
-        <label class="visually-hidden" for="cold-input-text">What are you trying to figure out?</label>
-        <textarea id="cold-input-text" maxlength="12000" rows="5" placeholder="For example: I leave the Coast Guard next spring. I need steady work near Tacoma, but I don’t know what civilian roles fit my experience."></textarea>
-        <button class="button button-primary" type="submit">Continue</button>
-      </form>
-      <div class="cold-file-entry">
-        <span>Or start with something you already have.</span>
-        <label class="button button-quiet file-button" for="cold-artifact-file">Add a résumé, document, or screenshot</label>
-        <input id="cold-artifact-file" class="visually-hidden" type="file" accept=".txt,.pdf,.docx,.png,.jpg,.jpeg,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/png,image/jpeg">
-        <small>PDF, DOCX, TXT, PNG, or JPG · 5 MB max</small>
-      </div>
-      <p class="trust-note">You stay in control of what becomes part of your plan. Choosing a file lets Military SLICES use relevant details from it for this step.</p>
-    `;
-    $("#cold-input-form").addEventListener("submit", orientColdInput);
-    $("#cold-artifact-file").addEventListener("change", uploadArtifact);
-    $("#cold-input-text").focus({ preventScroll: true });
+    renderColdFrontDoor();
     return;
   }
   if (mode === "COMPLETE") {
@@ -882,4 +1029,9 @@ $("#close-what-if").addEventListener("click", () => {
 });
 $("#what-if-form").addEventListener("submit", createWhatIf);
 
+$("#boot-shell").hidden = true;
+contentGrid.hidden = false;
+contentGrid.classList.add("fresh-start");
+primary.setAttribute("aria-busy", "true");
+renderColdFrontDoor();
 loadState();

@@ -242,6 +242,10 @@ def _extract_transition_date(text: str) -> str | None:
     return None
 
 
+def _describes_household_relocation(text: str) -> bool:
+    return bool(re.search(r"\b(?:pcs|move|moving|relocat(?:e|ion|ing))\b", text, flags=re.IGNORECASE))
+
+
 def _extract_career_target(text: str) -> str | None:
     match = re.search(
         r"\b(?:career target|target role|job target|change (?:my )?(?:career|role))\s*(?:is|to|:)\s*([^.!?\n]{3,120})",
@@ -397,8 +401,14 @@ def apply_confirmed_input(
         state.separation_type = detected_type
     added = _merge_human_facts(state, orientation)
     extracted_date = _extract_transition_date(orientation.reviewed_input)
-    if extracted_date and state.military_state_subject != MilitaryStateSubject.PLANNING_ACTOR_SPOUSE:
-        state.transition_date = extracted_date
+    if extracted_date:
+        if (
+            state.military_state_subject == MilitaryStateSubject.PLANNING_ACTOR_SPOUSE
+            and _describes_household_relocation(orientation.reviewed_input)
+        ):
+            state.pcs_relocation_date = extracted_date
+        elif state.military_state_subject != MilitaryStateSubject.PLANNING_ACTOR_SPOUSE:
+            state.transition_date = extracted_date
     explicit_target = _extract_career_target(orientation.reviewed_input)
     if _clears_career_target(orientation.reviewed_input):
         state.career_target = None
@@ -472,8 +482,14 @@ def apply_artifact_input(
     if state.separation_type is None and detected_type in ("separation", "retirement"):
         state.separation_type = detected_type
     extracted_date = _extract_transition_date(orientation.reviewed_input)
-    if extracted_date and state.military_state_subject != MilitaryStateSubject.PLANNING_ACTOR_SPOUSE:
-        state.transition_date = extracted_date
+    if extracted_date:
+        if (
+            state.military_state_subject == MilitaryStateSubject.PLANNING_ACTOR_SPOUSE
+            and _describes_household_relocation(orientation.reviewed_input)
+        ):
+            state.pcs_relocation_date = extracted_date
+        elif state.military_state_subject != MilitaryStateSubject.PLANNING_ACTOR_SPOUSE:
+            state.transition_date = extracted_date
     explicit_target = _extract_career_target(orientation.reviewed_input)
     if explicit_target:
         _set_explicit_career_target(state, explicit_target)

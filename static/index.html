@@ -6,8 +6,8 @@
     <meta name="theme-color" content="#08141f">
     <meta name="description" content="Military SLICES helps U.S. service members connect career, education, location, and résumé decisions into one transition plan.">
     <title>Military SLICES</title>
-    <link rel="stylesheet" href="/static/styles.css?v=4">
-    <script src="/static/app.js?v=4" defer></script>
+    <link rel="stylesheet" href="/static/styles.css?v=5">
+    <script src="/static/app.js?v=5" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the next decision</a>
@@ -59,11 +59,6 @@
           </div>
           <div id="readiness-marks" class="readiness-marks" aria-hidden="true"></div>
         </div>
-        <div class="lens-shell">
-          <div class="lens-heading">Look at another part of your plan</div>
-          <nav id="lens-nav" class="lens-nav" aria-label="Inspect parts of your current plan"></nav>
-          <div id="lens-preview" class="lens-preview" hidden></div>
-        </div>
       </section>
 
       <div class="content-grid" hidden>
@@ -89,6 +84,18 @@
 
         </aside>
       </div>
+
+      <section id="lens-cloud-shell" class="lens-cloud-shell" aria-labelledby="lens-cloud-title" hidden>
+        <div class="lens-cloud-heading">
+          <div>
+            <div class="section-kicker">Look around without changing your plan</div>
+            <h2 id="lens-cloud-title">Explore what else may matter</h2>
+          </div>
+          <p>Open a topic to see why it may be relevant. Looking does not save, activate, or change anything.</p>
+        </div>
+        <div id="lens-nav" class="lens-cloud" aria-label="Explore other transition topics"></div>
+        <div id="lens-preview" class="lens-preview" hidden></div>
+      </section>
 
       <nav class="control-nav" aria-label="Review and explore your plan" hidden>
         <button id="open-history" class="button button-quiet" type="button">Review earlier plans</button>

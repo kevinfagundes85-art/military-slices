@@ -101,9 +101,10 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert 'api("/api/what-if/promote"' in script
     assert "Use this plan" in script
     assert "Keep my current plan" in script
-    assert ".lens-nav { grid-template-columns: repeat(2" in css
-    assert "/static/app.js?v=4" in html
-    assert "/static/styles.css?v=4" in html
+    assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
+    assert "Explore what else may matter" in html
+    assert "/static/app.js?v=5" in html
+    assert "/static/styles.css?v=5" in html
 
 
 def test_temporal_impact_surface_is_natural_bounded_and_deterministic() -> None:
@@ -112,7 +113,7 @@ def test_temporal_impact_surface_is_natural_bounded_and_deterministic() -> None:
     assert 'id="impact-panel"' in html
     assert "Because of your last decision" in html
     assert 'api("/api/revalidate"' in script
-    assert "Needs a quick check" in script
+    assert "Worth checking" in script
     assert "Still planning to stay local?" not in html
     for forbidden in ("dependency invalidated", "TTL", "receipt refresh", "freshness class"):
         assert forbidden not in html
@@ -125,13 +126,48 @@ def test_cold_start_renders_intake_without_plan_machinery() -> None:
     assert '<div class="content-grid" hidden>' in html
     assert 'id="add-context-top"' in html and 'type="button" hidden' in html
     assert "if (state.version === 0)" in script
-    fresh = script[script.index("if (state.version === 0)") : script.index('if (mode === "COMPLETE")')]
-    assert "What’s going on?" in fresh
-    assert "Tell me what you’re trying to figure out" in fresh
-    assert 'id="cold-input-form"' in fresh
-    assert fresh.count('type="submit"') == 1
+    fresh = script[script.index("function renderColdFrontDoor") : script.index("function renderPrimary")]
+    assert "You do not need to have your transition figured out." in fresh
+    assert "Start with a document" in fresh
+    assert "Start with an image" in fresh
+    assert "Tell me what’s going on" in fresh
+    assert "start-document.webp" in fresh
+    assert "start-image.webp" in fresh
+    assert "start-thought.webp" in fresh
+    assert 'id="cold-input-form"' not in fresh
+    assert "api(" not in fresh
     for premature in ("Path readiness", "decisions settled", "Loading your next step", "Because of your last decision"):
         assert premature not in fresh
+
+
+def test_static_front_door_choices_are_local_and_accept_normal_artifacts() -> None:
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    choice = script[script.index("function chooseColdEntry") : script.index("function renderColdFrontDoor")]
+    front_door = script[script.index("function renderColdFrontDoor") : script.index("function renderPrimary")]
+    text_entry = script[script.index("function renderColdTextEntry") : script.index("function chooseColdEntry")]
+    assert "api(" not in choice
+    assert "api(" not in front_door
+    assert "api(" not in text_entry
+    assert '".png,.jpg,.jpeg,image/png,image/jpeg"' in choice
+    document_accept = (
+        '".txt,.pdf,.docx,text/plain,application/pdf,'
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document"'
+    )
+    assert document_accept in choice
+    assert "input.click()" in choice
+    assert 'type="file" hidden aria-hidden="true" tabindex="-1"' in front_door
+    bootstrap = script[script.rindex('$("#boot-shell").hidden = true;') :]
+    assert bootstrap.index("renderColdFrontDoor();") < bootstrap.index("loadState();")
+
+
+def test_front_door_photos_are_bounded_optimized_assets() -> None:
+    css = (ROOT / "static" / "styles.css").read_text(encoding="utf-8")
+    assert ".entry-card img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2" in css
+    assets = ROOT / "static" / "images"
+    for name in ("start-document.webp", "start-image.webp", "start-thought.webp"):
+        path = assets / name
+        assert path.exists()
+        assert path.stat().st_size < 50_000
 
 
 def test_pre_anchor_state_renders_the_backend_question_without_plan_scaffolding() -> None:
@@ -178,10 +214,29 @@ def test_lens_preview_and_what_if_keep_observe_separate_from_commit() -> None:
     preview = script[script.index("function showLensPreview") : script.index("function renderLenses")]
     assert "Preview only — nothing changed" in preview
     assert "api(" not in preview
-    assert "Review ${escapeHtml(lens.label)}" in preview
+    assert "Closing this preview returns you to the same plan and question." in preview
+    assert "openTopicUpdate(topic)" in preview
+    assert 'mode === "ACTIVE"' in preview
     assert "This remains hypothetical until you choose" in script
     assert "Keep my current plan" in script
     assert "Use this plan" in script
+
+
+def test_lens_cloud_is_deterministic_bounded_and_non_mutating_until_explicit_action() -> None:
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    topics = script[script.index("const starterLensTopics") : script.index("const contextualLensRules")]
+    build = script[script.index("function buildLensTopics") : script.index("function openTopicUpdate")]
+    preview = script[script.index("function showLensPreview") : script.index("function renderLenses")]
+    render = script[script.index("function renderLenses") : script.index("function renderTimeline")]
+    assert topics.count("label:") == 8
+    assert ".slice(0, 10)" in build
+    assert "Math.random" not in build
+    assert "api(" not in build
+    assert "api(" not in preview
+    assert "api(" not in render
+    assert 'role="listitem"' not in render
+    assert "const factMarkup = topic.facts?.length" in preview
+    assert "Preview only — nothing changed" in preview
 
 
 def test_loading_preserves_stable_content_and_never_exposes_processing_steps() -> None:

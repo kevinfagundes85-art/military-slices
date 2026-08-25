@@ -205,3 +205,20 @@ def test_lens_projection_exposes_latent_context_without_activation() -> None:
     career = next(item for item in lens_projections(state) if item.name == SliceName.CAREER)
     assert career.path_relevant
     assert len(state.active_tasks) <= 3
+
+
+def test_lens_projection_cannot_mutate_state_or_model_telemetry() -> None:
+    state = new_state("ms-projection-pure")
+    state.human_anchor = "Find civilian work after leaving the Navy"
+    state.transition_date = "2027-06-01"
+    state = recompute_state(state)
+    before = state.model_dump(mode="json")
+
+    first = lens_projections(state)
+    second = lens_projections(state)
+
+    assert [item.model_dump(mode="json") for item in first] == [
+        item.model_dump(mode="json") for item in second
+    ]
+    assert state.model_dump(mode="json") == before
+    assert state.telemetry.model_calls == 0

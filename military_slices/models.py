@@ -379,6 +379,7 @@ class CanonicalState(BaseModel):
     component_status: str | None = None
     separation_type: Literal["separation", "retirement"] | None = None
     transition_date: str | None = None
+    pcs_relocation_date: str | None = None
     stage: Literal["TODAY", "PREPARE", "SEPARATE", "TRANSITION", "STABILIZE"] = "TODAY"
     current_timeline_window: str = "PATH_IDENTITY"
     path_target_state: str = "PATH_IDENTIFIED"

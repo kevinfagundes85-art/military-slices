@@ -116,6 +116,24 @@ def test_spouse_pcs_planner_is_not_given_service_member_separation_milestones() 
     assert all("tap" not in task.title.casefold() for task in state.active_tasks)
 
 
+def test_grounded_spouse_pcs_date_is_preserved_without_becoming_separation_timing() -> None:
+    state = apply_confirmed_input(
+        new_state("ms-spouse-pcs-date-contract"),
+        orient(
+            "My spouse is active-duty Army, and our PCS to Colorado Springs is March 2027. "
+            "I need to resolve Colorado nursing licensing before the move."
+        ),
+        idempotency_key="spouse-pcs-date-contract-0001",
+    )
+
+    assert state.planning_actor == PlanningActor.MILITARY_SPOUSE
+    assert state.military_state_subject == MilitaryStateSubject.PLANNING_ACTOR_SPOUSE
+    assert state.pcs_relocation_date == "2027-03-01"
+    assert state.transition_date is None
+    assert all(gate.id != "planned-transition-date" for gate in state.gates)
+    assert all("tap" not in task.title.casefold() for task in state.active_tasks)
+
+
 def test_legacy_artifact_only_goal_is_not_migrated_as_human_authority() -> None:
     state = new_state("ms-legacy-artifact")
     state.original_intents = ["Shared a document to update my transition plan."]
