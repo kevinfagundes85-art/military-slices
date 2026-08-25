@@ -349,10 +349,10 @@ textarea { resize: vertical; }
 .comparison-grid section { min-width: 0; padding: 1rem; border: 1px solid var(--line); border-radius: 0.8rem; background: rgba(8, 20, 31, 0.45); }
 .comparison-grid ul { margin-bottom: 0; padding-left: 1.1rem; }
 .conflict-note { padding: 0.9rem; border: 1px solid var(--danger); border-radius: 0.75rem; }
+.inline-guidance { margin: 0.85rem 0 0; padding: 0.8rem 0.9rem; color: var(--ink); background: rgba(255, 210, 106, 0.08); border-left: 3px solid var(--warning); border-radius: 0.35rem; }
 
 .status { position: fixed; right: 1rem; bottom: 1rem; z-index: 50; max-width: min(420px, calc(100% - 2rem)); padding: 0.85rem 1rem; color: var(--ink); background: #1b3448; border: 1px solid var(--line); border-radius: 0.7rem; box-shadow: var(--shadow); opacity: 0; pointer-events: none; transform: translateY(1rem); transition: 160ms ease; }
-.status.visible { opacity: 1; transform: none; }
-.status.error { border-color: var(--danger); }
+.status.visible.error { opacity: 1; transform: none; border-color: var(--danger); }
 
 footer { width: min(1180px, calc(100% - 2rem)); margin: 3rem auto 0; padding: 2rem 0 4rem; color: var(--muted); border-top: 1px solid var(--line); font-size: 0.85rem; }
 footer details { max-width: 700px; }

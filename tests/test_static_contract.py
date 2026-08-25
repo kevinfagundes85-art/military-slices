@@ -59,7 +59,8 @@ def test_file_selection_is_the_artifact_authorization_boundary() -> None:
     assert 'api("/api/artifact"' in artifact_flow
     assert "showReview" not in artifact_flow
     assert "ready to review" not in artifact_flow
-    assert "Your document updated the plan" in artifact_flow
+    assert "render(next, { showFeedback: true })" in artifact_flow
+    assert 'announce("Saved.")' in artifact_flow
 
 
 def test_mobile_targets_and_overflow_guards_exist() -> None:
@@ -191,3 +192,27 @@ def test_loading_preserves_stable_content_and_never_exposes_processing_steps() -
     assert "setProcessing" in script
     for forbidden in ("calling model", "running resolver", "writing firestore", "recomputing gates"):
         assert forbidden not in (html + script).casefold()
+
+
+def test_success_updates_are_announced_without_a_competing_visual_toast() -> None:
+    html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
+    styles = (ROOT / "static" / "styles.css").read_text(encoding="utf-8")
+    assert 'id="status" class="status" role="status" aria-live="polite"' in html
+    assert ".status.visible { opacity: 1" not in styles
+    assert ".status.visible.error { opacity: 1" in styles
+
+
+def test_governed_changes_and_required_actions_never_depend_on_toasts() -> None:
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    assert "function transitionAnnouncement" not in script
+    assert 'announce("Saved.")' in script
+    assert 'announce("No changes saved.")' in script
+    assert 'showInlineGuidance(primary, "Add your decision first.")' in script
+    assert 'showInlineGuidance(reviewPanel, "Checking your correction' in script
+    for forbidden_toast in (
+        "Your plan updated and the next decision is ready.",
+        "Decision saved. Your next step changed.",
+        "Your document updated the plan and changed what comes next.",
+        "Goal complete. No new task was created.",
+    ):
+        assert forbidden_toast not in script

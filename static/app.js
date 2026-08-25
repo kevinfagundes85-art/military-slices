@@ -102,6 +102,17 @@ function clearAnnouncement() {
   statusBox.textContent = "";
 }
 
+function showInlineGuidance(root, message) {
+  root.querySelector(".inline-guidance")?.remove();
+  const guidance = document.createElement("p");
+  guidance.className = "inline-guidance";
+  guidance.setAttribute("role", "alert");
+  guidance.setAttribute("tabindex", "-1");
+  guidance.textContent = message;
+  root.appendChild(guidance);
+  guidance.focus({ preventScroll: true });
+}
+
 function escapeHtml(value) {
   const element = document.createElement("div");
   element.textContent = value ?? "";
@@ -152,12 +163,6 @@ function focusPrimary() {
   const heading = $("#primary-title");
   heading?.setAttribute("tabindex", "-1");
   heading?.focus({ preventScroll: true });
-}
-
-function transitionAnnouncement(next, activeMessage) {
-  if (executionMode(next.state) === "COMPLETE") return "Goal complete. No new task was created.";
-  if (executionMode(next.state) === "PARALYZED") return "Your plan needs one choice before it can continue.";
-  return activeMessage;
 }
 
 function applyProgressiveDisclosure(next, showFeedback) {
@@ -400,7 +405,7 @@ function wireImpact(root, impact) {
   root.querySelector(".impact-save")?.addEventListener("click", () => {
     const value = root.querySelector("#impact-value")?.value?.trim();
     if (!value) {
-      announce("Add the update first.", true);
+      showInlineGuidance(root, "Add the update first.");
       return;
     }
     submitRevalidation(impact, "update", value);
@@ -450,11 +455,7 @@ async function submitRevalidation(impact, action, value = null) {
     render(next, { showFeedback: true });
     $("#primary").scrollIntoView({ behavior: "smooth", block: "start" });
     focusPrimary();
-    announce(
-      action === "confirm"
-        ? "Confirmed. Your plan can keep moving."
-        : (action === "dismiss" ? "Set aside. Your current decision did not change." : "Updated. Only the affected part of your plan changed."),
-    );
+    announce(action === "dismiss" ? "No changes saved." : "Saved.");
   } catch (error) {
     if (error.status === 409) await loadState();
     announce(error.message, true);
@@ -575,7 +576,7 @@ async function createWhatIf(event) {
   event.preventDefault();
   const text = $("#what-if-text").value.trim();
   if (!text) {
-    announce("Add one change to explore.", true);
+    showInlineGuidance($("#what-if-panel"), "Add one change to explore.");
     return;
   }
   const button = event.submitter;
@@ -615,7 +616,7 @@ function renderWhatIf(branch) {
     pendingWhatIf = null;
     whatIfSourceVersion = null;
     closeInspection($("#what-if-panel"), $("#open-what-if"));
-    announce("Hypothetical discarded. Your current plan did not change.");
+    announce("No changes saved.");
   });
   $("#promote-what-if").addEventListener("click", promoteWhatIf);
 }
@@ -640,7 +641,7 @@ async function promoteWhatIf() {
     document.body.classList.remove("inspection-open");
     render(next, { showFeedback: true });
     focusPrimary();
-    announce("You made the explored change part of your current plan.");
+    announce("Saved.");
   } catch (error) {
     if (error.status === 409) await loadState();
     announce(error.message, true);
@@ -671,7 +672,7 @@ async function orientInput(event) {
   event.preventDefault();
   const text = $("#input-text").value.trim();
   if (!text) {
-    announce("Add a sentence or choose a file first.", true);
+    showInlineGuidance($("#add-panel"), "Add a sentence or choose a file first.");
     $("#input-text").focus();
     return;
   }
@@ -683,7 +684,7 @@ async function orientColdInput(event) {
   event.preventDefault();
   const text = $("#cold-input-text").value.trim();
   if (!text) {
-    announce("Add a sentence first.", true);
+    showInlineGuidance(primary, "Add a sentence first.");
     $("#cold-input-text").focus();
     return;
   }
@@ -720,7 +721,7 @@ async function confirmReview() {
   if (!pendingOrientation || !envelope) return;
   const reviewedInput = $("#review-text").value.trim();
   if (reviewedInput !== pendingOrientation.reviewed_input) {
-    announce("Rechecking your correction before it shapes the plan.");
+    showInlineGuidance(reviewPanel, "Checking your correction before it shapes the plan…");
     try {
       pendingOrientation = await api("/api/orient", { method: "POST", body: JSON.stringify({ text: reviewedInput }) });
       showReview(pendingOrientation);
@@ -749,12 +750,7 @@ async function confirmReview() {
     render(next, { showFeedback: true });
     $("#primary").scrollIntoView({ behavior: "smooth", block: "start" });
     focusPrimary();
-    announce(transitionAnnouncement(
-      next,
-      next.agent_run?.fallback
-        ? "Your plan updated. Live research was unavailable, so the safe fallback kept you moving."
-        : "Your plan updated and the next decision is ready.",
-    ));
+    announce("Saved.");
   } catch (error) {
     if (error.status === 409) await loadState();
     announce(error.message, true);
@@ -774,7 +770,7 @@ async function submitDecision(event) {
   }
   if (!value) value = $("#gate-value")?.value?.trim() || "";
   if (!value) {
-    announce("Add your decision first.", true);
+    showInlineGuidance(primary, "Add your decision first.");
     return;
   }
   const buttons = document.querySelectorAll("#gate-form button");
@@ -792,10 +788,10 @@ async function submitDecision(event) {
     });
     render(next, { showFeedback: true });
     focusPrimary();
-    announce(transitionAnnouncement(next, "Decision saved. Your next step changed."));
+    announce("Saved.");
   } catch (error) {
     if (error.status === 409) await loadState();
-    announce(error.message, true);
+    showInlineGuidance(primary, error.message);
   } finally {
     buttons.forEach((button) => { button.disabled = false; });
     setProcessing();
@@ -806,12 +802,15 @@ async function uploadArtifact(event) {
   const file = event.target.files?.[0];
   if (!file) return;
   if (!envelope) {
-    announce("Your plan is still loading. Try the file again in a moment.", true);
+    showInlineGuidance(primary, "Your plan is still loading. Try the file again in a moment.");
     event.target.value = "";
     return;
   }
   if (file.size > 5 * 1024 * 1024) {
-    announce("That file is larger than the 5 MB limit.", true);
+    showInlineGuidance(
+      event.target.id === "cold-artifact-file" ? primary : $("#add-panel"),
+      "That file is larger than the 5 MB limit.",
+    );
     event.target.value = "";
     return;
   }
@@ -831,16 +830,11 @@ async function uploadArtifact(event) {
     render(next, { showFeedback: true });
     $("#primary").scrollIntoView({ behavior: "smooth", block: "start" });
     focusPrimary();
-    announce(transitionAnnouncement(
-      next,
-      next.agent_run?.fallback
-        ? "Your document updated the plan using the safe fallback."
-        : "Your document updated the plan and changed what comes next.",
-    ));
+    announce("Saved.");
   } catch (error) {
     if (fileStatus) fileStatus.textContent = "PDF, DOCX, TXT, PNG, or JPG · 5 MB max";
     if (error.status === 409) await loadState();
-    announce(error.message, true);
+    showInlineGuidance(event.target.id === "cold-artifact-file" ? primary : $("#add-panel"), error.message);
   } finally {
     setProcessing();
     event.target.value = "";
