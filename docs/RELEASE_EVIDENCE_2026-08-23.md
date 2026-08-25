@@ -1,5 +1,41 @@
 # Release Candidate Evidence — 2026-08-23
 
+## Human-control-layer candidate — 2026-08-24
+
+- Deployed source commit: `65464b8`
+- Cloud Run revision: `military-slices-00015-pew`
+- Traffic: `0%`
+- Tagged URL: <https://competition-rc---military-slices-ztvqlzospa-uw.a.run.app/>
+- Container image: `sha256:7fe6b03ec6af432ac9c721fabea5b4a326fcdb8694268fc0a58012c9c5184321`
+- Protected production: `military-slices-00001-niw` at `100%`
+- Exact assets: `app.js?v=2`, `styles.css?v=2`
+
+### Control-boundary proof
+
+- Path readiness counts only the active target's deterministic decisions; a fresh path is `0 / 1`, not a cross-domain completeness score.
+- Career, Education, Location, and Your Story are bounded read-only Lenses. Inspecting all four preserved the version, active gate, tasks, and telemetry.
+- History exposes preserved canonical snapshots and never replaces or recomputes the current plan.
+- What-If creation is deterministic, hypothetical, and model-free. It preserved canonical version 0 until an explicit human promotion created version 1.
+- Promotion replay returned version 1, a stale new-key promotion returned `409`, and a second session's attempt to use the token returned `400`.
+- Hosted history contained exact versions 0 and 1; inspecting version 0 left the current state at version 1.
+- Hosted JavaScript and CSS SHA-256 values matched the committed local files exactly.
+- Browser validation at 320, 375, and 414 px found no horizontal overflow and 44 px or larger visible targets. A first Lens tap exposed only its preview; a separate `Open Career` action opened detail.
+- 65 tests, Ruff, MyPy, Bandit, JavaScript syntax, diff validation, and dependency audit passed. No known third-party vulnerabilities were found.
+- Candidate readiness is `True`. Cloud Logging contained no `ERROR` entries; the only warnings were the intentionally induced `400` cross-user and `409` stale-write security checks.
+
+### Zero-traffic defects caught and superseded
+
+1. `military-slices-00013-tol` received a malformed `MILITARY_SLICES_ENV` value because the deployment shell did not preserve the comma-delimited argument. It received zero traffic.
+2. `military-slices-00014-nac` corrected configuration but retained the earlier static asset key. It received zero traffic and was superseded by the source rebuild with explicit `v=2` assets.
+
+### Cost delta
+
+- Fixed recurring infrastructure: `$0`.
+- Deterministic progress, Lens inspection, History inspection, and What-If creation: zero Gemini calls.
+- Variable Firestore delta: one snapshot write per canonical mutation plus storage/read operations only when History is used.
+- What-If promotion invokes the existing model path only when the promoted state authorizes career resolution.
+- Build and request costs are usage-based and expected to be pennies at validation volume; billing export was not exposed for an exact amount.
+
 ## Installed transition-pack candidate
 
 - Deployed source commit: `19a26d4`
