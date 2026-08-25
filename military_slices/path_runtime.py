@@ -124,14 +124,41 @@ def _anchor_clauses(orientation: OrientationResult) -> list[str]:
     for statement in orientation.statements:
         if not statement.affected_slices:
             continue
+        clauses.append(statement.text.strip(" ,.-"))
         pieces = re.split(r"\s*(?:;|\bbut\b|\band\b)\s*", statement.text, flags=re.IGNORECASE)
-        clauses.extend(piece.strip(" ,.-") for piece in pieces if piece.strip(" ,.-"))
+        clauses.extend(
+            piece.strip(" ,.-")
+            for piece in pieces
+            if piece.strip(" ,.-") and piece.strip(" ,.-").casefold() != statement.text.strip(" ,.-").casefold()
+        )
     return clauses
 
 
 def _anchor_candidate(clause: str) -> tuple[int, int, str, str] | None:
     lower = clause.casefold()
     domain = anchor_domain(clause)
+    if any(term in lower for term in ("resume", "résumé", "cv", "submission-ready")) and any(
+        term in lower for term in ("my anchor", "my goal", "help me", "make my", "update my", "prepare my")
+    ):
+        domain = "resume"
+    elif any(
+        term in lower
+        for term in (
+            "civilian work",
+            "civilian employment",
+            "civilian job",
+            "career target",
+            "job target",
+            "remote work",
+            "stable work",
+            "steady work",
+        )
+    ) or ("want to compare" in lower and any(term in lower for term in ("work", "career", "job", "delivery"))):
+        domain = "employment"
+    elif any(term in lower for term in ("choose education", "education path", "education program")):
+        domain = "education"
+    elif any(term in lower for term in ("plan this move", "prepare for our pcs", "where to live")):
+        domain = "location"
     if domain in (None, "general"):
         return None
     domain = cast(str, domain)

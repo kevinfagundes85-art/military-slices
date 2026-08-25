@@ -145,6 +145,19 @@ def test_equal_authority_cross_domain_objectives_require_human_anchor_gate() -> 
     assert state.telemetry.anchor_selection_reason_code == "ambiguous_equal_authority_objectives"
 
 
+def test_compound_compare_request_preserves_leading_objective_across_conjunctions() -> None:
+    state = apply_confirmed_input(
+        new_state("compound-compare-anchor"),
+        orient(
+            "I recently left the Air Force. I want to compare program delivery and customer success work, "
+            "keep normal daytime hours, and use my training leadership experience."
+        ),
+        idempotency_key="compound-compare-anchor-0001",
+    )
+    assert state.human_anchor == "Find civilian work"
+    assert anchor_domain(state.human_anchor) == "employment"
+
+
 def test_execution_state_active_paralyzed_active_complete_and_persists() -> None:
     state = apply_confirmed_input(
         new_state("execution-journey"),
