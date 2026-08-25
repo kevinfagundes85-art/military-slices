@@ -1,0 +1,280 @@
+{
+  "attempted": 6,
+  "completed": 6,
+  "driver_errors": [],
+  "estimated_cost": 0.057756,
+  "input_tokens": 2314,
+  "model_calls": 3,
+  "output_tokens": 391,
+  "results": [
+    {
+      "active_tasks_max": 2,
+      "agent_gates_closed": 1,
+      "career_target": null,
+      "conflicts": [],
+      "decision_latencies": [
+        0.48145049999584444,
+        11.743822999997064
+      ],
+      "estimated_cost": 0.047756,
+      "execution_state_present": false,
+      "failure_codes": [],
+      "final_gate": {
+        "affected_slices": [
+          "career",
+          "education",
+          "resume"
+        ],
+        "authority_required": "human",
+        "dependencies": [],
+        "id": "career-direction",
+        "options": [
+          "Operations Specialist",
+          "Logistics Coordinator",
+          "Project Coordinator"
+        ],
+        "question": "Which direction is worth testing first?",
+        "resolved_value": null,
+        "state": "PARTIAL",
+        "surface": "compare",
+        "title": "Choose a direction to test",
+        "updated_at": "2026-08-25T03:09:22.161196Z",
+        "value_score": 75,
+        "why": "A direction lets the system compare real roles, evidence, and gaps instead of guessing from a military title."
+      },
+      "gate_sequence": [
+        {
+          "authority": "human",
+          "id": "planned-transition-date",
+          "state": "UNKNOWN",
+          "surface": "date"
+        },
+        {
+          "authority": "human",
+          "id": "transition-direction",
+          "state": "PARTIAL",
+          "surface": "choice"
+        },
+        {
+          "authority": "human",
+          "id": "career-direction",
+          "state": "PARTIAL",
+          "surface": "compare"
+        }
+      ],
+      "human_anchor": "Find civilian work",
+      "input_tokens": 2314,
+      "latency": 14.0783,
+      "model_calls": 2,
+      "output_tokens": 391,
+      "scenario_family": "gate-progression",
+      "scenario_id": "P01",
+      "service": "Marine Corps",
+      "state_versions": [
+        0,
+        3
+      ],
+      "tool_calls": 4
+    },
+    {
+      "active_tasks_max": 3,
+      "agent_gates_closed": 0,
+      "career_target": null,
+      "conflicts": [],
+      "decision_latencies": [
+        0.34861660000751726
+      ],
+      "estimated_cost": 0.0,
+      "execution_state_present": false,
+      "failure_codes": [],
+      "final_gate": {
+        "affected_slices": [
+          "education"
+        ],
+        "authority_required": "human",
+        "dependencies": [],
+        "id": "education-outcome",
+        "options": [],
+        "question": "What should education or training make possible after service?",
+        "resolved_value": null,
+        "state": "PARTIAL",
+        "surface": "text",
+        "title": "Define the education outcome",
+        "updated_at": "2026-08-25T03:09:21.631418Z",
+        "value_score": 80,
+        "why": "The outcome is needed before comparing programs, timing, or funding routes."
+      },
+      "gate_sequence": [
+        {
+          "authority": "human",
+          "id": "priority-first-six-months",
+          "state": "CONFLICTED",
+          "surface": "conflict"
+        },
+        {
+          "authority": "human",
+          "id": "education-outcome",
+          "state": "PARTIAL",
+          "surface": "text"
+        }
+      ],
+      "human_anchor": "I need immediate income and full-time education before I will accept work.",
+      "input_tokens": 0,
+      "latency": 2.5338,
+      "model_calls": 0,
+      "output_tokens": 0,
+      "scenario_family": "gate-progression",
+      "scenario_id": "P02",
+      "service": "Army",
+      "state_versions": [
+        0,
+        2
+      ],
+      "tool_calls": 0
+    },
+    {
+      "active_tasks_max": 2,
+      "agent_gates_closed": 0,
+      "career_target": "Operations Coordinator",
+      "conflicts": [],
+      "decision_latencies": [
+        0.23001420000218786
+      ],
+      "estimated_cost": 0.01,
+      "execution_state_present": false,
+      "failure_codes": [],
+      "final_gate": null,
+      "gate_sequence": [
+        {
+          "authority": "human",
+          "id": "career-direction",
+          "state": "PARTIAL",
+          "surface": "compare"
+        }
+      ],
+      "human_anchor": "I leave the Air Force in September 2027. I want stable work with normal hours, limited travel, and a mission-driven team, but I do not know which civilian role fits.",
+      "input_tokens": 0,
+      "latency": 20.2586,
+      "model_calls": 1,
+      "output_tokens": 0,
+      "scenario_family": "gate-progression",
+      "scenario_id": "P03",
+      "service": "Air Force",
+      "state_versions": [
+        0,
+        2
+      ],
+      "tool_calls": 1
+    },
+    {
+      "active_tasks_max": 3,
+      "agent_gates_closed": 0,
+      "career_target": null,
+      "conflicts": [],
+      "decision_latencies": [],
+      "estimated_cost": 0.0,
+      "execution_state_present": false,
+      "failure_codes": [],
+      "final_gate": null,
+      "gate_sequence": [],
+      "human_anchor": "My anchor is make my resume submission-ready, but I have not named the target role yet.",
+      "input_tokens": 0,
+      "latency": 2.0598,
+      "model_calls": 0,
+      "output_tokens": 0,
+      "scenario_family": "gate-progression",
+      "scenario_id": "P04",
+      "service": "Navy",
+      "state_versions": [
+        0,
+        1
+      ],
+      "tool_calls": 0
+    },
+    {
+      "active_tasks_max": 2,
+      "agent_gates_closed": 0,
+      "career_target": null,
+      "conflicts": [],
+      "decision_latencies": [],
+      "estimated_cost": 0.0,
+      "execution_state_present": false,
+      "failure_codes": [],
+      "final_gate": null,
+      "gate_sequence": [],
+      "human_anchor": "I leave the Space Force in May 2028. My anchor is choose education or training before employment.",
+      "input_tokens": 0,
+      "latency": 1.3432,
+      "model_calls": 0,
+      "output_tokens": 0,
+      "scenario_family": "gate-progression",
+      "scenario_id": "P05",
+      "service": "Space Force",
+      "state_versions": [
+        0,
+        1
+      ],
+      "tool_calls": 0
+    },
+    {
+      "active_tasks_max": 1,
+      "agent_gates_closed": 0,
+      "career_target": null,
+      "conflicts": [],
+      "decision_latencies": [],
+      "estimated_cost": 0.0,
+      "execution_state_present": false,
+      "failure_codes": [],
+      "final_gate": {
+        "affected_slices": [
+          "career",
+          "education",
+          "location",
+          "resume"
+        ],
+        "authority_required": "human",
+        "dependencies": [],
+        "id": "transition-human-anchor",
+        "options": [
+          "Find civilian work",
+          "Choose education or training",
+          "Plan where to live",
+          "Improve a r\u00e9sum\u00e9 for a specific goal",
+          "I am still deciding"
+        ],
+        "question": "What should this transition plan help you accomplish next?",
+        "resolved_value": null,
+        "state": "UNKNOWN",
+        "surface": "choice",
+        "title": "Choose the outcome that should lead",
+        "updated_at": "2026-08-25T03:09:20.868805Z",
+        "value_score": 100,
+        "why": "One outcome keeps useful information from turning into unrelated work."
+      },
+      "gate_sequence": [
+        {
+          "authority": "human",
+          "id": "transition-human-anchor",
+          "state": "UNKNOWN",
+          "surface": "choice"
+        }
+      ],
+      "human_anchor": null,
+      "input_tokens": 0,
+      "latency": 1.8759,
+      "model_calls": 0,
+      "output_tokens": 0,
+      "scenario_family": "gate-progression",
+      "scenario_id": "P06",
+      "service": "Coast Guard",
+      "state_versions": [
+        0,
+        1
+      ],
+      "tool_calls": 0
+    }
+  ],
+  "start_timestamp": "2026-08-25T03:09:19.644212+00:00",
+  "tool_calls": 5,
+  "wall_seconds": 20.26
+}
