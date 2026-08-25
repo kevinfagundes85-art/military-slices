@@ -83,3 +83,5 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert "Use this plan" in script
     assert "Keep my current plan" in script
     assert ".lens-nav { grid-template-columns: repeat(2" in css
+    assert "/static/app.js?v=2" in html
+    assert "/static/styles.css?v=2" in html
