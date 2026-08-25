@@ -158,6 +158,20 @@ def test_compound_compare_request_preserves_leading_objective_across_conjunction
     assert anchor_domain(state.human_anchor) == "employment"
 
 
+def test_shared_household_anchor_has_same_authority_as_singular_anchor() -> None:
+    state = apply_confirmed_input(
+        new_state("shared-household-anchor"),
+        orient(
+            "We are dual military. One Guardian separates in May 2028 while the other remains active. "
+            "Our anchor is coordinate one civilian career start without disrupting the active-duty assignment "
+            "or childcare."
+        ),
+        idempotency_key="shared-household-anchor-0001",
+    )
+    assert state.human_anchor == "Find civilian work"
+    assert anchor_domain(state.human_anchor) == "employment"
+
+
 def test_execution_state_active_paralyzed_active_complete_and_persists() -> None:
     state = apply_confirmed_input(
         new_state("execution-journey"),

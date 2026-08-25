@@ -138,7 +138,8 @@ def _anchor_candidate(clause: str) -> tuple[int, int, str, str] | None:
     lower = clause.casefold()
     domain = anchor_domain(clause)
     if any(term in lower for term in ("resume", "résumé", "cv", "submission-ready")) and any(
-        term in lower for term in ("my anchor", "my goal", "help me", "make my", "update my", "prepare my")
+        term in lower
+        for term in ("my anchor", "our anchor", "my goal", "our goal", "help me", "make my", "update my", "prepare my")
     ):
         domain = "resume"
     elif any(
@@ -192,7 +193,7 @@ def _anchor_candidate(clause: str) -> tuple[int, int, str, str] | None:
     )
     explicit_target = bool(
         re.search(r"\b(?:my\s+)?(?:career|job|education|location|resume|résumé)?\s*target\s*(?:is|:)", lower)
-        or re.search(r"\bmy\s+(?:anchor|goal)\s+(?:is|:)", lower)
+        or re.search(r"\b(?:my|our)\s+(?:anchor|goal)\s+(?:is|:)", lower)
     )
     explicit_objective = bool(
         explicit_target
