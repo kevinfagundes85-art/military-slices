@@ -25,11 +25,13 @@ from military_slices.models import (
 from military_slices.path_runtime import (
     ANCHOR_OPTIONS,
     anchor_domain,
+    derive_execution_state,
     detect_separation_type,
     detect_service,
-    extract_human_anchor,
     normalize_service_choice,
     refresh_path_state,
+    resolve_human_anchor,
+    resume_target_specificity,
 )
 from military_slices.temporal import (
     apply_revalidation_delta,
@@ -73,6 +75,8 @@ def _slice_hits(statement: str) -> list[SliceName]:
             "role",
             "industry",
             "defense",
+            "manager",
+            "analyst",
         ),
         SliceName.EDUCATION: (
             "school",
@@ -190,14 +194,15 @@ def new_state(profile_id: str) -> CanonicalState:
     state = refresh_path_state(CanonicalState(profile_id=profile_id, projections=_build_projections(None)))
     state.gates = _recompute_gates(state)
     state.projections = _build_projections(state)
-    return state
+    return derive_execution_state(state)
 
 
 def reconstitute_state(current: CanonicalState) -> CanonicalState:
+    previous_execution = deepcopy(current.execution)
     state = refresh_path_state(evaluate_elapsed_freshness(current))
     state.gates = _recompute_gates(state)
     state.projections = _build_projections(state)
-    return state
+    return derive_execution_state(state, previous=previous_execution)
 
 
 def _extract_transition_date(text: str) -> str | None:
@@ -240,7 +245,26 @@ def _extract_career_target(text: str) -> str | None:
         text,
         flags=re.IGNORECASE,
     )
-    return match.group(1).strip() if match else None
+    if not match:
+        return None
+    target = match.group(1).strip()
+    return target if resume_target_specificity(f"résumé ready for {target}") == "concrete" else None
+
+
+def _clears_career_target(text: str) -> bool:
+    lower = text.casefold()
+    return any(
+        term in lower
+        for term in (
+            "remove my target role",
+            "clear my target role",
+            "i don't have a target role",
+            "i do not have a target role",
+            "i haven't chosen the specific role",
+            "i have not chosen the specific role",
+            "target role is not named",
+        )
+    )
 
 
 def _set_explicit_career_target(state: CanonicalState, target: str) -> None:
@@ -349,10 +373,16 @@ def apply_confirmed_input(
     if idempotency_key in current.processed_keys:
         return current
     state = deepcopy(current)
+    previous_execution = deepcopy(current.execution)
     state.original_intents.append(orientation.reviewed_input)
-    anchor = extract_human_anchor(orientation)
-    if not state.human_anchor and anchor:
-        state.human_anchor = anchor
+    anchor_resolution = resolve_human_anchor(orientation)
+    state.telemetry.anchor_candidates += anchor_resolution.candidate_count
+    state.telemetry.selected_anchor_class = anchor_resolution.selected_class
+    state.telemetry.anchor_selection_reason_code = anchor_resolution.reason_code
+    if anchor_resolution.anchor and (
+        not state.human_anchor or current.execution.state.value == "COMPLETE"
+    ):
+        state.human_anchor = anchor_resolution.anchor
     state.service = state.service or detect_service(orientation.reviewed_input)
     detected_type = detect_separation_type(orientation.reviewed_input)
     if state.separation_type is None and detected_type in ("separation", "retirement"):
@@ -362,7 +392,14 @@ def apply_confirmed_input(
     if extracted_date:
         state.transition_date = extracted_date
     explicit_target = _extract_career_target(orientation.reviewed_input)
-    if explicit_target:
+    if _clears_career_target(orientation.reviewed_input):
+        state.career_target = None
+        for hypothesis in state.career_hypotheses:
+            if hypothesis.status == "accepted":
+                hypothesis.status = "candidate"
+        if anchor_domain(state.human_anchor) == "resume":
+            state.human_anchor = "Make my résumé ready for a specific target"
+    elif explicit_target:
         _set_explicit_career_target(state, explicit_target)
 
     if _has_income_education_conflict(orientation.reviewed_input):
@@ -386,7 +423,12 @@ def apply_confirmed_input(
     state.processed_keys.append(idempotency_key)
     state.updated_at = utc_now()
     state.version += 1
-    return state
+    state.telemetry.resume_target_specificity = resume_target_specificity(state.human_anchor or "")
+    return derive_execution_state(
+        state,
+        previous=previous_execution,
+        resolving_authority=Authority.HUMAN,
+    )
 
 
 def apply_artifact_input(
@@ -404,6 +446,7 @@ def apply_artifact_input(
     if idempotency_key in current.processed_keys:
         return current
     state = deepcopy(current)
+    previous_execution = deepcopy(current.execution)
     state.original_intents.append("Shared a document to update my transition plan.")
     added = _merge_human_facts(
         state,
@@ -441,7 +484,8 @@ def apply_artifact_input(
     state.processed_keys.append(idempotency_key)
     state.updated_at = utc_now()
     state.version += 1
-    return state
+    state.telemetry.resume_target_specificity = resume_target_specificity(state.human_anchor or "")
+    return derive_execution_state(state, previous=previous_execution, resolving_authority=Authority.HUMAN)
 
 
 def _recompute_gates(state: CanonicalState) -> list[Gate]:
@@ -636,6 +680,7 @@ def apply_decision(
     if idempotency_key in current.processed_keys:
         return current
     state = deepcopy(current)
+    previous_execution = deepcopy(current.execution)
     matching = next((gate for gate in state.gates if gate.id == gate_id), None)
     if matching is None:
         raise ValueError("That decision is no longer active. Refresh to continue from current state.")
@@ -658,6 +703,8 @@ def apply_decision(
     elif gate_id == "service-path-identity":
         state.service = normalize_service_choice(normalized)
     elif gate_id == "resume-target-role":
+        if resume_target_specificity(f"résumé ready for {normalized}") != "concrete":
+            raise ValueError("Name a specific role or provide a specific job posting.")
         state.human_anchor = f"Make my résumé submission-ready for {normalized}"
         state.current_goal = state.human_anchor
     elif gate_id == "transition-direction":
@@ -728,7 +775,8 @@ def apply_decision(
     state.processed_keys.append(idempotency_key)
     state.updated_at = utc_now()
     state.version += 1
-    return state
+    state.telemetry.resume_target_specificity = resume_target_specificity(state.human_anchor or "")
+    return derive_execution_state(state, previous=previous_execution, resolving_authority=Authority.HUMAN)
 
 
 def career_resolution_required(state: CanonicalState) -> bool:
@@ -743,10 +791,12 @@ def career_resolution_required(state: CanonicalState) -> bool:
 
 def recompute_state(state: CanonicalState) -> CanonicalState:
     """Recompute deterministic path projections without persistence or model work."""
+    previous_execution = deepcopy(state.execution)
     state = refresh_path_state(state)
     state.gates = _recompute_gates(state)
     state.projections = _build_projections(state)
-    return state
+    state.telemetry.resume_target_specificity = resume_target_specificity(state.human_anchor or "")
+    return derive_execution_state(state, previous=previous_execution)
 
 
 def apply_revalidation(
@@ -766,7 +816,10 @@ def apply_revalidation(
     )
     if not changed:
         return state, False
-    return recompute_state(state), True
+    previous_execution = deepcopy(current.execution)
+    state = recompute_state(state)
+    state = derive_execution_state(state, previous=previous_execution, resolving_authority=Authority.HUMAN)
+    return state, True
 
 
 def _build_projections(state: CanonicalState | None) -> list[SliceProjection]:

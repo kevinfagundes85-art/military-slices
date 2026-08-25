@@ -20,7 +20,7 @@ from military_slices.models import (
     WhatIfBranch,
     utc_now,
 )
-from military_slices.path_runtime import anchor_domain
+from military_slices.path_runtime import anchor_domain, derive_execution_state
 from military_slices.temporal import propagate_temporal_changes
 
 SLICE_LABELS = {
@@ -379,6 +379,7 @@ def promote_what_if(
     if idempotency_key in current.processed_keys:
         return current
     state = deepcopy(current)
+    previous_execution = deepcopy(current.execution)
     if branch.modification_kind == "relocation_willingness":
         state.facts = [
             fact
@@ -422,4 +423,8 @@ def promote_what_if(
     state.processed_keys.append(idempotency_key)
     state.updated_at = utc_now()
     state.version += 1
-    return state
+    return derive_execution_state(
+        state,
+        previous=previous_execution,
+        resolving_authority=Authority.HUMAN,
+    )

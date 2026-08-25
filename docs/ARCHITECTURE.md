@@ -11,6 +11,14 @@ The transition runtime carries two distinct anchors:
 
 A task becomes active only when it is eligible on the current service/time path and materially advances or protects the human anchor. The runtime emits no more than three active tasks, and the interface foregrounds only one active gate.
 
+Canonical state also persists one deterministically derived execution projection:
+
+- `ACTIVE`: the Anchor remains unsatisfied and a valid next transition exists;
+- `PARALYZED`: a current, validated, material `CONFLICTED` gate blocks one named next transition;
+- `COMPLETE`: human-authoritative evidence satisfies the current Anchor, so autonomous progression stops.
+
+Paralysis is scoped to `blocked_transition` and `blocking_gate_id`; it does not globally freeze unrelated bounded evidence work or inspection. Stale evidence is insufficient support and cannot produce `CONFLICTED` or `PARALYZED`. Clearing paralysis records the resolving authority. Legacy profiles receive the additive execution default on read and are deterministically reconstituted without a destructive migration.
+
 The human control layer is deliberately asymmetric:
 
 - **Lenses inspect canonical state.**
@@ -46,6 +54,7 @@ deliberately selected artifact
   → deterministic + ADK/Gemini resolution
   → Firestore versioned state
   → time/relationship evaluation
+  → ACTIVE / PARALYZED / COMPLETE execution projection
   → one highest-value interaction
   → human decision
   → concise causal feedback
@@ -83,6 +92,7 @@ One document per signed anonymous browser session contains:
 - aggregate-safe telemetry;
 - fact freshness metadata (`valid | stale`, validation time, and deterministic class);
 - pending material impacts and bounded receipt deltas;
+- explicit derived execution state, blocked transition/gate, reason code, version provenance, and resolving authority;
 - version and timestamps.
 
 Each canonical write also preserves the immediately previous canonical document in the profile's `versions` subcollection. Historical reads never replace the current document. A What-If branch is returned to the browser with a short-lived, profile-bound HMAC token and is not written to Firestore. Promotion verifies ownership, expiry, source version, current-version concurrency, and branch integrity before it creates a new canonical version.
@@ -99,6 +109,8 @@ These categories are explicit in the models and must not be serialized into one 
 
 Freshness is separate from epistemic state. A stale fact cannot ground `CONFLICTED` or `PARALYZED`; a dependent gate lacks current support until the fact is refreshed or revalidated. Stable historical facts do not expire. Human-owned assumptions use the smallest possible confirmation. External-expiring facts accept updates only from an authoritative refresh path with evidence provenance.
 
+Execution state is separate from fact and gate state. It is never assigned by Gemini. The deterministic controller derives it after path and gate recomputation, persists the result in the same canonical document, and retains `COMPLETE` only while the same Anchor fingerprint remains current. A new objective requires predefined continuation or explicit human intent.
+
 The version-controlled dependency map lives in `military_slices/temporal.py`. It contains only established invalidation relationships. Propagation emits field-level patches, keeps unaffected Slices latent, and never calls Gemini for dependency or freshness detection.
 
 Raw files, full extracted artifacts, unconfirmed typed input, hidden reasoning, and chain-of-thought are not persisted.
@@ -111,7 +123,7 @@ The installed machine-readable path is `military_slices/data/service_path_bounda
 - Progress, Lens previews, Slice detail, history, and initial What-If recomputation are deterministic and make zero model calls.
 - Dependency lookup, materiality, Impact Tray rendering, and one-tap revalidation are deterministic and make zero model calls.
 - Temporal writes are bounded field patches; full receipt rebuild telemetry remains zero unless a separately authorized schema-recovery path exists.
-- One bounded ADK run is allowed per meaningful input or refinement. It is limited to three model calls and an 18-second wall-clock budget; failure deterministically falls back instead of leaving the human waiting.
+- One bounded ADK run is allowed only when the active gate authorizes it. It is limited to three model calls and an 18-second wall-clock budget; failure deterministically falls back instead of leaving the human waiting.
 - State is compact and reused; conversation history is not replayed.
 - Public evidence is purpose-scoped.
 - Firestore stores one compact document per session for the MVP.

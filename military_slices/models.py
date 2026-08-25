@@ -19,6 +19,12 @@ class GateState(StrEnum):
     CONFLICTED = "CONFLICTED"
 
 
+class ExecutionState(StrEnum):
+    ACTIVE = "ACTIVE"
+    PARALYZED = "PARALYZED"
+    COMPLETE = "COMPLETE"
+
+
 class Authority(StrEnum):
     HUMAN = "human"
     AUTHORITATIVE_SOURCE = "authoritative_source"
@@ -320,6 +326,27 @@ class TelemetrySummary(BaseModel):
     temporal_full_rebuilds: int = 0
     temporal_latency_ms: int = 0
     temporal_errors: int = 0
+    anchor_candidates: int = 0
+    selected_anchor_class: str | None = None
+    anchor_selection_reason_code: str | None = None
+    execution_state_before: ExecutionState | None = None
+    execution_state_after: ExecutionState | None = None
+    blocked_transition: str | None = None
+    blocking_gate_id: str | None = None
+    resume_target_specificity: Literal["concrete", "generic", "negated", "absent"] = "absent"
+
+
+class ExecutionStatus(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    state: ExecutionState = ExecutionState.ACTIVE
+    blocked_transition: str | None = None
+    blocking_gate_id: str | None = None
+    reason_code: str | None = "anchor_or_next_transition_available"
+    derived_from_version: int = Field(default=0, ge=0)
+    anchor_fingerprint: str | None = None
+    resolving_authority: Authority | None = None
+    updated_at: datetime = Field(default_factory=utc_now)
 
 
 class CanonicalState(BaseModel):
@@ -340,6 +367,7 @@ class CanonicalState(BaseModel):
     stage: Literal["TODAY", "PREPARE", "SEPARATE", "TRANSITION", "STABILIZE"] = "TODAY"
     current_timeline_window: str = "PATH_IDENTITY"
     path_target_state: str = "PATH_IDENTIFIED"
+    execution: ExecutionStatus = Field(default_factory=ExecutionStatus)
     active_tasks: list[ActiveTask] = Field(default_factory=list)
     latent_fact_count: int = Field(default=0, ge=0)
     transition_pack_version: str = "2026-08-24-v2-shadow-tested"

@@ -3,11 +3,12 @@ from __future__ import annotations
 import io
 import json
 import math
+import os
 import statistics
 import time
 import uuid
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Literal
@@ -16,9 +17,9 @@ import httpx
 from docx import Document
 from PIL import Image, ImageDraw
 
-BASE_URL = "https://competition-rc---military-slices-ztvqlzospa-uw.a.run.app"
-REVISION = "military-slices-00016-miz"
-SOURCE_COMMIT = "b200d5b940b058d1cd6e805c88acd47ed098835b"
+BASE_URL = os.getenv("MILITARY_SLICES_BENCHMARK_URL", "https://competition-rc---military-slices-ztvqlzospa-uw.a.run.app")
+REVISION = os.getenv("MILITARY_SLICES_BENCHMARK_REVISION", "military-slices-00016-miz")
+SOURCE_COMMIT = os.getenv("MILITARY_SLICES_BENCHMARK_COMMIT", "b200d5b940b058d1cd6e805c88acd47ed098835b")
 STARTING_ESTIMATED_SPEND = 0.0
 # Deliberately conservative benchmark accounting rates; actual provider billing was not exposed.
 INPUT_USD_PER_MILLION = 2.0
@@ -27,7 +28,7 @@ TOOL_CALL_USD = 0.01
 SAFE_COST_RAIL = 27.50
 HARD_COST_RAIL = 30.00
 
-ActionKind = Literal["text", "artifact", "reject", "revalidate", "reload", "replay"]
+ActionKind = Literal["text", "artifact", "reject", "revalidate", "reload", "replay", "decide"]
 
 
 @dataclass(frozen=True)
@@ -196,6 +197,25 @@ def run_scenario(scenario: Scenario) -> dict[str, Any]:
                 deterministic_latencies.append(latency)
                 latencies.append({"kind": "revalidate", "seconds": latency, "model": False})
                 events.append({"action": "revalidate", "impact": impact, "version": envelope["state"]["version"]})
+            elif action.kind == "decide":
+                gate = envelope.get("active_gate")
+                if not gate:
+                    failures.append("OTHER")
+                    events.append({"action": "decide", "skipped": "no active gate"})
+                    continue
+                envelope, latency = post_json(
+                    client,
+                    "/api/decision",
+                    {
+                        "gate_id": gate["id"],
+                        "value": action.value,
+                        "expected_version": before_version,
+                        "idempotency_key": f"{scenario.id.lower()}-decide-{uuid.uuid4().hex}",
+                    },
+                )
+                deterministic_latencies.append(latency)
+                latencies.append({"kind": "decide", "seconds": latency, "model": False})
+                events.append({"action": "decide", "gate_id": gate["id"], "version": envelope["state"]["version"]})
             elif action.kind == "reload":
                 request_started = time.perf_counter()
                 reloaded = client.get("/api/state").raise_for_status().json()
@@ -244,10 +264,29 @@ def run_scenario(scenario: Scenario) -> dict[str, Any]:
             failures.append("BAD_REVALIDATION")
         if "no_false_conflict" in scenario.expected and final.get("conflicts"):
             failures.append("FALSE_CONFLICT")
-        if "no_false_paralysis" in scenario.expected and final.get("execution_state") == "PARALYZED":
+        execution_state = final.get("execution", {}).get("state")
+        if "no_false_paralysis" in scenario.expected and execution_state == "PARALYZED":
             failures.append("FALSE_PARALYSIS")
         if "conflict" in scenario.expected and not final.get("conflicts"):
             failures.append("MISSED_CONFLICT")
+        if "paralyzed" in scenario.expected and execution_state != "PARALYZED":
+            failures.append("MISSED_PARALYSIS")
+        if "complete" in scenario.expected and execution_state != "COMPLETE":
+            failures.append("MISSED_COMPLETION")
+        if "active" in scenario.expected and execution_state != "ACTIVE":
+            failures.append("FALSE_PARALYSIS")
+        if "resume_target_gate" in scenario.expected and not any(
+            gate.get("id") == "resume-target-role" for gate in final.get("gates", [])
+        ):
+            failures.append("MISSED_RESUME_TARGET_GATE")
+        if "no_resume_target_gate" in scenario.expected and any(
+            gate.get("id") == "resume-target-role" for gate in final.get("gates", [])
+        ):
+            failures.append("FALSE_RESUME_TARGET_CLOSURE")
+        if "scoped_evidence" in scenario.expected and not any(
+            "led 20 people" in fact.get("statement", "").casefold() for fact in final.get("facts", [])
+        ):
+            failures.append("SCOPED_CONTINUATION_FAILURE")
         if "rejection" in scenario.expected and not final.get("rejected_roles"):
             failures.append("OTHER")
         if "single_impact" in scenario.expected and max_impacts > 1:
@@ -273,7 +312,7 @@ def run_scenario(scenario: Scenario) -> dict[str, Any]:
             "gates_closed_machine": int(final_metrics.get("agent_gates_closed", 0)),
             "human_gates": 1 if envelope.get("active_gate") else 0,
             "conflicts": final.get("conflicts", []),
-            "paralyzed_transitions": 1 if final.get("execution_state") == "PARALYZED" else 0,
+            "paralyzed_transitions": 1 if execution_state == "PARALYZED" else 0,
             "active_tasks_max": max_tasks,
             "unrelated_slice_activations": sum(1 for item in final.get("impacts", []) if item.get("affected_slice") in scenario.forbidden_slices),
             "model_calls": int(final_metrics.get("model_calls", 0)),
@@ -296,7 +335,7 @@ def run_scenario(scenario: Scenario) -> dict[str, Any]:
             "interaction_latencies": latencies,
             "deterministic_latencies": deterministic_latencies,
             "model_backed_latencies": model_backed_latencies,
-            "final_status": final.get("execution_state"),
+            "final_status": execution_state,
             "failure_codes": sorted(set(failures)),
             "events": events,
         }

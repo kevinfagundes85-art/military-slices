@@ -96,7 +96,8 @@ def run_case(case: tuple[str, str, str, dict[str, str]]) -> dict:
             "decision_latencies": decision_latencies,
             "latency": round(time.perf_counter() - started, 4),
             "failure_codes": failures,
-            "execution_state_present": "execution_state" in state,
+            "execution_state_present": state.get("execution", {}).get("state") in {"ACTIVE", "PARALYZED", "COMPLETE"},
+            "execution_state": state.get("execution", {}).get("state"),
         }
 
 
