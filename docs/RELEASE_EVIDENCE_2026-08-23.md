@@ -1,5 +1,50 @@
 # Release Candidate Evidence — 2026-08-23
 
+## Temporal revalidation candidate — 2026-08-24
+
+- Deployed source commit: `b200d5b`
+- Cloud Run revision: `military-slices-00016-miz`
+- Traffic: `0%`
+- Tagged URL: <https://competition-rc---military-slices-ztvqlzospa-uw.a.run.app/>
+- Container image: `sha256:b47c070d3f0c76f18a71205ffb850a63cd61407ebbe1588f91501179a08505e0`
+- Protected production: `military-slices-00001-niw` at `100%`
+- Exact assets: `app.js?v=3`, `styles.css?v=3`
+
+### Temporal contract proof
+
+- Facts now carry additive `valid|stale` status, validation time, deterministic field identity, and one of four bounded freshness classes. Legacy state is normalized on read without a migration write.
+- The version-controlled dependency map is deliberately small. A career-target change invalidates existing relocation willingness and compensation-floor assumptions; a separation-date change evaluates four timing fields; a relocation change evaluates the career-search boundary.
+- Only pre-existing dependent facts are invalidated. New facts from the same governed transaction remain current, unrelated Education and historical facts remain untouched, and unmapped résumé evidence cannot activate another domain.
+- Stale facts are removed from governing preference evidence. Stale relocation evidence cannot retain a location conflict and cannot create paralysis.
+- Human-owned material state produces one natural-language Impact Tray. Non-blocking impact stays subordinate to the active gate, a Lens can say `May have changed`, one-tap confirmation restores validity, and bounded update changes only the affected field. Blocking impact cannot be dismissed.
+- External-expiring facts have an authoritative-source callback boundary with mandatory evidence provenance. Machine refresh updates only the fact value/status/time and does not ask the human to validate policy.
+- Every temporal write records bounded field-level receipt patches; the recent patch list is capped at 64. Dependency and freshness detection, tray rendering, Lens inspection, confirmation, and bounded update make zero Gemini calls.
+
+### Automated and hosted validation
+
+- 80 tests passed. Ruff, MyPy, Bandit, JavaScript syntax, diff validation, and dependency audit passed; no known third-party vulnerabilities were found.
+- Hosted version progression was exactly `0 → 1 → 2 → 3 → 3 → 3` across initial confirmation, career-target change, one-tap revalidation, identical replay, and reload.
+- Hosted state preserved `Defense Aerospace Program Management`; relocation returned to `valid` with a new validation timestamp; the Impact Tray did not reappear after reload.
+- Hosted telemetry recorded 7 dependency evaluations, 1 stale field, 1 human prompt, 1 one-tap confirmation, 3 receipt patches / 509 bytes, 0 freshness-model calls, and 0 full receipt rebuilds.
+- A separate signed session used a distinct profile ID; replaying the first user's impact ID produced no write and left the second profile at version 0.
+- Hosted browser validation showed the active career gate and the subordinate natural-language Location check together, plus the subtle Location Lens indication. The cold automation required no HELM explanation.
+- `app.js` SHA-256 `2AD00D5F8B00A3C59CE8CFD5F959C6D9A690990C644BC4F766D21AA1DF555DB5` and `styles.css` SHA-256 `9F82E41DF9736248F6299A153327B89AB71851CDF7A6F6C7FE643816695E0EC4` matched the committed files exactly.
+- Health returned 200 with Google ADK / Gemini 3.7 Flash identity; revision readiness is `True`; service account, secret, Firestore, model, timeout, resource, and security-header configuration match production. Post-validation warning/error logs were empty.
+
+### Defects found and closed
+
+1. Ordinary `stay local` / `remain local` language appeared in review but was not assigned to the Location projection. The deterministic front-door vocabulary and regression were corrected before deployment.
+2. A crafted API request could dismiss a blocking impact even though the UI withheld that action. The backend now rejects it and a regression proves the boundary.
+
+### Economics and human gate
+
+- Freshness-detection Gemini calls: `0`.
+- Average hosted receipt patch: `169.7 bytes` (`509 / 3`).
+- Full receipt rebuilds: `0`.
+- Measured deterministic propagation latency: below the current 1 ms telemetry resolution and recorded as `0 ms` in the hosted profile.
+- Fixed recurring infrastructure delta: `$0`; only existing Firestore snapshot writes/storage grow by the small bounded metadata and receipt patches.
+- Physical Android touch/focus/keyboard/overflow validation and an unbriefed cold human's comprehension reaction remain open. The automated evidence does not close those genuinely human gates.
+
 ## Human-control-layer candidate — 2026-08-24
 
 - Deployed source commit: `65464b8`
