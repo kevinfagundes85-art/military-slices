@@ -266,6 +266,28 @@ def _month_date(text: str) -> str | None:
     return None
 
 
+def _target_relative_scope(state: CanonicalState) -> tuple[list[SliceName], list[str]]:
+    gate = active_gate(state)
+    if gate is not None:
+        declared = DECISION_SLICES.get(gate.id, set()) or set(gate.affected_slices)
+        slices = [name for name in SliceName if name in declared]
+        if slices:
+            return slices, [gate.id]
+
+    domain_slices = {
+        "employment": [SliceName.CAREER, SliceName.RESUME],
+        "resume": [SliceName.RESUME, SliceName.CAREER],
+        "education": [SliceName.EDUCATION],
+        "location": [SliceName.LOCATION],
+        "undecided": [SliceName.CAREER, SliceName.EDUCATION],
+    }
+    domain = anchor_domain(state.human_anchor)
+    slices = domain_slices.get(domain, []) if domain is not None else []
+    if not slices:
+        raise ValueError("Establish what matters now before exploring a hypothetical choice.")
+    return slices, []
+
+
 def _parse_modification(state: CanonicalState, text: str) -> tuple[str, str, str, list[SliceName], list[str]]:
     lower = text.casefold()
     if "relocat" in lower or "move" in lower:
@@ -298,7 +320,13 @@ def _parse_modification(state: CanonicalState, text: str) -> tuple[str, str, str
             list(SliceName),
             ["planned-transition-date"],
         )
-    raise ValueError("Ask about a relocation choice, full-time school first, or a specific transition date.")
+    if not state.human_anchor:
+        raise ValueError("Establish what matters now before exploring a hypothetical choice.")
+    slices, gates = _target_relative_scope(state)
+    value = re.sub(r"^\s*what\s+if\s+", "", text, flags=re.IGNORECASE).strip()
+    if len(value) < 3:
+        raise ValueError("Add one possible choice to explore against what matters now.")
+    return "target_experiment", value, value, slices, gates
 
 
 def create_what_if(state: CanonicalState, text: str) -> WhatIfBranch:
@@ -330,7 +358,7 @@ def create_what_if(state: CanonicalState, text: str) -> WhatIfBranch:
             "Employment timing would need to be checked against the education workload.",
             "The declared target would not change unless explicitly replaced.",
         ]
-    else:
+    elif kind == "transition_date":
         old_window = state.current_timeline_window
         hypothetical.transition_date = value
         hypothetical = recompute_state(hypothetical)
@@ -339,8 +367,25 @@ def create_what_if(state: CanonicalState, text: str) -> WhatIfBranch:
             "Only time-dependent tasks and gates would be reconsidered.",
             "The declared target would remain unchanged.",
         ]
+    else:
+        current_gate = active_gate(state)
+        gate_title = current_gate.title if current_gate else "the current decision"
+        consequences = [
+            f"This possibility would be examined only against the current target: {state.human_anchor}.",
+            f"The active decision would remain: {gate_title}.",
+            "No current target or confirmed fact changes during this comparison.",
+        ]
+        uncertainty = [
+            "Whether this possibility materially advances the current target still needs evidence "
+            "or a real-world test.",
+            *uncertainty,
+        ]
 
-    evidence = [fact.statement for fact in state.facts if set(fact.affected_slices).intersection(slices)][-6:]
+    evidence = [f"Current governed target: {state.human_anchor}"]
+    evidence.extend(
+        fact.statement for fact in state.facts if set(fact.affected_slices).intersection(slices)
+    )
+    evidence = evidence[-6:]
     current_gate = active_gate(state)
     current_summary = [
         f"Current target: {state.human_anchor or 'not yet declared'}",
@@ -399,6 +444,11 @@ def promote_what_if(
                 value=branch.modification_value,
                 authority=Authority.HUMAN,
                 affected_slices=branch.affected_slices,
+                field_key=(
+                    "target_experiment"
+                    if branch.modification_kind == "target_experiment"
+                    else "general_context"
+                ),
             )
         )
     state.decisions.append(

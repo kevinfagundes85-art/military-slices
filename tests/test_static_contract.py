@@ -97,13 +97,16 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert 'id="open-what-if"' in html
     assert "Looking without changing" in html
     assert "Hypothetical — nothing changes yet" in html
+    assert "Test one possible move against what matters now" in html
+    assert "home lab" in html
     assert 'api("/api/what-if"' in script
     assert 'api("/api/what-if/promote"' in script
     assert "Use this plan" in script
     assert "Keep my current plan" in script
+    assert "Add this to my plan" in script
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
     assert "Explore what else may matter" in html
-    assert "/static/app.js?v=7" in html
+    assert "/static/app.js?v=8" in html
     assert "/static/styles.css?v=6" in html
 
 

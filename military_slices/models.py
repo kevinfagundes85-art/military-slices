@@ -519,7 +519,12 @@ class WhatIfBranch(BaseModel):
     source_version: int = Field(ge=0)
     human_anchor: str | None
     path_target_state: str
-    modification_kind: Literal["relocation_willingness", "education_priority", "transition_date"]
+    modification_kind: Literal[
+        "relocation_willingness",
+        "education_priority",
+        "transition_date",
+        "target_experiment",
+    ]
     modification_value: str
     statement: str
     affected_gates: list[str]

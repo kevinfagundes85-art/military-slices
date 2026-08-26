@@ -833,12 +833,12 @@ function renderWhatIf(branch) {
       <section><div class="section-kicker">Hypothetical</div><ul>${branch.hypothetical_summary.map((item) => `<li>${escapeHtml(whatIfCopy(item))}</li>`).join("")}</ul></section>
     </div>
     ${branch.conflicts.length ? `<div class="conflict-note"><strong>Conflict to resolve</strong><ul>${branch.conflicts.map((item) => `<li>${escapeHtml(whatIfCopy(item))}</li>`).join("")}</ul></div>` : ""}
-    <h3>If you use this plan</h3>
+    <h3>${branch.modification_kind === "target_experiment" ? "If you add this possibility" : "If you use this plan"}</h3>
     <ul>${branch.consequences.map((item) => `<li>${escapeHtml(whatIfCopy(item))}</li>`).join("")}</ul>
-    <p class="trust-note">This remains hypothetical until you choose “Use this plan.”</p>
+    <p class="trust-note">This remains hypothetical until you choose “${branch.modification_kind === "target_experiment" ? "Add this to my plan" : "Use this plan"}.”</p>
     <div class="button-row">
       <button id="discard-what-if" class="button button-quiet" type="button">Keep my current plan</button>
-      <button id="promote-what-if" class="button button-primary" type="button">Use this plan</button>
+      <button id="promote-what-if" class="button button-primary" type="button">${branch.modification_kind === "target_experiment" ? "Add this to my plan" : "Use this plan"}</button>
     </div>
   `;
   $("#discard-what-if").addEventListener("click", () => {

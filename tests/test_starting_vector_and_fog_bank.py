@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from fastapi.testclient import TestClient
 
+from military_slices.agent_runtime import Resolver
 from military_slices.app import create_app
 from military_slices.control import lens_projections
 from military_slices.engine import (
@@ -34,6 +35,10 @@ ACCEPTANCE_INPUT = (
 FOG_INPUT = (
     "I already left the military three years ago. I'm already working as a cyber engineer. "
     "This isn't about finding my first civilian job; I'm trying to figure out what I should build or do next."
+)
+
+TARGET_RELATIVE_HYPOTHETICAL = (
+    "What if I upskill with a home lab and build a usable website for veterans leaving the service?"
 )
 
 
@@ -150,6 +155,84 @@ def test_deterministic_timeline_cannot_be_silently_overridden_by_free_text() -> 
     assert "timeline" in result.clarification_question.casefold()
     assert started.lifecycle_position == LifecyclePosition.SEPARATED_1_TO_5_YEARS
     assert started.version == 1
+
+
+def test_what_if_accepts_a_target_relative_experiment_without_writing_truth() -> None:
+    store = MemoryStore()
+    client = TestClient(create_app(store=store, resolver=Resolver(mode="deterministic")))
+    client.get("/api/state")
+    vector = client.post("/api/starting-vector", json=_vector_payload()).json()
+    oriented = client.post("/api/orient", json={"text": ACCEPTANCE_INPUT}).json()
+    confirmed = client.post(
+        "/api/confirm",
+        json={
+            "token": oriented["token"],
+            "reviewed_input": oriented["reviewed_input"],
+            "expected_version": vector["state"]["version"],
+            "idempotency_key": "target-relative-confirm-0001",
+        },
+    ).json()
+    before = client.get("/api/state").json()
+
+    response = client.post("/api/what-if", json={"text": TARGET_RELATIVE_HYPOTHETICAL})
+
+    assert response.status_code == 200
+    branch = response.json()
+    assert branch["modification_kind"] == "target_experiment"
+    assert branch["modification_value"] == TARGET_RELATIVE_HYPOTHETICAL.removeprefix("What if ")
+    assert branch["affected_gates"] == ["career-direction"]
+    assert branch["affected_slices"] == ["career", "resume"]
+    assert confirmed["state"]["human_anchor"] in branch["consequences"][0]
+    assert "current governed target" in branch["evidence_basis"][0].casefold()
+    assert client.get("/api/state").json() == before
+
+
+def test_target_relative_what_if_requires_human_promotion_and_preserves_target() -> None:
+    store = MemoryStore()
+    client = TestClient(create_app(store=store, resolver=Resolver(mode="deterministic")))
+    client.get("/api/state")
+    vector = client.post("/api/starting-vector", json=_vector_payload()).json()
+    oriented = client.post("/api/orient", json={"text": ACCEPTANCE_INPUT}).json()
+    confirmed = client.post(
+        "/api/confirm",
+        json={
+            "token": oriented["token"],
+            "reviewed_input": oriented["reviewed_input"],
+            "expected_version": vector["state"]["version"],
+            "idempotency_key": "target-promotion-confirm-0001",
+        },
+    ).json()
+    branch = client.post("/api/what-if", json={"text": TARGET_RELATIVE_HYPOTHETICAL}).json()
+    before = client.get("/api/state").json()["state"]
+
+    promoted = client.post(
+        "/api/what-if/promote",
+        json={
+            "token": branch["token"],
+            "expected_version": before["version"],
+            "idempotency_key": "target-experiment-promote-0001",
+        },
+    )
+
+    assert promoted.status_code == 200
+    state = promoted.json()["state"]
+    assert state["human_anchor"] == confirmed["state"]["human_anchor"]
+    assert state["version"] == before["version"] + 1
+    assert any(item["gate_id"] == "what-if:target_experiment" for item in state["decisions"])
+    assert any(
+        fact["field_key"] == "target_experiment"
+        and "home lab" in fact["statement"].casefold()
+        for fact in state["facts"]
+    )
+
+
+def test_target_relative_what_if_cannot_expand_before_a_target_exists() -> None:
+    client = TestClient(create_app(store=MemoryStore(), resolver=Resolver(mode="deterministic")))
+
+    response = client.post("/api/what-if", json={"text": TARGET_RELATIVE_HYPOTHETICAL})
+
+    assert response.status_code == 400
+    assert "what matters now" in response.json()["detail"].casefold()
 
 
 def test_currently_serving_without_departure_does_not_manufacture_a_separation_gate() -> None:
