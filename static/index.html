@@ -6,8 +6,8 @@
     <meta name="theme-color" content="#08141f">
     <meta name="description" content="Military SLICES helps U.S. service members connect career, education, location, and résumé decisions into one transition plan.">
     <title>Military SLICES</title>
-    <link rel="stylesheet" href="/static/styles.css?v=5">
-    <script src="/static/app.js?v=6" defer></script>
+    <link rel="stylesheet" href="/static/styles.css?v=6">
+    <script src="/static/app.js?v=7" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the next decision</a>
@@ -98,6 +98,7 @@
       </section>
 
       <nav class="control-nav" aria-label="Review and explore your plan" hidden>
+        <button id="open-fog-bank" class="button button-secondary" type="button">Something doesn’t fit</button>
         <button id="open-history" class="button button-quiet" type="button">Review earlier plans</button>
         <button id="open-what-if" class="button button-quiet" type="button">Explore a different choice</button>
       </nav>
@@ -161,6 +162,19 @@
           <button class="button button-primary" type="submit">Compare without changing my plan</button>
         </form>
         <div id="what-if-result" hidden></div>
+      </section>
+
+      <section id="fog-bank-panel" class="inspection-panel" hidden aria-labelledby="fog-bank-title">
+        <button id="close-fog-bank" class="icon-button" type="button" aria-label="Close reconsideration">×</button>
+        <div class="section-kicker">Fog Bank · human-controlled reconsideration</div>
+        <h2 id="fog-bank-title">What are we missing?</h2>
+        <p class="muted">Challenge the current frame in your own words. Nothing changes unless you review and accept a proposed update.</p>
+        <form id="fog-bank-form" class="gate-form">
+          <label for="fog-bank-text">What feels wrong, incomplete, or out of date?</label>
+          <textarea id="fog-bank-text" rows="5" maxlength="4000" placeholder="For example: I already left the military three years ago. I’m already working in cybersecurity. This is about what I should build or do next."></textarea>
+          <button class="button button-primary" type="submit">Reconsider without changing my plan</button>
+        </form>
+        <div id="fog-bank-result" hidden></div>
       </section>
     </main>
 

@@ -103,8 +103,8 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert "Keep my current plan" in script
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
     assert "Explore what else may matter" in html
-    assert "/static/app.js?v=6" in html
-    assert "/static/styles.css?v=5" in html
+    assert "/static/app.js?v=7" in html
+    assert "/static/styles.css?v=6" in html
 
 
 def test_temporal_impact_surface_is_natural_bounded_and_deterministic() -> None:
@@ -125,7 +125,12 @@ def test_cold_start_renders_intake_without_plan_machinery() -> None:
     assert 'id="orientation-shell"' in html and 'aria-labelledby="transition-title" hidden' in html
     assert '<div class="content-grid" hidden>' in html
     assert 'id="add-context-top"' in html and 'type="button" hidden' in html
-    assert "if (state.version === 0)" in script
+    assert "if (!state.starting_vector_complete && state.version === 0)" in script
+    starting = script[script.index("function renderStartingVector") : script.index("function submitStartingVector")]
+    assert "Who are you planning for?" in starting
+    assert "Where is the service member in their timeline?" in starting
+    assert "Military branch" in starting
+    assert "Service category" in starting
     fresh = script[script.index("function renderColdFrontDoor") : script.index("function renderPrimary")]
     assert "You do not need to have your transition figured out." in fresh
     assert "Start with a document" in fresh
@@ -173,7 +178,8 @@ def test_front_door_photos_are_bounded_optimized_assets() -> None:
 def test_pre_anchor_state_renders_the_backend_question_without_plan_scaffolding() -> None:
     script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
     assert "return state.version > 0 && Boolean(state.human_anchor)" in script
-    assert "if (state.version === 0)" in script
+    assert "if (!state.starting_vector_complete && state.version === 0)" in script
+    assert "if (!state.human_anchor && !state.original_intents.length)" in script
     assert '$("#orientation-shell").hidden = !started' in script
     assert '<h2 id="primary-title">${escapeHtml(humanCopy(gate.question))}</h2>' in script
 
@@ -187,6 +193,20 @@ def test_progressive_disclosure_and_feedback_are_state_earned() -> None:
     assert "hasRendered && next.state.version !== previousVersion" in script
     assert "renderChanged(visibleFeedback)" in script
     assert 'render(await api("/api/state"), { showFeedback: false })' in script
+
+
+def test_fog_bank_is_persistent_human_control_not_an_automatic_mutation() -> None:
+    html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    assert 'id="open-fog-bank"' in html
+    assert "Something doesn’t fit" in html
+    assert 'id="fog-bank-panel"' in html
+    assert "Nothing changes unless you review and accept" in html
+    assert 'api("/api/fog-bank"' in script
+    assert 'api("/api/fog-bank/accept"' in script
+    assert "Keep my current plan" in script
+    assert "Use this re-orientation" in script
+    assert "none gains authority merely because it may matter" in script
 
 
 def test_execution_state_projection_is_human_facing() -> None:

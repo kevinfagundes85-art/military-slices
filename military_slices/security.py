@@ -124,6 +124,40 @@ def verify_what_if(token: str, *, profile_id: str) -> dict[str, Any]:
     return payload
 
 
+def issue_fog_bank(
+    *,
+    profile_id: str,
+    source_version: int,
+    reviewed_input: str,
+    ttl_seconds: int = 1800,
+) -> str:
+    return _encode(
+        {
+            "kind": "fog-bank",
+            "sub": profile_id,
+            "source_version": source_version,
+            "reviewed_input": reviewed_input,
+            "sha256": hashlib.sha256(reviewed_input.encode()).hexdigest(),
+            "exp": int(time.time()) + ttl_seconds,
+        }
+    )
+
+
+def verify_fog_bank(token: str, *, profile_id: str) -> dict[str, Any]:
+    payload = _decode(token)
+    if payload.get("kind") != "fog-bank" or payload.get("sub") != profile_id:
+        raise TokenError("That Fog Bank review does not belong to this plan.")
+    if int(payload.get("exp", 0)) < int(time.time()):
+        raise TokenError("That Fog Bank review expired. Reconsider it from the current plan.")
+    text = payload.get("reviewed_input")
+    if not isinstance(text, str):
+        raise TokenError("Invalid Fog Bank review token.")
+    expected = hashlib.sha256(text.encode()).hexdigest()
+    if not hmac.compare_digest(str(payload.get("sha256", "")), expected):
+        raise TokenError("That Fog Bank review failed integrity validation.")
+    return payload
+
+
 @dataclass
 class RateBucket:
     window_started: float

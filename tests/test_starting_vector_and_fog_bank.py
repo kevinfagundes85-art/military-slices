@@ -1,0 +1,293 @@
+from __future__ import annotations
+
+from fastapi.testclient import TestClient
+
+from military_slices.app import create_app
+from military_slices.control import lens_projections
+from military_slices.engine import (
+    active_gate,
+    apply_confirmed_input,
+    apply_decision,
+    apply_fog_bank_reorientation,
+    apply_starting_vector,
+    examine_fog_bank,
+    new_state,
+    orient,
+    reconstitute_state,
+)
+from military_slices.models import (
+    LifecyclePosition,
+    MilitaryStateSubject,
+    PlanningActor,
+    ServiceComponent,
+    ServiceName,
+    SliceName,
+)
+from military_slices.store import MemoryStore
+
+ACCEPTANCE_INPUT = (
+    "Left the military 3 years ago after 20 years working with difficult technology and cyber problems. "
+    "I've been working as a cyber engineer but I want to build something cool with AI to make an "
+    "impact on everyone possible."
+)
+
+FOG_INPUT = (
+    "I already left the military three years ago. I'm already working as a cyber engineer. "
+    "This isn't about finding my first civilian job; I'm trying to figure out what I should build or do next."
+)
+
+
+def _vector_payload(**overrides: object) -> dict[str, object]:
+    payload: dict[str, object] = {
+        "operating_role": "veteran_service_member",
+        "lifecycle_position": "separated_1_to_5_years",
+        "service": "navy",
+        "component": "active_duty",
+        "expected_version": 0,
+        "idempotency_key": "starting-vector-0001",
+    }
+    payload.update(overrides)
+    return payload
+
+
+def _started_state() -> object:
+    return apply_starting_vector(
+        new_state("ms-vector-test"),
+        operating_role="veteran_service_member",
+        lifecycle_position=LifecyclePosition.SEPARATED_1_TO_5_YEARS,
+        service=ServiceName.NAVY,
+        component=ServiceComponent.ACTIVE_DUTY,
+        idempotency_key="starting-vector-0001",
+    )
+
+
+def _wrong_frame_state() -> object:
+    state = apply_starting_vector(
+        new_state("ms-fog-test"),
+        operating_role="veteran_service_member",
+        lifecycle_position=LifecyclePosition.LEAVING_WITHIN_12_MONTHS,
+        service=ServiceName.NAVY,
+        component=ServiceComponent.ACTIVE_DUTY,
+        idempotency_key="wrong-vector-0001",
+    )
+    state = apply_confirmed_input(
+        state,
+        orient("I need civilian work.", context=state),
+        idempotency_key="wrong-anchor-0001",
+    )
+    return apply_decision(
+        state,
+        gate_id="planned-transition-date",
+        value="2027-06-01",
+        idempotency_key="wrong-date-0001",
+    )
+
+
+def test_starting_vector_is_one_trusted_persistent_mutation() -> None:
+    store = MemoryStore()
+    client = TestClient(create_app(store=store))
+
+    response = client.post("/api/starting-vector", json=_vector_payload())
+
+    assert response.status_code == 200
+    state = response.json()["state"]
+    assert state["version"] == 1
+    assert state["starting_vector_complete"] is True
+    assert state["planning_actor"] == "veteran"
+    assert state["military_state_subject"] == "planning_actor"
+    assert state["lifecycle_position"] == "separated_1_to_5_years"
+    assert state["service"] == "navy"
+    assert state["component_status"] == "active_duty"
+    assert state["mutation_events"][-1]["mutation_kind"] == "starting_vector"
+    assert state["mutation_events"][-1]["actor"]["trusted"] is True
+
+
+def test_role_mapping_preserves_planner_and_military_subject() -> None:
+    spouse = apply_starting_vector(
+        new_state("ms-spouse"),
+        operating_role="spouse_partner",
+        lifecycle_position=LifecyclePosition.CURRENTLY_SERVING,
+        service=ServiceName.ARMY,
+        component=ServiceComponent.ACTIVE_DUTY,
+        idempotency_key="spouse-vector-0001",
+    )
+    counselor = apply_starting_vector(
+        new_state("ms-counselor"),
+        operating_role="counselor_supporter",
+        lifecycle_position=LifecyclePosition.LEAVING_WITHIN_12_MONTHS,
+        service=ServiceName.AIR_FORCE,
+        component=ServiceComponent.RESERVE,
+        idempotency_key="counselor-vector-0001",
+    )
+
+    assert spouse.planning_actor == PlanningActor.MILITARY_SPOUSE
+    assert spouse.military_state_subject == MilitaryStateSubject.PLANNING_ACTOR_SPOUSE
+    assert counselor.planning_actor == PlanningActor.COUNSELOR_SUPPORTER
+    assert counselor.military_state_subject == MilitaryStateSubject.SUPPORTED_PERSON
+
+
+def test_acceptance_scenario_does_not_become_first_civilian_job_transition() -> None:
+    started = _started_state()
+    result = orient(ACCEPTANCE_INPUT, context=started)
+    state = apply_confirmed_input(started, result, idempotency_key="acceptance-input-0001")
+
+    assert state.human_anchor != "Find civilian work"
+    assert state.lifecycle_position == LifecyclePosition.SEPARATED_1_TO_5_YEARS
+    assert state.current_timeline_window == "H"
+    assert state.stage == "STABILIZE"
+    assert all(gate.id != "planned-transition-date" for gate in state.gates)
+    career = next(item for item in lens_projections(state) if item.name == SliceName.CAREER)
+    assert "one date clarifies" not in career.summary.casefold()
+
+
+def test_deterministic_timeline_cannot_be_silently_overridden_by_free_text() -> None:
+    started = _started_state()
+
+    result = orient("I expect to leave active service next spring for civilian work.", context=started)
+
+    assert result.sufficient is False
+    assert result.conflicts
+    assert "timeline" in result.clarification_question.casefold()
+    assert started.lifecycle_position == LifecyclePosition.SEPARATED_1_TO_5_YEARS
+    assert started.version == 1
+
+
+def test_currently_serving_without_departure_does_not_manufacture_a_separation_gate() -> None:
+    state = apply_starting_vector(
+        new_state("ms-serving"),
+        operating_role="veteran_service_member",
+        lifecycle_position=LifecyclePosition.CURRENTLY_SERVING,
+        service=ServiceName.COAST_GUARD,
+        component=ServiceComponent.ACTIVE_DUTY,
+        idempotency_key="serving-vector-0001",
+    )
+    state = apply_confirmed_input(
+        state,
+        orient("I want to decide what kind of AI product to build next.", context=state),
+        idempotency_key="serving-input-0001",
+    )
+
+    assert all(gate.id != "planned-transition-date" for gate in state.gates)
+
+
+def test_fog_bank_examination_and_cancellation_write_nothing() -> None:
+    current = _wrong_frame_state()
+    before = current.model_dump(mode="json")
+
+    proposal = examine_fog_bank(current, FOG_INPUT)
+
+    assert proposal.status == "review_ready"
+    assert proposal.changes
+    assert current.model_dump(mode="json") == before
+    assert current.human_anchor == "Find civilian work"
+    assert {change.field for change in proposal.changes} == {
+        "human_anchor",
+        "lifecycle_position",
+        "transition_date",
+    }
+    assert set(proposal.affected_slices) == set(SliceName)
+
+
+def test_fog_bank_acceptance_uses_normal_version_lineage_and_replay_contract() -> None:
+    current = _wrong_frame_state()
+    proposal = examine_fog_bank(current, FOG_INPUT)
+
+    updated = apply_fog_bank_reorientation(current, proposal, idempotency_key="fog-accept-0001")
+    replay = apply_fog_bank_reorientation(updated, proposal, idempotency_key="fog-accept-0001")
+
+    assert updated.version == current.version + 1
+    assert updated.human_anchor != "Find civilian work"
+    assert updated.lifecycle_position == LifecyclePosition.SEPARATED_1_TO_5_YEARS
+    assert updated.transition_date is None
+    assert all(gate.id != "planned-transition-date" for gate in updated.gates)
+    assert any(decision.gate_id == "fog-bank-reorientation" for decision in updated.decisions)
+    assert replay.version == updated.version
+    assert reconstitute_state(updated).human_anchor == updated.human_anchor
+
+
+def test_fog_bank_api_enforces_zero_write_stale_replay_and_cross_user_isolation() -> None:
+    store = MemoryStore()
+    app = create_app(store=store)
+    owner = TestClient(app)
+    other = TestClient(app)
+    owner.post("/api/starting-vector", json=_vector_payload())
+    orientation = owner.post("/api/orient", json={"text": "I need civilian work."}).json()
+    owner.post(
+        "/api/confirm",
+        json={
+            "token": orientation["token"],
+            "reviewed_input": orientation["reviewed_input"],
+            "expected_version": 1,
+            "idempotency_key": "wrong-frame-api-0001",
+        },
+    )
+    before = owner.get("/api/state").json()["state"]
+
+    examined = owner.post(
+        "/api/fog-bank",
+        json={"text": FOG_INPUT, "source_version": before["version"]},
+    )
+    assert examined.status_code == 200
+    assert owner.get("/api/state").json()["state"]["version"] == before["version"]
+    proposal = examined.json()
+
+    cross_user = other.post(
+        "/api/fog-bank/accept",
+        json={
+            "token": proposal["token"],
+            "expected_version": 0,
+            "idempotency_key": "fog-cross-user-0001",
+        },
+    )
+    assert cross_user.status_code == 400
+
+    accepted = owner.post(
+        "/api/fog-bank/accept",
+        json={
+            "token": proposal["token"],
+            "expected_version": before["version"],
+            "idempotency_key": "fog-api-accept-0001",
+        },
+    )
+    assert accepted.status_code == 200
+    accepted_state = accepted.json()["state"]
+    assert accepted_state["mutation_events"][-1]["mutation_kind"] == "fog_bank_reorientation"
+    assert accepted_state["lineage"][-1]["authority_refs"]
+
+    replay = owner.post(
+        "/api/fog-bank/accept",
+        json={
+            "token": proposal["token"],
+            "expected_version": before["version"],
+            "idempotency_key": "fog-api-accept-0001",
+        },
+    )
+    assert replay.status_code == 200
+    assert replay.json()["state"]["version"] == accepted_state["version"]
+
+
+def test_insufficient_fog_bank_context_requests_one_detail_and_writes_nothing() -> None:
+    state = _started_state()
+    proposal = examine_fog_bank(state, "Something feels wrong.")
+
+    assert proposal.status == "clarification_needed"
+    assert proposal.clarification_question
+    assert proposal.token == ""
+    assert active_gate(state) is not None
+
+
+def test_fog_bank_acceptance_rejects_a_stale_source_version() -> None:
+    state = _wrong_frame_state()
+    proposal = examine_fog_bank(state, FOG_INPUT)
+    newer = apply_confirmed_input(
+        state,
+        orient("I prefer predictable hours.", context=state),
+        idempotency_key="intervening-write-0001",
+    )
+
+    try:
+        apply_fog_bank_reorientation(newer, proposal, idempotency_key="stale-fog-0001")
+    except ValueError as exc:
+        assert "changed after this exploration" in str(exc)
+    else:
+        raise AssertionError("A stale Fog Bank proposal must not mutate newer state.")

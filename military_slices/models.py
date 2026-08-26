@@ -66,12 +66,29 @@ class PlanningActor(StrEnum):
     SERVICE_MEMBER = "service_member"
     VETERAN = "veteran"
     MILITARY_SPOUSE = "military_spouse"
+    COUNSELOR_SUPPORTER = "counselor_supporter"
 
 
 class MilitaryStateSubject(StrEnum):
     UNKNOWN = "unknown"
     PLANNING_ACTOR = "planning_actor"
     PLANNING_ACTOR_SPOUSE = "planning_actor_spouse"
+    SUPPORTED_PERSON = "supported_person"
+
+
+class LifecyclePosition(StrEnum):
+    UNKNOWN = "unknown"
+    CURRENTLY_SERVING = "currently_serving"
+    LEAVING_WITHIN_12_MONTHS = "leaving_within_12_months"
+    SEPARATED_WITHIN_LAST_YEAR = "separated_within_last_year"
+    SEPARATED_1_TO_5_YEARS = "separated_1_to_5_years"
+    SEPARATED_MORE_THAN_5_YEARS = "separated_more_than_5_years"
+
+
+class ServiceComponent(StrEnum):
+    ACTIVE_DUTY = "active_duty"
+    RESERVE = "reserve"
+    NATIONAL_GUARD = "national_guard"
 
 
 class StateCategory(StrEnum):
@@ -448,6 +465,42 @@ class WhatIfPromotionRequest(BaseModel):
     idempotency_key: str = Field(min_length=8, max_length=128)
 
 
+class StartingVectorRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    operating_role: Literal["veteran_service_member", "spouse_partner", "counselor_supporter"]
+    lifecycle_position: LifecyclePosition
+    service: ServiceName
+    component: ServiceComponent
+    expected_version: int = Field(ge=0)
+    idempotency_key: str = Field(min_length=8, max_length=128)
+
+
+class FogBankRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    text: str = Field(min_length=3, max_length=4_000)
+    source_version: int = Field(ge=0)
+
+
+class FogBankAcceptRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    token: str
+    expected_version: int = Field(ge=0)
+    idempotency_key: str = Field(min_length=8, max_length=128)
+
+
+class FogBankChange(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    field: Literal["human_anchor", "lifecycle_position", "transition_date"]
+    current_value: str | None = None
+    proposed_value: str | None = None
+    reason: str
+    affected_slices: list[SliceName] = Field(default_factory=list)
+
+
 class RevalidationRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -562,6 +615,8 @@ class CanonicalState(BaseModel):
     career_target: str | None = None
     planning_actor: PlanningActor = PlanningActor.UNKNOWN
     military_state_subject: MilitaryStateSubject = MilitaryStateSubject.UNKNOWN
+    starting_vector_complete: bool = False
+    lifecycle_position: LifecyclePosition = LifecyclePosition.UNKNOWN
     service: ServiceName | None = None
     component_status: str | None = None
     separation_type: Literal["separation", "retirement"] | None = None
@@ -611,7 +666,23 @@ class OrientationResult(BaseModel):
     statements: list[OrientedStatement]
     affected_slices: list[SliceName]
     clarification_question: str | None = None
+    conflicts: list[str] = Field(default_factory=list)
     sufficient: bool
+    token: str = ""
+
+
+class FogBankProposal(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    source_version: int = Field(ge=0)
+    reviewed_input: str
+    status: Literal["clarification_needed", "review_ready"]
+    summary: str
+    clarification_question: str | None = None
+    statements: list[OrientedStatement] = Field(default_factory=list)
+    conflicts: list[str] = Field(default_factory=list)
+    affected_slices: list[SliceName] = Field(default_factory=list)
+    changes: list[FogBankChange] = Field(default_factory=list)
     token: str = ""
 
 

@@ -17,6 +17,7 @@ from military_slices.models import (
     ExecutionStatus,
     FreshnessStatus,
     GateState,
+    LifecyclePosition,
     MilitaryStateSubject,
     OrientationResult,
     PlanningActor,
@@ -254,6 +255,12 @@ def _anchor_candidate(clause: str) -> tuple[int, int, str, str] | None:
 def _canonical_anchor(clause: str, candidate_class: str, domain: str) -> str:
     lower = clause.casefold()
     if domain == "employment":
+        existing_civilian_work = bool(
+            re.search(r"\b(?:already\s+)?(?:work(?:ing)?|employed)\s+as\s+(?:a|an)\b", lower)
+            or "already have a civilian job" in lower
+        )
+        if existing_civilian_work:
+            return clause.strip()
         return "Find civilian work"
     if domain == "education" and "resume" not in lower and "résumé" not in lower:
         return "Choose an education or training path"
@@ -634,7 +641,17 @@ def refresh_path_state(state: CanonicalState, *, today: date | None = None) -> C
     state.current_goal = state.human_anchor
 
     domain = anchor_domain(state.human_anchor)
-    window_id = transition_window_id(state.transition_date, today=today)
+    separated_positions = {
+        LifecyclePosition.SEPARATED_WITHIN_LAST_YEAR,
+        LifecyclePosition.SEPARATED_1_TO_5_YEARS,
+        LifecyclePosition.SEPARATED_MORE_THAN_5_YEARS,
+    }
+    if state.lifecycle_position in separated_positions:
+        window_id = "H"
+    elif state.lifecycle_position == LifecyclePosition.LEAVING_WITHIN_12_MONTHS and not state.transition_date:
+        window_id = "C"
+    else:
+        window_id = transition_window_id(state.transition_date, today=today)
     state.current_timeline_window = window_id
     if window_id == "H":
         state.stage = "STABILIZE"
@@ -653,9 +670,13 @@ def refresh_path_state(state: CanonicalState, *, today: date | None = None) -> C
     elif domain == "resume":
         state.path_target_state = "PREPARATION_BASELINE_READY"
         tasks = _resume_tasks(state.human_anchor or "")
+    elif state.lifecycle_position == LifecyclePosition.CURRENTLY_SERVING:
+        state.path_target_state = "PATH_IDENTIFIED"
+        tasks = [_domain_fallback(domain)]
     elif (
         window_id == "PATH_IDENTITY"
-        and state.military_state_subject == MilitaryStateSubject.PLANNING_ACTOR_SPOUSE
+        and state.military_state_subject
+        in (MilitaryStateSubject.PLANNING_ACTOR_SPOUSE, MilitaryStateSubject.SUPPORTED_PERSON)
     ):
         state.path_target_state = "PATH_IDENTIFIED"
         tasks = [_domain_fallback(domain)]
@@ -668,7 +689,8 @@ def refresh_path_state(state: CanonicalState, *, today: date | None = None) -> C
         tasks = []
         service_task = (
             None
-            if state.military_state_subject == MilitaryStateSubject.PLANNING_ACTOR_SPOUSE
+            if state.military_state_subject
+            in (MilitaryStateSubject.PLANNING_ACTOR_SPOUSE, MilitaryStateSubject.SUPPORTED_PERSON)
             else _service_path_task(state.service, window_id)
         )
         if service_task:

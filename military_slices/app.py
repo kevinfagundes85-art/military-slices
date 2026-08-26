@@ -21,9 +21,12 @@ from military_slices.engine import (
     apply_artifact_input,
     apply_confirmed_input,
     apply_decision,
+    apply_fog_bank_reorientation,
     apply_hypotheses,
     apply_revalidation,
+    apply_starting_vector,
     career_resolution_required,
+    examine_fog_bank,
     orient,
     reconstitute_state,
 )
@@ -39,11 +42,14 @@ from military_slices.models import (
     Authority,
     ConfirmRequest,
     DecisionRequest,
+    FogBankAcceptRequest,
+    FogBankRequest,
     GateState,
     OrientRequest,
     ResolverTransitionProposal,
     RevalidationRequest,
     SliceName,
+    StartingVectorRequest,
     StateEnvelope,
     WhatIfPromotionRequest,
     WhatIfRequest,
@@ -52,9 +58,11 @@ from military_slices.path_runtime import PACK_VERSION
 from military_slices.security import (
     LocalRateLimiter,
     TokenError,
+    issue_fog_bank,
     issue_orientation,
     issue_session,
     issue_what_if,
+    verify_fog_bank,
     verify_orientation,
     verify_session,
     verify_what_if,
@@ -293,7 +301,8 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
         profile_id = _profile(response, military_slices_session)
         _rate_limit(application, profile_id)
         started = time.perf_counter()
-        result = orient(payload.text)
+        current = reconstitute_state(application.state.store.get(profile_id))
+        result = orient(payload.text, context=current if current.starting_vector_complete else None)
         result.token = issue_orientation(result.reviewed_input)
         _event(
             "orientation",
@@ -324,7 +333,10 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             return _envelope(current)
         if current.version != payload.expected_version:
             raise VersionConflictError("Your plan changed in another tab. Refresh to continue.")
-        oriented = orient(payload.reviewed_input)
+        oriented = orient(
+            payload.reviewed_input,
+            context=current if current.starting_vector_complete else None,
+        )
         if not oriented.sufficient:
             raise HTTPException(
                 status_code=400,
@@ -363,6 +375,130 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             agent_gates_closed=agent_telemetry.get("agent_gates_closed", 0),
             human_gate=current_gate.id if current_gate else None,
             **_temporal_delta(current, saved),
+        )
+        return _envelope(saved, agent_run=_agent_run(agent_result))
+
+    @application.post("/api/starting-vector", response_model=StateEnvelope)
+    async def starting_vector(
+        payload: StartingVectorRequest,
+        request: Request,
+        response: Response,
+        military_slices_session: Annotated[str | None, Cookie()] = None,
+    ) -> StateEnvelope:
+        profile_id = _profile(response, military_slices_session)
+        _rate_limit(application, profile_id)
+        current = reconstitute_state(application.state.store.get(profile_id))
+        if payload.idempotency_key in current.processed_keys:
+            return _envelope(current)
+        if current.version != payload.expected_version:
+            raise VersionConflictError("Your plan changed in another tab. Refresh to continue.")
+        try:
+            updated = apply_starting_vector(
+                current,
+                operating_role=payload.operating_role,
+                lifecycle_position=payload.lifecycle_position,
+                service=payload.service,
+                component=payload.component,
+                idempotency_key=payload.idempotency_key,
+            )
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        updated = _record_governed_mutation(
+            current=current,
+            updated=updated,
+            profile_id=profile_id,
+            idempotency_key=payload.idempotency_key,
+            mutation_kind="starting_vector",
+            dependency_refs=["human-starting-vector", f"canonical-version:{current.version}"],
+        )
+        saved = application.state.store.save_governed(updated, expected_version=current.version)
+        _event(
+            "starting_vector_confirmed",
+            profile_id,
+            request,
+            version=saved.version,
+            operating_role=payload.operating_role,
+            lifecycle_position=payload.lifecycle_position.value,
+            service=payload.service.value,
+            component=payload.component.value,
+        )
+        return _envelope(saved)
+
+    @application.post("/api/fog-bank")
+    async def fog_bank(
+        payload: FogBankRequest,
+        request: Request,
+        response: Response,
+        military_slices_session: Annotated[str | None, Cookie()] = None,
+    ) -> dict[str, Any]:
+        profile_id = _profile(response, military_slices_session)
+        _rate_limit(application, profile_id)
+        current = reconstitute_state(application.state.store.get(profile_id))
+        if current.version != payload.source_version:
+            raise VersionConflictError("Your plan changed. Reconsider this from the current plan.")
+        proposal = examine_fog_bank(current, payload.text)
+        if proposal.status == "review_ready":
+            proposal.token = issue_fog_bank(
+                profile_id=profile_id,
+                source_version=current.version,
+                reviewed_input=proposal.reviewed_input,
+            )
+        _event(
+            "fog_bank_examined",
+            profile_id,
+            request,
+            source_version=current.version,
+            status=proposal.status,
+            changes=len(proposal.changes),
+            production_mutations=0,
+        )
+        return proposal.model_dump(mode="json")
+
+    @application.post("/api/fog-bank/accept", response_model=StateEnvelope)
+    async def accept_fog_bank(
+        payload: FogBankAcceptRequest,
+        request: Request,
+        response: Response,
+        military_slices_session: Annotated[str | None, Cookie()] = None,
+    ) -> StateEnvelope:
+        profile_id = _profile(response, military_slices_session)
+        _rate_limit(application, profile_id)
+        current = reconstitute_state(application.state.store.get(profile_id))
+        if payload.idempotency_key in current.processed_keys:
+            return _envelope(current)
+        if current.version != payload.expected_version:
+            raise VersionConflictError("Your plan changed. Reconsider this from the current plan.")
+        try:
+            token_payload = verify_fog_bank(payload.token, profile_id=profile_id)
+        except TokenError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        if int(token_payload["source_version"]) != current.version:
+            raise VersionConflictError("Your plan changed. Reconsider this from the current plan.")
+        proposal = examine_fog_bank(current, str(token_payload["reviewed_input"]))
+        try:
+            updated = apply_fog_bank_reorientation(
+                current,
+                proposal,
+                idempotency_key=payload.idempotency_key,
+            )
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        updated, agent_result = await _resolve_current_gate(application, updated)
+        updated = _record_governed_mutation(
+            current=current,
+            updated=updated,
+            profile_id=profile_id,
+            idempotency_key=payload.idempotency_key,
+            mutation_kind="fog_bank_reorientation",
+            dependency_refs=["human-reviewed-fog-bank", f"canonical-version:{current.version}"],
+        )
+        saved = application.state.store.save_governed(updated, expected_version=current.version)
+        _event(
+            "fog_bank_accepted",
+            profile_id,
+            request,
+            version=saved.version,
+            changes=len(proposal.changes),
         )
         return _envelope(saved, agent_run=_agent_run(agent_result))
 
@@ -537,7 +673,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             raise HTTPException(status_code=400, detail=str(exc)) from exc
         finally:
             data = b""
-        oriented = orient(text)
+        oriented = orient(text, context=current if current.starting_vector_complete else None)
         updated = apply_artifact_input(
             current,
             oriented,

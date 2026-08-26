@@ -7,6 +7,7 @@ const contentGrid = $(".content-grid");
 let envelope = null;
 let pendingOrientation = null;
 let pendingWhatIf = null;
+let pendingFogBank = null;
 let whatIfSourceVersion = null;
 let hasRendered = false;
 let reviewReturn = "plan";
@@ -370,6 +371,83 @@ function taskHorizon(tasks, expanded = false) {
   `;
 }
 
+function renderStartingVector() {
+  primary.innerHTML = `
+    <div class="section-kicker">Start with a few facts</div>
+    <h2 id="primary-title">Let’s put you in the right place first.</h2>
+    <p class="gate-copy">Four quick choices keep Military SLICES from guessing where you are in military life.</p>
+    <form id="starting-vector-form" class="gate-form">
+      <fieldset>
+        <legend>Who are you planning for?</legend>
+        <div class="choice-grid">
+          <label class="choice-option"><input type="radio" name="operating-role" value="veteran_service_member" required><span>Veteran or service member</span></label>
+          <label class="choice-option"><input type="radio" name="operating-role" value="spouse_partner"><span>Spouse or partner</span></label>
+          <label class="choice-option"><input type="radio" name="operating-role" value="counselor_supporter"><span>Counselor or supporter</span></label>
+        </div>
+      </fieldset>
+      <label for="starting-timeline">Where is the service member in their timeline?</label>
+      <select id="starting-timeline" required>
+        <option value="">Choose one</option>
+        <option value="currently_serving">Currently serving, with no planned departure in the next year</option>
+        <option value="leaving_within_12_months">Leaving within about 12 months</option>
+        <option value="separated_within_last_year">Separated within the last year</option>
+        <option value="separated_1_to_5_years">Separated 1–5 years ago</option>
+        <option value="separated_more_than_5_years">Separated more than 5 years ago</option>
+      </select>
+      <label for="starting-service">Military branch</label>
+      <select id="starting-service" required>
+        <option value="">Choose one</option>
+        ${Object.entries(serviceLabels).map(([value, label]) => `<option value="${value}">${label}</option>`).join("")}
+      </select>
+      <label for="starting-component">Service category</label>
+      <select id="starting-component" required>
+        <option value="">Choose one</option>
+        <option value="active_duty">Active duty or full-time service</option>
+        <option value="reserve">Reserve</option>
+        <option value="national_guard">National Guard</option>
+      </select>
+      <button class="button button-primary" type="submit">Continue</button>
+    </form>
+    <p class="trust-note">These choices orient the plan. They do not determine eligibility or authorize an outcome.</p>
+  `;
+  $("#starting-vector-form").addEventListener("submit", submitStartingVector);
+}
+
+async function submitStartingVector(event) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const operatingRole = form.querySelector('input[name="operating-role"]:checked')?.value;
+  const lifecyclePosition = $("#starting-timeline").value;
+  const service = $("#starting-service").value;
+  const component = $("#starting-component").value;
+  if (!operatingRole || !lifecyclePosition || !service || !component) {
+    showInlineGuidance(primary, "Choose one answer for each starting question.");
+    return;
+  }
+  const button = event.submitter;
+  button.disabled = true;
+  try {
+    const next = await api("/api/starting-vector", {
+      method: "POST",
+      body: JSON.stringify({
+        operating_role: operatingRole,
+        lifecycle_position: lifecyclePosition,
+        service,
+        component,
+        expected_version: envelope.state.version,
+        idempotency_key: idempotencyKey(),
+      }),
+    });
+    render(next, { showFeedback: false });
+    focusPrimary();
+  } catch (error) {
+    if (error.status === 409) await loadState();
+    showInlineGuidance(primary, error.message);
+  } finally {
+    button.disabled = false;
+  }
+}
+
 function renderColdTextEntry(topic = null) {
   primary.innerHTML = `
     <button id="back-to-front-door" class="button button-quiet back-to-front" type="button">← Choose another way to start</button>
@@ -446,7 +524,11 @@ function renderPrimary(next) {
   const state = next.state;
   const gate = next.active_gate;
   const mode = executionMode(state);
-  if (state.version === 0) {
+  if (!state.starting_vector_complete && state.version === 0) {
+    renderStartingVector();
+    return;
+  }
+  if (!state.human_anchor && !state.original_intents.length) {
     renderColdFrontDoor();
     return;
   }
@@ -627,7 +709,7 @@ function renderChanged(feedback) {
 
 function showInspection(panel) {
   clearAnnouncement();
-  [addPanel, reviewPanel, $("#lens-panel"), $("#history-panel"), $("#what-if-panel")].forEach((item) => {
+  [addPanel, reviewPanel, $("#lens-panel"), $("#history-panel"), $("#what-if-panel"), $("#fog-bank-panel")].forEach((item) => {
     item.hidden = item !== panel;
   });
   contentGrid.hidden = true;
@@ -792,6 +874,98 @@ async function promoteWhatIf() {
   } catch (error) {
     if (error.status === 409) await loadState();
     announce(error.message, true);
+    button.disabled = false;
+  }
+}
+
+function openFogBank() {
+  pendingFogBank = null;
+  $("#fog-bank-form").hidden = false;
+  $("#fog-bank-result").hidden = true;
+  $("#fog-bank-text").value = "";
+  showInspection($("#fog-bank-panel"));
+  $("#fog-bank-text").focus();
+}
+
+async function examineFogBank(event) {
+  event.preventDefault();
+  const text = $("#fog-bank-text").value.trim();
+  if (!text) {
+    showInlineGuidance($("#fog-bank-panel"), "Describe what the current plan is missing or getting wrong.");
+    return;
+  }
+  const button = event.submitter;
+  button.disabled = true;
+  try {
+    pendingFogBank = await api("/api/fog-bank", {
+      method: "POST",
+      body: JSON.stringify({ text, source_version: envelope.state.version }),
+    });
+    renderFogBank(pendingFogBank);
+  } catch (error) {
+    if (error.status === 409) await loadState();
+    showInlineGuidance($("#fog-bank-panel"), error.message);
+  } finally {
+    button.disabled = false;
+  }
+}
+
+function renderFogBank(proposal) {
+  const result = $("#fog-bank-result");
+  result.hidden = false;
+  if (proposal.status === "clarification_needed") {
+    result.innerHTML = `
+      <div class="attention-note">
+        <h3>One more detail</h3>
+        <p>${escapeHtml(proposal.clarification_question)}</p>
+        <p class="trust-note">Your current plan has not changed.</p>
+      </div>
+    `;
+    $("#fog-bank-text").focus();
+    return;
+  }
+  $("#fog-bank-form").hidden = true;
+  result.innerHTML = `
+    <div class="attention-note"><strong>Nothing has changed yet.</strong> ${escapeHtml(proposal.summary)}</div>
+    ${proposal.conflicts.length ? `<h3>What no longer fits</h3><ul>${proposal.conflicts.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
+    <h3>Proposed re-orientation</h3>
+    <ul>${proposal.changes.map((change) => `<li><strong>${escapeHtml(change.reason)}</strong><br><span>${escapeHtml(humanCopy(change.current_value || "Not set"))} → ${escapeHtml(humanCopy(change.proposed_value || "Remove from the active plan"))}</span></li>`).join("")}</ul>
+    <p class="trust-note">Relevant areas may be reconsidered, but none gains authority merely because it may matter.</p>
+    <div class="button-row">
+      <button id="cancel-fog-bank" class="button button-quiet" type="button">Keep my current plan</button>
+      <button id="accept-fog-bank" class="button button-primary" type="button">Use this re-orientation</button>
+    </div>
+  `;
+  $("#cancel-fog-bank").addEventListener("click", () => {
+    pendingFogBank = null;
+    closeInspection($("#fog-bank-panel"), $("#open-fog-bank"));
+  });
+  $("#accept-fog-bank").addEventListener("click", acceptFogBank);
+}
+
+async function acceptFogBank() {
+  if (!pendingFogBank?.token) return;
+  const button = $("#accept-fog-bank");
+  button.disabled = true;
+  try {
+    const next = await api("/api/fog-bank/accept", {
+      method: "POST",
+      body: JSON.stringify({
+        token: pendingFogBank.token,
+        expected_version: envelope.state.version,
+        idempotency_key: idempotencyKey(),
+      }),
+    });
+    pendingFogBank = null;
+    $("#fog-bank-panel").hidden = true;
+    document.body.classList.remove("inspection-open");
+    contentGrid.hidden = false;
+    render(next, { showFeedback: true });
+    focusPrimary();
+    announce("Saved.");
+  } catch (error) {
+    if (error.status === 409) await loadState();
+    showInlineGuidance($("#fog-bank-panel"), error.message);
     button.disabled = false;
   }
 }
@@ -1038,6 +1212,7 @@ $("#open-what-if").addEventListener("click", () => {
   whatIfSourceVersion = null;
   openWhatIf();
 });
+$("#open-fog-bank").addEventListener("click", openFogBank);
 $("#close-lens").addEventListener("click", () => closeInspection($("#lens-panel"), $("#lens-nav .lens-button")));
 $("#close-history").addEventListener("click", () => closeInspection($("#history-panel"), $("#open-history")));
 $("#close-what-if").addEventListener("click", () => {
@@ -1045,7 +1220,12 @@ $("#close-what-if").addEventListener("click", () => {
   whatIfSourceVersion = null;
   closeInspection($("#what-if-panel"), $("#open-what-if"));
 });
+$("#close-fog-bank").addEventListener("click", () => {
+  pendingFogBank = null;
+  closeInspection($("#fog-bank-panel"), $("#open-fog-bank"));
+});
 $("#what-if-form").addEventListener("submit", createWhatIf);
+$("#fog-bank-form").addEventListener("submit", examineFogBank);
 
 $("#boot-shell").hidden = true;
 contentGrid.hidden = false;

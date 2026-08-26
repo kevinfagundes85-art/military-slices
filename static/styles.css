@@ -310,8 +310,10 @@ summary { min-height: 44px; display: flex; align-items: center; cursor: pointer;
 .completion-mark { display: grid; width: 3rem; height: 3rem; margin-bottom: 1rem; place-items: center; color: var(--accent-ink); background: var(--sea); border-radius: 50%; font-size: 1.5rem; font-weight: 900; }
 
 .gate-form { display: grid; gap: 1rem; margin-top: 1.5rem; }
-.gate-form label { font-weight: 750; }
-textarea, input[type="date"], input[type="text"] {
+.gate-form label, .gate-form legend { font-weight: 750; }
+.gate-form fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.gate-form fieldset .choice-grid { margin-top: 0.65rem; }
+textarea, select, input[type="date"], input[type="text"] {
   width: 100%;
   min-height: 50px;
   padding: 0.9rem 1rem;
@@ -320,6 +322,7 @@ textarea, input[type="date"], input[type="text"] {
   border: 1px solid #547188;
   border-radius: 0.75rem;
 }
+select { appearance: auto; }
 textarea { resize: vertical; }
 
 .choice-grid, .hypothesis-grid { display: grid; gap: 0.75rem; }
@@ -351,7 +354,7 @@ textarea { resize: vertical; }
 .review-statements li { padding: 0.75rem 0.9rem; border-left: 4px solid var(--accent); background: rgba(8, 20, 31, 0.55); }
 .review-summary { color: var(--sea); }
 
-.control-nav { display: flex; justify-content: space-between; gap: 0.7rem; margin-top: 1rem; }
+.control-nav { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 0.7rem; margin-top: 1rem; }
 .lens-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin: 1rem 0; }
 .lens-metrics div { padding: 0.75rem; border: 1px solid var(--line); border-radius: 0.7rem; }
 .lens-metrics dt { color: var(--muted); font-size: 0.78rem; }

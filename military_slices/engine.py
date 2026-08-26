@@ -19,12 +19,17 @@ from military_slices.models import (
     Evidence,
     Fact,
     FeedbackEvent,
+    FogBankChange,
+    FogBankProposal,
     Gate,
     GateState,
+    LifecyclePosition,
     MilitaryStateSubject,
     OrientationResult,
     OrientedStatement,
     PlanningActor,
+    ServiceComponent,
+    ServiceName,
     SliceName,
     SliceProjection,
     SurfaceType,
@@ -148,7 +153,51 @@ def _statement_kind(statement: str) -> str:
     return "fact"
 
 
-def orient(text: str) -> OrientationResult:
+def _explicit_lifecycle_claim(text: str) -> LifecyclePosition | None:
+    lower = text.casefold()
+    if re.search(
+        r"\b(?:left|separated|retired|got out)\b[^.!?]{0,50}"
+        r"\b(?:[1-5]|one|two|three|four|five)\s+years?\s+ago\b",
+        lower,
+    ):
+        return LifecyclePosition.SEPARATED_1_TO_5_YEARS
+    if re.search(
+        r"\b(?:left|separated|retired|got out)\b[^.!?]{0,50}"
+        r"\b(?:months?|less than a year|last year)\b",
+        lower,
+    ):
+        return LifecyclePosition.SEPARATED_WITHIN_LAST_YEAR
+    if re.search(r"\b(?:left|separated|retired|got out)\b[^.!?]{0,50}\b(?:[6-9]|\d{2,})\s+years?\s+ago\b", lower):
+        return LifecyclePosition.SEPARATED_MORE_THAN_5_YEARS
+    if any(term in lower for term in ("currently serving", "still serving", "on active duty now")):
+        return LifecyclePosition.CURRENTLY_SERVING
+    if any(term in lower for term in ("leave active service", "separate next", "retire next", "getting out next")):
+        return LifecyclePosition.LEAVING_WITHIN_12_MONTHS
+    return None
+
+
+def _orientation_conflicts(text: str, context: CanonicalState | None) -> list[str]:
+    if context is None or context.lifecycle_position == LifecyclePosition.UNKNOWN:
+        return []
+    claimed = _explicit_lifecycle_claim(text)
+    if claimed is None or claimed == context.lifecycle_position:
+        return []
+    established_past = context.lifecycle_position in {
+        LifecyclePosition.SEPARATED_WITHIN_LAST_YEAR,
+        LifecyclePosition.SEPARATED_1_TO_5_YEARS,
+        LifecyclePosition.SEPARATED_MORE_THAN_5_YEARS,
+    }
+    claimed_past = claimed in {
+        LifecyclePosition.SEPARATED_WITHIN_LAST_YEAR,
+        LifecyclePosition.SEPARATED_1_TO_5_YEARS,
+        LifecyclePosition.SEPARATED_MORE_THAN_5_YEARS,
+    }
+    if established_past != claimed_past:
+        return ["This conflicts with the service timeline you established at the start."]
+    return []
+
+
+def orient(text: str, *, context: CanonicalState | None = None) -> OrientationResult:
     statements: list[OrientedStatement] = []
     affected: list[SliceName] = []
     for sentence in _sentences(text):
@@ -165,9 +214,12 @@ def orient(text: str) -> OrientationResult:
         )
 
     meaningful = [statement for statement in statements if statement.affected_slices]
-    sufficient = bool(meaningful)
+    conflicts = _orientation_conflicts(text, context)
+    sufficient = bool(meaningful) and not conflicts
     clarification: str | None = None
-    if not sufficient:
+    if conflicts:
+        clarification = "Which service timeline is current? Nothing will change until you resolve this difference."
+    elif not sufficient:
         clarification = "What decision about your transition would you most like help with first?"
     elif SliceName.CAREER in affected and not any(
         term in text.lower() for term in ("want", "need", "prefer", "don't", "do not", "won't", "hate")
@@ -186,6 +238,7 @@ def orient(text: str) -> OrientationResult:
         statements=statements,
         affected_slices=affected,
         clarification_question=clarification,
+        conflicts=conflicts,
         sufficient=sufficient,
     )
 
@@ -205,6 +258,230 @@ def new_state(profile_id: str) -> CanonicalState:
     state.gates = _recompute_gates(state)
     state.projections = _build_projections(state)
     return bind_gate_contracts(derive_execution_state(state))
+
+
+def apply_starting_vector(
+    current: CanonicalState,
+    *,
+    operating_role: str,
+    lifecycle_position: LifecyclePosition,
+    service: ServiceName,
+    component: ServiceComponent,
+    idempotency_key: str,
+) -> CanonicalState:
+    if idempotency_key in current.processed_keys:
+        return current
+    if current.starting_vector_complete:
+        raise ValueError("The starting orientation is already established. Use Something doesn’t fit to reconsider it.")
+    state = deepcopy(current)
+    previous_execution = deepcopy(current.execution)
+    if operating_role == "veteran_service_member":
+        state.planning_actor = (
+            PlanningActor.VETERAN
+            if lifecycle_position in {
+                LifecyclePosition.SEPARATED_WITHIN_LAST_YEAR,
+                LifecyclePosition.SEPARATED_1_TO_5_YEARS,
+                LifecyclePosition.SEPARATED_MORE_THAN_5_YEARS,
+            }
+            else PlanningActor.SERVICE_MEMBER
+        )
+        state.military_state_subject = MilitaryStateSubject.PLANNING_ACTOR
+    elif operating_role == "spouse_partner":
+        state.planning_actor = PlanningActor.MILITARY_SPOUSE
+        state.military_state_subject = MilitaryStateSubject.PLANNING_ACTOR_SPOUSE
+    elif operating_role == "counselor_supporter":
+        state.planning_actor = PlanningActor.COUNSELOR_SUPPORTER
+        state.military_state_subject = MilitaryStateSubject.SUPPORTED_PERSON
+    else:
+        raise ValueError("Choose who you are planning for.")
+    state.lifecycle_position = lifecycle_position
+    state.service = service
+    state.component_status = component
+    state.starting_vector_complete = True
+    labels = {
+        "veteran_service_member": "Veteran or service member",
+        "spouse_partner": "Spouse or partner",
+        "counselor_supporter": "Counselor or supporter",
+    }
+    state.decisions.append(
+        Decision(
+            id=stable_id("decision", state.profile_id, idempotency_key),
+            gate_id="starting-vector",
+            value=f"{labels[operating_role]} · {lifecycle_position.value} · {service.value} · {component.value}",
+        )
+    )
+    state = refresh_path_state(state)
+    state.gates = _recompute_gates(state)
+    state.projections = _build_projections(state)
+    state.feedback.append(
+        FeedbackEvent(
+            id=stable_id("feedback", state.profile_id, idempotency_key),
+            headline="Your starting point is set.",
+            consequences=["The next question will use this service and timeline context."],
+        )
+    )
+    state.processed_keys.append(idempotency_key)
+    state.updated_at = utc_now()
+    state.version += 1
+    return derive_execution_state(state, previous=previous_execution, resolving_authority=Authority.HUMAN)
+
+
+def _already_civilian_employed(text: str) -> bool:
+    lower = text.casefold()
+    return bool(
+        re.search(r"\b(?:already\s+)?(?:work(?:ing)?|employed)\s+as\s+(?:a|an)\b", lower)
+        or any(term in lower for term in ("already have a civilian job", "already employed in civilian"))
+    )
+
+
+def examine_fog_bank(current: CanonicalState, text: str) -> FogBankProposal:
+    reviewed = text.strip()
+    oriented = orient(reviewed)
+    changes: list[FogBankChange] = []
+    conflicts: list[str] = []
+    claimed_timeline = _explicit_lifecycle_claim(reviewed)
+    if claimed_timeline and claimed_timeline != current.lifecycle_position:
+        changes.append(
+            FogBankChange(
+                field="lifecycle_position",
+                current_value=current.lifecycle_position.value,
+                proposed_value=claimed_timeline.value,
+                reason="Your new statement gives a different explicit service timeline.",
+                affected_slices=ALL_SLICES,
+            )
+        )
+        conflicts.append("The new service timeline differs from the current orientation.")
+        if claimed_timeline in {
+            LifecyclePosition.SEPARATED_WITHIN_LAST_YEAR,
+            LifecyclePosition.SEPARATED_1_TO_5_YEARS,
+            LifecyclePosition.SEPARATED_MORE_THAN_5_YEARS,
+        } and current.transition_date:
+            changes.append(
+                FogBankChange(
+                    field="transition_date",
+                    current_value=current.transition_date,
+                    proposed_value=None,
+                    reason="A future separation date cannot remain active for an already-separated veteran.",
+                    affected_slices=ALL_SLICES,
+                )
+            )
+
+    anchor_resolution = resolve_human_anchor(oriented)
+    proposed_anchor = anchor_resolution.anchor
+    employment_disproves_first_job = (
+        _already_civilian_employed(reviewed) and current.human_anchor == "Find civilian work"
+    )
+    if employment_disproves_first_job:
+        conflicts.append("Existing civilian employment conflicts with the current first-job target.")
+        if not proposed_anchor or proposed_anchor == "Find civilian work":
+            next_clause = next(
+                (
+                    sentence
+                    for sentence in _sentences(reviewed)
+                    if any(
+                        term in sentence.casefold()
+                        for term in ("trying to figure out", "want to build", "what i should build", "do next")
+                    )
+                ),
+                None,
+            )
+            proposed_anchor = next_clause
+    if proposed_anchor and proposed_anchor != current.human_anchor:
+        changes.append(
+            FogBankChange(
+                field="human_anchor",
+                current_value=current.human_anchor,
+                proposed_value=proposed_anchor,
+                reason="The reviewed statement identifies a different outcome to examine next.",
+                affected_slices=oriented.affected_slices or [SliceName.CAREER],
+            )
+        )
+
+    affected = list(
+        dict.fromkeys(
+            [slice_name for change in changes for slice_name in change.affected_slices]
+            + oriented.affected_slices
+        )
+    )
+    if not changes:
+        return FogBankProposal(
+            source_version=current.version,
+            reviewed_input=reviewed,
+            status="clarification_needed",
+            summary="There is not enough new context to propose a safe re-orientation yet.",
+            clarification_question="What is the current plan getting wrong or leaving out?",
+            statements=oriented.statements,
+            conflicts=conflicts,
+            affected_slices=affected,
+        )
+    return FogBankProposal(
+        source_version=current.version,
+        reviewed_input=reviewed,
+        status="review_ready",
+        summary="The current frame may need to change, but nothing has changed yet.",
+        statements=oriented.statements,
+        conflicts=conflicts,
+        affected_slices=affected,
+        changes=changes,
+    )
+
+
+def apply_fog_bank_reorientation(
+    current: CanonicalState,
+    proposal: FogBankProposal,
+    *,
+    idempotency_key: str,
+) -> CanonicalState:
+    if idempotency_key in current.processed_keys:
+        return current
+    if proposal.status != "review_ready" or not proposal.changes:
+        raise ValueError("This Fog Bank exploration does not contain a reviewable change.")
+    if proposal.source_version != current.version:
+        raise ValueError("The plan changed after this exploration. Reconsider it from the current plan.")
+    state = deepcopy(current)
+    previous_execution = deepcopy(current.execution)
+    for change in proposal.changes:
+        if change.field == "lifecycle_position" and change.proposed_value:
+            state.lifecycle_position = LifecyclePosition(change.proposed_value)
+            if state.lifecycle_position in {
+                LifecyclePosition.SEPARATED_WITHIN_LAST_YEAR,
+                LifecyclePosition.SEPARATED_1_TO_5_YEARS,
+                LifecyclePosition.SEPARATED_MORE_THAN_5_YEARS,
+            } and state.planning_actor == PlanningActor.SERVICE_MEMBER:
+                state.planning_actor = PlanningActor.VETERAN
+        elif change.field == "transition_date":
+            state.transition_date = change.proposed_value
+        elif change.field == "human_anchor":
+            state.human_anchor = change.proposed_value
+            state.current_goal = change.proposed_value
+    state.original_intents.append(proposal.reviewed_input)
+    _merge_human_facts(
+        state,
+        orient(proposal.reviewed_input),
+        evidence_label="Human-approved Fog Bank re-orientation",
+    )
+    state.decisions.append(
+        Decision(
+            id=stable_id("decision", state.profile_id, idempotency_key),
+            gate_id="fog-bank-reorientation",
+            value=proposal.reviewed_input,
+        )
+    )
+    state = propagate_temporal_changes(current, state)
+    state = refresh_path_state(state)
+    state.gates = _recompute_gates(state)
+    state.projections = _build_projections(state)
+    state.feedback.append(
+        FeedbackEvent(
+            id=stable_id("feedback", state.profile_id, idempotency_key),
+            headline="You changed how the plan is oriented.",
+            consequences=[change.reason for change in proposal.changes[:3]],
+        )
+    )
+    state.processed_keys.append(idempotency_key)
+    state.updated_at = utc_now()
+    state.version += 1
+    return derive_execution_state(state, previous=previous_execution, resolving_authority=Authority.HUMAN)
 
 
 def reconstitute_state(current: CanonicalState) -> CanonicalState:
@@ -400,9 +677,12 @@ def apply_confirmed_input(
     ):
         state.human_anchor = anchor_resolution.anchor
     detected_actor, detected_subject = detect_planning_parties(orientation.reviewed_input)
-    if detected_actor != PlanningActor.UNKNOWN:
+    if state.planning_actor == PlanningActor.UNKNOWN and detected_actor != PlanningActor.UNKNOWN:
         state.planning_actor = detected_actor
-    if detected_subject != MilitaryStateSubject.UNKNOWN:
+    if (
+        state.military_state_subject == MilitaryStateSubject.UNKNOWN
+        and detected_subject != MilitaryStateSubject.UNKNOWN
+    ):
         state.military_state_subject = detected_subject
     state.service = state.service or detect_service(orientation.reviewed_input)
     detected_type = detect_separation_type(orientation.reviewed_input)
@@ -416,7 +696,15 @@ def apply_confirmed_input(
             and _describes_household_relocation(orientation.reviewed_input)
         ):
             state.pcs_relocation_date = extracted_date
-        elif state.military_state_subject != MilitaryStateSubject.PLANNING_ACTOR_SPOUSE:
+        elif (
+            state.military_state_subject != MilitaryStateSubject.PLANNING_ACTOR_SPOUSE
+            and state.lifecycle_position
+            not in {
+            LifecyclePosition.SEPARATED_WITHIN_LAST_YEAR,
+            LifecyclePosition.SEPARATED_1_TO_5_YEARS,
+            LifecyclePosition.SEPARATED_MORE_THAN_5_YEARS,
+            }
+        ):
             state.transition_date = extracted_date
     explicit_target = _extract_career_target(orientation.reviewed_input)
     if _clears_career_target(orientation.reviewed_input):
@@ -482,9 +770,12 @@ def apply_artifact_input(
         max_new_facts=MAX_ARTIFACT_FACTS,
     )
     detected_actor, detected_subject = detect_planning_parties(orientation.reviewed_input)
-    if detected_actor != PlanningActor.UNKNOWN:
+    if state.planning_actor == PlanningActor.UNKNOWN and detected_actor != PlanningActor.UNKNOWN:
         state.planning_actor = detected_actor
-    if detected_subject != MilitaryStateSubject.UNKNOWN:
+    if (
+        state.military_state_subject == MilitaryStateSubject.UNKNOWN
+        and detected_subject != MilitaryStateSubject.UNKNOWN
+    ):
         state.military_state_subject = detected_subject
     state.service = state.service or detect_service(orientation.reviewed_input)
     detected_type = detect_separation_type(orientation.reviewed_input)
@@ -497,7 +788,15 @@ def apply_artifact_input(
             and _describes_household_relocation(orientation.reviewed_input)
         ):
             state.pcs_relocation_date = extracted_date
-        elif state.military_state_subject != MilitaryStateSubject.PLANNING_ACTOR_SPOUSE:
+        elif (
+            state.military_state_subject != MilitaryStateSubject.PLANNING_ACTOR_SPOUSE
+            and state.lifecycle_position
+            not in {
+            LifecyclePosition.SEPARATED_WITHIN_LAST_YEAR,
+            LifecyclePosition.SEPARATED_1_TO_5_YEARS,
+            LifecyclePosition.SEPARATED_MORE_THAN_5_YEARS,
+            }
+        ):
             state.transition_date = extracted_date
     explicit_target = _extract_career_target(orientation.reviewed_input)
     if explicit_target:
@@ -576,6 +875,10 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
         domain != "resume"
         and not state.transition_date
         and state.military_state_subject != MilitaryStateSubject.PLANNING_ACTOR_SPOUSE
+        and state.lifecycle_position in {
+            LifecyclePosition.UNKNOWN,
+            LifecyclePosition.LEAVING_WITHIN_12_MONTHS,
+        }
     ):
         gate = Gate(
             id="planned-transition-date",
