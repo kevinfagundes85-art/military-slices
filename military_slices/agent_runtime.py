@@ -40,6 +40,7 @@ class ResolverResult:
     hypotheses: list[CareerHypothesis]
     telemetry: dict[str, Any]
     provider: str
+    proposal_ref: str | None = None
 
 
 def authoritative_role_evidence(role_family: str) -> dict[str, Any]:

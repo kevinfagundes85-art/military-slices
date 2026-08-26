@@ -6,6 +6,7 @@ import pytest
 from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
+from military_slices.agent_runtime import Resolver, ResolverResult
 from military_slices.app import create_app
 from military_slices.domain_pack import installed_domain_pack_payload, installed_domain_pack_ref
 from military_slices.engine import apply_confirmed_input, new_state, orient, reconstitute_state
@@ -15,14 +16,17 @@ from military_slices.governance import (
     external_effects_enabled,
     probe_execution_enabled,
     reconstitute_governance,
+    resolver_nomination_ref,
     validate_domain_pack,
     validate_gate_children,
+    validate_resolver_nomination,
     verify_derived_indexes,
 )
 from military_slices.models import (
     ActorProvenance,
     Authority,
     CanonicalState,
+    CareerHypothesis,
     DomainPackRef,
     DomainPackStatus,
     Gate,
@@ -368,17 +372,28 @@ def test_application_has_no_external_dispatch_or_autonomous_probe_route() -> Non
 
 
 def test_resolver_nomination_is_audited_but_does_not_close_human_gate() -> None:
-    client = TestClient(create_app(store=MemoryStore()))
+    class CountingResolver(Resolver):
+        def __init__(self) -> None:
+            super().__init__(mode="deterministic")
+            self.calls = 0
+
+        async def resolve(self, state: CanonicalState) -> ResolverResult:
+            self.calls += 1
+            return await super().resolve(state)
+
+    resolver = CountingResolver()
+    client = TestClient(create_app(store=MemoryStore(), resolver=resolver))
     text = "I leave the Navy in June 2027. I want civilian work with predictable daytime hours."
     orientation = client.post("/api/orient", json={"text": text}).json()
+    body = {
+        "token": orientation["token"],
+        "reviewed_input": orientation["reviewed_input"],
+        "expected_version": 0,
+        "idempotency_key": "nomination-audit-0001",
+    }
     response = client.post(
         "/api/confirm",
-        json={
-            "token": orientation["token"],
-            "reviewed_input": orientation["reviewed_input"],
-            "expected_version": 0,
-            "idempotency_key": "nomination-audit-0001",
-        },
+        json=body,
     )
 
     assert response.status_code == 200
@@ -389,3 +404,49 @@ def test_resolver_nomination_is_audited_but_does_not_close_human_gate() -> None:
     assert nomination["authority"] == "bounded_agent"
     assert response.json()["active_gate"]["id"] == "career-direction"
     assert response.json()["active_gate"]["state"] == "PARTIAL"
+    proposal_refs = [
+        item
+        for item in state["mutation_events"][-1]["dependency_refs"]
+        if item.startswith("resolver-proposal:sha256:")
+    ]
+    assert len(proposal_refs) == 1
+    assert proposal_refs[0] in state["lineage"][-1]["depends_on"]
+    receipt = " ".join(response.json()["what_changed"]["consequences"])
+    assert "ready to explore" in receipt
+    assert not any(term in receipt.casefold() for term in ("helm", "adk", "gemini", "resolver", "governor"))
+    replay = client.post("/api/confirm", json=body)
+    assert replay.status_code == 200
+    assert replay.json()["state"]["version"] == state["version"]
+    assert resolver.calls == 1
+
+
+def test_resolver_nomination_identity_rejects_a_tampered_hypothesis_batch() -> None:
+    original = [
+        CareerHypothesis(
+            id="career_original",
+            title="Operations Analyst",
+            rationale="A bounded direction grounded in the supplied planning evidence.",
+            evidence=["O*NET 15-2031.00"],
+            capability_matches=["Structured analysis"],
+            possible_gaps=["Civilian data-tool evidence"],
+        )
+    ]
+    reference = resolver_nomination_ref(
+        gate_id="career-direction",
+        source_state_version=4,
+        hypotheses=original,
+    )
+    proposal = ResolverTransitionProposal(
+        gate_id="career-direction",
+        source_state_version=4,
+        proposed_state=GateState.PARTIAL,
+        authority=Authority.BOUNDED_AGENT,
+        effect="nominate",
+        scope=["career:hypothesis-nomination"],
+        evidence_refs=[reference],
+    )
+    validate_resolver_nomination(proposal=proposal, hypotheses=original)
+    tampered = [original[0].model_copy(update={"title": "Unbound Different Role"})]
+
+    with pytest.raises(GovernanceError, match="proposal identity"):
+        validate_resolver_nomination(proposal=proposal, hypotheses=tampered)

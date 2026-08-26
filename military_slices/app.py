@@ -5,6 +5,7 @@ import json
 import logging
 import os
 import time
+from dataclasses import replace
 from pathlib import Path
 from typing import Annotated, Any, cast
 
@@ -36,6 +37,8 @@ from military_slices.governance import (
     bind_gate_contracts,
     external_effects_enabled,
     probe_execution_enabled,
+    resolver_nomination_ref,
+    validate_resolver_nomination,
 )
 from military_slices.models import (
     ActorProvenance,
@@ -276,7 +279,11 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             profile_id=profile_id,
             idempotency_key=payload.idempotency_key,
             mutation_kind="what_if_promotion",
-            dependency_refs=[f"hypothetical:{branch.id}", f"canonical-version:{branch.source_version}"],
+            dependency_refs=[
+                f"hypothetical:{branch.id}",
+                f"canonical-version:{branch.source_version}",
+                *_agent_dependency_refs(agent_result),
+            ],
         )
         saved = application.state.store.save_governed(updated, expected_version=current.version)
         _event(
@@ -356,7 +363,11 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             profile_id=profile_id,
             idempotency_key=payload.idempotency_key,
             mutation_kind="confirmed_input",
-            dependency_refs=["reviewed-orientation", f"canonical-version:{current.version}"],
+            dependency_refs=[
+                "reviewed-orientation",
+                f"canonical-version:{current.version}",
+                *_agent_dependency_refs(agent_result),
+            ],
         )
         saved = application.state.store.save_governed(updated, expected_version=current.version)
         current_gate = active_gate(saved)
@@ -490,7 +501,11 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             profile_id=profile_id,
             idempotency_key=payload.idempotency_key,
             mutation_kind="fog_bank_reorientation",
-            dependency_refs=["human-reviewed-fog-bank", f"canonical-version:{current.version}"],
+            dependency_refs=[
+                "human-reviewed-fog-bank",
+                f"canonical-version:{current.version}",
+                *_agent_dependency_refs(agent_result),
+            ],
         )
         saved = application.state.store.save_governed(updated, expected_version=current.version)
         _event(
@@ -556,7 +571,11 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             profile_id=profile_id,
             idempotency_key=payload.idempotency_key,
             mutation_kind="human_decision",
-            dependency_refs=[f"gate:{payload.gate_id}", f"canonical-version:{current.version}"],
+            dependency_refs=[
+                f"gate:{payload.gate_id}",
+                f"canonical-version:{current.version}",
+                *_agent_dependency_refs(agent_result),
+            ],
         )
         saved = application.state.store.save_governed(updated, expected_version=current.version)
         _event(
@@ -687,7 +706,11 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             profile_id=profile_id,
             idempotency_key=idempotency_key,
             mutation_kind="artifact_input",
-            dependency_refs=["deliberately-supplied-artifact", f"canonical-version:{current.version}"],
+            dependency_refs=[
+                "deliberately-supplied-artifact",
+                f"canonical-version:{current.version}",
+                *_agent_dependency_refs(agent_result),
+            ],
         )
         saved = application.state.store.save_governed(updated, expected_version=current.version)
         current_gate = active_gate(saved)
@@ -767,6 +790,12 @@ def _apply_agent_result(state: Any, agent_result: Any) -> Any:
     state.telemetry.context_reduction_ratio = float(
         agent_result.telemetry.get("context_reduction_ratio", 0)
     )
+    if state.feedback and agent_result.hypotheses:
+        consequence = (
+            "New directions are ready to explore based on the experience and preferences you confirmed."
+        )
+        if consequence not in state.feedback[-1].consequences:
+            state.feedback[-1].consequences.append(consequence)
     return state
 
 
@@ -781,18 +810,28 @@ async def _resolve_current_gate(
     gate = active_gate(state)
     if gate is None:
         return state, None
+    proposal_ref = resolver_nomination_ref(
+        gate_id=gate.id,
+        source_state_version=state.version,
+        hypotheses=agent_result.hypotheses,
+    )
+    proposal = ResolverTransitionProposal(
+        gate_id=gate.id,
+        source_state_version=state.version,
+        proposed_state=gate.state,
+        authority=Authority.BOUNDED_AGENT,
+        effect="nominate",
+        scope=["career:hypothesis-nomination"],
+        evidence_refs=[
+            proposal_ref,
+            *[evidence for item in agent_result.hypotheses for evidence in item.evidence],
+        ],
+    )
+    validate_resolver_nomination(proposal=proposal, hypotheses=agent_result.hypotheses)
     nomination = AuthorityGovernor().evaluate(
         state=state,
         gate=gate,
-        proposal=ResolverTransitionProposal(
-            gate_id=gate.id,
-            source_state_version=state.version,
-            proposed_state=gate.state,
-            authority=Authority.BOUNDED_AGENT,
-            effect="nominate",
-            scope=["career:hypothesis-nomination"],
-            evidence_refs=[evidence for item in agent_result.hypotheses for evidence in item.evidence],
-        ),
+        proposal=proposal,
     )
     if not nomination.authorized:
         LOGGER.warning(
@@ -802,7 +841,14 @@ async def _resolve_current_gate(
         )
         return state, agent_result
     state.governor_decisions.append(nomination)
+    agent_result = replace(agent_result, proposal_ref=proposal_ref)
     return _apply_agent_result(state, agent_result), agent_result
+
+
+def _agent_dependency_refs(agent_result: ResolverResult | None) -> list[str]:
+    if agent_result is None:
+        return []
+    return [agent_result.proposal_ref] if agent_result.proposal_ref else []
 
 
 def _trusted_actor(profile_id: str, idempotency_key: str) -> ActorProvenance:

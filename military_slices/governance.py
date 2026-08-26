@@ -9,6 +9,7 @@ from military_slices.models import (
     ActorProvenance,
     Authority,
     CanonicalState,
+    CareerHypothesis,
     DerivedIndexRef,
     DomainPackRef,
     Gate,
@@ -28,6 +29,42 @@ class GovernanceError(ValueError):
 def _payload_hash(payload: dict[str, Any]) -> str:
     encoded = json.dumps(payload, separators=(",", ":"), sort_keys=True).encode()
     return hashlib.sha256(encoded).hexdigest()
+
+
+def resolver_nomination_ref(
+    *,
+    gate_id: str,
+    source_state_version: int,
+    hypotheses: list[CareerHypothesis],
+) -> str:
+    """Identify one bounded nomination without retaining model input or output text."""
+    payload = {
+        "gate_id": gate_id,
+        "source_state_version": source_state_version,
+        "hypotheses": [item.model_dump(mode="json") for item in hypotheses],
+    }
+    return f"resolver-proposal:sha256:{_payload_hash(payload)}"
+
+
+def validate_resolver_nomination(
+    *,
+    proposal: ResolverTransitionProposal,
+    hypotheses: list[CareerHypothesis],
+) -> str:
+    """Bind the Governor proposal to the exact candidate batch it is authorizing."""
+    if proposal.effect != "nominate":
+        raise GovernanceError("Resolver proposal integrity applies only to nominations.")
+    expected = resolver_nomination_ref(
+        gate_id=proposal.gate_id,
+        source_state_version=proposal.source_state_version,
+        hypotheses=hypotheses,
+    )
+    proposal_refs = [
+        item for item in proposal.evidence_refs if item.startswith("resolver-proposal:sha256:")
+    ]
+    if proposal_refs != [expected]:
+        raise GovernanceError("Resolver nomination does not match its bounded proposal identity.")
+    return expected
 
 
 def validate_domain_pack(reference: DomainPackRef, payload: dict[str, Any]) -> None:
