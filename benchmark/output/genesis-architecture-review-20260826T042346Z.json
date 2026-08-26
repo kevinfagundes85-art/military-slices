@@ -1,0 +1,105 @@
+{
+  "architecture_sha256": "4dd32923a611ffcad20e73443dc13afc2935ac074e7b4de7a37dc5aa19f9ee81",
+  "contains_user_or_production_data": false,
+  "framework": "google-adk",
+  "latency_ms": 10182.0,
+  "location": "global",
+  "model": "gemini-3.7-flash",
+  "output_contract_sha256": "9678778e27ef85d5d25acd8fc8afeb3f42195d0a30ce149d309f9b5657c9a8ea",
+  "packet_bytes": 21202,
+  "packet_sha256": "11b71b6f72d3a6e568f03d37701324c5e1f98f7be36859775ea8036238072ef5",
+  "production_mutations": 0,
+  "provider": "vertex-ai",
+  "response_sha256": "e0c39a74eb765975a463d1a882cda700d8b946e08e0ae935ecd4b5ee49a57cbf",
+  "review": {
+    "confidence": "high",
+    "contradictions_or_unknowns": [
+      "SCHEMA:CanonicalState references $defs types (e.g. ActiveTask, GateState, Authority) whose full enum schemas are declared externally, but field-level semantics are fully consistent."
+    ],
+    "invariants_to_preserve": [
+      "Gemini proposals are untrusted proposals and never directly write canonical state or assign execution projections.",
+      "Lenses, History, and What-If operations remain strictly read-only and zero-write.",
+      "Raw uploaded artifacts and unconfirmed typed inputs are never persisted to CanonicalState.",
+      "Execution status (ACTIVE / PARALYZED / COMPLETE) is strictly deterministically derived."
+    ],
+    "next_three_actions": [
+      "Verify Firestore transaction handlers enforce expected_version equality against MutationEvent.",
+      "Add unit tests for HMAC token generation and verification during WhatIfBranch promotion.",
+      "Validate gate state resolution logic ensures stale facts never trigger PARALYZED execution state."
+    ],
+    "overall_assessment": "The architecture cleanly separates human authority from ephemeral exploration and autonomous execution projections. Epistemic state, execution state, and deterministic temporal invalidation are well-bounded, with solid optimistic concurrency controls and tight budget limits.",
+    "recommendations": [
+      {
+        "area": "persistence_and_concurrency",
+        "before_human_gate": true,
+        "effort": "small",
+        "evidence_refs": [
+          "ARCHITECTURE.md",
+          "SCHEMA:MutationEvent",
+          "SCHEMA:CanonicalState"
+        ],
+        "id": "REC-01",
+        "implementation_tip": "In the profile update transaction, verify profile_doc.get('version') == mutation.expected_version before writing and increment version by exactly 1.",
+        "observation": "SCHEMA:MutationEvent specifies expected_version and result_version, while CanonicalState carries version. Concurrent updates must assert expected_version == CanonicalState.version within the transactional boundary.",
+        "priority": "P1",
+        "title": "Validate MutationEvent expected_version atomically in Firestore transaction",
+        "validation": "Execute two concurrent mutation requests with expected_version=0; verify exactly one succeeds with version=1 and the other fails with a concurrency conflict.",
+        "why_it_matters": "Prevents lost updates or branch race conditions when multiple client tabs or revalidations submit mutations concurrently."
+      },
+      {
+        "area": "security_and_privacy",
+        "before_human_gate": true,
+        "effort": "small",
+        "evidence_refs": [
+          "ARCHITECTURE.md",
+          "SCHEMA:WhatIfBranch"
+        ],
+        "id": "REC-02",
+        "implementation_tip": "Implement a constant-time HMAC check over (profile_id, source_version, id, sha256(hypothetical_summary)) before allowing branch promotion.",
+        "observation": "What-If branches return a profile-bound HMAC token without persisting to Firestore. Promotion must verify the HMAC token, expiry, and match source_version against current canonical version.",
+        "priority": "P1",
+        "title": "Enforce HMAC signature and source version validation on WhatIfBranch promotion",
+        "validation": "Submit a modified WhatIfBranch payload with an invalid or expired token; verify the promotion endpoint returns a 403/400 validation error without writing to Firestore.",
+        "why_it_matters": "Ensures ephemeral hypothetical states cannot be tampered with in the client or applied against stale canonical states."
+      },
+      {
+        "area": "temporal_reasoning",
+        "before_human_gate": false,
+        "effort": "medium",
+        "evidence_refs": [
+          "ARCHITECTURE.md",
+          "SCHEMA:Fact",
+          "SCHEMA:Gate",
+          "DEPENDENCY_MAP"
+        ],
+        "id": "REC-03",
+        "implementation_tip": "In the gate evaluation function, check Fact.status; if status == 'stale', downgrade gate state from CONFLICTED to BLOCKED/PENDING_EVIDENCE prior to execution status derivation.",
+        "observation": "The contract dictates that stale facts cannot ground CONFLICTED or PARALYZED execution states.",
+        "priority": "P2",
+        "title": "Ensure stale facts clear conflicted gate states deterministically",
+        "validation": "Mark a foundational fact as stale; assert that dependent gates clear CONFLICTED state and execution projection does not evaluate to PARALYZED.",
+        "why_it_matters": "A gate depending on an expired or stale fact could otherwise falsely lock the plan in PARALYZED."
+      }
+    ],
+    "rejected_or_deferred_ideas": [
+      "Do not implement dynamic LLM-based dependency detection or probabilistic freshness scores.",
+      "Do not add multi-document distributed transaction schemes; maintain one compact canonical profile document.",
+      "Do not weaken human gate confirmation on non-artifact typed inputs."
+    ],
+    "strongest_patterns": [
+      "Unidirectional governed promotion: exploration (What-If/Fog Bank) and inspection (Lenses/History) are strictly zero-write and ephemeral.",
+      "Deterministic execution projection (ACTIVE, PARALYZED, COMPLETE) strictly derived by controller logic without LLM assignment.",
+      "Static temporal dependency graph with field-level receipt patches that avoids LLM orchestrators or percentage freshness scoring."
+    ]
+  },
+  "schema_sha256": "8d6799a9d2889ad8e5e24459116f08846cacd6e52aedf00622850d0dac5a6c1a",
+  "session_sha256": "827f41c9cc349d3e1d8023a66567b0597a4718a80a97d56c6c34043ef26feff2",
+  "source_commit": "1efb6db",
+  "system_instruction_sha256": "1ebf8328adb9b7d299c027a8b08a70f7d289f043b32e64d918b5597ba055ac43",
+  "usage": {
+    "candidates_token_count": 1219,
+    "prompt_token_count": 6064,
+    "total_token_count": 7283,
+    "traffic_type": "ON_DEMAND"
+  }
+}
