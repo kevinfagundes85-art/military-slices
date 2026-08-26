@@ -54,3 +54,26 @@ This was a correctness and orchestration defect, not polish.
 - Ruff, strict Mypy, Bandit, and JavaScript syntax: passed.
 
 Production traffic was not moved during implementation or local validation.
+
+## Hosted release candidate
+
+- Source commit: `b946dab`
+- Revision: `military-slices-00035-hek`
+- Traffic: `0%`
+- Tagged URL: `https://mobile-direction-rc---military-slices-ztvqlzospa-uw.a.run.app`
+- Image digest: `sha256:e5691a7842c4e6bbbda2ad11e2aa2b88a01194d67e6b2cfe2cf92697be365117`
+- Exact static bundle: `app.js?v=9`, `styles.css?v=7`
+- Health: `status=ok`; Gemini `3.7-flash`; Google ADK; Domain Pack
+  `2026-08-24-v2-shadow-tested` / `LEGACY_VALID`; external effects and autonomous Probe disabled.
+
+The hosted synthetic transaction persisted a separated 1–5 year Navy veteran with no transition
+date, accepted `I am still deciding`, and reconstituted `transition-direction` at version 2 with all
+three bounded options and the corrected causal receipt. Reload returned the same version and Gate.
+
+The hosted 360 px browser journey independently repeated the full UI path. The decision options
+rendered within `What matters now`; the Lens cloud remained hidden by default; deliberately opening
+it exposed only Career, Education, and Location. Document width and scroll width were both 345 px,
+there was no horizontal overflow, each decision choice was 57 px high, and secondary controls were
+48 px high. Final hosted error/trace/governance-block query returned no entries.
+
+Production remains `military-slices-00001-niw` at 100%. Candidate promotion was not performed.
