@@ -127,6 +127,32 @@ def test_artifact_cancel_equivalent_creates_no_write() -> None:
     assert before["version"] == after["version"] == 0
 
 
+def test_insufficient_orientation_cannot_be_confirmed_or_written() -> None:
+    client, store = make_client()
+    initial = client.get("/api/state").json()["state"]
+    orientation = client.post(
+        "/api/orient",
+        json={"text": "I need help but I do not know what decision I need to make yet."},
+    ).json()
+    assert orientation["sufficient"] is False
+
+    response = client.post(
+        "/api/confirm",
+        json={
+            "token": orientation["token"],
+            "reviewed_input": orientation["reviewed_input"],
+            "expected_version": 0,
+            "idempotency_key": "insufficient-confirm-0001",
+        },
+    )
+
+    assert response.status_code == 400
+    assert "decision" in response.json()["detail"].casefold()
+    persisted = store.get(initial["profile_id"])
+    assert persisted.version == 0
+    assert persisted.mutation_events == []
+
+
 def test_deliberately_selected_artifact_updates_plan_without_second_confirmation() -> None:
     client, _ = make_client()
     before = client.get("/api/state").json()["state"]

@@ -858,8 +858,21 @@ async function requestOrientation(text, submit) {
 }
 
 function showReview(result) {
-  $("#review-summary").textContent = result.summary;
+  const needsClarification = !result.sufficient;
+  $("#review-title").textContent = needsClarification
+    ? "One question before this can shape your plan."
+    : "Check this before it shapes your plan.";
+  $("#review-summary").textContent = needsClarification
+    ? (result.clarification_question || "What decision would you most like help with first?")
+    : result.summary;
   $("#review-statements").innerHTML = result.statements.map((item) => `<li>${escapeHtml(item.text)}</li>`).join("") || "<li>We need one clarification before this can shape your plan.</li>";
+  $("#review-text-label").textContent = needsClarification
+    ? "Add your answer to the words you already shared"
+    : "Correct anything that is off";
+  $("#review-trust").textContent = needsClarification
+    ? "Your words are preserved, but nothing can be saved until this clarification produces a useful starting point."
+    : "Reviewing this does not change your plan. Choose “Use this in my plan” to save it. AI suggestions never become facts on their own.";
+  $("#confirm-review").textContent = needsClarification ? "Check this clarification" : "Use this in my plan";
   $("#review-text").value = result.reviewed_input;
   showInspection(reviewPanel);
 }
@@ -867,7 +880,12 @@ function showReview(result) {
 async function confirmReview() {
   if (!pendingOrientation || !envelope) return;
   const reviewedInput = $("#review-text").value.trim();
-  if (reviewedInput !== pendingOrientation.reviewed_input) {
+  if (!pendingOrientation.sufficient && reviewedInput === pendingOrientation.reviewed_input) {
+    showInlineGuidance(reviewPanel, "Add one detail that answers the question above.");
+    $("#review-text").focus();
+    return;
+  }
+  if (!pendingOrientation.sufficient || reviewedInput !== pendingOrientation.reviewed_input) {
     showInlineGuidance(reviewPanel, "Checking your correction before it shapes the plan…");
     try {
       pendingOrientation = await api("/api/orient", { method: "POST", body: JSON.stringify({ text: reviewedInput }) });
@@ -903,7 +921,7 @@ async function confirmReview() {
     announce(error.message, true);
   } finally {
     button.disabled = false;
-    button.textContent = "Use this in my plan";
+    button.textContent = pendingOrientation?.sufficient ? "Use this in my plan" : "Check this clarification";
   }
 }
 

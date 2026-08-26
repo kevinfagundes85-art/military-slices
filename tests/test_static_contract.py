@@ -103,7 +103,7 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert "Keep my current plan" in script
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
     assert "Explore what else may matter" in html
-    assert "/static/app.js?v=5" in html
+    assert "/static/app.js?v=6" in html
     assert "/static/styles.css?v=5" in html
 
 
@@ -207,6 +207,17 @@ def test_trust_boundary_copy_distinguishes_text_and_artifact_authority() -> None
     assert "Reviewing this does not change your plan" in html
     assert "Choosing a file lets Military SLICES use relevant details" in combined
     assert 'api("/api/artifact"' in script
+
+
+def test_insufficient_orientation_requires_clarification_before_any_write() -> None:
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
+    assert "const needsClarification = !result.sufficient" in script
+    assert "One question before this can shape your plan." in script
+    assert "Check this clarification" in script
+    assert "!pendingOrientation.sufficient" in script
+    assert 'id="review-text-label"' in html
+    assert 'id="review-trust"' in html
 
 
 def test_lens_preview_and_what_if_keep_observe_separate_from_commit() -> None:

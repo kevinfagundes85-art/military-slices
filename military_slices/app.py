@@ -325,6 +325,12 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
         if current.version != payload.expected_version:
             raise VersionConflictError("Your plan changed in another tab. Refresh to continue.")
         oriented = orient(payload.reviewed_input)
+        if not oriented.sufficient:
+            raise HTTPException(
+                status_code=400,
+                detail=oriented.clarification_question
+                or "Add one decision-relevant detail before using this in your plan.",
+            )
         updated = apply_confirmed_input(
             current,
             oriented,

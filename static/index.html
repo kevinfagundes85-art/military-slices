@@ -7,7 +7,7 @@
     <meta name="description" content="Military SLICES helps U.S. service members connect career, education, location, and résumé decisions into one transition plan.">
     <title>Military SLICES</title>
     <link rel="stylesheet" href="/static/styles.css?v=5">
-    <script src="/static/app.js?v=5" defer></script>
+    <script src="/static/app.js?v=6" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the next decision</a>
@@ -125,9 +125,9 @@
         <h2 id="review-title">Check this before it shapes your plan.</h2>
         <p id="review-summary" class="review-summary"></p>
         <ul id="review-statements" class="review-statements"></ul>
-        <label for="review-text">Correct anything that is off</label>
+        <label id="review-text-label" for="review-text">Correct anything that is off</label>
         <textarea id="review-text" maxlength="12000" rows="7"></textarea>
-        <p class="trust-note">Reviewing this does not change your plan. Choose “Use this in my plan” to save it. AI suggestions never become facts on their own.</p>
+        <p id="review-trust" class="trust-note">Reviewing this does not change your plan. Choose “Use this in my plan” to save it. AI suggestions never become facts on their own.</p>
         <div class="button-row">
           <button id="cancel-review" class="button button-quiet" type="button">Go back</button>
           <button id="confirm-review" class="button button-primary" type="button">Use this in my plan</button>
