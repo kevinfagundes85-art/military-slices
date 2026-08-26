@@ -41,3 +41,28 @@ These were interaction correctness defects, not visual polish.
 - Ruff, strict Mypy, Bandit, JavaScript syntax, and dependency audit: passed.
 
 Production traffic was not moved during implementation or local validation.
+
+## Hosted candidate
+
+- Source commit: `3ec0a6a`
+- Revision: `military-slices-00036-kaz`
+- Traffic: `0%`
+- URL: `https://human-control-rc---military-slices-ztvqlzospa-uw.a.run.app`
+- Image digest: `sha256:20b0664f526bc636963c5b5d4cf718ee18cfbc43c397a414a6c3c6b7d332696c`
+- Exact bundle: `app.js?v=10`, `styles.css?v=8`
+- Health: Google ADK, Gemini 3.7 Flash, Domain Pack `2026-08-24-v2-shadow-tested` /
+  `LEGACY_VALID`; external effects and autonomous Probe disabled.
+
+The hosted 360 px journey repeated the full starting vector, reviewed text, undecided target,
+target-relative experiment, promotion, history inspection, and direction decision. It proved:
+
+- no radio was preselected;
+- the promoted experiment receipt was truthful and contained no comparison-era contradiction;
+- history showed no persistence-only versions;
+- `Civilian work` advanced to `next-work-preferences` and did not loop;
+- `What matters now` preceded target/path context;
+- the timeline remained absent on mobile;
+- client width and scroll width were both 345 px with no horizontal overflow; and
+- the final error/trace/governance-block log query returned no entries.
+
+Production remains `military-slices-00001-niw` at 100%. Promotion was not performed.
