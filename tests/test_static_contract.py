@@ -105,9 +105,10 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert "Keep my current plan" in script
     assert "Add this to my plan" in script
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
-    assert "Explore what else may matter" in html
-    assert "/static/app.js?v=8" in html
-    assert "/static/styles.css?v=6" in html
+    assert "Look at this another way" in html
+    assert "Choose a relevant part of your plan" in html
+    assert "/static/app.js?v=9" in html
+    assert "/static/styles.css?v=7" in html
 
 
 def test_temporal_impact_surface_is_natural_bounded_and_deterministic() -> None:
@@ -246,9 +247,9 @@ def test_insufficient_orientation_requires_clarification_before_any_write() -> N
 def test_lens_preview_and_what_if_keep_observe_separate_from_commit() -> None:
     script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
     preview = script[script.index("function showLensPreview") : script.index("function renderLenses")]
-    assert "Preview only — nothing changed" in preview
+    assert "Another way to look at the current choice" in preview
     assert "api(" not in preview
-    assert "Closing this preview returns you to the same plan and question." in preview
+    assert "No changes have been made." in preview
     assert "openTopicUpdate(topic)" in preview
     assert 'mode === "ACTIVE"' in preview
     assert "This remains hypothetical until you choose" in script
@@ -258,12 +259,16 @@ def test_lens_preview_and_what_if_keep_observe_separate_from_commit() -> None:
 
 def test_lens_cloud_is_deterministic_bounded_and_non_mutating_until_explicit_action() -> None:
     script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
-    topics = script[script.index("const starterLensTopics") : script.index("const contextualLensRules")]
+    html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
     build = script[script.index("function buildLensTopics") : script.index("function openTopicUpdate")]
     preview = script[script.index("function showLensPreview") : script.index("function renderLenses")]
     render = script[script.index("function renderLenses") : script.index("function renderTimeline")]
-    assert topics.count("label:") == 8
-    assert ".slice(0, 10)" in build
+    assert "const starterLensTopics" not in script
+    assert "if (state.version === 0)" in build
+    assert "return [];" in build
+    assert "const meaningful = Boolean(" in build
+    assert ".slice(0, 6)" in build
+    assert 'lens.name === "location"' in build
     assert "Math.random" not in build
     assert 'rule.label === "PCS and moving"' in build
     assert "touches pcs and moving" not in script
@@ -272,7 +277,22 @@ def test_lens_cloud_is_deterministic_bounded_and_non_mutating_until_explicit_act
     assert "api(" not in render
     assert 'role="listitem"' not in render
     assert "const factMarkup = topic.facts?.length" in preview
-    assert "Preview only — nothing changed" in preview
+    assert '$("#lens-cloud-shell").hidden = true' in render
+    assert '$("#open-lenses").hidden = !topics.length' in render
+    assert 'id="open-lenses"' in html
+    assert "Look at this another way" in html
+
+
+def test_lens_cloud_is_secondary_and_empty_domain_surfaces_are_not_padded() -> None:
+    html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+
+    assert 'id="lens-cloud-shell"' in html and "hidden" in html
+    assert "openLensCloud" in script
+    assert "closeLensCloud" in script
+    assert "Back to what matters now" in html
+    assert "Nothing here currently blocks the active path" not in script
+    assert "Look without changing" not in script
 
 
 def test_loading_preserves_stable_content_and_never_exposes_processing_steps() -> None:

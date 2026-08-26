@@ -6,8 +6,8 @@
     <meta name="theme-color" content="#08141f">
     <meta name="description" content="Military SLICES helps U.S. service members connect career, education, location, and résumé decisions into one transition plan.">
     <title>Military SLICES</title>
-    <link rel="stylesheet" href="/static/styles.css?v=6">
-    <script src="/static/app.js?v=8" defer></script>
+    <link rel="stylesheet" href="/static/styles.css?v=7">
+    <script src="/static/app.js?v=9" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the next decision</a>
@@ -88,16 +88,18 @@
       <section id="lens-cloud-shell" class="lens-cloud-shell" aria-labelledby="lens-cloud-title" hidden>
         <div class="lens-cloud-heading">
           <div>
-            <div class="section-kicker">Look around without changing your plan</div>
-            <h2 id="lens-cloud-title">Explore what else may matter</h2>
+            <div class="section-kicker">Another way to look at this</div>
+            <h2 id="lens-cloud-title">Choose a relevant part of your plan</h2>
           </div>
-          <p>Open a topic to see why it may be relevant. Looking does not save, activate, or change anything.</p>
+          <button id="close-lens-cloud" class="button button-quiet" type="button">Back to what matters now</button>
         </div>
+        <p class="lens-cloud-intro">Use this only when another part of your situation could change the decision in front of you.</p>
         <div id="lens-nav" class="lens-cloud" aria-label="Explore other transition topics"></div>
         <div id="lens-preview" class="lens-preview" hidden></div>
       </section>
 
       <nav class="control-nav" aria-label="Review and explore your plan" hidden>
+        <button id="open-lenses" class="button button-quiet" type="button" aria-expanded="false">Look at this another way</button>
         <button id="open-fog-bank" class="button button-secondary" type="button">Something doesn’t fit</button>
         <button id="open-history" class="button button-quiet" type="button">Review earlier plans</button>
         <button id="open-what-if" class="button button-quiet" type="button">Explore a different choice</button>

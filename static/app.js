@@ -19,17 +19,6 @@ const labels = {
   resume: "Your story",
 };
 
-const starterLensTopics = [
-  { id: "career", label: "Work", slice: "career", summary: "Explore civilian work, career direction, and the conditions that make work fit." },
-  { id: "education", label: "Education", slice: "education", summary: "Explore school, training, credentials, and what they should make possible." },
-  { id: "location", label: "Location", slice: "location", summary: "Explore where you may live, commute, or relocate and what the choice needs to respect." },
-  { id: "family", label: "Family and household", slice: "location", summary: "Explore household needs that may shape timing, location, work, or education." },
-  { id: "resume", label: "Résumé", slice: "resume", summary: "Explore how your experience could support a specific civilian role or use." },
-  { id: "timing", label: "Timing", slice: "location", summary: "Explore the dates, deadlines, moves, and transitions that could change what comes first." },
-  { id: "training", label: "Training", slice: "education", summary: "Explore certifications, licenses, and focused training without assuming another degree is required." },
-  { id: "work-needs", label: "Work needs", slice: "career", summary: "Explore schedule, travel, commute, pace, environment, and flexibility without explaining why you need them." },
-];
-
 const contextualLensRules = [
   { id: "family", label: "Family and household", slice: "location", terms: ["spouse", "family", "household", "child", "caregiver"] },
   { id: "pcs", label: "PCS and moving", slice: "location", terms: ["pcs", "move", "moving", "relocat"] },
@@ -233,19 +222,30 @@ function renderProgress(_progress, state, gate) {
 
 function buildLensTopics(state, lenses) {
   if (state.version === 0) {
-    return starterLensTopics.map((topic, index) => ({ ...topic, score: 80 - index, facts: [], fresh: true }));
+    return [];
   }
   const facts = (state.facts || []).filter((fact) => fact.status !== "stale");
   const knownText = facts.map((fact) => fact.statement).join(" ").toLowerCase();
   const byId = new Map();
   lenses.forEach((lens) => {
+    const relevantFacts = lens.name === "location"
+      ? lens.facts.filter((fact) => !(/\b(remote|hybrid)\b/i.test(fact) && !/\b(relocat|move|location|commute|city|state|local|near)\b/i.test(fact)))
+      : lens.facts;
+    const meaningful = Boolean(
+      lens.may_have_changed
+      || lens.path_relevant
+      || relevantFacts.length
+      || lens.open_gates
+      || lens.conflicted_gates
+    );
+    if (!meaningful) return;
     const score = (lens.may_have_changed ? 120 : 0) + (lens.path_relevant ? 80 : 30) + Math.min(lens.fact_count, 6) * 4;
     byId.set(lens.name, {
       id: lens.name,
       label: lens.label,
       slice: lens.name,
       summary: humanCopy(lens.summary),
-      facts: lens.facts.slice(-2),
+      facts: relevantFacts.slice(-2),
       score,
       mayHaveChanged: lens.may_have_changed,
     });
@@ -258,20 +258,16 @@ function buildLensTopics(state, lenses) {
     byId.set(rule.id, {
       ...rule,
       summary: relevantFacts.length
-        ? `Information you supplied touches ${rule.label === "PCS and moving" ? rule.label : rule.label.toLowerCase()}. Looking here does not change your plan.`
-        : `${rule.label} may affect timing or another choice already in view. Looking here does not change your plan.`,
+        ? `A detail you supplied about ${rule.label === "PCS and moving" ? rule.label : rule.label.toLowerCase()} may affect this choice.`
+        : `${rule.label} may affect the decision in front of you.`,
       facts: relevantFacts.slice(-2).map((fact) => fact.statement),
       score: 65 + Math.min(relevantFacts.length, 4) * 5,
       mayHaveChanged: false,
     });
   });
-  starterLensTopics.forEach((topic, index) => {
-    if (byId.size >= 6 || byId.has(topic.id)) return;
-    byId.set(topic.id, { ...topic, score: 20 - index, facts: [] });
-  });
   return [...byId.values()]
     .sort((left, right) => right.score - left.score || left.label.localeCompare(right.label))
-    .slice(0, 10);
+    .slice(0, 6);
 }
 
 function openTopicUpdate(topic) {
@@ -299,16 +295,16 @@ function showLensPreview(topic, trigger) {
   const actionMarkup = matchingImpact
     ? `<div id="lens-impact-actions">${impactControls(matchingImpact)}</div>`
     : (canBeginUpdate
-      ? `<button id="update-lens-topic" class="button button-secondary" type="button">${topic.fresh ? "Start with this" : "Update this"}</button>`
+      ? `<button id="update-lens-topic" class="button button-secondary" type="button">Add context about ${escapeHtml(topic.label.toLowerCase())}</button>`
       : "");
   preview.innerHTML = `
     <button id="dismiss-lens-preview" class="preview-close" type="button" aria-label="Dismiss preview">×</button>
-    <div class="section-kicker">Preview only — nothing changed</div>
+    <div class="section-kicker">Another way to look at the current choice</div>
     <h3>${escapeHtml(topic.label)}</h3>
     ${topic.mayHaveChanged ? '<div class="impact-note">A recent decision may make this worth checking.</div>' : ""}
     <p>${escapeHtml(topic.summary)}</p>
     ${factMarkup}
-    <p class="trust-note">Closing this preview returns you to the same plan and question.</p>
+    <p class="trust-note">No changes have been made.</p>
     ${actionMarkup}
   `;
   preview.hidden = false;
@@ -328,18 +324,36 @@ function showLensPreview(topic, trigger) {
 function renderLenses(state, lenses) {
   const topics = buildLensTopics(state, lenses);
   const nav = $("#lens-nav");
-  $("#lens-cloud-shell").hidden = !topics.length;
+  $("#lens-cloud-shell").hidden = true;
+  $("#open-lenses").hidden = !topics.length;
+  $("#open-lenses").setAttribute("aria-expanded", "false");
   $("#lens-preview").hidden = true;
   nav.innerHTML = topics.map((topic, index) => `
     <button class="lens-button" data-lens="${escapeHtml(topic.id)}" data-weight="${index < 2 ? "3" : (index < 5 ? "2" : "1")}" data-impact="${Boolean(topic.mayHaveChanged)}" type="button" aria-expanded="false">
       <span>${escapeHtml(topic.label)}</span>
-      <small>${topic.mayHaveChanged ? "Worth checking" : "Look without changing"}</small>
+      <small>${topic.mayHaveChanged ? "Worth checking" : (topic.facts?.length ? "Context available" : "May change this choice")}</small>
     </button>
   `).join("");
   nav.querySelectorAll(".lens-button").forEach((button) => {
     const topic = topics.find((item) => item.id === button.dataset.lens);
     button.addEventListener("click", () => showLensPreview(topic, button));
   });
+}
+
+function openLensCloud() {
+  const shell = $("#lens-cloud-shell");
+  if (!$("#lens-nav").children.length) return;
+  shell.hidden = false;
+  $("#open-lenses").setAttribute("aria-expanded", "true");
+  shell.scrollIntoView({ behavior: "smooth", block: "start" });
+  $("#lens-cloud-title").setAttribute("tabindex", "-1");
+  $("#lens-cloud-title").focus({ preventScroll: true });
+}
+
+function closeLensCloud() {
+  $("#lens-cloud-shell").hidden = true;
+  $("#open-lenses").setAttribute("aria-expanded", "false");
+  $("#open-lenses").focus();
 }
 
 function renderTimeline(state) {
@@ -1208,6 +1222,8 @@ $("#cancel-review").addEventListener("click", () => {
 });
 $("#confirm-review").addEventListener("click", confirmReview);
 $("#open-history").addEventListener("click", openHistory);
+$("#open-lenses").addEventListener("click", openLensCloud);
+$("#close-lens-cloud").addEventListener("click", closeLensCloud);
 $("#open-what-if").addEventListener("click", () => {
   whatIfSourceVersion = null;
   openWhatIf();

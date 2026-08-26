@@ -141,8 +141,41 @@ def test_acceptance_scenario_does_not_become_first_civilian_job_transition() -> 
     assert state.current_timeline_window == "H"
     assert state.stage == "STABILIZE"
     assert all(gate.id != "planned-transition-date" for gate in state.gates)
+    assert active_gate(state) is not None
+    assert active_gate(state).id == "career-direction"
     career = next(item for item in lens_projections(state) if item.name == SliceName.CAREER)
     assert "one date clarifies" not in career.summary.casefold()
+
+
+def test_separated_undecided_veteran_gets_a_real_direction_choice_without_a_future_date() -> None:
+    state = apply_decision(
+        _started_state(),
+        gate_id="transition-human-anchor",
+        value="I am still deciding",
+        idempotency_key="separated-undecided-0001",
+    )
+    gate = active_gate(state)
+
+    assert state.transition_date is None
+    assert gate is not None
+    assert gate.id == "transition-direction"
+    assert gate.options == [
+        "Civilian work",
+        "Education or training",
+        "Location and family fit",
+    ]
+    assert state.feedback[-1].consequences == [
+        "Kept work, education, and location open.",
+        "Put one clear direction choice in front of you next.",
+    ]
+
+
+def test_remote_ai_position_is_work_context_not_a_location_fact() -> None:
+    result = orient("I want to take a different route and slowly transition to a remote AI position.")
+
+    assert result.sufficient is True
+    assert result.affected_slices == [SliceName.CAREER]
+    assert result.statements[0].affected_slices == [SliceName.CAREER]
 
 
 def test_deterministic_timeline_cannot_be_silently_overridden_by_free_text() -> None:
@@ -220,8 +253,7 @@ def test_target_relative_what_if_requires_human_promotion_and_preserves_target()
     assert state["version"] == before["version"] + 1
     assert any(item["gate_id"] == "what-if:target_experiment" for item in state["decisions"])
     assert any(
-        fact["field_key"] == "target_experiment"
-        and "home lab" in fact["statement"].casefold()
+        fact["field_key"] == "target_experiment" and "home lab" in fact["statement"].casefold()
         for fact in state["facts"]
     )
 

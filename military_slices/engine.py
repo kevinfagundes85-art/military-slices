@@ -83,6 +83,9 @@ def _slice_hits(statement: str) -> list[SliceName]:
             "job",
             "career",
             "work",
+            "position",
+            "remote",
+            "hybrid",
             "salary",
             "income",
             "employ",
@@ -107,7 +110,6 @@ def _slice_hits(statement: str) -> list[SliceName]:
             "move",
             "location",
             "commute",
-            "remote",
             "city",
             "state",
             "family",
@@ -278,7 +280,8 @@ def apply_starting_vector(
     if operating_role == "veteran_service_member":
         state.planning_actor = (
             PlanningActor.VETERAN
-            if lifecycle_position in {
+            if lifecycle_position
+            in {
                 LifecyclePosition.SEPARATED_WITHIN_LAST_YEAR,
                 LifecyclePosition.SEPARATED_1_TO_5_YEARS,
                 LifecyclePosition.SEPARATED_MORE_THAN_5_YEARS,
@@ -351,11 +354,15 @@ def examine_fog_bank(current: CanonicalState, text: str) -> FogBankProposal:
             )
         )
         conflicts.append("The new service timeline differs from the current orientation.")
-        if claimed_timeline in {
-            LifecyclePosition.SEPARATED_WITHIN_LAST_YEAR,
-            LifecyclePosition.SEPARATED_1_TO_5_YEARS,
-            LifecyclePosition.SEPARATED_MORE_THAN_5_YEARS,
-        } and current.transition_date:
+        if (
+            claimed_timeline
+            in {
+                LifecyclePosition.SEPARATED_WITHIN_LAST_YEAR,
+                LifecyclePosition.SEPARATED_1_TO_5_YEARS,
+                LifecyclePosition.SEPARATED_MORE_THAN_5_YEARS,
+            }
+            and current.transition_date
+        ):
             changes.append(
                 FogBankChange(
                     field="transition_date",
@@ -399,8 +406,7 @@ def examine_fog_bank(current: CanonicalState, text: str) -> FogBankProposal:
 
     affected = list(
         dict.fromkeys(
-            [slice_name for change in changes for slice_name in change.affected_slices]
-            + oriented.affected_slices
+            [slice_name for change in changes for slice_name in change.affected_slices] + oriented.affected_slices
         )
     )
     if not changes:
@@ -443,11 +449,15 @@ def apply_fog_bank_reorientation(
     for change in proposal.changes:
         if change.field == "lifecycle_position" and change.proposed_value:
             state.lifecycle_position = LifecyclePosition(change.proposed_value)
-            if state.lifecycle_position in {
-                LifecyclePosition.SEPARATED_WITHIN_LAST_YEAR,
-                LifecyclePosition.SEPARATED_1_TO_5_YEARS,
-                LifecyclePosition.SEPARATED_MORE_THAN_5_YEARS,
-            } and state.planning_actor == PlanningActor.SERVICE_MEMBER:
+            if (
+                state.lifecycle_position
+                in {
+                    LifecyclePosition.SEPARATED_WITHIN_LAST_YEAR,
+                    LifecyclePosition.SEPARATED_1_TO_5_YEARS,
+                    LifecyclePosition.SEPARATED_MORE_THAN_5_YEARS,
+                }
+                and state.planning_actor == PlanningActor.SERVICE_MEMBER
+            ):
                 state.planning_actor = PlanningActor.VETERAN
         elif change.field == "transition_date":
             state.transition_date = change.proposed_value
@@ -672,9 +682,7 @@ def apply_confirmed_input(
     state.telemetry.anchor_candidates += anchor_resolution.candidate_count
     state.telemetry.selected_anchor_class = anchor_resolution.selected_class
     state.telemetry.anchor_selection_reason_code = anchor_resolution.reason_code
-    if anchor_resolution.anchor and (
-        not state.human_anchor or current.execution.state.value == "COMPLETE"
-    ):
+    if anchor_resolution.anchor and (not state.human_anchor or current.execution.state.value == "COMPLETE"):
         state.human_anchor = anchor_resolution.anchor
     detected_actor, detected_subject = detect_planning_parties(orientation.reviewed_input)
     if state.planning_actor == PlanningActor.UNKNOWN and detected_actor != PlanningActor.UNKNOWN:
@@ -700,9 +708,9 @@ def apply_confirmed_input(
             state.military_state_subject != MilitaryStateSubject.PLANNING_ACTOR_SPOUSE
             and state.lifecycle_position
             not in {
-            LifecyclePosition.SEPARATED_WITHIN_LAST_YEAR,
-            LifecyclePosition.SEPARATED_1_TO_5_YEARS,
-            LifecyclePosition.SEPARATED_MORE_THAN_5_YEARS,
+                LifecyclePosition.SEPARATED_WITHIN_LAST_YEAR,
+                LifecyclePosition.SEPARATED_1_TO_5_YEARS,
+                LifecyclePosition.SEPARATED_MORE_THAN_5_YEARS,
             }
         ):
             state.transition_date = extracted_date
@@ -792,9 +800,9 @@ def apply_artifact_input(
             state.military_state_subject != MilitaryStateSubject.PLANNING_ACTOR_SPOUSE
             and state.lifecycle_position
             not in {
-            LifecyclePosition.SEPARATED_WITHIN_LAST_YEAR,
-            LifecyclePosition.SEPARATED_1_TO_5_YEARS,
-            LifecyclePosition.SEPARATED_MORE_THAN_5_YEARS,
+                LifecyclePosition.SEPARATED_WITHIN_LAST_YEAR,
+                LifecyclePosition.SEPARATED_1_TO_5_YEARS,
+                LifecyclePosition.SEPARATED_MORE_THAN_5_YEARS,
             }
         ):
             state.transition_date = extracted_date
@@ -875,7 +883,8 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
         domain != "resume"
         and not state.transition_date
         and state.military_state_subject != MilitaryStateSubject.PLANNING_ACTOR_SPOUSE
-        and state.lifecycle_position in {
+        and state.lifecycle_position
+        in {
             LifecyclePosition.UNKNOWN,
             LifecyclePosition.LEAVING_WITHIN_12_MONTHS,
         }
@@ -990,7 +999,12 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
         )
         gates.append(_preserve_resolution(gate, existing))
 
-    if domain == "undecided" and state.transition_date and state.service:
+    separated_lifecycle = state.lifecycle_position in {
+        LifecyclePosition.SEPARATED_WITHIN_LAST_YEAR,
+        LifecyclePosition.SEPARATED_1_TO_5_YEARS,
+        LifecyclePosition.SEPARATED_MORE_THAN_5_YEARS,
+    }
+    if domain == "undecided" and state.service and (state.transition_date or separated_lifecycle):
         gate = Gate(
             id="transition-direction",
             title="Choose one direction to examine",
@@ -1261,9 +1275,31 @@ def _decision_consequences(
         if decision_value.startswith("Not for me:"):
             return ["Removed that direction from future suggestions.", "Kept the remaining options in view."]
         return ["Kept one direction in focus.", "Left the other directions available for later review."]
+    if gate_id == "transition-human-anchor":
+        if decision_value == "I am still deciding":
+            return [
+                "Kept work, education, and location open.",
+                "Put one clear direction choice in front of you next.",
+            ]
+        return [f"Made {decision_value.lower()} the focus of the plan."]
+    if gate_id == "transition-direction":
+        return [
+            f"Put {decision_value.lower()} first for exploration.",
+            "Kept the other directions available without treating this as permanent.",
+        ]
+    if gate_id == "next-work-preferences":
+        return [
+            "Used this preference to shape the directions you see next.",
+            "Did not require you to explain why the condition matters.",
+        ]
+    if gate_id == "resume-target-role":
+        return [f"Bound the résumé work to {decision_value}."]
+    if gate_id == "education-outcome":
+        return ["Made the education outcome—not the program list—the next planning constraint."]
+    if gate_id == "location-priority":
+        return ["Made this location condition part of the active decision."]
     return [
-        "Applied the preference across work, education, and location.",
-        "Reduced the next interaction to unresolved context.",
+        "Used that answer to determine the next useful question.",
     ]
 
 

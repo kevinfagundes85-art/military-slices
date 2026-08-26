@@ -193,6 +193,7 @@ h3 { margin: 0; font-size: 1.05rem; }
 .lens-cloud-heading { display: flex; align-items: end; justify-content: space-between; gap: 1.2rem; }
 .lens-cloud-heading h2 { margin-bottom: 0; font-size: clamp(1.35rem, 2.6vw, 1.9rem); }
 .lens-cloud-heading p { max-width: 510px; margin: 0; color: var(--muted); font-size: 0.9rem; }
+.lens-cloud-intro { max-width: 680px; margin: 0.55rem 0 0; color: var(--muted); font-size: 0.9rem; }
 .lens-cloud { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-top: 0.9rem; }
 .lens-button {
   min-height: 48px;
