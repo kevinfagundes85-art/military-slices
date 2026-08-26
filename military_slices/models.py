@@ -715,6 +715,59 @@ class DecisionRequest(BaseModel):
     idempotency_key: str = Field(min_length=8, max_length=128)
 
 
+class AcquisitionChecklistItem(BaseModel):
+    """One ephemeral information need inside the current bounded horizon."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    id: str
+    question: str
+    purpose: str
+    affected_slices: list[SliceName]
+    authority_required: Authority
+    status: Literal["unresolved", "satisfied", "latent"]
+    evidence_refs: list[str] = Field(default_factory=list)
+    foreground: bool = False
+
+
+class AcquisitionHorizon(BaseModel):
+    """A read-time Payload projection. It is never persisted as governed state."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    source_version: int = Field(ge=0)
+    anchor: str | None = None
+    path: str
+    active_slice: SliceName
+    active_gate_id: str
+    prompt: str
+    checklist: list[AcquisitionChecklistItem] = Field(min_length=1, max_length=4)
+    explicit_unknowns: list[str] = Field(default_factory=list, max_length=4)
+    authority_constraints: list[str] = Field(default_factory=list, max_length=6)
+    domain_pack_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    receipt_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
+class AcquisitionCandidate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    text: str
+    source_start: int = Field(ge=0)
+    source_end: int = Field(ge=0)
+    epistemic_type: Literal["explicit_human_statement", "inference"]
+    checklist_ids: list[str] = Field(default_factory=list, max_length=4)
+    confidence: float = Field(ge=0, le=1)
+
+
+class AcquisitionRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    gate_id: str
+    text: str = Field(min_length=1, max_length=4_000)
+    expected_version: int = Field(ge=0)
+    idempotency_key: str = Field(min_length=8, max_length=128)
+
+
 class StateEnvelope(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -725,3 +778,4 @@ class StateEnvelope(BaseModel):
     lenses: list[LensProjection]
     impact: ImpactItem | None = None
     agent_run: dict[str, Any] | None = None
+    acquisition_horizon: AcquisitionHorizon | None = None

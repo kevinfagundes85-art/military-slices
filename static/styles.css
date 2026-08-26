@@ -327,6 +327,9 @@ select { appearance: auto; }
 textarea { resize: vertical; }
 
 .choice-grid, .hypothesis-grid { display: grid; gap: 0.75rem; }
+.natural-answer { padding-top: 0.25rem; border-top: 1px solid var(--line); }
+.natural-answer summary { color: var(--sea); }
+.natural-answer[open] { display: grid; gap: 0.75rem; }
 .choice-option, .hypothesis {
   position: relative;
   padding: 1rem;

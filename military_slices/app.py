@@ -13,6 +13,7 @@ from fastapi import Cookie, FastAPI, File, Form, HTTPException, Request, Respons
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
+from military_slices.acquisition import build_acquisition_horizon, evaluate_acquisition
 from military_slices.agent_runtime import Resolver, ResolverResult
 from military_slices.artifacts import ArtifactError, extract_artifact, multimodal_extract
 from military_slices.control import create_what_if, history_entry, lens_projections, path_progress, promote_what_if
@@ -41,6 +42,7 @@ from military_slices.governance import (
     validate_resolver_nomination,
 )
 from military_slices.models import (
+    AcquisitionRequest,
     ActorProvenance,
     Authority,
     ConfirmRequest,
@@ -589,6 +591,126 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
         )
         return _envelope(saved, agent_run=_agent_run(agent_result))
 
+    @application.post("/api/acquire")
+    async def acquire(
+        payload: AcquisitionRequest,
+        request: Request,
+        response: Response,
+        military_slices_session: Annotated[str | None, Cookie()] = None,
+    ) -> dict[str, Any]:
+        """Accept a natural answer without giving the conversational layer write authority."""
+        profile_id = _profile(response, military_slices_session)
+        _rate_limit(application, profile_id)
+        current = reconstitute_state(application.state.store.get(profile_id))
+        if payload.idempotency_key in current.processed_keys:
+            return {
+                "status": "applied",
+                "message": "That answer was already used.",
+                "matched_checklist_ids": [],
+                "resolved_gate_ids": [],
+                "envelope": _envelope(current).model_dump(mode="json"),
+            }
+        if current.version != payload.expected_version:
+            raise VersionConflictError("Your plan changed in another tab. Refresh to continue.")
+        gate = active_gate(current)
+        horizon = build_acquisition_horizon(current)
+        if gate is None or horizon is None or gate.id != payload.gate_id:
+            raise HTTPException(status_code=409, detail="That question is no longer active. Refresh to continue.")
+        evaluated = evaluate_acquisition(current, horizon, payload.text)
+        if evaluated.gate_value is None:
+            deterministic_question = evaluated.clarification_question or (
+                "Add one detail that answers the question in front of you."
+            )
+            language = await application.state.resolver.acquisition_language(
+                state=current,
+                horizon=horizon,
+                human_text=payload.text,
+                deterministic_clarification=deterministic_question,
+            )
+            _event(
+                "bounded_acquisition_clarification",
+                profile_id,
+                request,
+                source_version=current.version,
+                horizon_items=len(horizon.checklist),
+                matched_items=len(evaluated.matched_checklist_ids),
+                language_provider=language.provider,
+                model_calls=language.telemetry.get("model_calls", 0),
+                production_mutations=0,
+            )
+            return {
+                "status": "clarification_needed",
+                "message": language.clarification_question or deterministic_question,
+                "reply": language.reply,
+                "carry_forward": payload.text,
+                "matched_checklist_ids": evaluated.matched_checklist_ids,
+                "candidates": [item.model_dump(mode="json") for item in evaluated.candidates],
+                "horizon": horizon.model_dump(mode="json"),
+                "writes": 0,
+                "language_provider": language.provider,
+            }
+        actor = _trusted_actor(profile_id, payload.idempotency_key)
+        governor_decision = AuthorityGovernor().evaluate(
+            state=current,
+            gate=gate,
+            proposal=ResolverTransitionProposal(
+                gate_id=gate.id,
+                source_state_version=current.version,
+                proposed_state=GateState.YES,
+                proposed_value=evaluated.gate_value,
+                authority=Authority.HUMAN,
+                scope=gate.authorized_scope,
+                evidence_refs=[f"acquisition-horizon:sha256:{horizon.receipt_hash}"],
+            ),
+            actor=actor,
+        )
+        if not governor_decision.authorized:
+            raise HTTPException(status_code=409, detail=f"Decision blocked: {governor_decision.reason_code}.")
+        try:
+            updated = apply_decision(
+                current,
+                gate_id=gate.id,
+                value=evaluated.gate_value,
+                source_text=payload.text,
+                idempotency_key=payload.idempotency_key,
+            )
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        updated.governor_decisions.append(governor_decision)
+        updated, agent_result = await _resolve_current_gate(application, updated)
+        updated = _record_governed_mutation(
+            current=current,
+            updated=updated,
+            profile_id=profile_id,
+            idempotency_key=payload.idempotency_key,
+            mutation_kind="bounded_acquisition",
+            dependency_refs=[
+                f"gate:{gate.id}",
+                f"acquisition-horizon:sha256:{horizon.receipt_hash}",
+                f"canonical-version:{current.version}",
+                *_agent_dependency_refs(agent_result),
+            ],
+        )
+        saved = application.state.store.save_governed(updated, expected_version=current.version)
+        _event(
+            "bounded_acquisition_applied",
+            profile_id,
+            request,
+            source_version=current.version,
+            version=saved.version,
+            horizon_items=len(horizon.checklist),
+            matched_items=len(evaluated.matched_checklist_ids),
+            resolved_gate=gate.id,
+            agent_provider=agent_result.provider if agent_result else "not-required",
+        )
+        return {
+            "status": "applied",
+            "message": "Your answer changed what comes next.",
+            "matched_checklist_ids": evaluated.matched_checklist_ids,
+            "resolved_gate_ids": [gate.id],
+            "envelope": _envelope(saved, agent_run=_agent_run(agent_result)).model_dump(mode="json"),
+        }
+
     @application.post("/api/revalidate", response_model=StateEnvelope)
     async def revalidate(
         payload: RevalidationRequest,
@@ -774,6 +896,7 @@ def _envelope(state: Any, agent_run: dict[str, Any] | None = None) -> StateEnvel
         lenses=lens_projections(state),
         impact=current_impact(state),
         agent_run=agent_run,
+        acquisition_horizon=build_acquisition_horizon(state),
     )
 
 

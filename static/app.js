@@ -537,6 +537,7 @@ function renderColdFrontDoor() {
 function renderPrimary(next) {
   const state = next.state;
   const gate = next.active_gate;
+  const acquisition = next.acquisition_horizon;
   const mode = executionMode(state);
   if (!state.starting_vector_complete && state.version === 0) {
     renderStartingVector();
@@ -575,7 +576,14 @@ function renderPrimary(next) {
   } else if ((gate.surface === "choice" || gate.surface === "conflict") && gate.options.length) {
     control = `<div class="choice-grid">${gate.options.map((option) => `
       <label class="choice-option"><input type="radio" name="gate-choice" value="${escapeHtml(option)}"><span>${escapeHtml(humanCopy(option))}</span></label>
-    `).join("")}</div>`;
+    `).join("")}</div>
+    ${gate.surface === "choice" ? `
+      <details class="natural-answer">
+        <summary>Tell me in your own words</summary>
+        <label for="gate-natural-value">What are you picturing?</label>
+        <textarea id="gate-natural-value" rows="4" maxlength="4000" placeholder="Say it naturally. Relevant details can carry forward to the next step."></textarea>
+      </details>
+    ` : ""}`;
   } else if (gate.surface === "compare" && hypotheses.length) {
     control = `<div class="hypothesis-grid">${hypotheses.map((item) => `
       <article class="hypothesis">
@@ -595,7 +603,7 @@ function renderPrimary(next) {
   }
   primary.innerHTML = `
     ${mode === "PARALYZED" ? '<div class="attention-note">These choices cannot both guide the next step. Your answer below will clear the conflict.</div>' : ""}
-    <h2 id="primary-title">${escapeHtml(humanCopy(gate.question))}</h2>
+    <h2 id="primary-title">${escapeHtml(humanCopy(acquisition?.prompt || gate.question))}</h2>
     <p class="gate-copy">${escapeHtml(humanCopy(gate.why))}</p>
     <form id="gate-form" class="gate-form">
       ${control}
@@ -1130,12 +1138,21 @@ async function submitDecision(event) {
   const gate = envelope?.active_gate;
   if (!gate) return;
   let value = event.currentTarget?.dataset?.value || "";
+  const naturalValue = $("#gate-natural-value")?.value?.trim() || "";
+  if (!value && naturalValue) {
+    await submitAcquisition(gate, naturalValue);
+    return;
+  }
   if (!value && (gate.surface === "choice" || gate.surface === "conflict")) {
     value = document.querySelector('input[name="gate-choice"]:checked')?.value || "";
   }
   if (!value) value = $("#gate-value")?.value?.trim() || "";
   if (!value) {
     showInlineGuidance(primary, "Add your decision first.");
+    return;
+  }
+  if (gate.surface === "text") {
+    await submitAcquisition(gate, value);
     return;
   }
   const buttons = document.querySelectorAll("#gate-form button");
@@ -1159,6 +1176,42 @@ async function submitDecision(event) {
     showInlineGuidance(primary, error.message);
   } finally {
     buttons.forEach((button) => { button.disabled = false; });
+    setProcessing();
+  }
+}
+
+async function submitAcquisition(gate, text) {
+  const buttons = document.querySelectorAll("#gate-form button");
+  buttons.forEach((button) => { button.disabled = true; });
+  setProcessing("Working through what you shared…");
+  try {
+    const result = await api("/api/acquire", {
+      method: "POST",
+      body: JSON.stringify({
+        gate_id: gate.id,
+        text,
+        expected_version: envelope.state.version,
+        idempotency_key: idempotencyKey(),
+      }),
+    });
+    if (result.status === "clarification_needed") {
+      showInlineGuidance(primary, result.message);
+      const input = $("#gate-natural-value") || $("#gate-value");
+      if (input) {
+        input.value = result.carry_forward || text;
+        input.focus();
+      }
+      buttons.forEach((button) => { button.disabled = false; });
+      return;
+    }
+    render(result.envelope, { showFeedback: true });
+    focusPrimary();
+    announce("Saved.");
+  } catch (error) {
+    if (error.status === 409) await loadState();
+    showInlineGuidance(primary, error.message);
+    buttons.forEach((button) => { button.disabled = false; });
+  } finally {
     setProcessing();
   }
 }

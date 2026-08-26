@@ -211,6 +211,17 @@ def _anchor_candidate(clause: str) -> tuple[int, int, str, str] | None:
         re.search(r"\b(?:my\s+)?(?:career|job|education|location|resume|résumé)?\s*target\s*(?:is|:)", lower)
         or re.search(r"\b(?:my|our)\s+(?:anchor|goal)\s+(?:is|:)", lower)
     )
+    venture_objective = any(
+        term in lower
+        for term in (
+            "build a company",
+            "start a company",
+            "build a business",
+            "start a business",
+            "startup",
+            "founder",
+        )
+    )
     explicit_objective = bool(
         explicit_target
         or re.search(r"\bi\s+(?:want|need|plan|hope)\s+to\b", lower)
@@ -241,7 +252,7 @@ def _anchor_candidate(clause: str) -> tuple[int, int, str, str] | None:
         or any(term in lower for term in ("my career target", "my job target", "my resume target", "my résumé target"))
     )
     if explicit_objective and not (constraint and not explicit_target and not objective_noun):
-        specificity = 3 if explicit_target else 2
+        specificity = 3 if explicit_target or venture_objective else 2
         return (1, specificity, "explicit_objective", domain)
     if explicit_task:
         return (2, 2, "explicit_task", domain)
@@ -259,7 +270,19 @@ def _canonical_anchor(clause: str, candidate_class: str, domain: str) -> str:
             re.search(r"\b(?:already\s+)?(?:work(?:ing)?|employed)\s+as\s+(?:a|an)\b", lower)
             or "already have a civilian job" in lower
         )
-        if existing_civilian_work:
+        venture_objective = any(
+            term in lower
+            for term in (
+                "build a company",
+                "start a company",
+                "build a business",
+                "start a business",
+                "build something",
+                "startup",
+                "founder",
+            )
+        )
+        if existing_civilian_work or venture_objective:
             return clause.strip()
         return "Find civilian work"
     if domain == "education" and "resume" not in lower and "résumé" not in lower:
@@ -281,7 +304,18 @@ def resolve_human_anchor(orientation: OrientationResult) -> AnchorResolution:
     if not meaningful:
         return AnchorResolution(None, 0, None, "no_decision_relevant_statement")
     lower = orientation.reviewed_input.casefold()
-    if any(term in lower for term in ("don't know what i want", "do not know what i want", "not sure what i want")):
+    if any(
+        term in lower
+        for term in (
+            "don't know what i want",
+            "do not know what i want",
+            "not sure what i want",
+            "don't know which direction",
+            "do not know which direction",
+            "not sure which direction",
+            "which direction should lead",
+        )
+    ):
         return AnchorResolution(
             "Choose the post-service direction worth pursuing first",
             1,
@@ -327,6 +361,19 @@ def anchor_domain(anchor: str | None) -> str | None:
     if any(term in lower for term in ("relocat", "move", "location", "where to live")):
         return "location"
     if any(term in lower for term in ("job", "career", "work", "employ", "civilian role")):
+        return "employment"
+    if any(
+        term in lower
+        for term in (
+            "build a company",
+            "start a company",
+            "build a business",
+            "start a business",
+            "build something",
+            "startup",
+            "founder",
+        )
+    ):
         return "employment"
     if re.search(r"\bbecome\s+(?:a|an)\s+[a-z][a-z -]{2,60}\b", lower):
         return "employment"

@@ -33,7 +33,7 @@ def test_dynamic_backend_copy_is_projected_into_human_language() -> None:
         '.replace(/\\bresolver\\b/gi, "system")',
     ):
         assert replacement in script
-    assert "humanCopy(gate.question)" in script
+    assert "humanCopy(acquisition?.prompt || gate.question)" in script
     assert "humanCopy(gate.why)" in script
     assert "humanCopy(lens.summary)" in script
     assert "humanCopy(feedback.headline)" in script
@@ -107,8 +107,8 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
     assert "Look at this another way" in html
     assert "Choose a relevant part of your plan" in html
-    assert "/static/app.js?v=10" in html
-    assert "/static/styles.css?v=8" in html
+    assert "/static/app.js?v=11" in html
+    assert "/static/styles.css?v=9" in html
 
 
 def test_primary_decision_precedes_plan_scaffolding_and_requires_an_explicit_choice() -> None:
@@ -205,7 +205,22 @@ def test_pre_anchor_state_renders_the_backend_question_without_plan_scaffolding(
     assert "if (!state.starting_vector_complete && state.version === 0)" in script
     assert "if (!state.human_anchor && !state.original_intents.length)" in script
     assert '$("#orientation-shell").hidden = !started' in script
-    assert '<h2 id="primary-title">${escapeHtml(humanCopy(gate.question))}</h2>' in script
+    assert '<h2 id="primary-title">${escapeHtml(humanCopy(acquisition?.prompt || gate.question))}</h2>' in script
+
+
+def test_bounded_acquisition_is_natural_inline_and_keeps_one_primary_surface() -> None:
+    html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    css = (ROOT / "static" / "styles.css").read_text(encoding="utf-8")
+    assert "Tell me in your own words" in script
+    assert "Relevant details can carry forward to the next step" in script
+    assert 'api("/api/acquire"' in script
+    assert "result.status === \"clarification_needed\"" in script
+    assert "showInlineGuidance(primary, result.message)" in script
+    assert "acquisition?.prompt || gate.question" in script
+    assert 'id="primary-content" aria-live="polite"' in html
+    assert ".natural-answer summary" in css
+    assert "acquisition-horizon" not in script
 
 
 def test_progressive_disclosure_and_feedback_are_state_earned() -> None:

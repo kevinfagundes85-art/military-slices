@@ -94,6 +94,12 @@ def _slice_hits(statement: str) -> list[SliceName]:
             "defense",
             "manager",
             "analyst",
+            "build a company",
+            "build something",
+            "startup",
+            "founder",
+            "make an impact",
+            "work with veterans",
         ),
         SliceName.EDUCATION: (
             "school",
@@ -104,6 +110,8 @@ def _slice_hits(statement: str) -> list[SliceName]:
             "training",
             "education",
             "gi bill",
+            "learn ai",
+            "upskill",
         ),
         SliceName.LOCATION: (
             "relocat",
@@ -928,7 +936,21 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
         if fact_is_usable(fact)
         and any(
             term in fact.statement.lower()
-            for term in ("want", "prefer", "hate", "won't", "will not", "don't", "do not")
+            for term in (
+                "want",
+                "prefer",
+                "hate",
+                "won't",
+                "will not",
+                "don't",
+                "do not",
+                "remote",
+                "hybrid",
+                "schedule",
+                "travel",
+                "commute",
+                "shift work",
+            )
         )
     ]
     if domain == "employment" and not preferences:
@@ -1042,6 +1064,7 @@ def apply_decision(
     gate_id: str,
     value: str,
     idempotency_key: str,
+    source_text: str | None = None,
 ) -> CanonicalState:
     if idempotency_key in current.processed_keys:
         return current
@@ -1055,6 +1078,16 @@ def apply_decision(
 
     normalized = value.strip()
     previous_date = state.transition_date
+    collateral_added: list[str] = []
+    if source_text and source_text.strip().casefold() != normalized.casefold():
+        source_orientation = orient(source_text, context=current)
+        if source_orientation.conflicts:
+            raise ValueError(source_orientation.clarification_question or "Resolve the conflicting information first.")
+        collateral_added = _merge_human_facts(
+            state,
+            source_orientation,
+            evidence_label="Direct answer in the active conversation",
+        )
     if gate_id == "planned-transition-date":
         parsed = _extract_transition_date(normalized)
         if parsed is None:
@@ -1065,6 +1098,10 @@ def apply_decision(
         if normalized not in ANCHOR_OPTIONS:
             raise ValueError("Choose one of the listed transition outcomes.")
         state.human_anchor = ANCHOR_OPTIONS[normalized]
+        if source_text:
+            source_anchor = resolve_human_anchor(orient(source_text, context=current)).anchor
+            if source_anchor:
+                state.human_anchor = source_anchor
         state.current_goal = state.human_anchor
     elif gate_id == "service-path-identity":
         state.service = normalize_service_choice(normalized)
@@ -1081,6 +1118,10 @@ def apply_decision(
         }.get(normalized)
         if state.human_anchor is None:
             raise ValueError("Choose one of the listed directions.")
+        if normalized == "Civilian work" and source_text:
+            source_anchor = resolve_human_anchor(orient(source_text, context=current)).anchor
+            if source_anchor and anchor_domain(source_anchor) == "employment":
+                state.human_anchor = source_anchor
         state.current_goal = state.human_anchor
     elif gate_id == "next-work-preferences":
         orientation = orient(normalized)
@@ -1121,6 +1162,10 @@ def apply_decision(
         )
     )
     consequences = _decision_consequences(gate_id, previous_date, state.transition_date, normalized)
+    if collateral_added:
+        consequences.append(
+            "Carried forward the other relevant details in your answer so they do not need to be asked again."
+        )
     state.feedback.append(
         FeedbackEvent(
             id=stable_id("feedback", state.profile_id, idempotency_key),
@@ -1284,7 +1329,7 @@ def _decision_consequences(
         return [f"Made {decision_value.lower()} the focus of the plan."]
     if gate_id == "transition-direction":
         return [
-            f"Put {decision_value.lower()} first for exploration.",
+            "Put the direction you chose first for exploration.",
             "Kept the other directions available without treating this as permanent.",
         ]
     if gate_id == "next-work-preferences":
@@ -1306,7 +1351,31 @@ def _decision_consequences(
 def deterministic_hypotheses(text: str, rejected: list[str]) -> list[CareerHypothesis]:
     lower = text.lower()
     families: list[tuple[str, str, list[str]]] = []
-    if any(term in lower for term in ("intelligence", "analysis", "brief", "research")):
+    if any(
+        term in lower
+        for term in ("build a company", "start a company", "startup", "founder", "build something")
+    ):
+        families.extend(
+            [
+                (
+                    "Veteran-focused AI product builder",
+                    "Tests a product-building route around the veteran problem and impact you named.",
+                    ["O*NET 15-1252.00", "U.S. Small Business Administration business guide"],
+                ),
+                (
+                    "AI product management",
+                    "Tests product discovery and delivery inside an existing organization before or "
+                    "alongside a venture.",
+                    ["O*NET 13-1082.00", "BLS Occupational Outlook Handbook"],
+                ),
+                (
+                    "Veteran technology program lead",
+                    "Tests mission-driven program ownership using your technical and military-connected context.",
+                    ["O*NET 13-1082.00", "BLS Occupational Outlook Handbook"],
+                ),
+            ]
+        )
+    elif any(term in lower for term in ("intelligence", "analysis", "brief", "research")):
         families.extend(
             [
                 (
