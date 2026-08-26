@@ -98,3 +98,37 @@ interface, and autonomous Gate resolution.
 
 External effects and autonomous Probe remain disabled. Production state and traffic were not
 changed during negotiation or local validation.
+
+## Zero-traffic candidate proof
+
+- Source commit: `fd5c246`
+- Revision: `military-slices-00034-vuz`
+- Traffic: 0%
+- Candidate tag: `genesis-loop-rc`
+- Candidate URL: <https://genesis-loop-rc---military-slices-ztvqlzospa-uw.a.run.app/>
+- Container digest: `sha256:5a6f3e75c0dc93b319729bbd18cf5d06b2f654c02ffbc08a804be63fd1bb68ec`
+- Exact hosted bundles: `app.js?v=8`, `styles.css?v=6`
+- Runtime identity: Firestore, secure cookie, Google ADK, `gemini-3.7-flash`, Vertex AI `global`,
+  18-second resolver budget, existing runtime service account and session secret.
+- Health: ready; installed Domain Pack hash
+  `026a1508a3a2e6eb16907b2e8fc29c4f333af5c5ab908e6029903b8cbcbf9f4c`, status `LEGACY_VALID`.
+- External effects: disabled.
+- Autonomous Probe: disabled.
+- Warning/error logs after hosted proof: none.
+
+One isolated synthetic candidate session proved the hosted loop:
+
+- versions advanced `0 → 1 → 2 → 3` across starting vector, confirmed intent, and transition-date
+  decision;
+- Gemini/ADK returned three hypotheses without fallback;
+- `career-direction` remained `PARTIAL` and human-owned;
+- the Governor recorded an authorized `nominate` decision;
+- proposal ref
+  `resolver-proposal:sha256:88e40b8738cc090f23e66b63225a636a50cdf1b761a332eddab2b0f3c2833431`
+  appeared in both mutation dependencies and lineage;
+- identical replay stayed at version 3;
+- reload stayed at version 3 and reproduced `career-direction`;
+- the inline receipt included the bounded exploration explanation.
+
+Production remains `military-slices-00001-niw` at 100%. No traffic moved. The candidate remains at
+the human acceptance Gate.
