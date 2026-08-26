@@ -92,7 +92,7 @@ def test_what_if_is_isolated_until_explicit_promotion() -> None:
     promoted = promoted_response.json()
     assert promoted["state"]["version"] == before["state"]["version"] + 1
     assert any(item["gate_id"] == "what-if:relocation_willingness" for item in promoted["state"]["decisions"])
-    assert promoted["what_changed"]["headline"] == "You made the explored change part of your current plan."
+    assert promoted["what_changed"]["headline"] == "Used the explored change in your current plan."
     assert all("will not relocate" not in fact["statement"].casefold() for fact in promoted["state"]["facts"])
     assert branch["conflicts"][0] not in promoted["state"]["conflicts"]
     replay = client.post(
@@ -116,6 +116,53 @@ def test_what_if_is_isolated_until_explicit_promotion() -> None:
     assert stale.status_code == 409
     history = client.get("/api/history").json()
     assert before["state"]["version"] in [entry["version"] for entry in history["entries"]]
+
+
+def test_target_experiment_promotion_reports_the_saved_change_not_comparison_copy() -> None:
+    client, _ = make_client()
+    started = client.post(
+        "/api/starting-vector",
+        json={
+            "operating_role": "veteran_service_member",
+            "lifecycle_position": "separated_1_to_5_years",
+            "service": "navy",
+            "component": "active_duty",
+            "expected_version": 0,
+            "idempotency_key": "target-feedback-vector-0001",
+        },
+    ).json()
+    confirmed = client.post(
+        "/api/decision",
+        json={
+            "gate_id": "transition-human-anchor",
+            "value": "I am still deciding",
+            "expected_version": started["state"]["version"],
+            "idempotency_key": "target-feedback-anchor-0001",
+        },
+    ).json()
+    branch = client.post(
+        "/api/what-if",
+        json={"text": "What if I build a useful AI tool for veterans?"},
+    ).json()
+
+    promoted = client.post(
+        "/api/what-if/promote",
+        json={
+            "token": branch["token"],
+            "expected_version": confirmed["state"]["version"],
+            "idempotency_key": "promote-target-experiment-0001",
+        },
+    )
+
+    assert promoted.status_code == 200
+    feedback = promoted.json()["what_changed"]
+    assert feedback["headline"] == "Added this possibility to the decision in front of you."
+    assert feedback["consequences"] == [
+        "Saved the possibility you explored as context for this decision.",
+        "Kept the current direction choice open.",
+        "Choose a direction next; this context will carry forward.",
+    ]
+    assert all("no current target" not in item.casefold() for item in feedback["consequences"])
 
 
 def test_discarded_what_if_and_cross_user_token_leave_truth_untouched() -> None:

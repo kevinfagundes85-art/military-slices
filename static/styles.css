@@ -393,7 +393,10 @@ footer details { max-width: 700px; }
   .brand small { display: none; }
   .button-quiet { padding-inline: 0.75rem; }
   main { width: min(100% - 1rem, 1180px); }
-  .orientation-shell { padding-top: 2rem; }
+  .orientation-shell { padding: 0.75rem 0 0.25rem; }
+  .orientation-shell > .section-kicker,
+  .orientation-shell > h1,
+  .orientation-shell > .timeline { display: none; }
   .path-context { gap: 0.45rem; }
   .readiness { align-items: flex-start; flex-direction: column; }
   .readiness-marks { justify-content: flex-start; }

@@ -573,8 +573,8 @@ function renderPrimary(next) {
   if (gate.surface === "date") {
     control = `<label for="gate-value">Expected date</label><input id="gate-value" type="date" min="${new Date().toISOString().slice(0, 10)}">`;
   } else if ((gate.surface === "choice" || gate.surface === "conflict") && gate.options.length) {
-    control = `<div class="choice-grid">${gate.options.map((option, index) => `
-      <label class="choice-option"><input type="radio" name="gate-choice" value="${escapeHtml(option)}" ${index === 0 ? "checked" : ""}><span>${escapeHtml(humanCopy(option))}</span></label>
+    control = `<div class="choice-grid">${gate.options.map((option) => `
+      <label class="choice-option"><input type="radio" name="gate-choice" value="${escapeHtml(option)}"><span>${escapeHtml(humanCopy(option))}</span></label>
     `).join("")}</div>`;
   } else if (gate.surface === "compare" && hypotheses.length) {
     control = `<div class="hypothesis-grid">${hypotheses.map((item) => `
@@ -765,10 +765,22 @@ async function openHistory() {
   $("#history-detail").hidden = true;
   try {
     const history = await api("/api/history");
-    $("#history-list").innerHTML = history.entries.slice().reverse().map((entry) => `
+    const meaningful = [];
+    let lastAnchor = null;
+    history.entries.slice().reverse().forEach((entry) => {
+      const anchor = entry.human_anchor?.trim();
+      if (!anchor || anchor === lastAnchor) return;
+      meaningful.push(entry);
+      lastAnchor = anchor;
+    });
+    if (meaningful.length < 2) {
+      $("#history-list").innerHTML = "<p>No earlier direction change has been recorded yet.</p>";
+      return;
+    }
+    $("#history-list").innerHTML = meaningful.slice(0, 4).map((entry) => `
       <button class="history-version" data-version="${entry.version}" type="button">
         <strong>${entry.current ? "Current plan" : "Earlier plan"}</strong>
-        <span>${escapeHtml(humanCopy(entry.human_anchor || "No target declared"))}</span>
+        <span>${escapeHtml(humanCopy(entry.human_anchor))}</span>
         <small>${escapeHtml(humanCopy(entry.change_summary))}</small>
       </button>
     `).join("");

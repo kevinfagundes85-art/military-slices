@@ -169,6 +169,15 @@ def test_separated_undecided_veteran_gets_a_real_direction_choice_without_a_futu
         "Put one clear direction choice in front of you next.",
     ]
 
+    advanced = apply_decision(
+        state,
+        gate_id="transition-direction",
+        value="Civilian work",
+        idempotency_key="separated-direction-0002",
+    )
+    assert advanced.human_anchor == "Find civilian work"
+    assert active_gate(advanced) is None or active_gate(advanced).id != "transition-direction"
+
 
 def test_remote_ai_position_is_work_context_not_a_location_fact() -> None:
     result = orient("I want to take a different route and slowly transition to a remote AI position.")

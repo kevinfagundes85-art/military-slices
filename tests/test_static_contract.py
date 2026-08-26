@@ -107,8 +107,28 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
     assert "Look at this another way" in html
     assert "Choose a relevant part of your plan" in html
-    assert "/static/app.js?v=9" in html
-    assert "/static/styles.css?v=7" in html
+    assert "/static/app.js?v=10" in html
+    assert "/static/styles.css?v=8" in html
+
+
+def test_primary_decision_precedes_plan_scaffolding_and_requires_an_explicit_choice() -> None:
+    html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    css = (ROOT / "static" / "styles.css").read_text(encoding="utf-8")
+
+    assert html.index('class="content-grid"') < html.index('id="orientation-shell"')
+    choice_render = script[script.index('gate.surface === "choice"') : script.index('gate.surface === "compare"')]
+    assert 'index === 0 ? "checked"' not in choice_render
+    assert '.orientation-shell > .timeline { display: none; }' in css
+
+
+def test_history_surface_collapses_write_versions_into_real_direction_changes() -> None:
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    history = script[script.index("async function openHistory") : script.index("async function inspectHistoryVersion")]
+
+    assert "if (!anchor || anchor === lastAnchor) return;" in history
+    assert "No earlier direction change has been recorded yet." in history
+    assert "No target declared" not in history
 
 
 def test_temporal_impact_surface_is_natural_bounded_and_deterministic() -> None:

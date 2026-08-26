@@ -463,11 +463,21 @@ def promote_what_if(
         state.conflicts.extend(item for item in branch.conflicts if item not in state.conflicts)
     state = propagate_temporal_changes(current, state)
     state = recompute_state(state)
+    if branch.modification_kind == "target_experiment":
+        headline = "Added this possibility to the decision in front of you."
+        consequences = [
+            "Saved the possibility you explored as context for this decision.",
+            "Kept the current direction choice open.",
+            "Choose a direction next; this context will carry forward.",
+        ]
+    else:
+        headline = "Used the explored change in your current plan."
+        consequences = branch.consequences[:3]
     state.feedback.append(
         FeedbackEvent(
             id=stable_id("feedback", state.profile_id, idempotency_key),
-            headline="You made the explored change part of your current plan.",
-            consequences=branch.consequences[:3],
+            headline=headline,
+            consequences=consequences,
         )
     )
     state.processed_keys.append(idempotency_key)
