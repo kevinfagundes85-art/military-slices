@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import hashlib
+import json
 from datetime import UTC, datetime
 from enum import StrEnum
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 def utc_now() -> datetime:
@@ -92,6 +94,176 @@ class FreshnessClass(StrEnum):
     EXTERNAL_EXPIRING = "external_expiring"
 
 
+class DomainPackStatus(StrEnum):
+    DRAFT = "DRAFT"
+    ACTIVE = "ACTIVE"
+    RETIRED = "RETIRED"
+    LEGACY_VALID = "LEGACY_VALID"
+
+
+class MigrationStatus(StrEnum):
+    LEGACY_VALID = "LEGACY_VALID"
+    LINEAGE_ENRICHED = "LINEAGE_ENRICHED"
+    LINEAGE_INCOMPLETE = "LINEAGE_INCOMPLETE"
+    REVALIDATION_REQUIRED = "REVALIDATION_REQUIRED"
+
+
+class LineageIntegrity(StrEnum):
+    VERIFIED = "VERIFIED"
+    INCOMPLETE = "INCOMPLETE"
+    CONFLICTED = "CONFLICTED"
+
+
+class DomainPackRef(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    domain_pack_id: str = Field(min_length=3, max_length=100)
+    version: str = Field(min_length=1, max_length=100)
+    content_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    helm_compatibility_version: str = "1.1"
+    approval_event_id: str | None = None
+    effective_date: str | None = None
+    status: DomainPackStatus = DomainPackStatus.DRAFT
+
+    @classmethod
+    def for_payload(
+        cls,
+        *,
+        domain_pack_id: str,
+        version: str,
+        payload: dict[str, Any],
+        status: DomainPackStatus = DomainPackStatus.DRAFT,
+        helm_compatibility_version: str = "1.1",
+        approval_event_id: str | None = None,
+        effective_date: str | None = None,
+    ) -> DomainPackRef:
+        encoded = json.dumps(payload, separators=(",", ":"), sort_keys=True).encode()
+        return cls(
+            domain_pack_id=domain_pack_id,
+            version=version,
+            content_hash=hashlib.sha256(encoded).hexdigest(),
+            helm_compatibility_version=helm_compatibility_version,
+            approval_event_id=approval_event_id,
+            effective_date=effective_date,
+            status=status,
+        )
+
+    @model_validator(mode="after")
+    def active_pack_requires_approval(self) -> DomainPackRef:
+        if self.status == DomainPackStatus.ACTIVE and (
+            not self.approval_event_id or not self.effective_date
+        ):
+            raise ValueError("An active Domain Pack requires approval and an effective date.")
+        return self
+
+
+def legacy_transition_pack_ref() -> DomainPackRef:
+    legacy_identity = {
+        "domain_pack_id": "military-transition",
+        "version": "2026-08-24-v2-shadow-tested",
+        "status": "legacy-unapproved-baseline",
+    }
+    return DomainPackRef.for_payload(
+        domain_pack_id="military-transition",
+        version="2026-08-24-v2-shadow-tested",
+        payload=legacy_identity,
+        status=DomainPackStatus.LEGACY_VALID,
+    )
+
+
+class ActorProvenance(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    actor_id: str
+    actor_type: Literal["human", "system", "authoritative_source"]
+    auth_context: str
+    event_id: str = Field(min_length=8, max_length=160)
+    timestamp: datetime = Field(default_factory=utc_now)
+    integrity_ref: str
+    source_system: str
+    trusted: bool = False
+
+    @classmethod
+    def trusted_session(
+        cls,
+        *,
+        profile_id: str,
+        event_id: str,
+        integrity_ref: str,
+        source_system: str = "military-slices-web",
+    ) -> ActorProvenance:
+        return cls(
+            actor_id=profile_id,
+            actor_type="human",
+            auth_context="signed_session",
+            event_id=event_id,
+            integrity_ref=integrity_ref,
+            source_system=source_system,
+            trusted=True,
+        )
+
+
+class MutationEvent(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    id: str
+    idempotency_key: str
+    actor: ActorProvenance
+    expected_version: int = Field(ge=0)
+    result_version: int = Field(ge=1)
+    source_state_version: int = Field(ge=0)
+    mutation_kind: str = Field(min_length=2, max_length=100)
+    dependency_refs: list[str] = Field(default_factory=list)
+    domain_pack: DomainPackRef
+    occurred_at: datetime = Field(default_factory=utc_now)
+
+
+class LineageRecord(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    subject_id: str
+    depends_on: list[str] = Field(default_factory=list)
+    valid_while: list[str] = Field(default_factory=list)
+    invalidated_by: list[str] = Field(default_factory=list)
+    source_state_version: int = Field(ge=0)
+    authority_refs: list[str] = Field(default_factory=list)
+    integrity: LineageIntegrity = LineageIntegrity.VERIFIED
+
+
+class DerivedIndexRef(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    name: Literal["gates", "projections"]
+    source_state_version: int = Field(ge=0)
+    content_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    integrity: LineageIntegrity = LineageIntegrity.VERIFIED
+
+
+class ResolverTransitionProposal(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    gate_id: str
+    source_state_version: int = Field(ge=0)
+    proposed_state: GateState
+    proposed_value: str | None = None
+    authority: Authority
+    effect: Literal["nominate", "resolve"] = "resolve"
+    scope: list[str] = Field(default_factory=list)
+    evidence_refs: list[str] = Field(default_factory=list)
+
+
+class GovernorDecision(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    authorized: bool
+    reason_code: str
+    gate_id: str
+    source_state_version: int = Field(ge=0)
+    effect: Literal["nominate", "resolve"]
+    authority: Authority
+    permitted_scope: list[str] = Field(default_factory=list)
+
+
 class Evidence(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -133,9 +305,23 @@ class Gate(BaseModel):
     authority_required: Authority
     options: list[str] = Field(default_factory=list)
     dependencies: list[str] = Field(default_factory=list)
+    parent_gate_id: str | None = None
+    authorized_scope: list[str] = Field(default_factory=list)
+    authority_set: list[Authority] = Field(default_factory=list)
+    construction_provenance: str = "deterministic:legacy-gate"
+    source_state_version: int = Field(default=0, ge=0)
+    required_evidence: list[str] = Field(default_factory=list)
     value_score: int = Field(ge=0, le=100, default=50)
     resolved_value: str | None = None
     updated_at: datetime = Field(default_factory=utc_now)
+
+    @model_validator(mode="after")
+    def supply_legacy_bounds(self) -> Gate:
+        if not self.authorized_scope:
+            self.authorized_scope = [f"slice:{item.value}" for item in self.affected_slices]
+        if not self.authority_set:
+            self.authority_set = [self.authority_required]
+        return self
 
 
 class CareerHypothesis(BaseModel):
@@ -150,6 +336,7 @@ class CareerHypothesis(BaseModel):
     next_step: str = "Compare this direction with a real civilian job description."
     confidence: Literal["explore", "promising", "strong"] = "explore"
     status: Literal["candidate", "accepted", "rejected"] = "candidate"
+    state_category: Literal[StateCategory.HYPOTHETICAL] = StateCategory.HYPOTHETICAL
 
 
 class SliceProjection(BaseModel):
@@ -387,6 +574,8 @@ class CanonicalState(BaseModel):
     active_tasks: list[ActiveTask] = Field(default_factory=list)
     latent_fact_count: int = Field(default=0, ge=0)
     transition_pack_version: str = "2026-08-24-v2-shadow-tested"
+    domain_pack: DomainPackRef = Field(default_factory=legacy_transition_pack_ref)
+    migration_status: MigrationStatus = MigrationStatus.LEGACY_VALID
     facts: list[Fact] = Field(default_factory=list)
     evidence: list[Evidence] = Field(default_factory=list)
     gates: list[Gate] = Field(default_factory=list)
@@ -399,6 +588,10 @@ class CanonicalState(BaseModel):
     impacts: list[ImpactItem] = Field(default_factory=list)
     receipt_deltas: list[ReceiptPatch] = Field(default_factory=list)
     processed_keys: list[str] = Field(default_factory=list)
+    mutation_events: list[MutationEvent] = Field(default_factory=list)
+    governor_decisions: list[GovernorDecision] = Field(default_factory=list)
+    lineage: list[LineageRecord] = Field(default_factory=list)
+    derived_indexes: list[DerivedIndexRef] = Field(default_factory=list)
     telemetry: TelemetrySummary = Field(default_factory=TelemetrySummary)
 
 

@@ -11,7 +11,8 @@ from typing import Any
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from military_slices.engine import deterministic_hypotheses, transition_window
-from military_slices.models import CanonicalState, CareerHypothesis
+from military_slices.models import CanonicalState, CareerHypothesis, SliceName
+from military_slices.slices import project_slice_context
 
 LOGGER = logging.getLogger("military_slices.agent")
 
@@ -78,27 +79,9 @@ def calculate_transition_windows(separation_date: str) -> dict[str, str]:
 
 
 def _minimal_context(state: CanonicalState) -> dict[str, Any]:
-    active_slices = {
-        slice_name
-        for task in state.active_tasks
-        for slice_name in task.affected_slices
-    }
-    relevant_facts = [
-        fact.statement
-        for fact in state.facts
-        if not active_slices or active_slices.intersection(fact.affected_slices)
-    ][-12:]
-    return {
-        "human_anchor": state.human_anchor,
-        "path_target_state": state.path_target_state,
-        "current_timeline_window": state.current_timeline_window,
-        "active_tasks": [task.title for task in state.active_tasks],
-        "confirmed_statements": relevant_facts,
-        "transition_date": state.transition_date,
-        "rejected_roles": state.rejected_roles[-12:],
-        "conflicts": state.conflicts[-5:],
-        "requested_action": "propose up to three career hypotheses only for the active employment task",
-    }
+    context = project_slice_context(state, SliceName.CAREER)
+    context["requested_action"] = "propose up to three career hypotheses only for the active employment task"
+    return context
 
 
 def _context_metrics(state: CanonicalState) -> dict[str, int | float]:

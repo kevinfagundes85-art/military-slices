@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import os
@@ -14,6 +15,7 @@ from fastapi.staticfiles import StaticFiles
 from military_slices.agent_runtime import Resolver, ResolverResult
 from military_slices.artifacts import ArtifactError, extract_artifact, multimodal_extract
 from military_slices.control import create_what_if, history_entry, lens_projections, path_progress, promote_what_if
+from military_slices.domain_pack import installed_domain_pack_ref
 from military_slices.engine import (
     active_gate,
     apply_artifact_input,
@@ -25,10 +27,21 @@ from military_slices.engine import (
     orient,
     reconstitute_state,
 )
+from military_slices.governance import (
+    AuthorityGovernor,
+    GovernanceError,
+    bind_gate_contracts,
+    external_effects_enabled,
+    probe_execution_enabled,
+)
 from military_slices.models import (
+    ActorProvenance,
+    Authority,
     ConfirmRequest,
     DecisionRequest,
+    GateState,
     OrientRequest,
+    ResolverTransitionProposal,
     RevalidationRequest,
     SliceName,
     StateEnvelope,
@@ -92,15 +105,28 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
     async def version_conflict(_: Request, exc: VersionConflictError) -> JSONResponse:
         return JSONResponse(status_code=409, content={"detail": str(exc)})
 
+    @application.exception_handler(GovernanceError)
+    async def governance_conflict(_: Request, exc: GovernanceError) -> JSONResponse:
+        LOGGER.warning("governance_block reason=%s", str(exc)[:240])
+        return JSONResponse(
+            status_code=409,
+            content={"detail": "This plan needs governed revalidation before that change can continue."},
+        )
+
     @application.get("/api/health")
     @application.get("/healthz")
     async def health() -> dict[str, str]:
+        pack = installed_domain_pack_ref()
         return {
             "status": "ok",
             "service": "military-slices",
             "model": os.getenv("MILITARY_SLICES_MODEL", "gemini-3.7-flash"),
             "agent_framework": "google-adk",
             "transition_pack": PACK_VERSION,
+            "domain_pack_hash": pack.content_hash,
+            "domain_pack_status": pack.status.value,
+            "external_effects": "disabled" if not external_effects_enabled() else "enabled",
+            "autonomous_probe": "disabled" if not probe_execution_enabled() else "enabled",
         }
 
     @application.get("/api/state", response_model=StateEnvelope)
@@ -236,7 +262,15 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             raise HTTPException(status_code=400, detail="That hypothetical branch failed integrity validation.")
         updated = promote_what_if(current, branch, idempotency_key=payload.idempotency_key)
         updated, agent_result = await _resolve_current_gate(application, updated)
-        saved = application.state.store.save(updated, expected_version=current.version)
+        updated = _record_governed_mutation(
+            current=current,
+            updated=updated,
+            profile_id=profile_id,
+            idempotency_key=payload.idempotency_key,
+            mutation_kind="what_if_promotion",
+            dependency_refs=[f"hypothetical:{branch.id}", f"canonical-version:{branch.source_version}"],
+        )
+        saved = application.state.store.save_governed(updated, expected_version=current.version)
         _event(
             "what_if_promoted",
             profile_id,
@@ -298,7 +332,15 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
         )
         updated, agent_result = await _resolve_current_gate(application, updated)
         agent_telemetry = agent_result.telemetry if agent_result else {}
-        saved = application.state.store.save(updated, expected_version=current.version)
+        updated = _record_governed_mutation(
+            current=current,
+            updated=updated,
+            profile_id=profile_id,
+            idempotency_key=payload.idempotency_key,
+            mutation_kind="confirmed_input",
+            dependency_refs=["reviewed-orientation", f"canonical-version:{current.version}"],
+        )
+        saved = application.state.store.save_governed(updated, expected_version=current.version)
         current_gate = active_gate(saved)
         _event(
             "confirmed_input",
@@ -332,6 +374,29 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             return _envelope(current)
         if current.version != payload.expected_version:
             raise VersionConflictError("Your plan changed in another tab. Refresh to continue.")
+        matching_gate = next((gate for gate in current.gates if gate.id == payload.gate_id), None)
+        if matching_gate is None:
+            raise HTTPException(status_code=400, detail="That decision is no longer active. Refresh to continue.")
+        actor = _trusted_actor(profile_id, payload.idempotency_key)
+        governor_decision = AuthorityGovernor().evaluate(
+            state=current,
+            gate=matching_gate,
+            proposal=ResolverTransitionProposal(
+                gate_id=matching_gate.id,
+                source_state_version=current.version,
+                proposed_state=(
+                    matching_gate.state
+                    if payload.value.strip().casefold().startswith("reject:")
+                    else GateState.YES
+                ),
+                proposed_value=payload.value,
+                authority=Authority.HUMAN,
+                scope=matching_gate.authorized_scope,
+            ),
+            actor=actor,
+        )
+        if not governor_decision.authorized:
+            raise HTTPException(status_code=409, detail=f"Decision blocked: {governor_decision.reason_code}.")
         try:
             updated = apply_decision(
                 current,
@@ -341,8 +406,17 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             )
         except ValueError as exc:
             raise HTTPException(status_code=400, detail=str(exc)) from exc
+        updated.governor_decisions.append(governor_decision)
         updated, agent_result = await _resolve_current_gate(application, updated)
-        saved = application.state.store.save(updated, expected_version=current.version)
+        updated = _record_governed_mutation(
+            current=current,
+            updated=updated,
+            profile_id=profile_id,
+            idempotency_key=payload.idempotency_key,
+            mutation_kind="human_decision",
+            dependency_refs=[f"gate:{payload.gate_id}", f"canonical-version:{current.version}"],
+        )
+        saved = application.state.store.save_governed(updated, expected_version=current.version)
         _event(
             "human_decision",
             profile_id,
@@ -390,7 +464,15 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             raise HTTPException(status_code=400, detail=str(exc)) from exc
         if not changed:
             return _envelope(current)
-        saved = application.state.store.save(updated, expected_version=current.version)
+        updated = _record_governed_mutation(
+            current=current,
+            updated=updated,
+            profile_id=profile_id,
+            idempotency_key=payload.idempotency_key,
+            mutation_kind="temporal_revalidation",
+            dependency_refs=[f"impact:{payload.impact_id}", f"canonical-version:{current.version}"],
+        )
+        saved = application.state.store.save_governed(updated, expected_version=current.version)
         _event(
             "temporal_revalidation",
             profile_id,
@@ -457,7 +539,15 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
         )
         updated, agent_result = await _resolve_current_gate(application, updated)
         agent_telemetry = agent_result.telemetry if agent_result else {}
-        saved = application.state.store.save(updated, expected_version=current.version)
+        updated = _record_governed_mutation(
+            current=current,
+            updated=updated,
+            profile_id=profile_id,
+            idempotency_key=idempotency_key,
+            mutation_kind="artifact_input",
+            dependency_refs=["deliberately-supplied-artifact", f"canonical-version:{current.version}"],
+        )
+        saved = application.state.store.save_governed(updated, expected_version=current.version)
         current_gate = active_gate(saved)
         _event(
             "artifact_applied",
@@ -542,10 +632,64 @@ async def _resolve_current_gate(
     application: FastAPI,
     state: Any,
 ) -> tuple[Any, ResolverResult | None]:
+    state = bind_gate_contracts(state)
     if not career_resolution_required(state):
         return state, None
     agent_result = await application.state.resolver.resolve(state)
+    gate = active_gate(state)
+    if gate is None:
+        return state, None
+    nomination = AuthorityGovernor().evaluate(
+        state=state,
+        gate=gate,
+        proposal=ResolverTransitionProposal(
+            gate_id=gate.id,
+            source_state_version=state.version,
+            proposed_state=gate.state,
+            authority=Authority.BOUNDED_AGENT,
+            effect="nominate",
+            scope=["career:hypothesis-nomination"],
+            evidence_refs=[evidence for item in agent_result.hypotheses for evidence in item.evidence],
+        ),
+    )
+    if not nomination.authorized:
+        LOGGER.warning(
+            "resolver_nomination_blocked reason=%s profile=%s",
+            nomination.reason_code,
+            state.profile_id[-12:],
+        )
+        return state, agent_result
+    state.governor_decisions.append(nomination)
     return _apply_agent_result(state, agent_result), agent_result
+
+
+def _trusted_actor(profile_id: str, idempotency_key: str) -> ActorProvenance:
+    digest = hashlib.sha256(f"{profile_id}:{idempotency_key}".encode()).hexdigest()
+    return ActorProvenance.trusted_session(
+        profile_id=profile_id,
+        event_id=f"mutation-{digest[:32]}",
+        integrity_ref=f"signed-session:{hashlib.sha256(profile_id.encode()).hexdigest()}",
+    )
+
+
+def _record_governed_mutation(
+    *,
+    current: Any,
+    updated: Any,
+    profile_id: str,
+    idempotency_key: str,
+    mutation_kind: str,
+    dependency_refs: list[str],
+) -> Any:
+    return AuthorityGovernor().record_human_mutation(
+        state=updated,
+        actor=_trusted_actor(profile_id, idempotency_key),
+        idempotency_key=idempotency_key,
+        expected_version=current.version,
+        result_version=updated.version,
+        dependency_refs=dependency_refs,
+        mutation_kind=mutation_kind,
+    )
 
 
 def _agent_run(agent_result: ResolverResult | None) -> dict[str, Any] | None:

@@ -17,6 +17,8 @@ class StateStore(Protocol):
 
     def save(self, state: CanonicalState, expected_version: int) -> CanonicalState: ...
 
+    def save_governed(self, state: CanonicalState, expected_version: int) -> CanonicalState: ...
+
     def history(self, profile_id: str) -> list[CanonicalState]: ...
 
     def get_version(self, profile_id: str, version: int) -> CanonicalState | None: ...
@@ -44,6 +46,20 @@ class MemoryStore:
                 raise VersionConflictError(f"State changed from version {expected_version} to {current_version}.")
             if current is None:
                 current = new_state(state.profile_id)
+            self._history.setdefault(state.profile_id, {})[current.version] = deepcopy(current)
+            self._states[state.profile_id] = deepcopy(state)
+            return deepcopy(state)
+
+    def save_governed(self, state: CanonicalState, expected_version: int) -> CanonicalState:
+        from military_slices.governance import validate_mutation_commit
+
+        with self._lock:
+            current = self._states.get(state.profile_id) or new_state(state.profile_id)
+            if current.version != expected_version:
+                raise VersionConflictError(
+                    f"State changed from version {expected_version} to {current.version}."
+                )
+            validate_mutation_commit(previous=current, updated=state, expected_version=expected_version)
             self._history.setdefault(state.profile_id, {})[current.version] = deepcopy(current)
             self._states[state.profile_id] = deepcopy(state)
             return deepcopy(state)
@@ -81,6 +97,18 @@ class FirestoreStore:
         return CanonicalState.model_validate(snapshot.to_dict())
 
     def save(self, state: CanonicalState, expected_version: int) -> CanonicalState:
+        return self._save(state, expected_version=expected_version, governed=False)
+
+    def save_governed(self, state: CanonicalState, expected_version: int) -> CanonicalState:
+        return self._save(state, expected_version=expected_version, governed=True)
+
+    def _save(
+        self,
+        state: CanonicalState,
+        *,
+        expected_version: int,
+        governed: bool,
+    ) -> CanonicalState:
         reference = self._collection.document(state.profile_id)
         transaction = self._client.transaction()
 
@@ -95,6 +123,14 @@ class FirestoreStore:
                 if snapshot.exists
                 else new_state(state.profile_id)
             )
+            if governed:
+                from military_slices.governance import validate_mutation_commit
+
+                validate_mutation_commit(
+                    previous=previous,
+                    updated=state,
+                    expected_version=expected_version,
+                )
             history_reference = reference.collection("versions").document(f"{previous.version:08d}")
             transaction.set(history_reference, previous.model_dump(mode="json"))
             transaction.set(reference, state.model_dump(mode="json"))

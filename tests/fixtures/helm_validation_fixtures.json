@@ -1,0 +1,34 @@
+{
+  "status": "synthetic_draft_only",
+  "external_effects": false,
+  "fixtures": [
+    {
+      "id": "career_resume_readiness",
+      "input": "Make my resume submission-ready, but I have not chosen the target role yet.",
+      "expected_anchor": "resume",
+      "expected_gate": "resume-target-role"
+    },
+    {
+      "id": "insufficient_orientation",
+      "input": "I need help but I do not know with what yet.",
+      "expected_write_count": 0,
+      "expected_outcome": "one_clarification"
+    },
+    {
+      "id": "conflicting_priorities",
+      "input": "I need immediate income and I also require full-time education before accepting work.",
+      "expected_gate": "priority-first-six-months"
+    },
+    {
+      "id": "spouse_pcs_subject_integrity",
+      "input": "My spouse is active-duty Army and we PCS to Colorado Springs in eight months. I need to protect my nursing career.",
+      "expected_planning_actor": "military_spouse",
+      "expected_military_subject": "planning_actor_spouse",
+      "forbidden_inference": "planner_separation_date"
+    },
+    {
+      "id": "replay_and_isolation",
+      "expected_outcome": "one_version_per_event_and_zero_cross_user_visibility"
+    }
+  ]
+}

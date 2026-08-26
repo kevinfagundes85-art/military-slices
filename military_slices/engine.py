@@ -5,6 +5,12 @@ import re
 from copy import deepcopy
 from datetime import UTC, date, datetime, timedelta
 
+from military_slices.domain_pack import installed_domain_pack_ref
+from military_slices.governance import (
+    bind_gate_contracts,
+    reconstitute_governance,
+    verify_derived_indexes,
+)
 from military_slices.models import (
     Authority,
     CanonicalState,
@@ -195,17 +201,20 @@ def _slice_label(slice_name: SliceName) -> str:
 
 def new_state(profile_id: str) -> CanonicalState:
     state = refresh_path_state(CanonicalState(profile_id=profile_id, projections=_build_projections(None)))
+    state.domain_pack = installed_domain_pack_ref()
     state.gates = _recompute_gates(state)
     state.projections = _build_projections(state)
-    return derive_execution_state(state)
+    return bind_gate_contracts(derive_execution_state(state))
 
 
 def reconstitute_state(current: CanonicalState) -> CanonicalState:
+    current = reconstitute_governance(current)
+    verify_derived_indexes(current)
     previous_execution = deepcopy(current.execution)
     state = refresh_path_state(evaluate_elapsed_freshness(current))
     state.gates = _recompute_gates(state)
     state.projections = _build_projections(state)
-    return derive_execution_state(state, previous=previous_execution)
+    return bind_gate_contracts(derive_execution_state(state, previous=previous_execution))
 
 
 def _extract_transition_date(text: str) -> str | None:
@@ -640,6 +649,8 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
             surface=SurfaceType.COMPARE if state.career_hypotheses else SurfaceType.TEXT,
             affected_slices=[SliceName.CAREER, SliceName.EDUCATION, SliceName.RESUME],
             authority_required=Authority.HUMAN,
+            authorized_scope=["career:hypothesis-nomination", "career:hypothesis-selection"],
+            authority_set=[Authority.HUMAN, Authority.BOUNDED_AGENT],
             options=[h.title for h in state.career_hypotheses if h.status == "candidate"],
             value_score=75,
         )
@@ -1070,7 +1081,7 @@ def apply_hypotheses(state: CanonicalState, hypotheses: list[CareerHypothesis]) 
     updated.career_hypotheses = accepted + hypotheses
     updated.gates = _recompute_gates(updated)
     updated.projections = _build_projections(updated)
-    return updated
+    return bind_gate_contracts(updated)
 
 
 def transition_window(separation_date: str) -> dict[str, str]:
