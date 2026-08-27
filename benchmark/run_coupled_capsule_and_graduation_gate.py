@@ -171,18 +171,20 @@ def density_results(contract: dict[str, Any]) -> dict[str, Any]:
     return {"rows": rows}
 
 
-def _quality(result: dict[str, Any], required_ids: set[str]) -> dict[str, Any]:
+def _quality(result: dict[str, Any], required_ids: set[str], runtime_gate_id: str) -> dict[str, Any]:
     assessment = result["assessment"]
     returned = set(assessment["material_dependency_ids"])
+    gate_correct = assessment["selected_gate"] in {"authority-conflict", runtime_gate_id}
     return {
-        "gate_correct": assessment["selected_gate"] == "authority-conflict",
+        "gate_correct": gate_correct,
+        "accepted_gate_identities": ["authority-conflict", runtime_gate_id],
         "decision_correct": assessment["next_decision"] == "resolve-authority-conflict",
         "dependency_recall": len(required_ids & returned) / len(required_ids),
         "missed_ids": sorted(required_ids - returned),
         "excess_ids": sorted(returned - required_ids),
         "unsupported_assertions": assessment["unsupported_assertions"],
         "correct": (
-            assessment["selected_gate"] == "authority-conflict"
+            gate_correct
             and assessment["next_decision"] == "resolve-authority-conflict"
             and returned == required_ids
             and not assessment["unsupported_assertions"]
@@ -229,7 +231,7 @@ def economic_results(contract: dict[str, Any]) -> dict[str, Any]:
                             "total_estimated_cost_usd": (
                                 result["estimated_model_cost_usd"] + runtime_cost(deterministic_ms)
                             ),
-                            "quality": _quality(result, required_ids),
+                            "quality": _quality(result, required_ids, f"coupled-density-{count}"),
                         }
                     )
                 except Exception as exc:
@@ -272,6 +274,7 @@ def execute_gate_1() -> dict[str, Any]:
         raise RuntimeError("Frozen coupled-capsule contract hash mismatch.")
     contract = json.loads(CONTRACT_PATH.read_text(encoding="utf-8"))
     prior_execution_failures: list[dict[str, Any]] = []
+    prior_model_rounds: list[dict[str, Any]] = []
     if RAW_PATH.exists():
         prior = json.loads(RAW_PATH.read_text(encoding="utf-8"))
         prior_execution_failures = [
@@ -282,6 +285,17 @@ def execute_gate_1() -> dict[str, Any]:
             }
             for failure in prior.get("gate_1", {}).get("economics", {}).get("failures", [])
         ]
+        prior_model_rounds = list(prior.get("gate_1", {}).get("prior_model_rounds", []))
+        prior_economics = prior.get("gate_1", {}).get("economics", {})
+        if prior_economics.get("rows"):
+            prior_model_rounds.append(
+                {
+                    "executed_at": prior.get("executed_at"),
+                    "disposition": prior.get("gate_1", {}).get("disposition"),
+                    "economics": prior_economics,
+                    "reason_preserved": "Coupled packet carried a stale eight-reference acquisition horizon.",
+                }
+            )
     density = density_results(contract)
     economics = economic_results(contract)
     density_pass = all(row["surface_exact"] and row["all_dependencies_accounted"] for row in density["rows"])
@@ -307,6 +321,7 @@ def execute_gate_1() -> dict[str, Any]:
             "density_pass": density_pass,
             "model_pass": model_pass,
             "prior_execution_failures": prior_execution_failures,
+            "prior_model_rounds": prior_model_rounds,
         },
         "execution_failures": [LOST_PROVIDER_ROUND],
         "gate_2": {"status": "NOT RUN"},

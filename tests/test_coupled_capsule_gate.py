@@ -29,6 +29,12 @@ def test_coupled_gate_projects_exact_minimum_sufficient_surface(count: int) -> N
     assert actual == expected
     assert runtime_actual == expected
     assert metrics["minimum_sufficient_evidence_count"] == count
+    assert context["acquisition_horizon"] is None
+    assert context["enforced_frontier"]["minimum_sufficient_evidence"] == {
+        "required_count": count,
+        "required_ids": expected,
+        "selection_authority": "current Gate.required_evidence",
+    }
     assert state_sha(state) == before
 
 

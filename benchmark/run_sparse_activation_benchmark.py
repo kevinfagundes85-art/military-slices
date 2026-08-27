@@ -656,6 +656,11 @@ def build_helm_context(state: CanonicalState) -> tuple[dict[str, Any], dict[str,
         if interruption is not None
         else "venture-problem"
     )
+    coupled_surface = bool(
+        foreground
+        and foreground.state == GateState.CONFLICTED
+        and len(governed_surface) > 1
+    )
     interruption_payload = (
         {
             "source": interruption.source,
@@ -682,8 +687,20 @@ def build_helm_context(state: CanonicalState) -> tuple[dict[str, Any], dict[str,
             "question": foreground.question if foreground else None,
             "why": foreground.why if foreground else None,
             "active_tasks": [task.model_dump(mode="json") for task in projection.active_tasks],
+            "minimum_sufficient_evidence": (
+                {
+                    "required_count": len(governed_surface),
+                    "required_ids": [fact.id for fact in governed_surface],
+                    "selection_authority": "current Gate.required_evidence",
+                }
+                if coupled_surface
+                else None
+            ),
         },
-        "acquisition_horizon": horizon.model_dump(mode="json") if horizon else None,
+        # A coupled Gate already has the evidence required for adjudication. An
+        # older one-question acquisition horizon is not an authority to truncate
+        # that jointly sufficient surface.
+        "acquisition_horizon": None if coupled_surface else horizon.model_dump(mode="json") if horizon else None,
         "permitted_governed_evidence": active_facts,
         "authority_constraints": horizon.authority_constraints if horizon else [],
         "domain_pack": {
@@ -707,7 +724,7 @@ def build_helm_context(state: CanonicalState) -> tuple[dict[str, Any], dict[str,
         "minimum_sufficient_evidence_count": len(governed_surface),
         "latent_fact_count": len(projection.facts) - len(active_facts),
         "active_task_count": len(projection.active_tasks),
-        "horizon_size": len(horizon.checklist) if horizon else 0,
+        "horizon_size": len(governed_surface) if coupled_surface else len(horizon.checklist) if horizon else 0,
         "active_gate": foreground.id if foreground else "none",
         "frontier_selection_ms": frontier_ms,
         "retrieval_ms": retrieval_ms,
