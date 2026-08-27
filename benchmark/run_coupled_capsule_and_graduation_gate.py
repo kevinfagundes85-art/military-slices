@@ -260,6 +260,17 @@ def execute_gate_1() -> dict[str, Any]:
     if sha256_path(CONTRACT_PATH) != EXPECTED_CONTRACT_SHA256:
         raise RuntimeError("Frozen coupled-capsule contract hash mismatch.")
     contract = json.loads(CONTRACT_PATH.read_text(encoding="utf-8"))
+    prior_execution_failures: list[dict[str, Any]] = []
+    if RAW_PATH.exists():
+        prior = json.loads(RAW_PATH.read_text(encoding="utf-8"))
+        prior_execution_failures = [
+            {
+                **failure,
+                "execution_round": prior.get("executed_at"),
+                "preserved_from_prior_execution": True,
+            }
+            for failure in prior.get("gate_1", {}).get("economics", {}).get("failures", [])
+        ]
     density = density_results(contract)
     economics = economic_results(contract)
     density_pass = all(row["surface_exact"] and row["all_dependencies_accounted"] for row in density["rows"])
@@ -284,6 +295,7 @@ def execute_gate_1() -> dict[str, Any]:
             "economics": economics,
             "density_pass": density_pass,
             "model_pass": model_pass,
+            "prior_execution_failures": prior_execution_failures,
         },
         "gate_2": {"status": "NOT RUN"},
         "production": contract["production"],
