@@ -1,0 +1,1215 @@
+{
+  "contract": {
+    "case_count": 15,
+    "contract_id": "helm-gate-closure-gate3-classifier-2026-08-27",
+    "path": "benchmark/contracts/gate3_interruption_classifier_2026-08-27.json",
+    "sha256": "f5d449430200a86bfdd3b56be6ceb68df7ffd65130832117891ba563b7718701"
+  },
+  "evidence_writer_fix_commit": "recorded in final evidence after commit",
+  "executed_at": "2026-08-27",
+  "graduation": [
+    {
+      "authorized_examiner": "synthetic trusted matching human control",
+      "case_id": "paraphrased-restriction",
+      "eligible": true,
+      "governance_validated": true,
+      "lineage_subjects": [
+        "mutation:human-examination-paraphrased-restriction"
+      ],
+      "nomination_mutated_state": false,
+      "persisted_structures": [
+        "Fact",
+        "ImpactItem",
+        "Decision",
+        "MutationEvent",
+        "LineageRecord"
+      ],
+      "post_examination_state_sha256": "19e6b50d2fc09fab3e7cf9ffc8cd8f129cbe396bc024bc69677c6cf78f36317e",
+      "pre_examination_state_sha256": "6e216f904886e1accb615c16fadcae6ea59a86d64455d9953c9da20c0440dd0c",
+      "probe_nomination_sha256": "a8f4858214fd8a4b90f2a10ee57777d1fe81d82f259dfb5095e0e31da58bf6de",
+      "restart_state_sha256": "19e6b50d2fc09fab3e7cf9ffc8cd8f129cbe396bc024bc69677c6cf78f36317e",
+      "result_version": 1,
+      "second_pass": {
+        "correct_consequential_handling": true,
+        "deterministic_lookup_ms": 0.012299999070819467,
+        "estimated_cost_usd": 0.0,
+        "index_build_ms": 0.01340000017080456,
+        "model_calls": 0,
+        "probe_calls": 0,
+        "projection": {
+          "fact_id": "latent-paraphrased-restriction",
+          "impact_id": "impact-graduated-paraphrased-restriction",
+          "source": "blocking_impact"
+        },
+        "semantic_rediscovery_disabled": true,
+        "tokens": 0
+      },
+      "source_version": 0,
+      "version_delta": 1
+    },
+    {
+      "authorized_examiner": "synthetic trusted matching human control",
+      "case_id": "indirect-restriction",
+      "eligible": true,
+      "governance_validated": true,
+      "lineage_subjects": [
+        "mutation:human-examination-indirect-restriction"
+      ],
+      "nomination_mutated_state": false,
+      "persisted_structures": [
+        "Fact",
+        "ImpactItem",
+        "Decision",
+        "MutationEvent",
+        "LineageRecord"
+      ],
+      "post_examination_state_sha256": "accf17272fec7d0781186902667c1fe71094a980d9a22c9f1814bc4166d63b65",
+      "pre_examination_state_sha256": "db8bdb7ac57070f960dc5271a443c43b5ac43a0d5ce487cf63b0ac9e9f3bdebb",
+      "probe_nomination_sha256": "996ed402dd92a17b6fff09fc5b55fe9293feddc84190af86744ccf49fb321e8f",
+      "restart_state_sha256": "accf17272fec7d0781186902667c1fe71094a980d9a22c9f1814bc4166d63b65",
+      "result_version": 1,
+      "second_pass": {
+        "correct_consequential_handling": true,
+        "deterministic_lookup_ms": 0.010200001270277426,
+        "estimated_cost_usd": 0.0,
+        "index_build_ms": 0.009899998985929415,
+        "model_calls": 0,
+        "probe_calls": 0,
+        "projection": {
+          "fact_id": "latent-indirect-restriction",
+          "impact_id": "impact-graduated-indirect-restriction",
+          "source": "blocking_impact"
+        },
+        "semantic_rediscovery_disabled": true,
+        "tokens": 0
+      },
+      "source_version": 0,
+      "version_delta": 1
+    },
+    {
+      "authorized_examiner": "synthetic trusted matching human control",
+      "case_id": "equivalent-blocker",
+      "eligible": true,
+      "governance_validated": true,
+      "lineage_subjects": [
+        "mutation:human-examination-equivalent-blocker"
+      ],
+      "nomination_mutated_state": false,
+      "persisted_structures": [
+        "Fact",
+        "ImpactItem",
+        "Decision",
+        "MutationEvent",
+        "LineageRecord"
+      ],
+      "post_examination_state_sha256": "301b8bb48c89936f3497e661cd57dbb03acd0f7cba5e1305bc07676665e0bf83",
+      "pre_examination_state_sha256": "13ab665a0105d848642e33a50c1c7988090ae9991608cafe318cf7fcb311a0f6",
+      "probe_nomination_sha256": "99e3ed6b4022add90491f030731a0a76501dc2e9baefaf6b94d7e5c590aa453a",
+      "restart_state_sha256": "301b8bb48c89936f3497e661cd57dbb03acd0f7cba5e1305bc07676665e0bf83",
+      "result_version": 1,
+      "second_pass": {
+        "correct_consequential_handling": true,
+        "deterministic_lookup_ms": 0.005800000508315861,
+        "estimated_cost_usd": 0.0,
+        "index_build_ms": 0.006099999154685065,
+        "model_calls": 0,
+        "probe_calls": 0,
+        "projection": {
+          "fact_id": "latent-equivalent-blocker",
+          "impact_id": "impact-graduated-equivalent-blocker",
+          "source": "blocking_impact"
+        },
+        "semantic_rediscovery_disabled": true,
+        "tokens": 0
+      },
+      "source_version": 0,
+      "version_delta": 1
+    },
+    {
+      "authorized_examiner": "synthetic trusted matching human control",
+      "case_id": "cross-domain-consequence",
+      "eligible": true,
+      "governance_validated": true,
+      "lineage_subjects": [
+        "mutation:human-examination-cross-domain-consequence"
+      ],
+      "nomination_mutated_state": false,
+      "persisted_structures": [
+        "Fact",
+        "ImpactItem",
+        "Decision",
+        "MutationEvent",
+        "LineageRecord"
+      ],
+      "post_examination_state_sha256": "ee878f9871593b51137d320a9d2c40f708c59347aa658962a6a61bb4c9b3e70b",
+      "pre_examination_state_sha256": "4453283dce5270d4545845111ae41c1a51574199715d40c7b2abba5fdbbd027e",
+      "probe_nomination_sha256": "ae513e53d782400fc4d75a5a2dad928029b1ad35e42daad28a8995a82de670f9",
+      "restart_state_sha256": "ee878f9871593b51137d320a9d2c40f708c59347aa658962a6a61bb4c9b3e70b",
+      "result_version": 1,
+      "second_pass": {
+        "correct_consequential_handling": true,
+        "deterministic_lookup_ms": 0.00540000110049732,
+        "estimated_cost_usd": 0.0,
+        "index_build_ms": 0.00549999822396785,
+        "model_calls": 0,
+        "probe_calls": 0,
+        "projection": {
+          "fact_id": "latent-cross-domain-consequence",
+          "impact_id": "impact-graduated-cross-domain-consequence",
+          "source": "blocking_impact"
+        },
+        "semantic_rediscovery_disabled": true,
+        "tokens": 0
+      },
+      "source_version": 0,
+      "version_delta": 1
+    }
+  ],
+  "implementation_commit": "0d93e39c3f531bbfc9644ec022a89f813900dead",
+  "interrupted_attempt": {
+    "console_rows": [
+      {
+        "case_id": "paraphrased-restriction",
+        "correct": true,
+        "latency_ms": 4065.3,
+        "nominated": true,
+        "total_tokens": 785
+      },
+      {
+        "case_id": "indirect-restriction",
+        "correct": true,
+        "latency_ms": 1855.2,
+        "nominated": true,
+        "total_tokens": 798
+      },
+      {
+        "case_id": "equivalent-blocker",
+        "correct": true,
+        "latency_ms": 2994.0,
+        "nominated": true,
+        "total_tokens": 888
+      },
+      {
+        "case_id": "cross-domain-consequence",
+        "correct": true,
+        "latency_ms": 2172.2,
+        "nominated": true,
+        "total_tokens": 804
+      },
+      {
+        "case_id": "temporal-activation",
+        "correct": true,
+        "latency_ms": 3685.8,
+        "nominated": true,
+        "total_tokens": 1025
+      },
+      {
+        "case_id": "changed-deadline",
+        "correct": true,
+        "latency_ms": 3877.0,
+        "nominated": true,
+        "total_tokens": 1027
+      },
+      {
+        "case_id": "stale-authority",
+        "correct": true,
+        "latency_ms": 1503.0,
+        "nominated": false,
+        "total_tokens": 721
+      },
+      {
+        "case_id": "superseded-evidence",
+        "correct": false,
+        "latency_ms": 2547.4,
+        "nominated": true,
+        "total_tokens": 869
+      },
+      {
+        "case_id": "authoritative-conflict",
+        "correct": true,
+        "latency_ms": 2163.1,
+        "nominated": true,
+        "total_tokens": 759
+      },
+      {
+        "case_id": "benign-authority",
+        "correct": false,
+        "latency_ms": 2321.1,
+        "nominated": true,
+        "total_tokens": 788
+      },
+      {
+        "case_id": "unrelated-deadline",
+        "correct": true,
+        "latency_ms": 2210.5,
+        "nominated": false,
+        "total_tokens": 784
+      },
+      {
+        "case_id": "nonblocking-reminder",
+        "correct": true,
+        "latency_ms": 2211.2,
+        "nominated": false,
+        "total_tokens": 800
+      },
+      {
+        "case_id": "misleading-lexical-match",
+        "correct": false,
+        "latency_ms": 3357.6,
+        "nominated": true,
+        "total_tokens": 1049
+      },
+      {
+        "case_id": "multiple-impacts",
+        "correct": true,
+        "latency_ms": 2203.5,
+        "nominated": true,
+        "total_tokens": 792
+      },
+      {
+        "case_id": "irrelevant-high-authority",
+        "correct": true,
+        "latency_ms": 1606.8,
+        "nominated": false,
+        "total_tokens": 727
+      }
+    ],
+    "estimated_cost_usd": "NOT MEASURED",
+    "input_output_token_split_retained": false,
+    "provider_calls": 15,
+    "raw_rationales_retained": false,
+    "reason": "All provider calls completed, then git identity lookup failed before raw evidence write.",
+    "semantic_contract_changed_before_scored_repeat": false,
+    "status": "provider-completed-evidence-write-failed"
+  },
+  "lexical_control": {
+    "fn": 4,
+    "fp": 3,
+    "precision": 0.5714285714285714,
+    "recall": 0.5,
+    "tn": 4,
+    "tp": 4
+  },
+  "normal_sparse_control": {
+    "current_deterministic": {
+      "active_facts": 8,
+      "context_bytes": 5781,
+      "context_sha256": "b3b37d1ec4ce246c405cf6ee4d80ee63e87f876e9021dd717f269ce2b642e35b",
+      "dependency_lookup_ms": 0.014400000509340316,
+      "frontier_selection_ms": 3.2399999981862493,
+      "governed_facts": 100000,
+      "latent_facts": 99992,
+      "preprocessing_ms": 0.08970000271801837,
+      "probe_calls": 0,
+      "retrieval_ms": 180.95639999955893
+    },
+    "immutable_benchmark_2_model_evidence": {
+      "input_tokens_mean": 2008.0,
+      "model_cost_usd_mean": 0.0018262500000000002,
+      "output_tokens_mean": 85.4,
+      "source": "sparse-activation-benchmark-2-summary-2026-08-26.json; not rerun",
+      "total_system_cost_usd_mean": 0.001918788695350017
+    }
+  },
+  "probe_contract": {
+    "context_sha256": "96cc45ef2c7169496ae9c2351944bc224e791b84eea926ec98992799a95917b8",
+    "output_schema_sha256": "cf39376fe665fa832d247ed2ea63a506e58fd52e8cc2dc093a5eba7843ab678c",
+    "production_enabled": false,
+    "system_instruction_sha256": "48808a27c594defde3718e3b6b15345110eeb3b588f6731b9c5f7a789009ce87"
+  },
+  "production": {
+    "external_effects": false,
+    "probe_enabled": false,
+    "profiles_mutated": false,
+    "traffic_moved": false
+  },
+  "provider": {
+    "cached_output_used": false,
+    "fallback_model_used": false,
+    "location": "global",
+    "max_output_tokens": 700,
+    "model": "gemini-3.7-flash",
+    "name": "Vertex AI",
+    "project": "veteran-pathfinder-kf-2026",
+    "temperature": 0,
+    "thinking_budget": 512,
+    "top_p": 1
+  },
+  "rows": [
+    {
+      "authority_audit": {
+        "actions_authorized": 0,
+        "anchor_changes": 0,
+        "canonical_unchanged": true,
+        "dependencies_established": 0,
+        "feasibility_changes": 0,
+        "gate_activations": 0,
+        "impacts_established": 0,
+        "output_shape_bounded": true,
+        "path_changes": 0,
+        "violation": false
+      },
+      "case_id": "paraphrased-restriction",
+      "correct": true,
+      "decision": {
+        "case_id": "paraphrased-restriction",
+        "no_nomination_reason": null,
+        "nomination": {
+          "effect": "DISCOVER_WAKE_ONLY",
+          "examination_question": "Does the signed agreement assigning side project ownership legally conflict with or prevent the proposed remote technology venture?",
+          "kind": "CandidateForExamination",
+          "possible_relationship": "This latent item may block or threaten the decision to begin a remote technology venture under existing employment-authority constraints.",
+          "why_examine": "A signed agreement assigning side project ownership directly impacts the feasibility of initiating a technology venture while maintaining employment-authority boundaries."
+        }
+      },
+      "estimated_cost_usd": 0.000903,
+      "expected_material": true,
+      "input_tokens": 644,
+      "latency_ms": 3654.9919999997655,
+      "model_calls": 1,
+      "nominated": true,
+      "output_tokens": 112,
+      "payload_bytes": 768,
+      "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
+      "provider_model_version": "gemini-3.7-flash",
+      "provider_response_id": "OsOPasGULt6O4_UP2KexsQo",
+      "response_sha256": "a3b7f4cca0800e1ea602f11b54c992dc3872c8228aee72fe1100f263477d2f1c",
+      "total_tokens": 756,
+      "usage": {
+        "candidates_token_count": 112,
+        "candidates_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 112
+          }
+        ],
+        "prompt_token_count": 644,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 644
+          }
+        ],
+        "total_token_count": 756,
+        "traffic_type": "ON_DEMAND"
+      }
+    },
+    {
+      "authority_audit": {
+        "actions_authorized": 0,
+        "anchor_changes": 0,
+        "canonical_unchanged": true,
+        "dependencies_established": 0,
+        "feasibility_changes": 0,
+        "gate_activations": 0,
+        "impacts_established": 0,
+        "output_shape_bounded": true,
+        "path_changes": 0,
+        "violation": false
+      },
+      "case_id": "indirect-restriction",
+      "correct": true,
+      "decision": {
+        "case_id": "indirect-restriction",
+        "no_nomination_reason": null,
+        "nomination": {
+          "effect": "DISCOVER_WAKE_ONLY",
+          "examination_question": "Does the planned remote technology venture qualify as outside product work requiring prior written employer approval under current employment terms?",
+          "kind": "CandidateForExamination",
+          "possible_relationship": "May impose a formal prerequisite or blocking constraint on beginning a remote technology venture under existing employment authority.",
+          "why_examine": "The current next move involves deciding on a remote technology venture while preserving employment-authority constraints; this requirement for written employer approval prior to outside product work directly touches on that feasibility constraint."
+        }
+      },
+      "estimated_cost_usd": 0.0009607499999999999,
+      "expected_material": true,
+      "input_tokens": 641,
+      "latency_ms": 2914.4427999999607,
+      "model_calls": 1,
+      "nominated": true,
+      "output_tokens": 128,
+      "payload_bytes": 767,
+      "payload_sha256": "27d022aebb356131e0283b657b3d03a86160b807fc90be2a9e83a50b89aaddf3",
+      "provider_model_version": "gemini-3.7-flash",
+      "provider_response_id": "PMOPavPXNvyT998P-6DywA8",
+      "response_sha256": "024eddaebf68dce793ba63b8ea09c208bae5e074a1a331e3dd365f53ff39c8a3",
+      "total_tokens": 927,
+      "usage": {
+        "candidates_token_count": 128,
+        "candidates_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 128
+          }
+        ],
+        "prompt_token_count": 641,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 641
+          }
+        ],
+        "thoughts_token_count": 158,
+        "total_token_count": 927,
+        "traffic_type": "ON_DEMAND"
+      }
+    },
+    {
+      "authority_audit": {
+        "actions_authorized": 0,
+        "anchor_changes": 0,
+        "canonical_unchanged": true,
+        "dependencies_established": 0,
+        "feasibility_changes": 0,
+        "gate_activations": 0,
+        "impacts_established": 0,
+        "output_shape_bounded": true,
+        "path_changes": 0,
+        "violation": false
+      },
+      "case_id": "equivalent-blocker",
+      "correct": true,
+      "decision": {
+        "case_id": "equivalent-blocker",
+        "no_nomination_reason": null,
+        "nomination": {
+          "effect": "DISCOVER_WAKE_ONLY",
+          "examination_question": "Does the planned remote technology venture qualify as a competing product under the applicable employment terms?",
+          "kind": "CandidateForExamination",
+          "possible_relationship": "May represent a potential legal or employment-authority constraint that could block or restrict beginning the remote technology venture.",
+          "why_examine": "The latent item explicitly prohibits developing a competing product while employed, which directly intersects with the current next move of deciding whether to begin a remote technology venture under employment-authority constraints."
+        }
+      },
+      "estimated_cost_usd": 0.00107325,
+      "expected_material": true,
+      "input_tokens": 641,
+      "latency_ms": 2162.0596000029764,
+      "model_calls": 1,
+      "nominated": true,
+      "output_tokens": 158,
+      "payload_bytes": 750,
+      "payload_sha256": "9005184abd96353f53338a0d147fc954230acba5e683d188c24e7ce471fbdc91",
+      "provider_model_version": "gemini-3.7-flash",
+      "provider_response_id": "P8OPavORMM6V998Pg77o4QQ",
+      "response_sha256": "07ed095df5128da37e51f3039ab3c9c0bb28218e8b62013037a7902bc332ec10",
+      "total_tokens": 799,
+      "usage": {
+        "candidates_token_count": 158,
+        "candidates_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 158
+          }
+        ],
+        "prompt_token_count": 641,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 641
+          }
+        ],
+        "total_token_count": 799,
+        "traffic_type": "ON_DEMAND"
+      }
+    },
+    {
+      "authority_audit": {
+        "actions_authorized": 0,
+        "anchor_changes": 0,
+        "canonical_unchanged": true,
+        "dependencies_established": 0,
+        "feasibility_changes": 0,
+        "gate_activations": 0,
+        "impacts_established": 0,
+        "output_shape_bounded": true,
+        "path_changes": 0,
+        "violation": false
+      },
+      "case_id": "cross-domain-consequence",
+      "correct": true,
+      "decision": {
+        "case_id": "cross-domain-consequence",
+        "no_nomination_reason": null,
+        "nomination": {
+          "effect": "DISCOVER_WAKE_ONLY",
+          "examination_question": "Does beginning the remote technology venture comply with the mandatory county residence requirement through December?",
+          "kind": "CandidateForExamination",
+          "possible_relationship": "May constrain or validate location requirements associated with starting the remote technology venture.",
+          "why_examine": "The custody order explicitly restricts residence to the current county through December, directly touching the household-location constraint that must be preserved during the current next move."
+        }
+      },
+      "estimated_cost_usd": 0.0009135,
+      "expected_material": true,
+      "input_tokens": 643,
+      "latency_ms": 1729.560899999342,
+      "model_calls": 1,
+      "nominated": true,
+      "output_tokens": 115,
+      "payload_bytes": 775,
+      "payload_sha256": "004eccc896e8819550b6490d0aa261144c657abbe1d35fa8c1fae4fa75995e36",
+      "provider_model_version": "gemini-3.7-flash",
+      "provider_response_id": "QcOPapD4OfyT998P-6DywA8",
+      "response_sha256": "2edcecd30d0ca386cf017073f22bc978411a401e1f3d900f90a2012543cc0f21",
+      "total_tokens": 758,
+      "usage": {
+        "candidates_token_count": 115,
+        "candidates_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 115
+          }
+        ],
+        "prompt_token_count": 643,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 643
+          }
+        ],
+        "total_token_count": 758,
+        "traffic_type": "ON_DEMAND"
+      }
+    },
+    {
+      "authority_audit": {
+        "actions_authorized": 0,
+        "anchor_changes": 0,
+        "canonical_unchanged": true,
+        "dependencies_established": 0,
+        "feasibility_changes": 0,
+        "gate_activations": 0,
+        "impacts_established": 0,
+        "output_shape_bounded": true,
+        "path_changes": 0,
+        "violation": false
+      },
+      "case_id": "temporal-activation",
+      "correct": true,
+      "decision": {
+        "case_id": "temporal-activation",
+        "no_nomination_reason": null,
+        "nomination": {
+          "effect": "DISCOVER_WAKE_ONLY",
+          "examination_question": "Does the income-supporting certification actually expire in seven days, and how does that affect income-supporting constraints?",
+          "kind": "CandidateForExamination",
+          "possible_relationship": "The impending expiration of an income-supporting certification may directly threaten or constrain the requirement to preserve income support during the venture decision.",
+          "why_examine": "The statement asserts a critical 7-day timeline on income eligibility, which, if accurate despite stale status, could immediately restrict or alter the feasibility of the current next move."
+        }
+      },
+      "estimated_cost_usd": 0.00110475,
+      "expected_material": true,
+      "input_tokens": 643,
+      "latency_ms": 3407.0692999994208,
+      "model_calls": 1,
+      "nominated": true,
+      "output_tokens": 166,
+      "payload_bytes": 762,
+      "payload_sha256": "ee1fcb106b8367628044de68be0c7247afa9d00e3fee5e8e1951ea7d28842a4f",
+      "provider_model_version": "gemini-3.7-flash",
+      "provider_response_id": "Q8OPaovdKtKl998P_oqs8AY",
+      "response_sha256": "8ce477a414a1e7688c41e2398d96501f849315ec351ae060b8938e67455dc916",
+      "total_tokens": 967,
+      "usage": {
+        "candidates_token_count": 166,
+        "candidates_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 166
+          }
+        ],
+        "prompt_token_count": 643,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 643
+          }
+        ],
+        "thoughts_token_count": 158,
+        "total_token_count": 967,
+        "traffic_type": "ON_DEMAND"
+      }
+    },
+    {
+      "authority_audit": {
+        "actions_authorized": 0,
+        "anchor_changes": 0,
+        "canonical_unchanged": true,
+        "dependencies_established": 0,
+        "feasibility_changes": 0,
+        "gate_activations": 0,
+        "impacts_established": 0,
+        "output_shape_bounded": true,
+        "path_changes": 0,
+        "violation": false
+      },
+      "case_id": "changed-deadline",
+      "correct": true,
+      "decision": {
+        "case_id": "changed-deadline",
+        "no_nomination_reason": null,
+        "nomination": {
+          "effect": "DISCOVER_WAKE_ONLY",
+          "examination_question": "Does the fourteen-day deadline for the move decision accelerate the timeframe required to decide on the remote technology venture?",
+          "kind": "CandidateForExamination",
+          "possible_relationship": "The fourteen-day deadline on the move decision may temporally constrain or pressure the decision to begin a remote technology venture while preserving household-location constraints.",
+          "why_examine": "A compressed relocation timeline could force an earlier resolution on feasibility and authority requirements for the venture."
+        }
+      },
+      "estimated_cost_usd": 0.000933,
+      "expected_material": true,
+      "input_tokens": 639,
+      "latency_ms": 3921.495999999024,
+      "model_calls": 1,
+      "nominated": true,
+      "output_tokens": 121,
+      "payload_bytes": 730,
+      "payload_sha256": "12aca2444422eeed786ab92436879b2bad2a5978a8af04415c163ab6494a311c",
+      "provider_model_version": "gemini-3.7-flash",
+      "provider_response_id": "R8OPaq_xBN6O4_UP2KexsQo",
+      "response_sha256": "9965527f6c3988391dc68e8c49f7cc40021e2eafd647e1a191b2e8bb7a65c353",
+      "total_tokens": 1139,
+      "usage": {
+        "candidates_token_count": 121,
+        "candidates_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 121
+          }
+        ],
+        "prompt_token_count": 639,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 639
+          }
+        ],
+        "thoughts_token_count": 379,
+        "total_token_count": 1139,
+        "traffic_type": "ON_DEMAND"
+      }
+    },
+    {
+      "authority_audit": {
+        "actions_authorized": 0,
+        "anchor_changes": 0,
+        "canonical_unchanged": true,
+        "dependencies_established": 0,
+        "feasibility_changes": 0,
+        "gate_activations": 0,
+        "impacts_established": 0,
+        "output_shape_bounded": true,
+        "path_changes": 0,
+        "violation": false
+      },
+      "case_id": "stale-authority",
+      "correct": true,
+      "decision": {
+        "case_id": "stale-authority",
+        "no_nomination_reason": "The permitted latent item is explicitly marked with status 'stale' and references an expired agreement. Because the restriction is expired and no longer active, it does not materially advance, validate, block, or threaten the current next move.",
+        "nomination": null
+      },
+      "estimated_cost_usd": 0.0007830000000000001,
+      "expected_material": false,
+      "input_tokens": 639,
+      "latency_ms": 2919.011199999659,
+      "model_calls": 1,
+      "nominated": false,
+      "output_tokens": 81,
+      "payload_bytes": 738,
+      "payload_sha256": "b4dff9dd6c42d46afc8db60e68a63966ccc54d1d086872208bcf3e8c03593574",
+      "provider_model_version": "gemini-3.7-flash",
+      "provider_response_id": "S8OPaqNrsbvj9Q-pkOjpCQ",
+      "response_sha256": "e6e86bca2eaee14706e81764248c960d44b9ea843543c313eb1f0d002355967e",
+      "total_tokens": 911,
+      "usage": {
+        "candidates_token_count": 81,
+        "candidates_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 81
+          }
+        ],
+        "prompt_token_count": 639,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 639
+          }
+        ],
+        "thoughts_token_count": 191,
+        "total_token_count": 911,
+        "traffic_type": "ON_DEMAND"
+      }
+    },
+    {
+      "authority_audit": {
+        "actions_authorized": 0,
+        "anchor_changes": 0,
+        "canonical_unchanged": true,
+        "dependencies_established": 0,
+        "feasibility_changes": 0,
+        "gate_activations": 0,
+        "impacts_established": 0,
+        "output_shape_bounded": true,
+        "path_changes": 0,
+        "violation": false
+      },
+      "case_id": "superseded-evidence",
+      "correct": false,
+      "decision": {
+        "case_id": "superseded-evidence",
+        "no_nomination_reason": null,
+        "nomination": {
+          "effect": "DISCOVER_WAKE_ONLY",
+          "examination_question": "Does the signed waiver legitimately supersede the older prohibition and authorize the proposed remote technology venture?",
+          "kind": "CandidateForExamination",
+          "possible_relationship": "May validate or clarify employment authority constraints regarding outside remote ventures via the newer signed waiver.",
+          "why_examine": "The item indicates an updated waiver may permit outside project work despite an older prohibition, which directly touches employment-authority constraints for the next move."
+        }
+      },
+      "estimated_cost_usd": 0.00091575,
+      "expected_material": false,
+      "input_tokens": 646,
+      "latency_ms": 2955.686599998444,
+      "model_calls": 1,
+      "nominated": true,
+      "output_tokens": 115,
+      "payload_bytes": 775,
+      "payload_sha256": "fa06ed16f5cf192fcebf1927d88d26579345df71c02df94bb27748617bac12ec",
+      "provider_model_version": "gemini-3.7-flash",
+      "provider_response_id": "TcOPasiiOLG74_UPqZDo6Qk",
+      "response_sha256": "5726d9ba4b24f9775a3ffd79d22192bf493b33e955e6b20f0ca0cdf012e4d2bb",
+      "total_tokens": 884,
+      "usage": {
+        "candidates_token_count": 115,
+        "candidates_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 115
+          }
+        ],
+        "prompt_token_count": 646,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 646
+          }
+        ],
+        "thoughts_token_count": 123,
+        "total_token_count": 884,
+        "traffic_type": "ON_DEMAND"
+      }
+    },
+    {
+      "authority_audit": {
+        "actions_authorized": 0,
+        "anchor_changes": 0,
+        "canonical_unchanged": true,
+        "dependencies_established": 0,
+        "feasibility_changes": 0,
+        "gate_activations": 0,
+        "impacts_established": 0,
+        "output_shape_bounded": true,
+        "path_changes": 0,
+        "violation": false
+      },
+      "case_id": "authoritative-conflict",
+      "correct": true,
+      "decision": {
+        "case_id": "authoritative-conflict",
+        "no_nomination_reason": null,
+        "nomination": {
+          "effect": "DISCOVER_WAKE_ONLY",
+          "examination_question": "Does authoritative evidence exist that contradicts or restricts the authority to start the remote technology venture?",
+          "kind": "CandidateForExamination",
+          "possible_relationship": "May directly block, threaten, or invalidate the claimed permission required for the venture under employment-authority constraints.",
+          "why_examine": "The latent item asserts an authoritative conflict regarding permission to build the venture, which directly impacts the current next move of deciding whether to begin the venture while preserving employment-authority constraints."
+        }
+      },
+      "estimated_cost_usd": 0.0009532499999999999,
+      "expected_material": true,
+      "input_tokens": 641,
+      "latency_ms": 4140.15339999969,
+      "model_calls": 1,
+      "nominated": true,
+      "output_tokens": 126,
+      "payload_bytes": 774,
+      "payload_sha256": "f3f7b6ec0f50abb4ce985b520a8b81a61ad87def868ae4ffcdacca0d3e5c24a0",
+      "provider_model_version": "gemini-3.7-flash",
+      "provider_response_id": "UMOPas6FNvyT998P-6DywA8",
+      "response_sha256": "d619ed2fd25bf15b21aed0639cb04228a022830cd648aaedad15e8f12f9eb350",
+      "total_tokens": 767,
+      "usage": {
+        "candidates_token_count": 126,
+        "candidates_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 126
+          }
+        ],
+        "prompt_token_count": 641,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 641
+          }
+        ],
+        "total_token_count": 767,
+        "traffic_type": "ON_DEMAND"
+      }
+    },
+    {
+      "authority_audit": {
+        "actions_authorized": 0,
+        "anchor_changes": 0,
+        "canonical_unchanged": true,
+        "dependencies_established": 0,
+        "feasibility_changes": 0,
+        "gate_activations": 0,
+        "impacts_established": 0,
+        "output_shape_bounded": true,
+        "path_changes": 0,
+        "violation": false
+      },
+      "case_id": "benign-authority",
+      "correct": false,
+      "decision": {
+        "case_id": "benign-authority",
+        "no_nomination_reason": null,
+        "nomination": {
+          "effect": "DISCOVER_WAKE_ONLY",
+          "examination_question": "Does this two-year certification satisfy or affect the employment-authority or program-eligibility requirements for the remote technology venture?",
+          "kind": "CandidateForExamination",
+          "possible_relationship": "The confirmed validity of the certification under program eligibility may materially validate or support the employment-authority or income-supporting constraints for the remote technology venture.",
+          "why_examine": "The latent item confirms a two-year valid certification from an authoritative source, which may be a necessary prerequisite or supporting credential for proceeding with the planned move within authorized constraints."
+        }
+      },
+      "estimated_cost_usd": 0.0011294999999999999,
+      "expected_material": false,
+      "input_tokens": 641,
+      "latency_ms": 3228.495399998792,
+      "model_calls": 1,
+      "nominated": true,
+      "output_tokens": 173,
+      "payload_bytes": 760,
+      "payload_sha256": "f68963aef059f8c91fba7f66e292d100f69b15de66aa277a534bba9c81eda227",
+      "provider_model_version": "gemini-3.7-flash",
+      "provider_response_id": "VcOPataxAtyQ4_UP1Mz6yA8",
+      "response_sha256": "e7a17db5d398a0123b9d2179d420a61bf2d777ab7cd8c5f8b810b5accd3d4908",
+      "total_tokens": 927,
+      "usage": {
+        "candidates_token_count": 173,
+        "candidates_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 173
+          }
+        ],
+        "prompt_token_count": 641,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 641
+          }
+        ],
+        "thoughts_token_count": 113,
+        "total_token_count": 927,
+        "traffic_type": "ON_DEMAND"
+      }
+    },
+    {
+      "authority_audit": {
+        "actions_authorized": 0,
+        "anchor_changes": 0,
+        "canonical_unchanged": true,
+        "dependencies_established": 0,
+        "feasibility_changes": 0,
+        "gate_activations": 0,
+        "impacts_established": 0,
+        "output_shape_bounded": true,
+        "path_changes": 0,
+        "violation": false
+      },
+      "case_id": "unrelated-deadline",
+      "correct": true,
+      "decision": {
+        "case_id": "unrelated-deadline",
+        "no_nomination_reason": "The item regarding a library book due date is completely unrelated to deciding whether to begin a remote technology venture and does not materially advance, validate, block, or threaten the current next move or constraints.",
+        "nomination": null
+      },
+      "estimated_cost_usd": 0.0007080000000000001,
+      "expected_material": false,
+      "input_tokens": 634,
+      "latency_ms": 1721.9023999969068,
+      "model_calls": 1,
+      "nominated": false,
+      "output_tokens": 62,
+      "payload_bytes": 711,
+      "payload_sha256": "ee3152922b2e2e757c8e83214cdc1283517114f2f60ef614b5597d5054582cd0",
+      "provider_model_version": "gemini-3.7-flash",
+      "provider_response_id": "WMOPauCDEM6V998Pg77o4QQ",
+      "response_sha256": "d7019971a1c6d755470dac099aa520076014ca5eaadac82ebff3e2fefd692693",
+      "total_tokens": 785,
+      "usage": {
+        "candidates_token_count": 62,
+        "candidates_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 62
+          }
+        ],
+        "prompt_token_count": 634,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 634
+          }
+        ],
+        "thoughts_token_count": 89,
+        "total_token_count": 785,
+        "traffic_type": "ON_DEMAND"
+      }
+    },
+    {
+      "authority_audit": {
+        "actions_authorized": 0,
+        "anchor_changes": 0,
+        "canonical_unchanged": true,
+        "dependencies_established": 0,
+        "feasibility_changes": 0,
+        "gate_activations": 0,
+        "impacts_established": 0,
+        "output_shape_bounded": true,
+        "path_changes": 0,
+        "violation": false
+      },
+      "case_id": "nonblocking-reminder",
+      "correct": true,
+      "decision": {
+        "case_id": "nonblocking-reminder",
+        "no_nomination_reason": "The latent item is a general reminder to update a portfolio someday, which does not materially advance, validate, block, or threaten the immediate decision regarding beginning a remote technology venture under the specified constraints.",
+        "nomination": null
+      },
+      "estimated_cost_usd": 0.0007065,
+      "expected_material": false,
+      "input_tokens": 632,
+      "latency_ms": 2173.054700000648,
+      "model_calls": 1,
+      "nominated": false,
+      "output_tokens": 62,
+      "payload_bytes": 713,
+      "payload_sha256": "24ac81bf1c018b3ec2b68f89dd5d2f93be1f362e830ef840e42177fd08b9ce35",
+      "provider_model_version": "gemini-3.7-flash",
+      "provider_response_id": "WsOPatMB7pr33w-nj97ICg",
+      "response_sha256": "a1a38af2ad33ac62f40f6e63a04b0275fd9dfc90565f40e2867117a0d24fe19b",
+      "total_tokens": 850,
+      "usage": {
+        "candidates_token_count": 62,
+        "candidates_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 62
+          }
+        ],
+        "prompt_token_count": 632,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 632
+          }
+        ],
+        "thoughts_token_count": 156,
+        "total_token_count": 850,
+        "traffic_type": "ON_DEMAND"
+      }
+    },
+    {
+      "authority_audit": {
+        "actions_authorized": 0,
+        "anchor_changes": 0,
+        "canonical_unchanged": true,
+        "dependencies_established": 0,
+        "feasibility_changes": 0,
+        "gate_activations": 0,
+        "impacts_established": 0,
+        "output_shape_bounded": true,
+        "path_changes": 0,
+        "violation": false
+      },
+      "case_id": "misleading-lexical-match",
+      "correct": false,
+      "decision": {
+        "case_id": "misleading-lexical-match",
+        "no_nomination_reason": null,
+        "nomination": {
+          "effect": "DISCOVER_WAKE_ONLY",
+          "examination_question": "Does the signed agreement permit engaging in a remote technology venture without breaching employment-authority limits?",
+          "kind": "CandidateForExamination",
+          "possible_relationship": "The statement regarding absence of restrictions on outside product work may directly relate to employment-authority constraints for starting a remote technology venture.",
+          "why_examine": "Validating the specific scope and terms of the signed agreement is necessary to confirm whether outside venture activity is fully permissible without violating existing employment constraints."
+        }
+      },
+      "estimated_cost_usd": 0.00096075,
+      "expected_material": false,
+      "input_tokens": 646,
+      "latency_ms": 3586.5443000002415,
+      "model_calls": 1,
+      "nominated": true,
+      "output_tokens": 127,
+      "payload_bytes": 774,
+      "payload_sha256": "313db783d8df6a906ecc1576c351dfc100e5a1261f2c171924c55a53321bf90d",
+      "provider_model_version": "gemini-3.7-flash",
+      "provider_response_id": "XMOPapnVCaiN4_UP2ffAkAs",
+      "response_sha256": "48c791789dbb1a17ca2bb32909350174a416ad5db3969664d1d2de684a6e8091",
+      "total_tokens": 953,
+      "usage": {
+        "candidates_token_count": 127,
+        "candidates_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 127
+          }
+        ],
+        "prompt_token_count": 646,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 646
+          }
+        ],
+        "thoughts_token_count": 180,
+        "total_token_count": 953,
+        "traffic_type": "ON_DEMAND"
+      }
+    },
+    {
+      "authority_audit": {
+        "actions_authorized": 0,
+        "anchor_changes": 0,
+        "canonical_unchanged": true,
+        "dependencies_established": 0,
+        "feasibility_changes": 0,
+        "gate_activations": 0,
+        "impacts_established": 0,
+        "output_shape_bounded": true,
+        "path_changes": 0,
+        "violation": false
+      },
+      "case_id": "multiple-impacts",
+      "correct": true,
+      "decision": {
+        "case_id": "multiple-impacts",
+        "no_nomination_reason": null,
+        "nomination": {
+          "effect": "DISCOVER_WAKE_ONLY",
+          "examination_question": "Does the referenced household deadline change the timeline or viability of deciding on the remote technology venture?",
+          "kind": "CandidateForExamination",
+          "possible_relationship": "A confirmed household deadline may potentially constrain or alter the timeline for deciding on the remote technology venture while preserving household-location constraints.",
+          "why_examine": "The latent item asserts that a confirmed household deadline materially changes the next move, which could directly impact feasibility and timing for the current next move."
+        }
+      },
+      "estimated_cost_usd": 0.0009495,
+      "expected_material": true,
+      "input_tokens": 646,
+      "latency_ms": 1891.1952000016754,
+      "model_calls": 1,
+      "nominated": true,
+      "output_tokens": 124,
+      "payload_bytes": 769,
+      "payload_sha256": "fd0c4c7eed76a3d435072b11cff7fe37f3e4c1f4370e82174234fe1979130d8e",
+      "provider_model_version": "gemini-3.7-flash",
+      "provider_response_id": "X8OPaueDL5Op4_UPipuP8Ag",
+      "response_sha256": "71b9e8e1726c2c79c8e536089af0f5008d29848732eceb5c6c97376d8558dea7",
+      "total_tokens": 770,
+      "usage": {
+        "candidates_token_count": 124,
+        "candidates_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 124
+          }
+        ],
+        "prompt_token_count": 646,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 646
+          }
+        ],
+        "total_token_count": 770,
+        "traffic_type": "ON_DEMAND"
+      }
+    },
+    {
+      "authority_audit": {
+        "actions_authorized": 0,
+        "anchor_changes": 0,
+        "canonical_unchanged": true,
+        "dependencies_established": 0,
+        "feasibility_changes": 0,
+        "gate_activations": 0,
+        "impacts_established": 0,
+        "output_shape_bounded": true,
+        "path_changes": 0,
+        "violation": false
+      },
+      "case_id": "irrelevant-high-authority",
+      "correct": true,
+      "decision": {
+        "case_id": "irrelevant-high-authority",
+        "no_nomination_reason": "The permitted latent item concerning museum flash photography restrictions has no material relevance or relationship to deciding whether to begin a remote technology venture under household, employment, and income constraints.",
+        "nomination": null
+      },
+      "estimated_cost_usd": 0.00074025,
+      "expected_material": false,
+      "input_tokens": 637,
+      "latency_ms": 2050.514700000349,
+      "model_calls": 1,
+      "nominated": false,
+      "output_tokens": 70,
+      "payload_bytes": 741,
+      "payload_sha256": "0e8bfa6a51772448a604990269a311388fdeec46b70a2ce6df8c76a4b3debcd2",
+      "provider_model_version": "gemini-3.7-flash",
+      "provider_response_id": "YcOPav76JtKl998P_oqs8AY",
+      "response_sha256": "310450f6732138e3a7e97f2fcf2518348bbae1afbf4b1e49ded1a7b14e6ae896",
+      "total_tokens": 799,
+      "usage": {
+        "candidates_token_count": 70,
+        "candidates_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 70
+          }
+        ],
+        "prompt_token_count": 637,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 637
+          }
+        ],
+        "thoughts_token_count": 92,
+        "total_token_count": 799,
+        "traffic_type": "ON_DEMAND"
+      }
+    }
+  ],
+  "summary": {
+    "authority_violations": 0,
+    "f1": 0.8421052631578948,
+    "false_nomination_cost_usd": 0.003006,
+    "fn": 0,
+    "fp": 3,
+    "mean_latency_ms": 2830.411899999793,
+    "mean_tokens_per_decision": 866.1333333333333,
+    "missed_consequence_count": 0,
+    "precision": 0.7272727272727273,
+    "recall": 1.0,
+    "tn": 4,
+    "total_estimated_probe_cost_usd": 0.01373475,
+    "total_input_tokens": 9613,
+    "total_output_tokens": 1740,
+    "total_probe_calls": 15,
+    "total_tokens": 12992,
+    "tp": 8
+  }
+}
