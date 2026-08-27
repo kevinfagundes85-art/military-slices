@@ -470,6 +470,17 @@ def transition_window_id(transition_date: str | None, *, today: date | None = No
     return "A"
 
 
+def transition_month_window_id(transition_month: str | None, *, today: date | None = None) -> str:
+    """Locate a month-granularity lifecycle coordinate without claiming a day."""
+
+    if not transition_month:
+        return "PATH_IDENTITY"
+    year, month = (int(part) for part in transition_month.split("-", 1))
+    # Mid-month is used only for coarse window selection; the governed value
+    # remains YYYY-MM and no exact day is asserted to the human.
+    return transition_window_id(date(year, month, 15).isoformat(), today=today)
+
+
 def _window(window_id: str) -> dict[str, Any]:
     return next(item for item in path_boundaries()["windows"] if item["id"] == window_id)
 
@@ -718,10 +729,16 @@ def refresh_path_state(state: CanonicalState, *, today: date | None = None) -> C
     }
     if state.lifecycle_position in separated_positions:
         window_id = "H"
-    elif state.lifecycle_position == LifecyclePosition.LEAVING_WITHIN_12_MONTHS and not state.transition_date:
+    elif (
+        state.lifecycle_position == LifecyclePosition.LEAVING_WITHIN_12_MONTHS
+        and not state.transition_date
+        and not state.transition_month
+    ):
         window_id = "C"
     else:
         window_id = transition_window_id(state.transition_date, today=today)
+        if window_id == "PATH_IDENTITY":
+            window_id = transition_month_window_id(state.transition_month, today=today)
     state.current_timeline_window = window_id
     if window_id == "H":
         state.stage = "STABILIZE"

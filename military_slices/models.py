@@ -476,6 +476,7 @@ class StartingVectorRequest(BaseModel):
     lifecycle_position: LifecyclePosition
     service: ServiceName
     component: ServiceComponent
+    transition_month: str | None = Field(default=None, pattern=r"^\d{4}-(0[1-9]|1[0-2])$")
     expected_version: int = Field(ge=0)
     idempotency_key: str = Field(min_length=8, max_length=128)
 
@@ -630,6 +631,7 @@ class CanonicalState(BaseModel):
     component_status: str | None = None
     separation_type: Literal["separation", "retirement"] | None = None
     transition_date: str | None = None
+    transition_month: str | None = Field(default=None, pattern=r"^\d{4}-(0[1-9]|1[0-2])$")
     pcs_relocation_date: str | None = None
     stage: Literal["TODAY", "PREPARE", "SEPARATE", "TRANSITION", "STABILIZE"] = "TODAY"
     current_timeline_window: str = "PATH_IDENTITY"

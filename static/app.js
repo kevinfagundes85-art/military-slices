@@ -412,6 +412,11 @@ function renderStartingVector() {
         <option value="separated_1_to_5_years">Separated 1–5 years ago</option>
         <option value="separated_more_than_5_years">Separated more than 5 years ago</option>
       </select>
+      <div id="starting-month-wrap" hidden>
+        <label id="starting-month-label" for="starting-month">Expected transition month</label>
+        <input id="starting-month" type="month" autocomplete="off">
+        <p class="trust-note">Month and year are enough.</p>
+      </div>
       <label for="starting-service">Military branch</label>
       <select id="starting-service" required>
         <option value="">Choose one</option>
@@ -429,6 +434,14 @@ function renderStartingVector() {
     <p class="trust-note">These choices orient the plan. They do not determine eligibility or authorize an outcome.</p>
   `;
   $("#starting-vector-form").addEventListener("submit", submitStartingVector);
+  $("#starting-timeline").addEventListener("change", (event) => {
+    const needsMonth = ["currently_serving", "leaving_within_12_months", "separated_within_last_year"].includes(event.target.value);
+    $("#starting-month-wrap").hidden = !needsMonth;
+    $("#starting-month").required = needsMonth;
+    $("#starting-month-label").textContent = event.target.value.startsWith("separated")
+      ? "Last month in uniform"
+      : "Expected transition month";
+  });
 }
 
 async function submitStartingVector(event) {
@@ -438,6 +451,7 @@ async function submitStartingVector(event) {
   const lifecyclePosition = $("#starting-timeline").value;
   const service = $("#starting-service").value;
   const component = $("#starting-component").value;
+  const transitionMonth = $("#starting-month").value || null;
   if (!operatingRole || !lifecyclePosition || !service || !component) {
     showInlineGuidance(primary, "Choose one answer for each starting question.");
     return;
@@ -452,6 +466,7 @@ async function submitStartingVector(event) {
         lifecycle_position: lifecyclePosition,
         service,
         component,
+        transition_month: transitionMonth,
         expected_version: envelope.state.version,
         idempotency_key: idempotencyKey(),
       }),

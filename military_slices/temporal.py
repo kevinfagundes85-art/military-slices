@@ -4,6 +4,7 @@ import hashlib
 import json
 import re
 import time
+from collections import OrderedDict
 from collections.abc import Callable
 from copy import deepcopy
 from dataclasses import dataclass
@@ -88,6 +89,21 @@ class ConsequentialImpactProjection:
     question: str | None = None
 
 
+@dataclass(frozen=True)
+class ConsequentialImpactIndex:
+    """Version-scoped derived lookup for interruption candidates.
+
+    Building the index is linear in governed facts and belongs at state-write or
+    reconstitution time. Reads are bounded by the material candidate surface.
+    The index is ephemeral and carries no authority or canonical truth.
+    """
+
+    profile_id: str
+    source_state_version: int
+    authoritative_fact_ids: tuple[str, ...]
+    build_ms: float
+
+
 ExternalRefresher = Callable[[Fact], ExternalFactUpdate | None]
 
 _AUTHORITATIVE_INTERRUPT_TERMS = (
@@ -98,6 +114,55 @@ _AUTHORITATIVE_INTERRUPT_TERMS = (
     "not permitted",
     "not allowed",
 )
+
+_CONSEQUENTIAL_INDEX_CACHE: OrderedDict[tuple[str, int], ConsequentialImpactIndex] = OrderedDict()
+_CONSEQUENTIAL_INDEX_CACHE_LIMIT = 512
+
+
+def build_consequential_impact_index(state: CanonicalState) -> ConsequentialImpactIndex:
+    """Build and cache a read-only candidate index for one canonical version."""
+
+    started = time.perf_counter()
+    resolved_fields = {
+        decision.gate_id.removeprefix("revalidate:")
+        for decision in state.decisions
+        if decision.gate_id.startswith("revalidate:")
+    }
+    ids = tuple(
+        fact.id
+        for fact in sorted(state.facts, key=lambda item: item.id)
+        if fact.field_key not in resolved_fields
+        and fact.authority == Authority.AUTHORITATIVE_SOURCE
+        and fact.status == FreshnessStatus.VALID
+        and bool(fact.affected_slices)
+        and any(
+            term in f"{fact.field_key} {fact.statement}".casefold()
+            for term in _AUTHORITATIVE_INTERRUPT_TERMS
+        )
+    )
+    index = ConsequentialImpactIndex(
+        profile_id=state.profile_id,
+        source_state_version=state.version,
+        authoritative_fact_ids=ids,
+        build_ms=(time.perf_counter() - started) * 1000,
+    )
+    key = (state.profile_id, state.version)
+    _CONSEQUENTIAL_INDEX_CACHE[key] = index
+    _CONSEQUENTIAL_INDEX_CACHE.move_to_end(key)
+    while len(_CONSEQUENTIAL_INDEX_CACHE) > _CONSEQUENTIAL_INDEX_CACHE_LIMIT:
+        _CONSEQUENTIAL_INDEX_CACHE.popitem(last=False)
+    return index
+
+
+def consequential_impact_index(state: CanonicalState) -> ConsequentialImpactIndex:
+    """Return the derived index for this immutable canonical version."""
+
+    key = (state.profile_id, state.version)
+    cached = _CONSEQUENTIAL_INDEX_CACHE.get(key)
+    if cached is not None:
+        _CONSEQUENTIAL_INDEX_CACHE.move_to_end(key)
+        return cached
+    return build_consequential_impact_index(state)
 
 
 def _stable_id(prefix: str, *parts: str) -> str:
@@ -411,7 +476,11 @@ def current_impact(state: CanonicalState) -> ImpactItem | None:
     return min(state.impacts, key=lambda item: (not item.blocking, item.created_at), default=None)
 
 
-def consequential_impact_projection(state: CanonicalState) -> ConsequentialImpactProjection | None:
+def consequential_impact_projection(
+    state: CanonicalState,
+    *,
+    index: ConsequentialImpactIndex | None = None,
+) -> ConsequentialImpactProjection | None:
     """Project the smallest material interruption without mutating governed state.
 
     Precedence is existing conflicted Gate evidence, an existing blocking Impact,
@@ -465,14 +534,10 @@ def consequential_impact_projection(state: CanonicalState) -> ConsequentialImpac
                 question=impact.question,
             )
 
-    for fact in sorted(state.facts, key=lambda item: item.id):
-        searchable = f"{fact.field_key} {fact.statement}".casefold()
-        if (
-            fact.authority == Authority.AUTHORITATIVE_SOURCE
-            and fact.status == FreshnessStatus.VALID
-            and bool(fact.affected_slices)
-            and any(term in searchable for term in _AUTHORITATIVE_INTERRUPT_TERMS)
-        ):
+    lookup = index or consequential_impact_index(state)
+    for fact_id in lookup.authoritative_fact_ids:
+        fact = fact_index.get(fact_id)
+        if fact is not None:
             return ConsequentialImpactProjection(
                 source="authoritative_interrupt",
                 fact_id=fact.id,

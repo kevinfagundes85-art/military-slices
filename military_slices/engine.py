@@ -278,6 +278,7 @@ def apply_starting_vector(
     lifecycle_position: LifecyclePosition,
     service: ServiceName,
     component: ServiceComponent,
+    transition_month: str | None = None,
     idempotency_key: str,
 ) -> CanonicalState:
     if idempotency_key in current.processed_keys:
@@ -309,6 +310,7 @@ def apply_starting_vector(
     state.lifecycle_position = lifecycle_position
     state.service = service
     state.component_status = component
+    state.transition_month = transition_month
     state.starting_vector_complete = True
     labels = {
         "veteran_service_member": "Veteran or service member",
@@ -319,7 +321,10 @@ def apply_starting_vector(
         Decision(
             id=stable_id("decision", state.profile_id, idempotency_key),
             gate_id="starting-vector",
-            value=f"{labels[operating_role]} · {lifecycle_position.value} · {service.value} · {component.value}",
+            value=(
+                f"{labels[operating_role]} · {lifecycle_position.value} · {service.value} · {component.value}"
+                + (f" · {transition_month}" if transition_month else "")
+            ),
         )
     )
     state = refresh_path_state(state)

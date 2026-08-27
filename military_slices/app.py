@@ -413,6 +413,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
                 lifecycle_position=payload.lifecycle_position,
                 service=payload.service,
                 component=payload.component,
+                transition_month=payload.transition_month,
                 idempotency_key=payload.idempotency_key,
             )
         except ValueError as exc:
@@ -435,6 +436,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             lifecycle_position=payload.lifecycle_position.value,
             service=payload.service.value,
             component=payload.component.value,
+            transition_month=payload.transition_month,
         )
         return await _envelope_after_mutation(application, saved)
 

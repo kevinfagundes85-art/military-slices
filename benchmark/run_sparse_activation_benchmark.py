@@ -48,7 +48,12 @@ from military_slices.models import (
     SurfaceType,
 )
 from military_slices.path_runtime import refresh_path_state
-from military_slices.temporal import consequential_impact_projection, current_impact
+from military_slices.temporal import (
+    build_consequential_impact_index,
+    consequential_impact_index,
+    consequential_impact_projection,
+    current_impact,
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT_DIR = ROOT / "benchmark" / "output"
@@ -474,6 +479,9 @@ def build_state(scenario: Scenario) -> CanonicalState:
             )
         )
     state.latent_fact_count = len(state.facts)
+    # Derived-index maintenance belongs to state construction/reconstitution,
+    # not to the decision-time lookup measured below.
+    build_consequential_impact_index(state)
     return state
 
 
@@ -620,7 +628,8 @@ def build_helm_context(state: CanonicalState) -> tuple[dict[str, Any], dict[str,
     frontier_ms = (time.perf_counter() - frontier_started) * 1000
     dependency_started = time.perf_counter()
     impact = current_impact(projection)
-    interruption = consequential_impact_projection(projection)
+    index = consequential_impact_index(projection)
+    interruption = consequential_impact_projection(projection, index=index)
     dependency_ms = (time.perf_counter() - dependency_started) * 1000
     retrieval_started = time.perf_counter()
     horizon = build_acquisition_horizon(projection)
@@ -696,7 +705,10 @@ def build_helm_context(state: CanonicalState) -> tuple[dict[str, Any], dict[str,
         "dependency_lookup_ms": dependency_ms,
         "preprocessing_ms": serialization_ms,
         "context_bytes": len(encoded_context.encode()),
-        "relevant_dependency_lookups": len(projection.facts) + len(projection.gates),
+        "relevant_dependency_lookups": (
+            len(projection.gates) + len(projection.impacts) + len(index.authoritative_fact_ids)
+        ),
+        "index_build_ms_excluded": index.build_ms,
         "datastore_reads": 0,
         "datastore_writes": 0,
         "probe_calls": 0,

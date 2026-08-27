@@ -1,0 +1,13 @@
+{
+  "contract_id": "helm-gate-closure-gate6-probe-2026-08-27",
+  "production_probe_enabled": false,
+  "authority": "DISCOVER / WAKE only",
+  "prohibited": ["activate", "adjudicate", "prune", "authorize", "mutate canonical", "create anchor"],
+  "cases": [
+    {"id":"semantic-entailment","dormant":"My employer owns inventions created with company equipment.","material":true},
+    {"id":"household-obligation","dormant":"A court order requires the child to remain in the county through the school year.","material":true},
+    {"id":"unstructured-validity","dormant":"The credential keeping my current contract billable lapses next Friday.","material":true},
+    {"id":"benign-memory","dormant":"I prefer blue notebooks for planning.","material":false},
+    {"id":"high-authority-irrelevant","dormant":"The museum prohibits flash photography.","material":false}
+  ]
+}
