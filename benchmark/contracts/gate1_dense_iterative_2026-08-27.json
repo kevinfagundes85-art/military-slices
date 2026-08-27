@@ -1,0 +1,33 @@
+{
+  "contract_id": "helm-gate-closure-gate1-dense-2026-08-27",
+  "source_benchmark": "benchmark-2",
+  "scenario_id": "dense-dependency",
+  "immutable_dependencies": [
+    "adv-employment-restriction",
+    "adv-location-deadline",
+    "adv-expiring-certification"
+  ],
+  "first_expected_dependency": "adv-employment-restriction",
+  "remaining_order_policy": "either order; no Domain Pack priority is invented",
+  "sparse_packet_max_dependency_facts": 1,
+  "required_sequence": [
+    "project one consequential dependency",
+    "human confirms through the existing revalidation path",
+    "persist one governed mutation",
+    "recompute the frontier",
+    "repeat until no material dependency remains"
+  ],
+  "pass_conditions": {
+    "all_dependencies_accounted_for": true,
+    "unique_human_decisions": 3,
+    "version_increment": 3,
+    "replay_writes": 0,
+    "unsupported_conclusions": 0,
+    "probe_calls": 0,
+    "production_mutations": 0
+  },
+  "simultaneous_control": {
+    "context_contains_all_dependencies": true,
+    "required_final_recall": 3
+  }
+}
