@@ -199,7 +199,7 @@ function render(next, options = {}) {
   renderPath(next.state);
   renderProgress(next.progress, next.state, next.active_gate);
   renderLenses(next.state, next.lenses);
-  renderPrimary(next);
+  renderPrimary(next, showFeedback);
   renderImpact(next.impact);
   const visibleFeedback = executionMode(next.state) === "COMPLETE" ? null : (showFeedback ? next.what_changed : null);
   renderChanged(visibleFeedback);
@@ -534,7 +534,104 @@ function renderColdFrontDoor() {
   $("#cold-artifact-file").addEventListener("change", uploadArtifact);
 }
 
-function renderPrimary(next) {
+function itemList(items, emptyCopy) {
+  const values = (items || []).filter(Boolean);
+  if (!values.length) return `<p>${escapeHtml(emptyCopy)}</p>`;
+  return `<ul>${values.map((item) => `<li>${escapeHtml(humanCopy(item))}</li>`).join("")}</ul>`;
+}
+
+function openDirectionLearning(item) {
+  openAdd(false);
+  const input = $("#input-text");
+  input.value = "";
+  input.placeholder = `What did you learn while testing ${item.title}? A sentence is enough.`;
+  input.focus();
+}
+
+function renderAcceptedExploration(item) {
+  primary.innerHTML = `
+    <div class="section-kicker">Explore the direction</div>
+    <h2 id="primary-title">Start by testing ${escapeHtml(item.title)}.</h2>
+    <p class="gate-copy">This is your working direction, not a permanent commitment. The useful next move is to reduce one uncertainty with real evidence.</p>
+    <article class="direction-exploration">
+      <section>
+        <h3>A useful first experiment</h3>
+        <p>${escapeHtml(humanCopy(item.first_experiment || item.next_step))}</p>
+      </section>
+      <section>
+        <h3>Questions this test should answer</h3>
+        ${itemList(item.questions_to_test, "What would have to be true for this direction to be worth continuing?")}
+      </section>
+      <section>
+        <h3>What you already have evidence for</h3>
+        ${itemList(item.capability_matches, "No fit is being assumed yet.")}
+      </section>
+      <section>
+        <h3>What is still an assumption</h3>
+        ${itemList(item.possible_gaps, "The remaining uncertainty still needs outside evidence.")}
+      </section>
+      <p class="evidence-note">Useful references: ${escapeHtml(humanCopy((item.evidence || []).join(" · ")))}</p>
+    </article>
+    <button id="add-direction-learning" class="button button-primary" type="button">Add what I learn</button>
+  `;
+  $("#add-direction-learning").addEventListener("click", () => openDirectionLearning(item));
+}
+
+function renderHypothesisExploration(itemId) {
+  const item = envelope?.state?.career_hypotheses?.find((candidate) => candidate.id === itemId);
+  if (!item || !envelope.active_gate || envelope.active_gate.id !== "career-direction") {
+    renderPrimary(envelope);
+    focusPrimary();
+    return;
+  }
+  primary.innerHTML = `
+    <div class="section-kicker">Explore before deciding — nothing changed yet</div>
+    <h2 id="primary-title">${escapeHtml(item.title)}</h2>
+    <p class="gate-copy">${escapeHtml(humanCopy(item.rationale))}</p>
+    <article class="direction-exploration">
+      <section>
+        <h3>A useful first experiment</h3>
+        <p>${escapeHtml(humanCopy(item.first_experiment || item.next_step))}</p>
+      </section>
+      <section>
+        <h3>Questions this test should answer</h3>
+        ${itemList(item.questions_to_test, "What would have to be true for this direction to be worth continuing?")}
+      </section>
+      <section>
+        <h3>Why it may fit</h3>
+        ${itemList(item.capability_matches, "No fit is being assumed yet.")}
+      </section>
+      <section>
+        <h3>What still needs evidence</h3>
+        ${itemList(item.possible_gaps, "The remaining uncertainty still needs outside evidence.")}
+      </section>
+      <p class="evidence-note">Useful references: ${escapeHtml(humanCopy((item.evidence || []).join(" · ")))}</p>
+    </article>
+    <form id="gate-form" class="gate-form">
+      <button id="accept-direction" class="button button-primary" data-value="explore:${escapeHtml(item.title)}" type="button">Use this as my working direction</button>
+      <button id="back-to-directions" class="button button-quiet" type="button">Back to the other directions</button>
+    </form>
+    <p class="trust-note">Exploring this page did not save or change your plan.</p>
+  `;
+  $("#accept-direction").addEventListener("click", (event) => submitDecision({ preventDefault() {}, currentTarget: event.currentTarget }));
+  $("#back-to-directions").addEventListener("click", () => {
+    renderPrimary(envelope);
+    focusPrimary();
+  });
+  focusPrimary();
+}
+
+function conversationLead(horizon, visible) {
+  if (!visible || !horizon?.acknowledgment) return "";
+  return `
+    <div class="conversation-lead">
+      <p class="conversation-ack">${escapeHtml(humanCopy(horizon.acknowledgment))}</p>
+      ${horizon.consequence ? `<p>${escapeHtml(humanCopy(horizon.consequence))}</p>` : ""}
+    </div>
+  `;
+}
+
+function renderPrimary(next, showConversationLead = false) {
   const state = next.state;
   const gate = next.active_gate;
   const acquisition = next.acquisition_horizon;
@@ -559,12 +656,16 @@ function renderPrimary(next) {
   }
   if (!gate) {
     const accepted = state.career_hypotheses.find((item) => item.status === "accepted");
+    if (accepted) {
+      renderAcceptedExploration(accepted);
+      return;
+    }
     const hasTasks = Boolean(state.active_tasks?.length);
     primary.innerHTML = `
-      <h2 id="primary-title">${accepted ? `Keep testing ${escapeHtml(accepted.title)}.` : (hasTasks ? "Your next steps are ready." : "Your plan is caught up for now.")}</h2>
-      <p class="gate-copy">${accepted ? `Your experience suggests a credible direction. The remaining gaps are hypotheses until you compare them with a real job description.` : (hasTasks ? "Work through these steps in the order that fits your timing. Add an update when something changes." : "Add something whenever your timing, priorities, work preferences, education, or location changes.")}</p>
+      <h2 id="primary-title">${hasTasks ? "Your next steps are ready." : "Your plan is caught up for now."}</h2>
+      <p class="gate-copy">${hasTasks ? "Work through these steps in the order that fits your timing. Add an update when something changes." : "Add something whenever your timing, priorities, work preferences, education, or location changes."}</p>
       ${taskHorizon(state.active_tasks, true)}
-      <button id="add-more" class="button ${hasTasks ? "button-quiet" : "button-primary"}" type="button">${accepted ? "Add a job description or update" : "Add an update"}</button>
+      <button id="add-more" class="button ${hasTasks ? "button-quiet" : "button-primary"}" type="button">Add an update</button>
     `;
     $("#add-more").addEventListener("click", () => openAdd(false));
     return;
@@ -593,7 +694,7 @@ function renderPrimary(next) {
         <p><strong>What to verify</strong><br>${escapeHtml(humanCopy(item.possible_gaps.join(" · ")))}</p>
         <div class="evidence-note">Explore with ${escapeHtml(humanCopy(item.evidence.join(" · ")))}</div>
         <div class="hypothesis-actions">
-          <button class="button button-secondary hypothesis-choice" data-value="explore:${escapeHtml(item.title)}" type="button">Test this direction</button>
+          <button class="button button-secondary hypothesis-explore" data-id="${escapeHtml(item.id)}" type="button">Explore this direction</button>
           <button class="button button-quiet hypothesis-choice" data-value="reject:${escapeHtml(item.title)}" type="button">Not for me</button>
         </div>
       </article>
@@ -603,6 +704,7 @@ function renderPrimary(next) {
   }
   primary.innerHTML = `
     ${mode === "PARALYZED" ? '<div class="attention-note">These choices cannot both guide the next step. Your answer below will clear the conflict.</div>' : ""}
+    ${conversationLead(acquisition, showConversationLead)}
     <h2 id="primary-title">${escapeHtml(humanCopy(acquisition?.prompt || gate.question))}</h2>
     <p class="gate-copy">${escapeHtml(humanCopy(gate.why))}</p>
     <form id="gate-form" class="gate-form">
@@ -615,6 +717,9 @@ function renderPrimary(next) {
   form.addEventListener("submit", submitDecision);
   document.querySelectorAll(".hypothesis-choice").forEach((button) => {
     button.addEventListener("click", () => submitDecision({ preventDefault() {}, currentTarget: button }));
+  });
+  document.querySelectorAll(".hypothesis-explore").forEach((button) => {
+    button.addEventListener("click", () => renderHypothesisExploration(button.dataset.id));
   });
 }
 

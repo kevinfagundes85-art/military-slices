@@ -342,6 +342,15 @@ textarea { resize: vertical; }
 .hypothesis p { margin: 0.5rem 0 0.8rem; color: var(--muted); }
 .hypothesis-actions { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 0.9rem; }
 .evidence-note { font-size: 0.8rem; color: var(--sea); }
+.direction-exploration { display: grid; gap: 1rem; margin: 1.25rem 0; }
+.direction-exploration section { padding: 1rem; background: rgba(7, 20, 31, 0.55); border: 1px solid var(--line); border-radius: 0.8rem; }
+.direction-exploration h3 { margin-bottom: 0.55rem; }
+.direction-exploration p { margin: 0; color: var(--muted); }
+.direction-exploration ul { margin: 0; padding-left: 1.25rem; }
+.direction-exploration li + li { margin-top: 0.45rem; }
+.conversation-lead { margin-bottom: 1.15rem; padding: 0 0 1rem; border-bottom: 1px solid var(--line); }
+.conversation-lead p { margin: 0; color: var(--muted); }
+.conversation-lead .conversation-ack { margin-bottom: 0.45rem; color: var(--ink); font-size: clamp(1.05rem, 3vw, 1.3rem); font-weight: 850; }
 
 .affected-areas { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.8rem; }
 .affected-area { padding: 0.35rem 0.6rem; border-radius: 999px; background: rgba(101, 213, 197, 0.12); color: var(--sea); font-size: 0.78rem; font-weight: 750; }

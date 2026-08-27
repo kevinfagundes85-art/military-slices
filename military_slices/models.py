@@ -350,7 +350,11 @@ class CareerHypothesis(BaseModel):
     evidence: list[str] = Field(default_factory=list)
     capability_matches: list[str] = Field(default_factory=list)
     possible_gaps: list[str] = Field(default_factory=list)
-    next_step: str = "Compare this direction with a real civilian job description."
+    questions_to_test: list[str] = Field(default_factory=list, max_length=4)
+    first_experiment: str = (
+        "Choose one real situation that would let you test this direction before committing to it."
+    )
+    next_step: str = "Run the first bounded experiment and add what you learn."
     confidence: Literal["explore", "promising", "strong"] = "explore"
     status: Literal["candidate", "accepted", "rejected"] = "candidate"
     state_category: Literal[StateCategory.HYPOTHETICAL] = StateCategory.HYPOTHETICAL
@@ -741,6 +745,9 @@ class AcquisitionHorizon(BaseModel):
     active_slice: SliceName
     active_gate_id: str
     prompt: str
+    acknowledgment: str | None = Field(default=None, max_length=160)
+    consequence: str | None = Field(default=None, max_length=400)
+    language_provider: str | None = Field(default=None, max_length=100)
     checklist: list[AcquisitionChecklistItem] = Field(min_length=1, max_length=4)
     explicit_unknowns: list[str] = Field(default_factory=list, max_length=4)
     authority_constraints: list[str] = Field(default_factory=list, max_length=6)

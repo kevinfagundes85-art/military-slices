@@ -470,6 +470,9 @@ def apply_fog_bank_reorientation(
         elif change.field == "transition_date":
             state.transition_date = change.proposed_value
         elif change.field == "human_anchor":
+            if change.proposed_value != state.human_anchor:
+                state.career_target = None
+                state.career_hypotheses = []
             state.human_anchor = change.proposed_value
             state.current_goal = change.proposed_value
     state.original_intents.append(proposal.reviewed_input)
@@ -594,7 +597,11 @@ def _set_explicit_career_target(state: CanonicalState, target: str) -> None:
             title=target,
             rationale="This is the direction you explicitly chose to test.",
             evidence=["Your confirmed career target"],
-            next_step="Compare this direction with a real civilian job description.",
+            capability_matches=["Your explicitly confirmed direction"],
+            possible_gaps=_role_gaps(target),
+            questions_to_test=_role_questions(target),
+            first_experiment=_role_first_experiment(target),
+            next_step="Run the first bounded experiment and add what you learn.",
             status="accepted",
         )
         state.career_hypotheses.insert(0, selected)
@@ -1040,6 +1047,36 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
             value_score=80,
         )
         gates.append(_preserve_resolution(gate, existing))
+
+    if domain != "resume" and state.human_anchor and state.active_tasks and not any(
+        gate.state not in (GateState.YES, GateState.NO) for gate in gates
+    ):
+        completed_gate_ids = {decision.gate_id for decision in state.decisions}
+        for task in state.active_tasks:
+            task_gate_id = stable_id("path-task", task.id, task.title)
+            if task_gate_id in completed_gate_ids:
+                continue
+            task_title = task.title.strip().rstrip(".")
+            question = (
+                task.title.strip()
+                if task.title.strip().endswith("?")
+                else f"What have you learned—or what still needs to be tested—about: {task_title}?"
+            )
+            gate = Gate(
+                id=task_gate_id,
+                title="Resolve the next material uncertainty",
+                question=question,
+                why=task.reason,
+                state=GateState.PARTIAL,
+                surface=SurfaceType.TEXT,
+                affected_slices=task.affected_slices or ALL_SLICES,
+                authority_required=Authority.HUMAN,
+                authorized_scope=["path:task-evidence"],
+                authority_set=[Authority.HUMAN],
+                value_score=60,
+            )
+            gates.append(_preserve_resolution(gate, existing))
+            break
     return sorted(gates, key=lambda item: item.value_score, reverse=True)
 
 
@@ -1149,6 +1186,16 @@ def apply_decision(
         if not matched:
             raise ValueError("That direction is no longer available. Refresh to see current options.")
         normalized = ("Not for me: " if rejecting else "Explore: ") + chosen
+    elif gate_id.startswith("path-task_"):
+        orientation = orient(normalized, context=current)
+        for statement in orientation.statements:
+            if not statement.affected_slices:
+                statement.affected_slices = list(matching.affected_slices)
+        _merge_human_facts(
+            state,
+            orientation,
+            evidence_label="Direct answer to the current path question",
+        )
 
     rejecting_career = gate_id == "career-direction" and normalized.startswith("Not for me:")
     matching.state = GateState.PARTIAL if rejecting_career else GateState.YES
@@ -1343,6 +1390,11 @@ def _decision_consequences(
         return ["Made the education outcome—not the program list—the next planning constraint."]
     if gate_id == "location-priority":
         return ["Made this location condition part of the active decision."]
+    if gate_id.startswith("path-task_"):
+        return [
+            "Used what you learned to retire this uncertainty.",
+            "Recomputed the next question from the updated plan.",
+        ]
     return [
         "Used that answer to determine the next useful question.",
     ]
@@ -1455,6 +1507,9 @@ def deterministic_hypotheses(text: str, rejected: list[str]) -> list[CareerHypot
             evidence=evidence,
             capability_matches=_role_capabilities(title),
             possible_gaps=_role_gaps(title),
+            questions_to_test=_role_questions(title),
+            first_experiment=_role_first_experiment(title),
+            next_step="Run the first bounded experiment and add what you learn.",
         )
         for title, rationale, evidence in families
         if title not in rejected
@@ -1474,6 +1529,11 @@ def _role_capabilities(title: str) -> list[str]:
 
 def _role_gaps(title: str) -> list[str]:
     lower = title.casefold()
+    if any(term in lower for term in ("founder", "business principal", "product builder")):
+        return [
+            "A specific user problem worth owning",
+            "Evidence that a small useful solution changes something for that user",
+        ]
     if "maintenance" in lower or "field service" in lower:
         return ["Civilian maintenance-system terminology", "Evidence from comparable job postings"]
     if "quality" in lower:
@@ -1481,6 +1541,21 @@ def _role_gaps(title: str) -> list[str]:
     if "analyst" in lower:
         return ["Civilian data-tool evidence", "Portfolio examples without protected information"]
     return ["Civilian job-title calibration", "Evidence matched to a real posting"]
+
+
+def _role_questions(title: str) -> list[str]:
+    return [
+        f"What evidence would confirm or change this assumption: {gap}?"
+        for gap in _role_gaps(title)[:3]
+    ]
+
+
+def _role_first_experiment(title: str) -> str:
+    first_gap = _role_gaps(title)[0]
+    return (
+        f"Choose the smallest real example, conversation, work sample, or comparison that could test: "
+        f"{first_gap}. Capture what the evidence confirms, changes, or leaves unanswered."
+    )
 
 
 def apply_hypotheses(state: CanonicalState, hypotheses: list[CareerHypothesis]) -> CanonicalState:

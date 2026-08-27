@@ -107,8 +107,8 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
     assert "Look at this another way" in html
     assert "Choose a relevant part of your plan" in html
-    assert "/static/app.js?v=11" in html
-    assert "/static/styles.css?v=9" in html
+    assert "/static/app.js?v=12" in html
+    assert "/static/styles.css?v=10" in html
 
 
 def test_primary_decision_precedes_plan_scaffolding_and_requires_an_explicit_choice() -> None:
@@ -221,6 +221,35 @@ def test_bounded_acquisition_is_natural_inline_and_keeps_one_primary_surface() -
     assert 'id="primary-content" aria-live="polite"' in html
     assert ".natural-answer summary" in css
     assert "acquisition-horizon" not in script
+
+
+def test_direction_exploration_observes_before_commit_and_builds_forward_afterward() -> None:
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    preview = script[
+        script.index("function renderHypothesisExploration") : script.index("function renderPrimary")
+    ]
+    accepted = script[
+        script.index("function renderAcceptedExploration") : script.index("function renderHypothesisExploration")
+    ]
+
+    assert "Explore before deciding — nothing changed yet" in preview
+    assert "A useful first experiment" in preview
+    assert "Questions this test should answer" in preview
+    assert "Use this as my working direction" in preview
+    assert "Exploring this page did not save or change your plan" in preview
+    assert "api(" not in preview
+    assert "Add what I learn" in accepted
+    assert "Add a job description or update" not in script
+    assert "compare them with a real job description" not in script
+
+
+def test_recomputed_conversation_lead_is_visible_only_after_a_material_change() -> None:
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    assert "function conversationLead" in script
+    assert "horizon?.acknowledgment" in script
+    assert "horizon.consequence" in script
+    assert "renderPrimary(next, showFeedback)" in script
+    assert "conversationLead(acquisition, showConversationLead)" in script
 
 
 def test_progressive_disclosure_and_feedback_are_state_earned() -> None:

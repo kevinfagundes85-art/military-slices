@@ -475,7 +475,11 @@ def _window(window_id: str) -> dict[str, Any]:
 
 
 def _title(task: str) -> str:
-    return task[:1].upper() + task[1:].rstrip(".") + "."
+    normalized = task.strip()
+    if not normalized:
+        return normalized
+    titled = normalized[:1].upper() + normalized[1:]
+    return titled if titled.endswith((".", "?", "!")) else titled + "."
 
 
 def _task_slices(domain: str | None) -> list[SliceName]:
@@ -717,6 +721,24 @@ def refresh_path_state(state: CanonicalState, *, today: date | None = None) -> C
     elif domain == "resume":
         state.path_target_state = "PREPARATION_BASELINE_READY"
         tasks = _resume_tasks(state.human_anchor or "")
+    elif (
+        domain == "employment"
+        and any(
+            decision.gate_id == "career-direction" and decision.value.startswith("Explore: ")
+            for decision in state.decisions
+        )
+        and (
+        accepted_direction := next(
+            (item for item in state.career_hypotheses if item.status == "accepted"),
+            None,
+        )
+        )
+    ):
+        state.path_target_state = "CAREER_DIRECTION_EXPLORATION"
+        tasks = [
+            *accepted_direction.questions_to_test,
+            accepted_direction.first_experiment,
+        ][:3]
     elif state.lifecycle_position == LifecyclePosition.CURRENTLY_SERVING:
         state.path_target_state = "PATH_IDENTIFIED"
         tasks = [_domain_fallback(domain)]

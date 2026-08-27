@@ -13,6 +13,7 @@ from military_slices.models import (
     Authority,
     CanonicalState,
     Gate,
+    OrientationResult,
     SliceName,
 )
 from military_slices.path_runtime import ANCHOR_OPTIONS, anchor_domain
@@ -129,7 +130,11 @@ def _forecast_items(state: CanonicalState, gate: Gate) -> list[AcquisitionCheckl
                 ),
             ]
         )
-    elif domain == "employment" and gate.id != "career-direction":
+    elif (
+        domain == "employment"
+        and gate.id != "career-direction"
+        and not any(item.status == "accepted" for item in state.career_hypotheses)
+    ):
         items.append(
             _item(
                 state,
@@ -218,8 +223,13 @@ def build_acquisition_horizon(state: CanonicalState) -> AcquisitionHorizon | Non
     )
 
 
-def _source_candidates(text: str, horizon: AcquisitionHorizon) -> list[AcquisitionCandidate]:
-    oriented = orient(text)
+def _source_candidates(
+    text: str,
+    horizon: AcquisitionHorizon,
+    *,
+    oriented: OrientationResult | None = None,
+) -> list[AcquisitionCandidate]:
+    oriented = oriented or orient(text)
     candidates: list[AcquisitionCandidate] = []
     cursor = 0
     for statement in oriented.statements:
@@ -321,7 +331,23 @@ def evaluate_acquisition(
             None,
             oriented.clarification_question or "Resolve the conflicting information first.",
         )
-    candidates = _source_candidates(text, horizon)
+    candidates = _source_candidates(text, horizon, oriented=oriented)
+    path_task_answer = (
+        gate.id.startswith("path-task_")
+        and bool(candidates)
+        and len(text.strip()) >= 12
+    )
+    if path_task_answer:
+        candidates = [
+            candidate.model_copy(
+                update={
+                    "checklist_ids": list(
+                        dict.fromkeys([gate.id, *candidate.checklist_ids])
+                    )[:4]
+                }
+            )
+            for candidate in candidates
+        ]
     matched = list(dict.fromkeys(item for candidate in candidates for item in candidate.checklist_ids))
     if gate.surface.value in {"choice", "conflict"}:
         value, clarification = _choice_gate_value(gate, text)

@@ -42,6 +42,7 @@ from military_slices.governance import (
     validate_resolver_nomination,
 )
 from military_slices.models import (
+    AcquisitionHorizon,
     AcquisitionRequest,
     ActorProvenance,
     Authority,
@@ -298,7 +299,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             agent_provider=agent_result.provider if agent_result else "not-required",
             **_temporal_delta(current, saved),
         )
-        return _envelope(saved, agent_run=_agent_run(agent_result))
+        return await _envelope_after_mutation(application, saved, agent_run=_agent_run(agent_result))
 
     @application.post("/api/orient")
     async def orientation(
@@ -389,7 +390,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             human_gate=current_gate.id if current_gate else None,
             **_temporal_delta(current, saved),
         )
-        return _envelope(saved, agent_run=_agent_run(agent_result))
+        return await _envelope_after_mutation(application, saved, agent_run=_agent_run(agent_result))
 
     @application.post("/api/starting-vector", response_model=StateEnvelope)
     async def starting_vector(
@@ -435,7 +436,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             service=payload.service.value,
             component=payload.component.value,
         )
-        return _envelope(saved)
+        return await _envelope_after_mutation(application, saved)
 
     @application.post("/api/fog-bank")
     async def fog_bank(
@@ -517,7 +518,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             version=saved.version,
             changes=len(proposal.changes),
         )
-        return _envelope(saved, agent_run=_agent_run(agent_result))
+        return await _envelope_after_mutation(application, saved, agent_run=_agent_run(agent_result))
 
     @application.post("/api/decision", response_model=StateEnvelope)
     async def decision(
@@ -589,7 +590,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             agent_provider=agent_result.provider if agent_result else "not-required",
             **_temporal_delta(current, saved),
         )
-        return _envelope(saved, agent_run=_agent_run(agent_result))
+        return await _envelope_after_mutation(application, saved, agent_run=_agent_run(agent_result))
 
     @application.post("/api/acquire")
     async def acquire(
@@ -703,12 +704,17 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             resolved_gate=gate.id,
             agent_provider=agent_result.provider if agent_result else "not-required",
         )
+        next_envelope = await _envelope_after_mutation(
+            application,
+            saved,
+            agent_run=_agent_run(agent_result),
+        )
         return {
             "status": "applied",
             "message": "Your answer changed what comes next.",
             "matched_checklist_ids": evaluated.matched_checklist_ids,
             "resolved_gate_ids": [gate.id],
-            "envelope": _envelope(saved, agent_run=_agent_run(agent_result)).model_dump(mode="json"),
+            "envelope": next_envelope.model_dump(mode="json"),
         }
 
     @application.post("/api/revalidate", response_model=StateEnvelope)
@@ -784,7 +790,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             freshness_model_calls=0,
             full_receipt_rebuilds=0,
         )
-        return _envelope(saved)
+        return await _envelope_after_mutation(application, saved)
 
     @application.post("/api/artifact")
     async def artifact(
@@ -851,7 +857,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             human_gate=current_gate.id if current_gate else None,
             **_temporal_delta(current, saved),
         )
-        return _envelope(saved, agent_run=_agent_run(agent_result))
+        return await _envelope_after_mutation(application, saved, agent_run=_agent_run(agent_result))
 
     @application.get("/")
     async def root() -> FileResponse:
@@ -897,6 +903,48 @@ def _envelope(state: Any, agent_run: dict[str, Any] | None = None) -> StateEnvel
         impact=current_impact(state),
         agent_run=agent_run,
         acquisition_horizon=build_acquisition_horizon(state),
+    )
+
+
+async def _conversation_horizon(
+    application: FastAPI,
+    state: Any,
+) -> AcquisitionHorizon | None:
+    """Recompute semantics first, then add bounded conversational method without persistence authority."""
+    horizon = build_acquisition_horizon(state)
+    if horizon is None:
+        return None
+    material_change = state.feedback[-1].consequences if state.feedback else []
+    language = await application.state.resolver.transition_language(
+        state=state,
+        horizon=horizon,
+        material_change=material_change,
+    )
+    return horizon.model_copy(
+        update={
+            "acknowledgment": language.acknowledgment,
+            "consequence": language.consequence,
+            "language_provider": language.provider,
+        }
+    )
+
+
+async def _envelope_after_mutation(
+    application: FastAPI,
+    state: Any,
+    *,
+    agent_run: dict[str, Any] | None = None,
+) -> StateEnvelope:
+    horizon = await _conversation_horizon(application, state)
+    return StateEnvelope(
+        state=state,
+        active_gate=active_gate(state),
+        what_changed=state.feedback[-1] if state.feedback else None,
+        progress=path_progress(state),
+        lenses=lens_projections(state),
+        impact=current_impact(state),
+        agent_run=agent_run,
+        acquisition_horizon=horizon,
     )
 
 
