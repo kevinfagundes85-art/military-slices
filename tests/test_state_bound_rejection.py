@@ -12,14 +12,25 @@ from military_slices.models import (
     Fact,
     Gate,
     GateState,
+    LifecyclePosition,
     SliceName,
     SurfaceType,
 )
 from military_slices.state_bound_rejection import (
     REJECTION_VALUE,
+    lookup_governed_content_rejection,
     lookup_state_bound_rejection,
     record_state_bound_rejection,
 )
+
+VALIDITY_DIMENSIONS = [
+    "anchor",
+    "path",
+    "lifecycle",
+    "time_validity",
+    "authority",
+    "effect_reachability",
+]
 
 
 def _state() -> tuple[CanonicalState, str, str]:
@@ -74,7 +85,7 @@ def _recorded() -> tuple[CanonicalState, str, str]:
         fact_ids=[fact_id],
         effect_dimension="outside_work_authority_constraint",
         gate_id=gate_id,
-        validity_dimensions=["anchor", "path", "authority", "effect_reachability"],
+        validity_dimensions=VALIDITY_DIMENSIONS,
     )
     return governed, fact_id, gate_id
 
@@ -85,7 +96,7 @@ def _lookup(state: CanonicalState, fact_id: str, gate_id: str):  # type: ignore[
         fact_ids=[fact_id],
         effect_dimension="outside_work_authority_constraint",
         gate_id=gate_id,
-        validity_dimensions=["anchor", "path", "authority", "effect_reachability"],
+        validity_dimensions=VALIDITY_DIMENSIONS,
     )
 
 
@@ -173,3 +184,113 @@ def test_rejection_lookup_survives_restart() -> None:
     restarted = reconstitute_governance(type(governed).model_validate_json(governed.model_dump_json()))
 
     assert _lookup(restarted, fact_id, gate_id).status == "SUPPRESSED"
+
+
+def _content_lookup(state: CanonicalState, fact_id: str, gate_id: str):  # type: ignore[no-untyped-def]
+    return lookup_governed_content_rejection(
+        state,
+        fact_ids=[fact_id],
+        effect_dimension="outside_work_authority_constraint",
+        gate_id=gate_id,
+        validity_dimensions=VALIDITY_DIMENSIONS,
+    )
+
+
+def _append_reingested(
+    state: CanonicalState,
+    *,
+    fact_id: str,
+    value: str,
+    authority: Authority = Authority.AUTHORITATIVE_SOURCE,
+    effective_at: str | None = None,
+) -> None:
+    state.facts.append(
+        Fact(
+            id=fact_id,
+            statement="A separately ingested source carries governed content.",
+            value=value,
+            authority=authority,
+            effective_at=effective_at,
+            affected_slices=[SliceName.CAREER],
+            field_key="outside_work_terms",
+        )
+    )
+
+
+def test_exact_normalized_governed_content_generalizes_across_fact_ids() -> None:
+    governed, _, gate_id = _recorded()
+    _append_reingested(
+        governed,
+        fact_id="fact-outside-work-exact-copy",
+        value="  PERMITTED  ",
+    )
+
+    result = _content_lookup(governed, "fact-outside-work-exact-copy", gate_id)
+
+    assert result.status == "SUPPRESSED"
+    assert result.content_identity_match is True
+    assert result.suppress is True
+
+
+def test_semantic_paraphrase_does_not_gain_suppression_authority() -> None:
+    governed, _, gate_id = _recorded()
+    _append_reingested(
+        governed,
+        fact_id="fact-outside-work-paraphrase",
+        value="This project is allowed under the agreement.",
+    )
+
+    result = _content_lookup(governed, "fact-outside-work-paraphrase", gate_id)
+
+    assert result.status == "IDENTITY_MISS"
+    assert result.content_identity_match is False
+    assert result.suppress is False
+
+
+def test_same_content_different_authority_is_not_suppressed() -> None:
+    governed, _, gate_id = _recorded()
+    _append_reingested(
+        governed,
+        fact_id="fact-outside-work-human-claim",
+        value="permitted",
+        authority=Authority.HUMAN,
+    )
+
+    result = _content_lookup(governed, "fact-outside-work-human-claim", gate_id)
+
+    assert result.status == "IDENTITY_MISS"
+    assert result.suppress is False
+
+
+def test_same_content_different_effective_date_invalidates() -> None:
+    governed, _, gate_id = _recorded()
+    _append_reingested(
+        governed,
+        fact_id="fact-outside-work-future-date",
+        value="permitted",
+        effective_at="2028-08-27",
+    )
+
+    result = _content_lookup(governed, "fact-outside-work-future-date", gate_id)
+
+    assert result.status == "INVALIDATED"
+    assert result.content_identity_match is True
+    assert result.suppress is False
+    assert "material_condition_changed:time_validity" in result.invalidation_triggers
+
+
+def test_same_content_different_lifecycle_invalidates() -> None:
+    governed, _, gate_id = _recorded()
+    _append_reingested(
+        governed,
+        fact_id="fact-outside-work-new-lifecycle",
+        value="permitted",
+    )
+    governed.lifecycle_position = LifecyclePosition.CURRENTLY_SERVING
+
+    result = _content_lookup(governed, "fact-outside-work-new-lifecycle", gate_id)
+
+    assert result.status == "INVALIDATED"
+    assert result.content_identity_match is True
+    assert result.suppress is False
+    assert "material_condition_changed:lifecycle" in result.invalidation_triggers

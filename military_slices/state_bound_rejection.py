@@ -10,6 +10,7 @@ from __future__ import annotations
 import hashlib
 import json
 import time
+import unicodedata
 from copy import deepcopy
 from dataclasses import dataclass
 from typing import Any, Literal
@@ -59,9 +60,40 @@ class RejectionLookup:
         return self.status == "SUPPRESSED"
 
 
+@dataclass(frozen=True)
+class GovernedContentIdentity:
+    content_hash: str
+    effect_dimension: str
+    gate_id: str
+    gate_version: str
+    identity_hash: str
+    construction_ms: float
+
+
+@dataclass(frozen=True)
+class GovernedContentRejectionLookup:
+    status: LookupStatus
+    identity: GovernedContentIdentity
+    decision_id: str | None
+    content_identity_match: bool
+    invalidation_triggers: tuple[str, ...]
+    lookup_ms: float
+
+    @property
+    def suppress(self) -> bool:
+        return self.status == "SUPPRESSED"
+
+
 def _canonical_hash(value: Any) -> str:
     encoded = json.dumps(value, separators=(",", ":"), sort_keys=True, default=str).encode()
     return hashlib.sha256(encoded).hexdigest()
+
+
+def normalize_governed_text(value: str) -> str:
+    """Canonicalize serialization differences without deciding semantic equivalence."""
+
+    normalized = unicodedata.normalize("NFKC", value).replace("\r\n", "\n").replace("\r", "\n")
+    return " ".join(normalized.split()).strip().casefold()
 
 
 def _gate(state: CanonicalState, gate_id: str) -> Gate:
@@ -114,6 +146,59 @@ def evidence_lineage_hash(state: CanonicalState, fact_ids: tuple[str, ...]) -> s
     return _canonical_hash({"facts": fact_payloads, "direct_lineage": direct_lineage})
 
 
+def governed_content_hash(state: CanonicalState, fact_ids: tuple[str, ...]) -> str:
+    """Hash exact normalized governed content while excluding structural ingestion identity."""
+
+    facts_by_id = {fact.id: fact for fact in state.facts}
+    missing = [fact_id for fact_id in fact_ids if fact_id not in facts_by_id]
+    if missing:
+        raise GovernanceError(f"Governed-content identity is missing Fact IDs: {sorted(missing)!r}.")
+    payloads = [
+        {
+            "field_key": normalize_governed_text(facts_by_id[fact_id].field_key),
+            "value": normalize_governed_text(facts_by_id[fact_id].value),
+            "authority": facts_by_id[fact_id].authority.value,
+        }
+        for fact_id in fact_ids
+    ]
+    payloads.sort(key=lambda item: json.dumps(item, separators=(",", ":"), sort_keys=True))
+    return _canonical_hash(payloads)
+
+
+def build_governed_content_identity(
+    state: CanonicalState,
+    *,
+    fact_ids: list[str] | tuple[str, ...],
+    effect_dimension: str,
+    gate_id: str,
+) -> GovernedContentIdentity:
+    """Build I1 from governed values only; no semantic or probabilistic operation occurs."""
+
+    started = time.perf_counter()
+    normalized_fact_ids = tuple(sorted(set(fact_ids)))
+    if not normalized_fact_ids:
+        raise GovernanceError("Governed-content identity requires at least one governed Fact ID.")
+    gate = _gate(state, gate_id)
+    content_hash = governed_content_hash(state, normalized_fact_ids)
+    gate_version = gate_contract_version(gate)
+    identity_hash = _canonical_hash(
+        {
+            "content_hash": content_hash,
+            "effect_dimension": effect_dimension,
+            "gate_id": gate_id,
+            "gate_version": gate_version,
+        }
+    )
+    return GovernedContentIdentity(
+        content_hash=content_hash,
+        effect_dimension=effect_dimension,
+        gate_id=gate_id,
+        gate_version=gate_version,
+        identity_hash=identity_hash,
+        construction_ms=(time.perf_counter() - started) * 1000,
+    )
+
+
 def _material_condition_payload(
     state: CanonicalState,
     gate: Gate,
@@ -158,6 +243,44 @@ def _material_condition_payload(
     raise GovernanceError(f"Unknown bounded rejection validity dimension {dimension!r}.")
 
 
+def _generalized_material_condition_payload(
+    state: CanonicalState,
+    gate: Gate,
+    fact_ids: tuple[str, ...],
+    dimension: str,
+) -> Any:
+    """Project material conditions without Fact IDs or ingestion-specific structure."""
+
+    facts = [fact for fact in state.facts if fact.id in fact_ids]
+    if dimension in {"anchor", "path", "lifecycle"}:
+        return _material_condition_payload(state, gate, fact_ids, dimension)
+    if dimension == "time_validity":
+        return sorted(
+            (
+                normalize_governed_text(fact.field_key),
+                fact.effective_at,
+                fact.status.value,
+                fact.freshness_class.value,
+            )
+            for fact in facts
+        )
+    if dimension == "authority":
+        return {
+            "fact_authorities": sorted(fact.authority.value for fact in facts),
+            "gate_required": gate.authority_required.value,
+            "gate_set": sorted(item.value for item in gate.authority_set),
+        }
+    if dimension == "effect_reachability":
+        return {
+            "fact_slices": sorted(
+                tuple(sorted(item.value for item in fact.affected_slices)) for fact in facts
+            ),
+            "gate_slices": sorted(item.value for item in gate.affected_slices),
+            "authorized_scope": sorted(gate.authorized_scope),
+        }
+    raise GovernanceError(f"Unknown generalized rejection validity dimension {dimension!r}.")
+
+
 def _condition_refs(
     state: CanonicalState,
     gate: Gate,
@@ -167,6 +290,19 @@ def _condition_refs(
     return tuple(
         f"material-condition:{dimension}:sha256:"
         f"{_canonical_hash(_material_condition_payload(state, gate, fact_ids, dimension))}"
+        for dimension in sorted(set(dimensions))
+    )
+
+
+def _generalized_condition_refs(
+    state: CanonicalState,
+    gate: Gate,
+    fact_ids: tuple[str, ...],
+    dimensions: tuple[str, ...],
+) -> tuple[str, ...]:
+    return tuple(
+        f"generalized-condition:{dimension}:sha256:"
+        f"{_canonical_hash(_generalized_material_condition_payload(state, gate, fact_ids, dimension))}"
         for dimension in sorted(set(dimensions))
     )
 
@@ -289,6 +425,79 @@ def lookup_state_bound_rejection(
     )
 
 
+def lookup_governed_content_rejection(
+    state: CanonicalState,
+    *,
+    fact_ids: list[str] | tuple[str, ...],
+    effect_dimension: str,
+    gate_id: str,
+    validity_dimensions: list[str] | tuple[str, ...],
+) -> GovernedContentRejectionLookup:
+    """Evaluate I1 exact governed-content identity without semantic comparison."""
+
+    started = time.perf_counter()
+    current = build_governed_content_identity(
+        state,
+        fact_ids=fact_ids,
+        effect_dimension=effect_dimension,
+        gate_id=gate_id,
+    )
+    normalized_fact_ids = tuple(sorted(set(fact_ids)))
+    gate = _gate(state, gate_id)
+    current_conditions = set(
+        _generalized_condition_refs(
+            state,
+            gate,
+            normalized_fact_ids,
+            tuple(validity_dimensions),
+        )
+    )
+    same_effect_gate = False
+    for decision, lineage in reversed(_rejection_records(state)):
+        recorded_effect = _reference_value(lineage.depends_on, "effect-dimension:")
+        if decision.gate_id != gate_id or recorded_effect != effect_dimension:
+            continue
+        same_effect_gate = True
+        recorded_identity = _reference_value(
+            lineage.depends_on,
+            "governed-content-identity:sha256:",
+        )
+        if recorded_identity != current.identity_hash:
+            continue
+        recorded_conditions = {
+            ref for ref in lineage.depends_on if ref.startswith("generalized-condition:")
+        }
+        if recorded_conditions == current_conditions:
+            return GovernedContentRejectionLookup(
+                status="SUPPRESSED",
+                identity=current,
+                decision_id=decision.id,
+                content_identity_match=True,
+                invalidation_triggers=(),
+                lookup_ms=(time.perf_counter() - started) * 1000,
+            )
+        triggers = []
+        for ref in sorted(recorded_conditions.symmetric_difference(current_conditions)):
+            parts = ref.split(":", 3)
+            triggers.append(f"material_condition_changed:{parts[1] if len(parts) > 1 else 'unknown'}")
+        return GovernedContentRejectionLookup(
+            status="INVALIDATED",
+            identity=current,
+            decision_id=decision.id,
+            content_identity_match=True,
+            invalidation_triggers=tuple(sorted(set(triggers))) or ("material_condition_changed",),
+            lookup_ms=(time.perf_counter() - started) * 1000,
+        )
+    return GovernedContentRejectionLookup(
+        status="IDENTITY_MISS" if same_effect_gate else "NO_PRIOR_REJECTION",
+        identity=current,
+        decision_id=None,
+        content_identity_match=False,
+        invalidation_triggers=(),
+        lookup_ms=(time.perf_counter() - started) * 1000,
+    )
+
+
 def record_state_bound_rejection(
     state: CanonicalState,
     *,
@@ -312,6 +521,18 @@ def record_state_bound_rejection(
         gate_id=gate_id,
     )
     gate = _gate(working, gate_id)
+    content_identity = build_governed_content_identity(
+        working,
+        fact_ids=identity.fact_ids,
+        effect_dimension=effect_dimension,
+        gate_id=gate_id,
+    )
+    generalized_conditions = _generalized_condition_refs(
+        working,
+        gate,
+        identity.fact_ids,
+        tuple(validity_dimensions),
+    )
     decision_id = f"decision-state-bound-rejection-{identity.identity_hash[:24]}"
     working.decisions.append(
         Decision(
@@ -336,6 +557,9 @@ def record_state_bound_rejection(
             f"effect-dimension:{effect_dimension}",
             f"gate-contract:sha256:{identity.gate_version}",
             f"evidence-lineage:sha256:{identity.evidence_lineage_hash}",
+            f"governed-content:sha256:{content_identity.content_hash}",
+            f"governed-content-identity:sha256:{content_identity.identity_hash}",
+            *generalized_conditions,
             f"human-examination:{actor.event_id}",
         ],
         mutation_kind="probe_candidate_rejected",
@@ -351,6 +575,9 @@ def record_state_bound_rejection(
                 f"effect-dimension:{effect_dimension}",
                 f"gate-contract:sha256:{identity.gate_version}",
                 f"evidence-lineage:sha256:{identity.evidence_lineage_hash}",
+                f"governed-content:sha256:{content_identity.content_hash}",
+                f"governed-content-identity:sha256:{content_identity.identity_hash}",
+                *generalized_conditions,
             ],
             valid_while=list(
                 _condition_refs(working, gate, identity.fact_ids, tuple(validity_dimensions))
