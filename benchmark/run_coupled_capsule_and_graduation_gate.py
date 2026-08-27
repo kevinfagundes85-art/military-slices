@@ -6,6 +6,7 @@ import shutil
 import statistics
 import subprocess  # nosec B404
 import time
+from copy import deepcopy
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -27,6 +28,15 @@ from benchmark.run_capsule_scale_falsification import (
     sha256_path,
     token_cost,
     usage_numbers,
+)
+from benchmark.run_probe_decisive_falsification import (
+    CONTRACT as GATE3_CONTRACT_PATH,
+)
+from benchmark.run_probe_decisive_falsification import (
+    ProbeHarness,
+    authority_audit,
+    case_state,
+    graduate,
 )
 from benchmark.run_sparse_activation_benchmark import build_baseline_context, build_helm_context, canonical_json
 
@@ -357,13 +367,163 @@ def adjudicate_existing_gate_1() -> dict[str, Any]:
     return payload
 
 
+def gate_2_disposition(attempts: list[dict[str, Any]], minimum_valid: int) -> tuple[str, dict[str, int]]:
+    valid = [attempt for attempt in attempts if attempt["valid"]]
+    successful = [
+        attempt
+        for attempt in valid
+        if attempt["semantic_valid"]
+        and attempt["graduation_success"]
+        and attempt["restart_survival"]
+        and attempt["second_pass_probe_calls"] == 0
+        and attempt["second_pass_model_calls"] == 0
+        and attempt["second_pass_tokens"] == 0
+        and not attempt["authority_violation"]
+    ]
+    metrics = {
+        "attempts": len(attempts),
+        "valid_attempts": len(valid),
+        "successful_graduations": len(successful),
+        "provider_or_contract_failures": len(attempts) - len(valid),
+        "authority_violations": sum(attempt.get("authority_violation", False) for attempt in attempts),
+    }
+    closed = len(valid) >= minimum_valid and len(successful) == len(valid)
+    return ("PASS" if closed else "FAIL", metrics)
+
+
+def execute_gate_2_from_existing() -> dict[str, Any]:
+    if sha256_path(CONTRACT_PATH) != EXPECTED_CONTRACT_SHA256:
+        raise RuntimeError("Frozen coupled-capsule contract hash mismatch.")
+    payload = json.loads(RAW_PATH.read_text(encoding="utf-8"))
+    if payload["gate_1"]["disposition"] != "PASS":
+        raise RuntimeError("Gate 1 must have a frozen PASS disposition before Gate 2 execution.")
+    contract = json.loads(CONTRACT_PATH.read_text(encoding="utf-8"))
+    gate3 = json.loads(GATE3_CONTRACT_PATH.read_text(encoding="utf-8"))
+    case = next(item for item in gate3["cases"] if item["id"] == contract["gate_2"]["case_id"])
+    harness = ProbeHarness()
+    attempts: list[dict[str, Any]] = []
+    for attempt_number in range(1, contract["gate_2"]["attempts"] + 1):
+        attempt_id = f"graduation-{case['id']}-attempt-{attempt_number:02d}"
+        state = case_state(case)
+        before = deepcopy(state)
+        try:
+            result = harness.run_attempt(case)
+        except Exception as exc:
+            attempts.append(
+                {
+                    "attempt_id": attempt_id,
+                    "expected_case_id": case["id"],
+                    "valid": False,
+                    "schema_valid": False,
+                    "identity_valid": False,
+                    "semantic_valid": False,
+                    "graduation_success": False,
+                    "restart_survival": False,
+                    "second_pass_probe_calls": 0,
+                    "second_pass_model_calls": 0,
+                    "second_pass_tokens": 0,
+                    "authority_violation": False,
+                    "error_class": type(exc).__name__,
+                    "error": str(exc),
+                    "model_calls": 1,
+                    "tokens": "NOT MEASURED",
+                    "estimated_cost_usd": "NOT MEASURED",
+                }
+            )
+            continue
+        if not result["valid"]:
+            attempts.append(
+                {
+                    "attempt_id": attempt_id,
+                    **result,
+                    "semantic_valid": False,
+                    "graduation_success": False,
+                    "restart_survival": False,
+                    "second_pass_probe_calls": 0,
+                    "second_pass_model_calls": 0,
+                    "second_pass_tokens": 0,
+                    "authority_violation": False,
+                }
+            )
+            continue
+        audit = authority_audit(before, state, result)
+        semantic_valid = bool(result["nominated"])
+        trace = graduate(case, state, result) if semantic_valid else None
+        restart_survival = bool(
+            trace
+            and trace.get("post_examination_state_sha256") == trace.get("restart_state_sha256")
+        )
+        second_pass = trace.get("second_pass", {}) if trace else {}
+        graduation_success = bool(
+            trace
+            and trace.get("governance_validated")
+            and trace.get("version_delta") == 1
+            and restart_survival
+            and second_pass.get("correct_consequential_handling")
+        )
+        attempts.append(
+            {
+                "attempt_id": attempt_id,
+                **result,
+                "semantic_valid": semantic_valid,
+                "governed_examination": trace,
+                "nomination_mutation_count": 0,
+                "graduation_mutation_count": 1 if graduation_success else 0,
+                "graduation_success": graduation_success,
+                "restart_survival": restart_survival,
+                "second_pass_probe_calls": int(second_pass.get("probe_calls", 0)),
+                "second_pass_model_calls": int(second_pass.get("model_calls", 0)),
+                "second_pass_tokens": int(second_pass.get("tokens", 0)),
+                "authority_audit": audit,
+                "authority_violation": bool(audit["violation"]),
+            }
+        )
+    disposition, metrics = gate_2_disposition(
+        attempts,
+        minimum_valid=contract["gate_2"]["minimum_valid_attempts_to_close"],
+    )
+    payload["gate_2"] = {
+        "status": "complete",
+        "disposition": disposition,
+        "case_id": case["id"],
+        "attempts": attempts,
+        "metrics": metrics,
+        "total_measured_input_tokens": sum(int(attempt.get("input_tokens", 0)) for attempt in attempts),
+        "total_measured_output_tokens": sum(int(attempt.get("output_tokens", 0)) for attempt in attempts),
+        "total_measured_cost_usd": sum(
+            float(attempt.get("estimated_cost_usd", 0))
+            for attempt in attempts
+            if isinstance(attempt.get("estimated_cost_usd", 0), int | float)
+        ),
+        "provider_failures_preserved": [attempt for attempt in attempts if not attempt["valid"]],
+    }
+    payload["status"] = "complete"
+    payload["implementation_commit"] = git("rev-parse", "HEAD")
+    payload["repository_dirty_at_execution"] = bool(git("status", "--porcelain"))
+    payload["engineering_disposition"] = (
+        "COUPLED CAPSULE GATE FAILED"
+        if payload["gate_1"]["disposition"] != "PASS"
+        else "COUPLED CAPSULE AND GRADUATION GATES CLOSED"
+        if disposition == "PASS"
+        else "COUPLED CAPSULE GATE CLOSED — GRADUATION UNRELIABLE"
+    )
+    return payload
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--gate1-only", action="store_true")
     mode.add_argument("--adjudicate-existing-gate1", action="store_true")
+    mode.add_argument("--gate2-only", action="store_true")
     args = parser.parse_args()
-    payload = adjudicate_existing_gate_1() if args.adjudicate_existing_gate1 else execute_gate_1()
+    payload = (
+        adjudicate_existing_gate_1()
+        if args.adjudicate_existing_gate1
+        else execute_gate_2_from_existing()
+        if args.gate2_only
+        else execute_gate_1()
+    )
     RAW_PATH.parent.mkdir(parents=True, exist_ok=True)
     RAW_PATH.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps({"raw": str(RAW_PATH), "gate_1": payload["gate_1"]["disposition"]}, indent=2))

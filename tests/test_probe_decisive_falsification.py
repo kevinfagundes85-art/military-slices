@@ -10,6 +10,7 @@ from benchmark.run_probe_decisive_falsification import (
     authority_audit,
     case_state,
     graduate,
+    identity_bound_probe_schema,
     probe_payload,
     sha256_path,
 )
@@ -32,6 +33,17 @@ def test_probe_payload_never_contains_expected_label() -> None:
     for case in contract["cases"]:
         payload = probe_payload(case)
         assert "expected_material" not in json.dumps(payload)
+
+
+def test_provider_schema_binds_case_identity_without_changing_probe_contract() -> None:
+    schema = identity_bound_probe_schema("paraphrased-restriction")
+
+    assert schema["properties"]["case_id"] == {
+        "type": "string",
+        "enum": ["paraphrased-restriction"],
+    }
+    assert schema["properties"]["nomination"]
+    assert schema["additionalProperties"] is False
 
 
 def test_nomination_is_zero_write_and_production_probe_stays_disabled() -> None:

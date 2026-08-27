@@ -198,6 +198,14 @@ class ProbeDecision(BaseModel):
     no_nomination_reason: str | None = Field(default=None, max_length=500)
 
 
+def identity_bound_probe_schema(case_id: str) -> dict[str, Any]:
+    """Bind request identity without weakening independent response validation."""
+
+    schema = deepcopy(ProbeDecision.model_json_schema())
+    schema["properties"]["case_id"] = {"type": "string", "enum": [case_id]}
+    return schema
+
+
 def canonical_json(value: Any) -> str:
     return json.dumps(value, separators=(",", ":"), sort_keys=True, default=str)
 
@@ -273,10 +281,11 @@ class ProbeHarness:
             location=LOCATION,
         )
 
-    def run(self, case: dict[str, Any]) -> dict[str, Any]:
+    def run_attempt(self, case: dict[str, Any]) -> dict[str, Any]:
         from google.genai import types
 
         payload = probe_payload(case)
+        response_schema = identity_bound_probe_schema(case["id"])
         started = time.perf_counter()
         response = self.client.models.generate_content(
             model=MODEL,
@@ -290,20 +299,11 @@ class ProbeHarness:
                 top_p=1,
                 max_output_tokens=700,
                 response_mime_type="application/json",
-                response_schema=ProbeDecision,
+                response_json_schema=response_schema,
                 thinking_config=types.ThinkingConfig(include_thoughts=False, thinking_budget=512),
             ),
         )
         latency_ms = (time.perf_counter() - started) * 1000
-        parsed = response.parsed
-        if isinstance(parsed, ProbeDecision):
-            decision = parsed
-        elif isinstance(parsed, dict):
-            decision = ProbeDecision.model_validate(parsed)
-        else:
-            decision = ProbeDecision.model_validate_json(response.text or "")
-        if decision.case_id != case["id"]:
-            raise ValueError(f"Provider returned case_id {decision.case_id!r}; expected {case['id']!r}.")
         usage = response.usage_metadata.to_json_dict() if response.usage_metadata else {}
         input_tokens = integer_metric(usage, "prompt_token_count")
         output_tokens = integer_metric(usage, "candidates_token_count")
@@ -312,10 +312,8 @@ class ProbeHarness:
             input_tokens / 1_000_000 * MODEL_INPUT_USD_PER_MILLION
             + output_tokens / 1_000_000 * MODEL_OUTPUT_USD_PER_MILLION
         )
-        raw = decision.model_dump(mode="json")
-        return {
-            "decision": raw,
-            "nominated": decision.nomination is not None,
+        response_text = response.text or ""
+        base = {
             "input_tokens": input_tokens,
             "output_tokens": output_tokens,
             "total_tokens": total_tokens,
@@ -325,10 +323,49 @@ class ProbeHarness:
             "provider_response_id": getattr(response, "response_id", None),
             "provider_model_version": getattr(response, "model_version", None),
             "usage": usage,
-            "response_sha256": sha256_json(raw),
+            "raw_response_sha256": sha256_bytes(response_text.encode()),
             "payload_sha256": sha256_json(payload),
             "payload_bytes": len(canonical_json(payload).encode()),
+            "response_schema_sha256": sha256_json(response_schema),
+            "expected_case_id": case["id"],
         }
+        try:
+            parsed = response.parsed
+            if isinstance(parsed, ProbeDecision):
+                decision = parsed
+            elif isinstance(parsed, dict):
+                decision = ProbeDecision.model_validate(parsed)
+            else:
+                decision = ProbeDecision.model_validate_json(response_text)
+            if decision.case_id != case["id"]:
+                raise ValueError(
+                    f"Provider returned case_id {decision.case_id!r}; expected {case['id']!r}."
+                )
+        except Exception as exc:
+            return {
+                **base,
+                "valid": False,
+                "schema_valid": False,
+                "identity_valid": False,
+                "error_class": type(exc).__name__,
+                "error": str(exc),
+            }
+        raw = decision.model_dump(mode="json")
+        return {
+            **base,
+            "valid": True,
+            "schema_valid": True,
+            "identity_valid": decision.case_id == case["id"],
+            "decision": raw,
+            "nominated": decision.nomination is not None,
+            "response_sha256": sha256_json(raw),
+        }
+
+    def run(self, case: dict[str, Any]) -> dict[str, Any]:
+        result = self.run_attempt(case)
+        if not result["valid"]:
+            raise ValueError(str(result["error"]))
+        return result
 
 
 def authority_audit(

@@ -3,6 +3,7 @@ from __future__ import annotations
 import pytest
 
 from benchmark.run_capsule_scale_falsification import dependency_density_axis, dependency_state, state_sha
+from benchmark.run_coupled_capsule_and_graduation_gate import gate_2_disposition
 from benchmark.run_sparse_activation_benchmark import build_helm_context
 from military_slices.agent_runtime import _minimal_context
 from military_slices.engine import active_gate
@@ -106,3 +107,28 @@ def test_duplicate_required_evidence_fails_closed() -> None:
             interruption=consequential_impact_projection(state, index=index),
             index=index,
         )
+
+
+def test_graduation_gate_requires_five_valid_fully_governed_attempts() -> None:
+    valid = {
+        "valid": True,
+        "semantic_valid": True,
+        "graduation_success": True,
+        "restart_survival": True,
+        "second_pass_probe_calls": 0,
+        "second_pass_model_calls": 0,
+        "second_pass_tokens": 0,
+        "authority_violation": False,
+    }
+    failed_provider = {**valid, "valid": False, "semantic_valid": False, "graduation_success": False}
+
+    disposition, metrics = gate_2_disposition([valid] * 5 + [failed_provider] * 5, minimum_valid=5)
+
+    assert disposition == "PASS"
+    assert metrics == {
+        "attempts": 10,
+        "valid_attempts": 5,
+        "successful_graduations": 5,
+        "provider_or_contract_failures": 5,
+        "authority_violations": 0,
+    }
