@@ -1,0 +1,22 @@
+{
+  "contract_id": "helm-gate-closure-gate3-classifier-2026-08-27",
+  "frozen_before_execution": true,
+  "no_post_hoc_vocabulary_tuning": true,
+  "cases": [
+    {"id":"paraphrased-restriction","statement":"A signed agreement assigns ownership of every side project to the employer.","field_key":"outside_work_terms","authority":"authoritative_source","status":"valid","expected_material":true},
+    {"id":"indirect-restriction","statement":"Written employer approval is required before any outside product work begins.","field_key":"outside_work_terms","authority":"authoritative_source","status":"valid","expected_material":true},
+    {"id":"equivalent-blocker","statement":"The member may not develop a competing product while employed.","field_key":"outside_work_terms","authority":"authoritative_source","status":"valid","expected_material":true},
+    {"id":"cross-domain-consequence","statement":"A signed custody order requires residence in the current county through December.","field_key":"household_location","authority":"authoritative_source","status":"valid","expected_material":true},
+    {"id":"temporal-activation","statement":"The income-supporting certification expires in seven days.","field_key":"program_eligibility","authority":"authoritative_source","status":"stale","impact":true,"expected_material":true},
+    {"id":"changed-deadline","statement":"The move decision is now due in fourteen days.","field_key":"relocation_timing","authority":"human","status":"valid","impact":true,"expected_material":true},
+    {"id":"stale-authority","statement":"An expired agreement prohibited outside product work.","field_key":"outside_work_terms","authority":"authoritative_source","status":"stale","expected_material":false},
+    {"id":"superseded-evidence","statement":"An old policy prohibits side projects, but a newer signed waiver permits this project.","field_key":"outside_work_terms","authority":"authoritative_source","status":"valid","expected_material":false},
+    {"id":"authoritative-conflict","statement":"Authoritative evidence conflicts with the claimed permission to build the venture.","field_key":"authority_conflict","authority":"authoritative_source","status":"valid","expected_material":true},
+    {"id":"benign-authority","statement":"The signed record confirms the certification remains valid for two years.","field_key":"program_eligibility","authority":"authoritative_source","status":"valid","expected_material":false},
+    {"id":"unrelated-deadline","statement":"The library book is due in fourteen days.","field_key":"general_context","authority":"human","status":"valid","expected_material":false},
+    {"id":"nonblocking-reminder","statement":"Remember to update the portfolio someday.","field_key":"general_context","authority":"human","status":"valid","expected_material":false},
+    {"id":"misleading-lexical-match","statement":"The signed agreement confirms there are no restrictions on outside product work.","field_key":"outside_work_terms","authority":"authoritative_source","status":"valid","expected_material":false},
+    {"id":"multiple-impacts","statement":"A confirmed household deadline materially changes the next move.","field_key":"relocation_timing","authority":"human","status":"valid","impact":true,"second_impact":true,"expected_material":true},
+    {"id":"irrelevant-high-authority","statement":"A museum restriction prohibits flash photography.","field_key":"general_context","authority":"authoritative_source","status":"valid","expected_material":false}
+  ]
+}
