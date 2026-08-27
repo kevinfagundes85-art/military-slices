@@ -1,0 +1,249 @@
+{
+  "architecture_classification": "existing-contract enforcement / implementation hardening using already-governed normalized content and effect scope",
+  "canonical_helm_amendment_authorized": false,
+  "contract_id": "helm-governed-identity-generalization-falsification-2026-08-27",
+  "frozen_before_implementation": true,
+  "governing_disposition": "MATERIAL ADVANTAGE — CRITICAL GATES OPEN",
+  "source_state_bound_contract": {
+    "path": "benchmark/contracts/state_bound_rejection_falsification_2026-08-27.json",
+    "sha256": "c130b4abfbe048ae2e50fbeba4c31cd8adcbae6d3317ff390d8f9d3d85b37325"
+  },
+  "source_state_bound_evidence": {
+    "path": "benchmark/output/helm-state-bound-rejection-falsification-raw-2026-08-27.json",
+    "sha256": "f531fb4c1667895b3f35d2bc69438d05a44c001f0bd24cfab94efe3989e33a7d"
+  },
+  "identity_levels": {
+    "I0": {
+      "name": "existing identity",
+      "components": [
+        "sorted input Fact-ID set",
+        "effect dimension",
+        "Gate identity/version",
+        "evidence-lineage hash"
+      ]
+    },
+    "I1": {
+      "name": "exact governed-content identity",
+      "components": [
+        "canonical normalized governed field/value hash",
+        "governed authority",
+        "effect dimension",
+        "Gate identity/version"
+      ],
+      "text_normalization": [
+        "Unicode NFKC",
+        "replace CRLF and CR with LF",
+        "collapse all Unicode whitespace runs to one ASCII space",
+        "trim leading and trailing whitespace",
+        "Unicode casefold"
+      ],
+      "included_fact_fields": ["field_key", "value", "authority"],
+      "excluded_fact_fields": [
+        "Fact ID",
+        "statement",
+        "evidence IDs",
+        "last_validated_at",
+        "ingestion identity",
+        "source-state version",
+        "updated_at"
+      ],
+      "material_validity_dimensions": [
+        "anchor",
+        "path",
+        "lifecycle",
+        "time_validity",
+        "authority",
+        "effect_reachability"
+      ]
+    },
+    "I2": {
+      "name": "declared governed relationship identity",
+      "expressibility_rule": "Run only if the frozen installed Domain Pack already declares a structural relationship/effect identity.",
+      "expected_preimplementation_status": "NOT EXPRESSIBLE IN FROZEN DOMAIN PACK"
+    }
+  },
+  "prohibited_mechanisms": [
+    "LLM equivalence judgment",
+    "embeddings",
+    "vector similarity",
+    "fuzzy text matching",
+    "edit distance",
+    "lexical similarity",
+    "generated summaries",
+    "model-produced semantic keys",
+    "semantic classifiers",
+    "Probe resemblance judgment for suppression"
+  ],
+  "provider_attempt_contract": {
+    "attempts": 6,
+    "attempts_per_true_equivalent": 1,
+    "retries": 0,
+    "purpose": "Measure semantic cost incurred by I0 misses. I1 safely avoids the paired cost only for a deterministic suppression hit.",
+    "checkpoint_after_each_attempt": true
+  },
+  "true_equivalents": [
+    {
+      "id": "superseded-exact-content-new-id",
+      "base_case_id": "superseded-evidence",
+      "variant": "exact_normalized_content",
+      "candidate_fact_id": "generalized-superseded-exact",
+      "candidate_statement": "A newly ingested copy states that the newer signed waiver permits this project despite the old policy.",
+      "candidate_value": "  AN OLD POLICY PROHIBITS SIDE PROJECTS, BUT A NEWER SIGNED WAIVER PERMITS THIS PROJECT.  ",
+      "semantic_relationship_equivalent": true,
+      "expected_i0_match": false,
+      "expected_i1_match": true
+    },
+    {
+      "id": "superseded-paraphrase-new-id",
+      "base_case_id": "superseded-evidence",
+      "variant": "semantic_paraphrase",
+      "candidate_fact_id": "reingested-superseded-evidence",
+      "candidate_statement": "A later signed waiver allows this specific project despite the older side-project policy.",
+      "candidate_value": "A later signed waiver allows this specific project despite the older side-project policy.",
+      "semantic_relationship_equivalent": true,
+      "expected_i0_match": false,
+      "expected_i1_match": false
+    },
+    {
+      "id": "benign-exact-content-new-id",
+      "base_case_id": "benign-authority",
+      "variant": "exact_normalized_content",
+      "candidate_fact_id": "generalized-benign-exact",
+      "candidate_statement": "A separately ingested authoritative record confirms the same certification validity.",
+      "candidate_value": " THE SIGNED RECORD CONFIRMS THE CERTIFICATION REMAINS VALID FOR TWO YEARS. ",
+      "semantic_relationship_equivalent": true,
+      "expected_i0_match": false,
+      "expected_i1_match": true
+    },
+    {
+      "id": "benign-paraphrase-new-id",
+      "base_case_id": "benign-authority",
+      "variant": "semantic_paraphrase",
+      "candidate_fact_id": "reingested-benign-authority",
+      "candidate_statement": "The authoritative certification record shows two years of validity remaining.",
+      "candidate_value": "The authoritative certification record shows two years of validity remaining.",
+      "semantic_relationship_equivalent": true,
+      "expected_i0_match": false,
+      "expected_i1_match": false
+    },
+    {
+      "id": "misleading-exact-content-new-id",
+      "base_case_id": "misleading-lexical-match",
+      "variant": "exact_normalized_content",
+      "candidate_fact_id": "generalized-misleading-exact",
+      "candidate_statement": "A second ingestion of the signed agreement carries the same governed value.",
+      "candidate_value": " THE SIGNED AGREEMENT CONFIRMS THERE ARE NO RESTRICTIONS ON OUTSIDE PRODUCT WORK. ",
+      "semantic_relationship_equivalent": true,
+      "expected_i0_match": false,
+      "expected_i1_match": true
+    },
+    {
+      "id": "misleading-paraphrase-new-id",
+      "base_case_id": "misleading-lexical-match",
+      "variant": "semantic_paraphrase",
+      "candidate_fact_id": "reingested-misleading-lexical-match",
+      "candidate_statement": "A signed agreement explicitly permits outside product development without restriction.",
+      "candidate_value": "A signed agreement explicitly permits outside product development without restriction.",
+      "semantic_relationship_equivalent": true,
+      "expected_i0_match": false,
+      "expected_i1_match": false
+    }
+  ],
+  "near_misses": [
+    {
+      "id": "same-subject-different-restriction",
+      "base_case_id": "misleading-lexical-match",
+      "candidate_fact_id": "near-same-subject-different-restriction",
+      "candidate_value": "The signed agreement prohibits outside product work.",
+      "overrides": {},
+      "expected_preventer": "normalized governed value",
+      "must_suppress": false
+    },
+    {
+      "id": "same-content-different-authority",
+      "base_case_id": "misleading-lexical-match",
+      "candidate_fact_id": "near-same-content-different-authority",
+      "candidate_value": "The signed agreement confirms there are no restrictions on outside product work.",
+      "overrides": {"authority": "human"},
+      "expected_preventer": "governed authority",
+      "must_suppress": false
+    },
+    {
+      "id": "same-content-different-effective-date",
+      "base_case_id": "benign-authority",
+      "candidate_fact_id": "near-same-content-different-effective-date",
+      "candidate_value": "The signed record confirms the certification remains valid for two years.",
+      "overrides": {"effective_at": "2028-08-27"},
+      "expected_preventer": "time_validity material condition",
+      "must_suppress": false
+    },
+    {
+      "id": "same-effect-different-gate-consequence",
+      "base_case_id": "misleading-lexical-match",
+      "candidate_fact_id": "near-same-effect-different-gate",
+      "candidate_value": "The signed agreement confirms there are no restrictions on outside product work.",
+      "overrides": {"gate_id": "probe-examination:employment-eligibility"},
+      "expected_preventer": "Gate identity",
+      "must_suppress": false
+    },
+    {
+      "id": "superseded-versus-current-authority",
+      "base_case_id": "superseded-evidence",
+      "candidate_fact_id": "near-superseded-versus-current",
+      "candidate_value": "An old policy prohibits side projects, but a newer signed waiver permits this project.",
+      "overrides": {"status": "stale"},
+      "expected_preventer": "time_validity material condition",
+      "must_suppress": false
+    },
+    {
+      "id": "negated-versus-affirmative-restriction",
+      "base_case_id": "misleading-lexical-match",
+      "candidate_fact_id": "near-negated-affirmative",
+      "candidate_value": "The signed agreement confirms restrictions on outside product work.",
+      "overrides": {},
+      "expected_preventer": "normalized governed value",
+      "must_suppress": false
+    },
+    {
+      "id": "same-content-different-lifecycle",
+      "base_case_id": "benign-authority",
+      "candidate_fact_id": "near-same-content-different-lifecycle",
+      "candidate_value": "The signed record confirms the certification remains valid for two years.",
+      "overrides": {"lifecycle_position": "currently_serving"},
+      "expected_preventer": "lifecycle material condition",
+      "must_suppress": false
+    },
+    {
+      "id": "same-content-different-gate-version",
+      "base_case_id": "misleading-lexical-match",
+      "candidate_fact_id": "near-same-content-different-gate-version",
+      "candidate_value": "The signed agreement confirms there are no restrictions on outside product work.",
+      "overrides": {"gate_question_suffix": " under a newly governed contract"},
+      "expected_preventer": "Gate contract version",
+      "must_suppress": false
+    },
+    {
+      "id": "same-content-different-effect-dimension",
+      "base_case_id": "misleading-lexical-match",
+      "candidate_fact_id": "near-same-content-different-effect",
+      "candidate_value": "The signed agreement confirms there are no restrictions on outside product work.",
+      "overrides": {"effect_dimension": "employment_eligibility_constraint"},
+      "expected_preventer": "effect dimension",
+      "must_suppress": false
+    }
+  ],
+  "state_bound_invalidation_matrix": [
+    "irrelevant_canonical_change",
+    "material_source_or_evidence_change",
+    "gate_version_change",
+    "relevant_authority_change",
+    "relevant_time_or_lifecycle_change"
+  ],
+  "primary_safety_targets": {
+    "false_suppressions": 0,
+    "stale_suppressions": 0,
+    "authority_violations": 0
+  },
+  "production_mutation_authorized": false,
+  "semantic_matching_authorized": false
+}
