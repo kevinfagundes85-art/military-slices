@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
 from benchmark.run_capsule_scale_falsification import (
     CONTRACT_PATH,
     EXPECTED_CONTRACT_SHA256,
-    dependency_density_axis,
     lifecycle_history_state,
     multiple_slices_axis,
     sha256_path,
@@ -25,8 +25,10 @@ def test_capsule_scale_contract_is_frozen() -> None:
     assert payload["dependency_density"]["counts"] == [0, 1, 3, 10, 25, 50, 100]  # type: ignore[index]
 
 
-def test_decomposable_density_resolves_while_coupled_density_fails_visibly() -> None:
-    result = dependency_density_axis(contract())
+def test_original_coupled_failure_remains_immutable_evidence() -> None:
+    raw_path = Path("benchmark/output/helm-capsule-scale-falsification-raw-2026-08-27.json")
+    assert sha256_path(raw_path) == "2defa181e6ebaf593bde878fbc654810ca09af2cfa38c37a9eb88f770f2fc820"
+    result = json.loads(raw_path.read_text(encoding="utf-8"))["axes"]["dependency_density"]
     decomposable = next(
         row for row in result["rows"] if row["class"] == "decomposable" and row["dependency_count"] == 3
     )

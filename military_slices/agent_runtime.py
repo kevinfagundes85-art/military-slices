@@ -10,10 +10,14 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-from military_slices.engine import deterministic_hypotheses, transition_window
-from military_slices.models import AcquisitionHorizon, CanonicalState, CareerHypothesis, SliceName
+from military_slices.engine import active_gate, deterministic_hypotheses, transition_window
+from military_slices.models import AcquisitionHorizon, CanonicalState, CareerHypothesis, GateState, SliceName
 from military_slices.slices import project_slice_context
-from military_slices.temporal import consequential_impact_projection
+from military_slices.temporal import (
+    consequential_impact_index,
+    consequential_impact_projection,
+    minimum_sufficient_evidence,
+)
 
 LOGGER = logging.getLogger("military_slices.agent")
 
@@ -122,7 +126,30 @@ def calculate_transition_windows(separation_date: str) -> dict[str, str]:
 
 def _minimal_context(state: CanonicalState) -> dict[str, Any]:
     context = project_slice_context(state, SliceName.CAREER)
-    interruption = consequential_impact_projection(state)
+    gate = active_gate(state)
+    index = consequential_impact_index(state)
+    interruption = consequential_impact_projection(state, index=index)
+    evidence = minimum_sufficient_evidence(
+        state,
+        gate=gate,
+        interruption=interruption,
+        index=index,
+    )
+    if gate is not None and gate.state == GateState.CONFLICTED and gate.required_evidence:
+        # The conflicted Gate's declared evidence is the complete model-facing
+        # surface. Slice-local convenience projection must not add unrelated facts.
+        context["confirmed_statements"] = []
+        context["minimum_sufficient_evidence"] = [
+            {
+                "id": fact.id,
+                "field_key": fact.field_key,
+                "statement": fact.statement,
+                "authority": fact.authority.value,
+                "status": fact.status.value,
+                "affected_slices": [item.value for item in fact.affected_slices],
+            }
+            for fact in evidence
+        ]
     if interruption is not None:
         context["consequential_interrupt"] = {
             "source": interruption.source,

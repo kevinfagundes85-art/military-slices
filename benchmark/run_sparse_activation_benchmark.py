@@ -31,6 +31,7 @@ from military_slices.engine import (
     new_state,
     orient,
 )
+from military_slices.governance import bind_gate_contracts
 from military_slices.models import (
     Authority,
     CanonicalState,
@@ -53,6 +54,7 @@ from military_slices.temporal import (
     consequential_impact_index,
     consequential_impact_projection,
     current_impact,
+    minimum_sufficient_evidence,
 )
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -479,6 +481,7 @@ def build_state(scenario: Scenario) -> CanonicalState:
             )
         )
     state.latent_fact_count = len(state.facts)
+    bind_gate_contracts(state)
     # Derived-index maintenance belongs to state construction/reconstitution,
     # not to the decision-time lookup measured below.
     build_consequential_impact_index(state)
@@ -633,13 +636,18 @@ def build_helm_context(state: CanonicalState) -> tuple[dict[str, Any], dict[str,
     dependency_ms = (time.perf_counter() - dependency_started) * 1000
     retrieval_started = time.perf_counter()
     horizon = build_acquisition_horizon(projection)
-    refs = (
-        {interruption.fact_id}
-        if interruption is not None
-        else set(horizon.checklist[0].evidence_refs if horizon else [])
+    governed_surface = minimum_sufficient_evidence(
+        projection,
+        gate=foreground,
+        interruption=interruption,
+        index=index,
     )
-    fact_index = {fact.id: fact for fact in projection.facts}
-    active_facts = [_fact_payload(fact_index[ref]) for ref in sorted(refs) if ref in fact_index]
+    if governed_surface:
+        active_facts = [_fact_payload(fact) for fact in governed_surface]
+    else:
+        refs = set(horizon.checklist[0].evidence_refs if horizon else [])
+        fact_index = {fact.id: fact for fact in projection.facts}
+        active_facts = [_fact_payload(fact_index[ref]) for ref in sorted(refs) if ref in fact_index]
     retrieval_ms = (time.perf_counter() - retrieval_started) * 1000
     runtime_gate_key = (
         "authority-conflict"
@@ -696,6 +704,7 @@ def build_helm_context(state: CanonicalState) -> tuple[dict[str, Any], dict[str,
     serialization_ms = (time.perf_counter() - serialization_started) * 1000
     return context, {
         "active_fact_count": len(active_facts),
+        "minimum_sufficient_evidence_count": len(governed_surface),
         "latent_fact_count": len(projection.facts) - len(active_facts),
         "active_task_count": len(projection.active_tasks),
         "horizon_size": len(horizon.checklist) if horizon else 0,

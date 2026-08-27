@@ -19,6 +19,8 @@ from military_slices.models import (
     FeedbackEvent,
     FreshnessClass,
     FreshnessStatus,
+    Gate,
+    GateState,
     ImpactItem,
     ReceiptPatch,
     SliceName,
@@ -551,6 +553,55 @@ def consequential_impact_projection(
                 question="Does this authoritative information change or block the current next move?",
             )
     return None
+
+
+def minimum_sufficient_evidence(
+    state: CanonicalState,
+    *,
+    gate: Gate | None = None,
+    interruption: ConsequentialImpactProjection | None = None,
+    index: ConsequentialImpactIndex | None = None,
+) -> tuple[Fact, ...]:
+    """Return exactly the evidence already authorized by the current Gate.
+
+    A conflicted Gate may declare several facts that must be considered jointly.
+    This read-only projection enforces that existing contract; it creates no new
+    Gate, authority, dependency, Impact, or Canonical state. Ordinary
+    interruption handling remains a one-fact surface.
+
+    The function fails closed instead of sending a partial coupled surface to a
+    model when the Gate binding or declared evidence is invalid.
+    """
+
+    lookup = index or consequential_impact_index(state)
+    fact_index = lookup.fact_by_id
+    if gate is not None and gate.state == GateState.CONFLICTED and gate.required_evidence:
+        governed_gate = next((item for item in state.gates if item.id == gate.id), None)
+        if governed_gate is None:
+            raise ValueError(f"Gate {gate.id!r} is not present in the governed state.")
+        if governed_gate.source_state_version != state.version:
+            raise ValueError(
+                f"Gate {gate.id!r} is bound to Canonical version "
+                f"{governed_gate.source_state_version}, not {state.version}."
+            )
+        evidence_ids = governed_gate.required_evidence
+        if len(evidence_ids) != len(set(evidence_ids)):
+            raise ValueError(f"Gate {gate.id!r} declares duplicate required evidence.")
+        missing = [fact_id for fact_id in evidence_ids if fact_id not in fact_index]
+        if missing:
+            raise ValueError(
+                f"Gate {gate.id!r} is missing declared required evidence: {', '.join(missing)}."
+            )
+        return tuple(fact_index[fact_id] for fact_id in evidence_ids)
+
+    if interruption is None:
+        return ()
+    fact = fact_index.get(interruption.fact_id)
+    if fact is None:
+        raise ValueError(
+            f"Consequential interruption references missing evidence {interruption.fact_id!r}."
+        )
+    return (fact,)
 
 
 def _normalized_update(fact: Fact, value: str) -> tuple[str, str]:
