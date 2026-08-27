@@ -1,0 +1,1013 @@
+{
+  "architecture_classification": "existing-contract enforcement / implementation hardening using already-governed normalized content and effect scope",
+  "base_contract_sha256": "c130b4abfbe048ae2e50fbeba4c31cd8adcbae6d3317ff390d8f9d3d85b37325",
+  "canonical_helm_amendment": false,
+  "contract_id": "helm-governed-identity-generalization-falsification-2026-08-27",
+  "contract_sha256": "aa9ecc972edb5df65eefcb8e19727a444aa59863a1182b93a298bb49f8eed779",
+  "deterministic": {
+    "i2": {
+      "domain_pack_hash": "026a1508a3a2e6eb16907b2e8fc29c4f333af5c5ab908e6029903b8cbcbf9f4c",
+      "domain_pack_id": "military-transition",
+      "domain_pack_version": "2026-08-24-v2-shadow-tested",
+      "executed": false,
+      "reason": "The installed pack contains service-path boundaries and source provenance, not a declared relationship/effect identity.",
+      "status": "NOT EXPRESSIBLE IN FROZEN DOMAIN PACK"
+    },
+    "identity_scoreboard": {
+      "I0": {
+        "authority_violations": 0,
+        "correctly_not_suppressed_near_misses": 9,
+        "false_matches": 0,
+        "false_suppressions": 0,
+        "identity_construction_ms": {
+          "max": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "stdev": 0.0
+        },
+        "identity_misses": 6,
+        "lookup_ms": {
+          "max": 0.13390000094659626,
+          "mean": 0.08114000083878636,
+          "median": 0.07510000432375818,
+          "min": 0.0658999924780801,
+          "stdev": 0.0181333074467359
+        },
+        "near_miss_cases": 9,
+        "recognition_recall": 0.0,
+        "recognized_true_equivalents": 0,
+        "stale_suppressions": 0,
+        "suppression_precision": null,
+        "true_equivalent_cases": 6
+      },
+      "I1": {
+        "authority_violations": 0,
+        "correctly_not_suppressed_near_misses": 9,
+        "false_matches": 3,
+        "false_suppressions": 0,
+        "identity_construction_ms": {
+          "max": 0.03580001066438854,
+          "mean": 0.030320001921306055,
+          "median": 0.029700007871724665,
+          "min": 0.02609999501146376,
+          "stdev": 0.00310718274678322
+        },
+        "identity_misses": 3,
+        "lookup_ms": {
+          "max": 0.08380001236218959,
+          "mean": 0.0672266692466413,
+          "median": 0.06510000093840063,
+          "min": 0.05740000051446259,
+          "stdev": 0.007631559013150174
+        },
+        "near_miss_cases": 9,
+        "recognition_recall": 0.5,
+        "recognized_true_equivalents": 3,
+        "stale_suppressions": 0,
+        "suppression_precision": 1.0,
+        "true_equivalent_cases": 6
+      }
+    },
+    "near_misses": [
+      {
+        "base_case_id": "misleading-lexical-match",
+        "expected_preventer": "normalized governed value",
+        "false_suppression_i0": false,
+        "false_suppression_i1": false,
+        "fixture_id": "same-subject-different-restriction",
+        "i0": {
+          "decision_id": null,
+          "identity_match": false,
+          "invalidation_triggers": [],
+          "lookup_ms": 0.06960000609979033,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "i1": {
+          "content_hash": "69df0801ddfc3da016e58404a4c33a025eceac8fdc4ba7da2d52b525896b0c3c",
+          "content_identity_match": false,
+          "decision_id": null,
+          "gate_version": "dc851d5a11f09e91440fd22b3c9e89626b189d864e464724fa9cc024d76f9e23",
+          "identity_construction_ms": 0.02680000034160912,
+          "identity_hash": "cf60f7aa78e781701bd580ee93fc699e409c83a80d33ad98339c4c94ecf6a8d9",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.0653000024612993,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "must_suppress": false
+      },
+      {
+        "base_case_id": "misleading-lexical-match",
+        "expected_preventer": "governed authority",
+        "false_suppression_i0": false,
+        "false_suppression_i1": false,
+        "fixture_id": "same-content-different-authority",
+        "i0": {
+          "decision_id": null,
+          "identity_match": false,
+          "invalidation_triggers": [],
+          "lookup_ms": 0.08610000077169389,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "i1": {
+          "content_hash": "9890a15a3f39321a7a1cdfa8cfc70fa22fa83ead9c35b57fe09b02acb75b4aef",
+          "content_identity_match": false,
+          "decision_id": null,
+          "gate_version": "dc851d5a11f09e91440fd22b3c9e89626b189d864e464724fa9cc024d76f9e23",
+          "identity_construction_ms": 0.03190001007169485,
+          "identity_hash": "f69f1ceb9fe6cdba53ccf2fbe8fd63e6c6210885405b64fa258a61a9eea4260c",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.06679999933112413,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "must_suppress": false
+      },
+      {
+        "base_case_id": "benign-authority",
+        "expected_preventer": "time_validity material condition",
+        "false_suppression_i0": false,
+        "false_suppression_i1": false,
+        "fixture_id": "same-content-different-effective-date",
+        "i0": {
+          "decision_id": null,
+          "identity_match": false,
+          "invalidation_triggers": [],
+          "lookup_ms": 0.07639999967068434,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "i1": {
+          "content_hash": "0243af710a790e4b647c2d79299ab9ce062d40306a4dd2a5174dc1a123c285cc",
+          "content_identity_match": true,
+          "decision_id": "decision-state-bound-rejection-2f517bd828a13b3b7dfa9c99",
+          "gate_version": "f481c09e07f8907c1749412f79b7a59e511ae3ce0610cf10845033f2d73edf85",
+          "identity_construction_ms": 0.030700000934302807,
+          "identity_hash": "238ad8eaff47ef2d2e9bcc9adaab67c3af2aab7b675f6a59a0e49e6ecf108c4a",
+          "invalidation_triggers": [
+            "material_condition_changed:time_validity"
+          ],
+          "lookup_ms": 0.07570000889245421,
+          "read_only": true,
+          "status": "INVALIDATED",
+          "suppressed": false
+        },
+        "must_suppress": false
+      },
+      {
+        "base_case_id": "misleading-lexical-match",
+        "expected_preventer": "Gate identity",
+        "false_suppression_i0": false,
+        "false_suppression_i1": false,
+        "fixture_id": "same-effect-different-gate-consequence",
+        "i0": {
+          "decision_id": null,
+          "identity_match": false,
+          "invalidation_triggers": [],
+          "lookup_ms": 0.0658999924780801,
+          "read_only": true,
+          "status": "NO_PRIOR_REJECTION",
+          "suppressed": false
+        },
+        "i1": {
+          "content_hash": "a0c27d1928e2a019a0654f86ccf0ed1d545fe6a0a235432597b28ee9c8123514",
+          "content_identity_match": false,
+          "decision_id": null,
+          "gate_version": "f737e16741944e938cacd79919b4f0a995f849c9abea41c35a39569a73a86062",
+          "identity_construction_ms": 0.02720000338740647,
+          "identity_hash": "049989f54455cbf41100c6df73bc433e6b021db70ceaca805bf570f2883a9be7",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.05810000584460795,
+          "read_only": true,
+          "status": "NO_PRIOR_REJECTION",
+          "suppressed": false
+        },
+        "must_suppress": false
+      },
+      {
+        "base_case_id": "superseded-evidence",
+        "expected_preventer": "time_validity material condition",
+        "false_suppression_i0": false,
+        "false_suppression_i1": false,
+        "fixture_id": "superseded-versus-current-authority",
+        "i0": {
+          "decision_id": null,
+          "identity_match": false,
+          "invalidation_triggers": [],
+          "lookup_ms": 0.13390000094659626,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "i1": {
+          "content_hash": "993118e31890cb775b5ad13f9d4e32141e6aacc8068466b48587f58e96cd6c49",
+          "content_identity_match": true,
+          "decision_id": "decision-state-bound-rejection-733ecb41ba680f7bab95412d",
+          "gate_version": "dc851d5a11f09e91440fd22b3c9e89626b189d864e464724fa9cc024d76f9e23",
+          "identity_construction_ms": 0.03580001066438854,
+          "identity_hash": "5f3946ce2d070c3e6fc0809a23d5d44fa609cccb7ef3d8f81b83d03481c103c6",
+          "invalidation_triggers": [
+            "material_condition_changed:time_validity"
+          ],
+          "lookup_ms": 0.08380001236218959,
+          "read_only": true,
+          "status": "INVALIDATED",
+          "suppressed": false
+        },
+        "must_suppress": false
+      },
+      {
+        "base_case_id": "misleading-lexical-match",
+        "expected_preventer": "normalized governed value",
+        "false_suppression_i0": false,
+        "false_suppression_i1": false,
+        "fixture_id": "negated-versus-affirmative-restriction",
+        "i0": {
+          "decision_id": null,
+          "identity_match": false,
+          "invalidation_triggers": [],
+          "lookup_ms": 0.0703999976394698,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "i1": {
+          "content_hash": "6bcbf05844945db630b984690bcb4a57f6b8943d07855c3a9ddbd9ff96cd7775",
+          "content_identity_match": false,
+          "decision_id": null,
+          "gate_version": "dc851d5a11f09e91440fd22b3c9e89626b189d864e464724fa9cc024d76f9e23",
+          "identity_construction_ms": 0.029700007871724665,
+          "identity_hash": "150ef20a692a551be0216338423827cc1a17a3cf92f250521e5f09632f7e5fd7",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.06510000093840063,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "must_suppress": false
+      },
+      {
+        "base_case_id": "benign-authority",
+        "expected_preventer": "lifecycle material condition",
+        "false_suppression_i0": false,
+        "false_suppression_i1": false,
+        "fixture_id": "same-content-different-lifecycle",
+        "i0": {
+          "decision_id": null,
+          "identity_match": false,
+          "invalidation_triggers": [],
+          "lookup_ms": 0.07429999823216349,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "i1": {
+          "content_hash": "0243af710a790e4b647c2d79299ab9ce062d40306a4dd2a5174dc1a123c285cc",
+          "content_identity_match": true,
+          "decision_id": "decision-state-bound-rejection-2f517bd828a13b3b7dfa9c99",
+          "gate_version": "f481c09e07f8907c1749412f79b7a59e511ae3ce0610cf10845033f2d73edf85",
+          "identity_construction_ms": 0.02920000406447798,
+          "identity_hash": "238ad8eaff47ef2d2e9bcc9adaab67c3af2aab7b675f6a59a0e49e6ecf108c4a",
+          "invalidation_triggers": [
+            "material_condition_changed:lifecycle"
+          ],
+          "lookup_ms": 0.06910000229254365,
+          "read_only": true,
+          "status": "INVALIDATED",
+          "suppressed": false
+        },
+        "must_suppress": false
+      },
+      {
+        "base_case_id": "misleading-lexical-match",
+        "expected_preventer": "Gate contract version",
+        "false_suppression_i0": false,
+        "false_suppression_i1": false,
+        "fixture_id": "same-content-different-gate-version",
+        "i0": {
+          "decision_id": null,
+          "identity_match": false,
+          "invalidation_triggers": [],
+          "lookup_ms": 0.06900000153109431,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "i1": {
+          "content_hash": "a0c27d1928e2a019a0654f86ccf0ed1d545fe6a0a235432597b28ee9c8123514",
+          "content_identity_match": false,
+          "decision_id": null,
+          "gate_version": "0e223888c7e0650273229cd90e428768ca1d491ac66df6edc2d05fe1c5aaa791",
+          "identity_construction_ms": 0.030100010917522013,
+          "identity_hash": "7c9288ad8219f653e88bf8e2b0e645a3ebf4c045b909190fa788736c0762de1c",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.0644000101601705,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "must_suppress": false
+      },
+      {
+        "base_case_id": "misleading-lexical-match",
+        "expected_preventer": "effect dimension",
+        "false_suppression_i0": false,
+        "false_suppression_i1": false,
+        "fixture_id": "same-content-different-effect-dimension",
+        "i0": {
+          "decision_id": null,
+          "identity_match": false,
+          "invalidation_triggers": [],
+          "lookup_ms": 0.08929999603424221,
+          "read_only": true,
+          "status": "NO_PRIOR_REJECTION",
+          "suppressed": false
+        },
+        "i1": {
+          "content_hash": "a0c27d1928e2a019a0654f86ccf0ed1d545fe6a0a235432597b28ee9c8123514",
+          "content_identity_match": false,
+          "decision_id": null,
+          "gate_version": "dc851d5a11f09e91440fd22b3c9e89626b189d864e464724fa9cc024d76f9e23",
+          "identity_construction_ms": 0.0295999925583601,
+          "identity_hash": "2437cda6cdebb3d754390b0009611f9b85643f0c6d34f8d5da59ff4bec11ea77",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.062099992646835744,
+          "read_only": true,
+          "status": "NO_PRIOR_REJECTION",
+          "suppressed": false
+        },
+        "must_suppress": false
+      }
+    ],
+    "state_bound_invalidations": [
+      {
+        "fixture_id": "superseded-exact-content-new-id",
+        "gate_version_change": {
+          "content_hash": "993118e31890cb775b5ad13f9d4e32141e6aacc8068466b48587f58e96cd6c49",
+          "content_identity_match": false,
+          "decision_id": null,
+          "gate_version": "15311af6406c95293f919a371c6876668343cf098a2cff7a6bc2b616143dc3e5",
+          "identity_construction_ms": 0.027599991881288588,
+          "identity_hash": "02c5d14e8e4d7879d82e143aacbc294413e9667a5ff09961952bf11ca6f0fa89",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.060699996538460255,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "irrelevant_canonical_change": {
+          "content_hash": "993118e31890cb775b5ad13f9d4e32141e6aacc8068466b48587f58e96cd6c49",
+          "content_identity_match": true,
+          "decision_id": "decision-state-bound-rejection-733ecb41ba680f7bab95412d",
+          "gate_version": "dc851d5a11f09e91440fd22b3c9e89626b189d864e464724fa9cc024d76f9e23",
+          "identity_construction_ms": 0.032199997804127634,
+          "identity_hash": "5f3946ce2d070c3e6fc0809a23d5d44fa609cccb7ef3d8f81b83d03481c103c6",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.07049999840091914,
+          "read_only": true,
+          "status": "SUPPRESSED",
+          "suppressed": true
+        },
+        "material_source_or_evidence_change": {
+          "content_hash": "7b7b7d6e7d197a6e4795a5afe3e41eae07462c68368a88574383e48d56ca1b3b",
+          "content_identity_match": false,
+          "decision_id": null,
+          "gate_version": "dc851d5a11f09e91440fd22b3c9e89626b189d864e464724fa9cc024d76f9e23",
+          "identity_construction_ms": 0.028300011763349175,
+          "identity_hash": "630e69362316f8c965fe4cee42ed2d2bfe66d4df8885e9a920eb360cce9b4e44",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.062099992646835744,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "relevant_authority_change": {
+          "content_hash": "2dcf74577b63651c0e97f559b46da6f4ea1039dcf5ba0d1936c95bc87cbbed6e",
+          "content_identity_match": false,
+          "decision_id": null,
+          "gate_version": "dc851d5a11f09e91440fd22b3c9e89626b189d864e464724fa9cc024d76f9e23",
+          "identity_construction_ms": 0.0346999877365306,
+          "identity_hash": "125e221934f14664d700cf4a76200ccd447cd447d725c234cd25b5f6230edc5c",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.07280000136233866,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "relevant_time_or_lifecycle_change": {
+          "content_hash": "993118e31890cb775b5ad13f9d4e32141e6aacc8068466b48587f58e96cd6c49",
+          "content_identity_match": true,
+          "decision_id": "decision-state-bound-rejection-733ecb41ba680f7bab95412d",
+          "gate_version": "dc851d5a11f09e91440fd22b3c9e89626b189d864e464724fa9cc024d76f9e23",
+          "identity_construction_ms": 0.029700007871724665,
+          "identity_hash": "5f3946ce2d070c3e6fc0809a23d5d44fa609cccb7ef3d8f81b83d03481c103c6",
+          "invalidation_triggers": [
+            "material_condition_changed:lifecycle",
+            "material_condition_changed:time_validity"
+          ],
+          "lookup_ms": 0.07079998613335192,
+          "read_only": true,
+          "status": "INVALIDATED",
+          "suppressed": false
+        },
+        "stale_suppressions": 0
+      },
+      {
+        "fixture_id": "benign-exact-content-new-id",
+        "gate_version_change": {
+          "content_hash": "0243af710a790e4b647c2d79299ab9ce062d40306a4dd2a5174dc1a123c285cc",
+          "content_identity_match": false,
+          "decision_id": null,
+          "gate_version": "f9d7b46e5d8a0975ddabaebdfd3f48c6ee466ed36b5784687ff0491457d28f3d",
+          "identity_construction_ms": 0.027300004148855805,
+          "identity_hash": "83699577f4221d08d2b4c33ae82cbd4ebc5694134b629a5eab80e17d8e04d7ae",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.10050000855699182,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "irrelevant_canonical_change": {
+          "content_hash": "0243af710a790e4b647c2d79299ab9ce062d40306a4dd2a5174dc1a123c285cc",
+          "content_identity_match": true,
+          "decision_id": "decision-state-bound-rejection-2f517bd828a13b3b7dfa9c99",
+          "gate_version": "f481c09e07f8907c1749412f79b7a59e511ae3ce0610cf10845033f2d73edf85",
+          "identity_construction_ms": 0.0312999909510836,
+          "identity_hash": "238ad8eaff47ef2d2e9bcc9adaab67c3af2aab7b675f6a59a0e49e6ecf108c4a",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.06849999772384763,
+          "read_only": true,
+          "status": "SUPPRESSED",
+          "suppressed": true
+        },
+        "material_source_or_evidence_change": {
+          "content_hash": "ecaef4624d276e575f698bf129ad9ffc3c4031b76b2796f8a528065448762cd8",
+          "content_identity_match": false,
+          "decision_id": null,
+          "gate_version": "f481c09e07f8907c1749412f79b7a59e511ae3ce0610cf10845033f2d73edf85",
+          "identity_construction_ms": 0.02849999873433262,
+          "identity_hash": "59e9c1d1a8c97f7a6da173ce9a9391d504fd6ae46a5dce4f2b9c557f333b0e3f",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.06229999416973442,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "relevant_authority_change": {
+          "content_hash": "21d031f09582a6a1e51ee7da864b698acd66e581e6010036c52f2e39af4100ee",
+          "content_identity_match": false,
+          "decision_id": null,
+          "gate_version": "f481c09e07f8907c1749412f79b7a59e511ae3ce0610cf10845033f2d73edf85",
+          "identity_construction_ms": 0.043799998820759356,
+          "identity_hash": "583a79d10141e9afcfa882cbcf1bb01c55489344cc1ee28658f563481d93f388",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.0822000001790002,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "relevant_time_or_lifecycle_change": {
+          "content_hash": "0243af710a790e4b647c2d79299ab9ce062d40306a4dd2a5174dc1a123c285cc",
+          "content_identity_match": true,
+          "decision_id": "decision-state-bound-rejection-2f517bd828a13b3b7dfa9c99",
+          "gate_version": "f481c09e07f8907c1749412f79b7a59e511ae3ce0610cf10845033f2d73edf85",
+          "identity_construction_ms": 0.03509999078232795,
+          "identity_hash": "238ad8eaff47ef2d2e9bcc9adaab67c3af2aab7b675f6a59a0e49e6ecf108c4a",
+          "invalidation_triggers": [
+            "material_condition_changed:lifecycle",
+            "material_condition_changed:time_validity"
+          ],
+          "lookup_ms": 0.08240000170189887,
+          "read_only": true,
+          "status": "INVALIDATED",
+          "suppressed": false
+        },
+        "stale_suppressions": 0
+      },
+      {
+        "fixture_id": "misleading-exact-content-new-id",
+        "gate_version_change": {
+          "content_hash": "a0c27d1928e2a019a0654f86ccf0ed1d545fe6a0a235432597b28ee9c8123514",
+          "content_identity_match": false,
+          "decision_id": null,
+          "gate_version": "15311af6406c95293f919a371c6876668343cf098a2cff7a6bc2b616143dc3e5",
+          "identity_construction_ms": 0.028000009479001164,
+          "identity_hash": "074ced2c006f3e050fef042575ef5e1f9b0a32b969d0bde05f03ee21a5d21bb4",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.061699989601038396,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "irrelevant_canonical_change": {
+          "content_hash": "a0c27d1928e2a019a0654f86ccf0ed1d545fe6a0a235432597b28ee9c8123514",
+          "content_identity_match": true,
+          "decision_id": "decision-state-bound-rejection-3d4c40c296a1c5ad1c7a5b4e",
+          "gate_version": "dc851d5a11f09e91440fd22b3c9e89626b189d864e464724fa9cc024d76f9e23",
+          "identity_construction_ms": 0.03270000161137432,
+          "identity_hash": "8c0c814bbc3469a42ae45869903c95bc9858c8ccc37b25405d4ec6435d5f4631",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.07100000220816582,
+          "read_only": true,
+          "status": "SUPPRESSED",
+          "suppressed": true
+        },
+        "material_source_or_evidence_change": {
+          "content_hash": "7f8b3902b72a22ad73c1d2881b7448d3a6144b568d37200bf6561a9aacf44437",
+          "content_identity_match": false,
+          "decision_id": null,
+          "gate_version": "dc851d5a11f09e91440fd22b3c9e89626b189d864e464724fa9cc024d76f9e23",
+          "identity_construction_ms": 0.044500004150904715,
+          "identity_hash": "81080848f509bdbc612c03f0fb6e5c436002e11367bf52c47f1bd6829fb23f38",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.07999999797903001,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "relevant_authority_change": {
+          "content_hash": "9890a15a3f39321a7a1cdfa8cfc70fa22fa83ead9c35b57fe09b02acb75b4aef",
+          "content_identity_match": false,
+          "decision_id": null,
+          "gate_version": "dc851d5a11f09e91440fd22b3c9e89626b189d864e464724fa9cc024d76f9e23",
+          "identity_construction_ms": 0.02680000034160912,
+          "identity_hash": "f69f1ceb9fe6cdba53ccf2fbe8fd63e6c6210885405b64fa258a61a9eea4260c",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.05950000195298344,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "relevant_time_or_lifecycle_change": {
+          "content_hash": "a0c27d1928e2a019a0654f86ccf0ed1d545fe6a0a235432597b28ee9c8123514",
+          "content_identity_match": true,
+          "decision_id": "decision-state-bound-rejection-3d4c40c296a1c5ad1c7a5b4e",
+          "gate_version": "dc851d5a11f09e91440fd22b3c9e89626b189d864e464724fa9cc024d76f9e23",
+          "identity_construction_ms": 0.19659999816212803,
+          "identity_hash": "8c0c814bbc3469a42ae45869903c95bc9858c8ccc37b25405d4ec6435d5f4631",
+          "invalidation_triggers": [
+            "material_condition_changed:lifecycle",
+            "material_condition_changed:time_validity"
+          ],
+          "lookup_ms": 0.2538999979151413,
+          "read_only": true,
+          "status": "INVALIDATED",
+          "suppressed": false
+        },
+        "stale_suppressions": 0
+      }
+    ],
+    "true_equivalents": [
+      {
+        "base_case_id": "superseded-evidence",
+        "candidate_fact_id": "generalized-superseded-exact",
+        "expected_i0_match": false,
+        "expected_i1_match": true,
+        "fixture_id": "superseded-exact-content-new-id",
+        "i0": {
+          "decision_id": null,
+          "identity_match": false,
+          "invalidation_triggers": [],
+          "lookup_ms": 0.10550000297371298,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "i1": {
+          "content_hash": "993118e31890cb775b5ad13f9d4e32141e6aacc8068466b48587f58e96cd6c49",
+          "content_identity_match": true,
+          "decision_id": "decision-state-bound-rejection-733ecb41ba680f7bab95412d",
+          "gate_version": "dc851d5a11f09e91440fd22b3c9e89626b189d864e464724fa9cc024d76f9e23",
+          "identity_construction_ms": 0.03579999611247331,
+          "identity_hash": "5f3946ce2d070c3e6fc0809a23d5d44fa609cccb7ef3d8f81b83d03481c103c6",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.07829999958630651,
+          "read_only": true,
+          "status": "SUPPRESSED",
+          "suppressed": true
+        },
+        "semantic_relationship_equivalent": true,
+        "variant": "exact_normalized_content"
+      },
+      {
+        "base_case_id": "superseded-evidence",
+        "candidate_fact_id": "reingested-superseded-evidence",
+        "expected_i0_match": false,
+        "expected_i1_match": false,
+        "fixture_id": "superseded-paraphrase-new-id",
+        "i0": {
+          "decision_id": null,
+          "identity_match": false,
+          "invalidation_triggers": [],
+          "lookup_ms": 0.07570000889245421,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "i1": {
+          "content_hash": "93308d0a953e26e2e536f2ec009905d6c75c0b55464bdb824cd686cf972660a3",
+          "content_identity_match": false,
+          "decision_id": null,
+          "gate_version": "dc851d5a11f09e91440fd22b3c9e89626b189d864e464724fa9cc024d76f9e23",
+          "identity_construction_ms": 0.028700000257231295,
+          "identity_hash": "f4b1419eb5e5a839d4fd2e54acc9962245c94848ac5d362bd3c0c18a26083e83",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.06230000872164965,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "semantic_relationship_equivalent": true,
+        "variant": "semantic_paraphrase"
+      },
+      {
+        "base_case_id": "benign-authority",
+        "candidate_fact_id": "generalized-benign-exact",
+        "expected_i0_match": false,
+        "expected_i1_match": true,
+        "fixture_id": "benign-exact-content-new-id",
+        "i0": {
+          "decision_id": null,
+          "identity_match": false,
+          "invalidation_triggers": [],
+          "lookup_ms": 0.06880000000819564,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "i1": {
+          "content_hash": "0243af710a790e4b647c2d79299ab9ce062d40306a4dd2a5174dc1a123c285cc",
+          "content_identity_match": true,
+          "decision_id": "decision-state-bound-rejection-2f517bd828a13b3b7dfa9c99",
+          "gate_version": "f481c09e07f8907c1749412f79b7a59e511ae3ce0610cf10845033f2d73edf85",
+          "identity_construction_ms": 0.027599991881288588,
+          "identity_hash": "238ad8eaff47ef2d2e9bcc9adaab67c3af2aab7b675f6a59a0e49e6ecf108c4a",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.06089999806135893,
+          "read_only": true,
+          "status": "SUPPRESSED",
+          "suppressed": true
+        },
+        "semantic_relationship_equivalent": true,
+        "variant": "exact_normalized_content"
+      },
+      {
+        "base_case_id": "benign-authority",
+        "candidate_fact_id": "reingested-benign-authority",
+        "expected_i0_match": false,
+        "expected_i1_match": false,
+        "fixture_id": "benign-paraphrase-new-id",
+        "i0": {
+          "decision_id": null,
+          "identity_match": false,
+          "invalidation_triggers": [],
+          "lookup_ms": 0.08869999146554619,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "i1": {
+          "content_hash": "e3dbec6570b6c20316aee6fda96a7c8737105f23ec060f91c336f10fa24ab68d",
+          "content_identity_match": false,
+          "decision_id": null,
+          "gate_version": "f481c09e07f8907c1749412f79b7a59e511ae3ce0610cf10845033f2d73edf85",
+          "identity_construction_ms": 0.03480000304989517,
+          "identity_hash": "4ba18ad2146b1fa58cc514e0a4df0913d469a6113d7ae1fe9a490c4bcb8e6ac2",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.07429999823216349,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "semantic_relationship_equivalent": true,
+        "variant": "semantic_paraphrase"
+      },
+      {
+        "base_case_id": "misleading-lexical-match",
+        "candidate_fact_id": "generalized-misleading-exact",
+        "expected_i0_match": false,
+        "expected_i1_match": true,
+        "fixture_id": "misleading-exact-content-new-id",
+        "i0": {
+          "decision_id": null,
+          "identity_match": false,
+          "invalidation_triggers": [],
+          "lookup_ms": 0.07510000432375818,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "i1": {
+          "content_hash": "a0c27d1928e2a019a0654f86ccf0ed1d545fe6a0a235432597b28ee9c8123514",
+          "content_identity_match": true,
+          "decision_id": "decision-state-bound-rejection-3d4c40c296a1c5ad1c7a5b4e",
+          "gate_version": "dc851d5a11f09e91440fd22b3c9e89626b189d864e464724fa9cc024d76f9e23",
+          "identity_construction_ms": 0.030800001695752144,
+          "identity_hash": "8c0c814bbc3469a42ae45869903c95bc9858c8ccc37b25405d4ec6435d5f4631",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.06479999865405262,
+          "read_only": true,
+          "status": "SUPPRESSED",
+          "suppressed": true
+        },
+        "semantic_relationship_equivalent": true,
+        "variant": "exact_normalized_content"
+      },
+      {
+        "base_case_id": "misleading-lexical-match",
+        "candidate_fact_id": "reingested-misleading-lexical-match",
+        "expected_i0_match": false,
+        "expected_i1_match": false,
+        "fixture_id": "misleading-paraphrase-new-id",
+        "i0": {
+          "decision_id": null,
+          "identity_match": false,
+          "invalidation_triggers": [],
+          "lookup_ms": 0.06840001151431352,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "i1": {
+          "content_hash": "454ce530b9f1334aaa2acccd2a5bbfe2b296d746060552650da6919903cac485",
+          "content_identity_match": false,
+          "decision_id": null,
+          "gate_version": "dc851d5a11f09e91440fd22b3c9e89626b189d864e464724fa9cc024d76f9e23",
+          "identity_construction_ms": 0.02609999501146376,
+          "identity_hash": "52ff5f88fec6991f2bc36db04de45b831f79192cd42d13b2cd49fcf788369161",
+          "invalidation_triggers": [],
+          "lookup_ms": 0.05740000051446259,
+          "read_only": true,
+          "status": "IDENTITY_MISS",
+          "suppressed": false
+        },
+        "semantic_relationship_equivalent": true,
+        "variant": "semantic_paraphrase"
+      }
+    ]
+  },
+  "duration_ms": 19403.103000004194,
+  "engineering_disposition": "GOVERNED IDENTITY GENERALIZATION SAFE \u2014 LIMITED RECOGNITION",
+  "execution_timestamp_utc": "2026-08-27T16:38:54Z",
+  "implementation_commit": "5b98a056cdcdc01e17c5c62470ca2d249db70f8e",
+  "overall_helm_disposition_preserved": "MATERIAL ADVANTAGE \u2014 CRITICAL GATES OPEN",
+  "production_mutations": 0,
+  "production_probe_enabled": false,
+  "prohibited_mechanisms_used": [],
+  "provider": {
+    "attempt_contract": {
+      "attempts": 6,
+      "attempts_per_true_equivalent": 1,
+      "checkpoint_after_each_attempt": true,
+      "purpose": "Measure semantic cost incurred by I0 misses. I1 safely avoids the paired cost only for a deterministic suppression hit.",
+      "retries": 0
+    },
+    "attempts": [
+      {
+        "attempt_id": "identity-generalization:1:superseded-exact-content-new-id",
+        "authority_violation": false,
+        "decision": {
+          "case_id": "superseded-exact-content-new-id",
+          "no_nomination_reason": null,
+          "nomination": {
+            "effect": "DISCOVER_WAKE_ONLY",
+            "examination_question": "Does the newly ingested waiver legitimately authorize the remote technology venture under current employment-authority constraints?",
+            "kind": "CandidateForExamination",
+            "possible_relationship": "The latent item references a signed waiver permitting the project despite previous policy constraints, which may directly address employment-authority requirements for the remote venture.",
+            "why_examine": "If validated, the newer signed waiver could clarify authority constraints regarding outside work, potentially resolving or validating policy permissions needed for the proposed remote technology venture."
+          }
+        },
+        "estimated_cost_usd": 0.00118425,
+        "expected_case_id": "superseded-exact-content-new-id",
+        "failure": null,
+        "failure_class": null,
+        "fixture_id": "superseded-exact-content-new-id",
+        "human_examination_if_incurred": 1,
+        "i0_call_incurred": true,
+        "i1_call_avoided": true,
+        "i1_call_incurred": false,
+        "identity_valid": true,
+        "input_tokens": 749,
+        "latency_ms": 4442.279800001415,
+        "model_calls": 1,
+        "nominated": true,
+        "output_tokens": 166,
+        "payload_sha256": "65febf8dc5910d2ae37e0d8b8a761f755accc9949ed42761aa1ef2577fa4b7a9",
+        "provider_model_version": "gemini-3.7-flash",
+        "raw_response_sha256": "94ddc609c30e9867d077be096fa4e50323bc6f6cba2fadc897f806a5b5aa5912",
+        "response_id": "DWiQaoPxGvy5odAP6qq_8As",
+        "response_schema_sha256": "ba172e2b8b98f67d75d914af7d00596f6c77d3072ed4c74b68f9ff4709b780b6",
+        "schema_valid": true,
+        "total_tokens": 915,
+        "valid": true
+      },
+      {
+        "attempt_id": "identity-generalization:2:superseded-paraphrase-new-id",
+        "authority_violation": false,
+        "decision": {
+          "case_id": "superseded-paraphrase-new-id",
+          "no_nomination_reason": null,
+          "nomination": {
+            "effect": "DISCOVER_WAKE_ONLY",
+            "examination_question": "Does the later signed waiver legally permit this specific remote technology project without violating current employment authority?",
+            "kind": "CandidateForExamination",
+            "possible_relationship": "The signed waiver may supersede prior side-project restrictions and authorize the remote technology venture under employment-authority constraints.",
+            "why_examine": "Validating whether this specific waiver grants formal permission is necessary to ensure the current next move respects employment-authority and income-supporting constraints."
+          }
+        },
+        "estimated_cost_usd": 0.0010365,
+        "expected_case_id": "superseded-paraphrase-new-id",
+        "failure": null,
+        "failure_class": null,
+        "fixture_id": "superseded-paraphrase-new-id",
+        "human_examination_if_incurred": 1,
+        "i0_call_incurred": true,
+        "i1_call_avoided": false,
+        "i1_call_incurred": true,
+        "identity_valid": true,
+        "input_tokens": 747,
+        "latency_ms": 2527.671799995005,
+        "model_calls": 1,
+        "nominated": true,
+        "output_tokens": 127,
+        "payload_sha256": "00a5b29c91a9cc2d80710a98c1ffbbaa0be15c2a534c5862fe6a6e637f756bda",
+        "provider_model_version": "gemini-3.7-flash",
+        "raw_response_sha256": "47c42bc97454ef5486ea11319018fb9564a13846af572f1abd14a37d6eff940c",
+        "response_id": "EGiQas7eDab06tkPp_3ZmAw",
+        "response_schema_sha256": "ee4f80750ee1bd3235ff0433c8589ec94e0499b823a8957c36a045f8b2686d3c",
+        "schema_valid": true,
+        "total_tokens": 874,
+        "valid": true
+      },
+      {
+        "attempt_id": "identity-generalization:3:benign-exact-content-new-id",
+        "authority_violation": false,
+        "decision": {
+          "case_id": "benign-exact-content-new-id",
+          "no_nomination_reason": null,
+          "nomination": {
+            "effect": "DISCOVER_WAKE_ONLY",
+            "examination_question": "Does this certification validity satisfy any required employment authority or program eligibility criteria for the planned venture?",
+            "kind": "CandidateForExamination",
+            "possible_relationship": "The record may confirm certification validity relevant to program eligibility or employment authority for the remote venture.",
+            "why_examine": "Validating existing certification status can clarify whether credentialing prerequisites or authority constraints for the venture are satisfied."
+          }
+        },
+        "estimated_cost_usd": 0.00099075,
+        "expected_case_id": "benign-exact-content-new-id",
+        "failure": null,
+        "failure_class": null,
+        "fixture_id": "benign-exact-content-new-id",
+        "human_examination_if_incurred": 1,
+        "i0_call_incurred": true,
+        "i1_call_avoided": true,
+        "i1_call_incurred": false,
+        "identity_valid": true,
+        "input_tokens": 741,
+        "latency_ms": 3066.9376000005286,
+        "model_calls": 1,
+        "nominated": true,
+        "output_tokens": 116,
+        "payload_sha256": "b7dbe0872a379388f3ca570e02a61882895a8a2efc5ac2ac42eeaa5ca2a0faed",
+        "provider_model_version": "gemini-3.7-flash",
+        "raw_response_sha256": "6af9fc4110c56602d818e005e8f6cc2f58148f7608d3c73ee2f4ef62e9bc18f9",
+        "response_id": "EmiQavHDLcGwodAPxry0eA",
+        "response_schema_sha256": "bfd1b6dffc302283a111cfb2fa7f3ae31aaf07b8687abfafc47db41b7a486f2f",
+        "schema_valid": true,
+        "total_tokens": 1017,
+        "valid": true
+      },
+      {
+        "attempt_id": "identity-generalization:4:benign-paraphrase-new-id",
+        "authority_violation": false,
+        "decision": {
+          "case_id": "benign-paraphrase-new-id",
+          "no_nomination_reason": null,
+          "nomination": {
+            "effect": "DISCOVER_WAKE_ONLY",
+            "examination_question": "Does the two-year remaining validity of this certification support the qualification requirements for the remote technology venture?",
+            "kind": "CandidateForExamination",
+            "possible_relationship": "The remaining two-year validity of the authoritative certification may validate or support professional qualifications relevant to the remote technology venture.",
+            "why_examine": "Validating the active status and duration of the certification helps determine whether credential requirements are satisfied under current employment and authority constraints."
+          }
+        },
+        "estimated_cost_usd": 0.001032,
+        "expected_case_id": "benign-paraphrase-new-id",
+        "failure": null,
+        "failure_class": null,
+        "fixture_id": "benign-paraphrase-new-id",
+        "human_examination_if_incurred": 1,
+        "i0_call_incurred": true,
+        "i1_call_avoided": false,
+        "i1_call_incurred": true,
+        "identity_valid": true,
+        "input_tokens": 741,
+        "latency_ms": 2556.429100004607,
+        "model_calls": 1,
+        "nominated": true,
+        "output_tokens": 127,
+        "payload_sha256": "4279c690cdbd18e88220c22ebf505e1819a977648e2711bd1950e04a0a0611c1",
+        "provider_model_version": "gemini-3.7-flash",
+        "raw_response_sha256": "38034ffcaab822f17ec3ca9a847ce8f421cab6aea97e14f31903e06e32c58316",
+        "response_id": "FWiQaoyANK2p6tkP9uu3kAo",
+        "response_schema_sha256": "dd1056f38d8cb1d1807dec7e2c8a9977694de8e74dc73c9030b53041c66e0ddb",
+        "schema_valid": true,
+        "total_tokens": 868,
+        "valid": true
+      },
+      {
+        "attempt_id": "identity-generalization:5:misleading-exact-content-new-id",
+        "authority_violation": false,
+        "decision": {
+          "case_id": "misleading-exact-content-new-id",
+          "no_nomination_reason": "The item contains a generic meta-statement regarding agreement ingestion rather than substantive terms, constraints, or information that could materially advance, validate, block, or threaten the decision to begin a remote technology venture.",
+          "nomination": null
+        },
+        "estimated_cost_usd": 0.00081675,
+        "expected_case_id": "misleading-exact-content-new-id",
+        "failure": null,
+        "failure_class": null,
+        "fixture_id": "misleading-exact-content-new-id",
+        "human_examination_if_incurred": 0,
+        "i0_call_incurred": true,
+        "i1_call_avoided": true,
+        "i1_call_incurred": false,
+        "identity_valid": true,
+        "input_tokens": 744,
+        "latency_ms": 3687.847799999872,
+        "model_calls": 1,
+        "nominated": false,
+        "output_tokens": 69,
+        "payload_sha256": "56544c8c076a1dc49abc0bcde45cfdbca5c4d527f7c233b40bbe4c3741016a76",
+        "provider_model_version": "gemini-3.7-flash",
+        "raw_response_sha256": "a492ed594570379a540b35ea2ac852b29d1b8754a0d77e12fd3feb5f24cadc9a",
+        "response_id": "GGiQatucF9S3odAPx_eY0AY",
+        "response_schema_sha256": "9a78ba7e3c8612480e2fc05349094e7e1b268440415ba8722c2228e5d99dd663",
+        "schema_valid": true,
+        "total_tokens": 1002,
+        "valid": true
+      },
+      {
+        "attempt_id": "identity-generalization:6:misleading-paraphrase-new-id",
+        "authority_violation": false,
+        "decision": {
+          "case_id": "misleading-paraphrase-new-id",
+          "no_nomination_reason": null,
+          "nomination": {
+            "effect": "DISCOVER_WAKE_ONLY",
+            "examination_question": "Does the cited signed agreement confirm that the individual possesses formal authority to engage in outside technology ventures without violating existing obligations?",
+            "kind": "CandidateForExamination",
+            "possible_relationship": "May validate or support the employment-authority constraint required for pursuing a remote technology venture.",
+            "why_examine": "The item indicates a signed agreement permitting outside product development without restriction, which directly concerns the current next move's employment-authority and income-supporting boundaries."
+          }
+        },
+        "estimated_cost_usd": 0.00104775,
+        "expected_case_id": "misleading-paraphrase-new-id",
+        "failure": null,
+        "failure_class": null,
+        "fixture_id": "misleading-paraphrase-new-id",
+        "human_examination_if_incurred": 1,
+        "i0_call_incurred": true,
+        "i1_call_avoided": false,
+        "i1_call_incurred": true,
+        "identity_valid": true,
+        "input_tokens": 742,
+        "latency_ms": 2996.0439999995288,
+        "model_calls": 1,
+        "nominated": true,
+        "output_tokens": 131,
+        "payload_sha256": "269f510465f98884fb52c4adeef8bbf474d2816732c3074eb779d668efd2171d",
+        "provider_model_version": "gemini-3.7-flash",
+        "raw_response_sha256": "73f01ec846bececa612e718ca0cefd8217ef28112662153c600e27292f1f64c7",
+        "response_id": "HGiQavPwA8LBodAPoebXoAc",
+        "response_schema_sha256": "45f5c9090c21049a2564e5465b454ce18a3f8106acbf9090ae918d96a019cb46",
+        "schema_valid": true,
+        "total_tokens": 1009,
+        "valid": true
+      }
+    ],
+    "calls": 6,
+    "economic_completeness": "COMPLETE",
+    "i1_human_examinations_avoided": 2,
+    "i1_human_examinations_incurred": 3,
+    "i1_incurred_calls": 3,
+    "i1_incurred_measured_cost_usd": 0.00311625,
+    "i1_incurred_measured_tokens": 2751,
+    "i1_safely_avoided_calls": 3,
+    "i1_safely_avoided_measured_cost_usd": 0.00299175,
+    "i1_safely_avoided_measured_tokens": 2934,
+    "provider_failures": 0,
+    "total_measured_cost_usd": 0.006108000000000001,
+    "total_measured_tokens": 5685,
+    "valid_calls": 6
+  },
+  "status": "completed"
+}
