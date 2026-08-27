@@ -87,6 +87,22 @@ EXPECTED_CONTRACT_SHA256 = "2223b61d7c751698b9b11127c998b29e644529293a7ac7ee8cfe
 IMPLEMENTATION_COMMIT = "63b198d5359e747efa56e33a483118969484a5c1"
 FIXED_NOW = datetime(2026, 8, 27, tzinfo=UTC)
 FIXED_TODAY = date(2026, 8, 27)
+INITIAL_PROVIDER_FAILURE = {
+    "axis": "protected_control",
+    "repetition": 1,
+    "stage": "probe",
+    "failure": "Provider returned a schema-valid decision with the wrong case_id.",
+    "returned_case_id": "probe-eval-paraphrased-restriction",
+    "expected_case_id": "paraphrased-restriction",
+    "provider_calls_lost_before_checkpoint": {
+        "decision_calls": 2,
+        "probe_calls": 1,
+        "tokens": "NOT MEASURED",
+        "cost": "NOT MEASURED",
+    },
+    "retried": False,
+    "prompt_or_schema_changed": False,
+}
 
 
 def sha256_path(path: Path) -> str:
@@ -638,7 +654,33 @@ def multiple_slices_axis(contract: dict[str, Any]) -> dict[str, Any]:
 def _probe_one(case: dict[str, Any], ordinal: int, axis: str) -> dict[str, Any]:
     state = case_state(case)
     before_hash = sha256_json(state.model_dump(mode="json"))
-    result = ProbeHarness().run(case)
+    started = time.perf_counter()
+    try:
+        result = ProbeHarness().run(case)
+    except Exception as exc:
+        return {
+            "axis": axis,
+            "ordinal": ordinal,
+            "case_id": case["id"],
+            "expected_material": case["expected_material"],
+            "status": "failed",
+            "error_type": type(exc).__name__,
+            "error": str(exc),
+            "nominated": None,
+            "correct": False,
+            "decision": None,
+            "payload_sha256": None,
+            "response_sha256": None,
+            "response_id": None,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "thought_tokens": 0,
+            "total_tokens": 0,
+            "latency_ms": (time.perf_counter() - started) * 1000,
+            "estimated_cost_usd": "NOT MEASURED",
+            "probe_calls": 1,
+            "authority_violation": False,
+        }
     after_hash = sha256_json(state.model_dump(mode="json"))
     thought_tokens = max(
         0,
@@ -653,6 +695,7 @@ def _probe_one(case: dict[str, Any], ordinal: int, axis: str) -> dict[str, Any]:
         "ordinal": ordinal,
         "case_id": case["id"],
         "expected_material": case["expected_material"],
+        "status": "completed",
         "nominated": result["nominated"],
         "correct": result["nominated"] == case["expected_material"],
         "decision": result["decision"],
@@ -671,10 +714,11 @@ def _probe_one(case: dict[str, Any], ordinal: int, axis: str) -> dict[str, Any]:
 
 
 def _classification(rows: list[dict[str, Any]]) -> dict[str, Any]:
-    tp = sum(row["expected_material"] and row["nominated"] for row in rows)
-    tn = sum(not row["expected_material"] and not row["nominated"] for row in rows)
-    fp = sum(not row["expected_material"] and row["nominated"] for row in rows)
-    fn = sum(row["expected_material"] and not row["nominated"] for row in rows)
+    valid = [row for row in rows if row.get("status") == "completed"]
+    tp = sum(row["expected_material"] and row["nominated"] for row in valid)
+    tn = sum(not row["expected_material"] and not row["nominated"] for row in valid)
+    fp = sum(not row["expected_material"] and row["nominated"] for row in valid)
+    fn = sum(row["expected_material"] and not row["nominated"] for row in valid)
     precision = tp / (tp + fp) if tp + fp else 1.0
     recall = tp / (tp + fn) if tp + fn else 1.0
     return {
@@ -684,21 +728,22 @@ def _classification(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "fn": fn,
         "precision": precision,
         "recall": recall,
+        "provider_failures": len(rows) - len(valid),
         "probe_calls": sum(row["probe_calls"] for row in rows),
-        "input_tokens": sum(row["input_tokens"] for row in rows),
-        "output_tokens": sum(row["output_tokens"] for row in rows),
-        "thought_tokens": sum(row["thought_tokens"] for row in rows),
-        "total_tokens": sum(row["total_tokens"] for row in rows),
-        "estimated_cost_usd": sum(row["estimated_cost_usd"] for row in rows),
-        "latency_ms": percentile_stats([row["latency_ms"] for row in rows]),
-        "authority_violations": sum(row["authority_violation"] for row in rows),
+        "input_tokens": sum(row["input_tokens"] for row in valid),
+        "output_tokens": sum(row["output_tokens"] for row in valid),
+        "thought_tokens": sum(row["thought_tokens"] for row in valid),
+        "total_tokens": sum(row["total_tokens"] for row in valid),
+        "estimated_cost_usd": sum(float(row["estimated_cost_usd"]) for row in valid),
+        "latency_ms": percentile_stats([row["latency_ms"] for row in valid]),
+        "authority_violations": sum(row["authority_violation"] for row in valid),
     }
 
 
 def probe_rate_axis(contract: dict[str, Any], checkpoint: dict[str, Any]) -> dict[str, Any]:
     gate3 = json.loads(GATE3_PATH.read_text(encoding="utf-8"))
     frozen_cases = gate3["cases"]
-    rows: list[dict[str, Any]] = []
+    rows: list[dict[str, Any]] = list(checkpoint.get("probe_rate_partial", []))
     rate_rows: list[dict[str, Any]] = []
     for rate, count in zip(
         contract["probe_opportunity_rate"]["rates_percent"],
@@ -716,8 +761,14 @@ def probe_rate_axis(contract: dict[str, Any], checkpoint: dict[str, Any]) -> dic
                 }
             )
             continue
-        tasks = [(frozen_cases[index % len(frozen_cases)], index, f"probe-rate-{rate}") for index in range(count)]
-        rate_results: list[dict[str, Any]] = []
+        axis = f"probe-rate-{rate}"
+        rate_results = [row for row in rows if row.get("axis") == axis]
+        completed_ordinals = {row["ordinal"] for row in rate_results}
+        tasks = [
+            (frozen_cases[index % len(frozen_cases)], index, axis)
+            for index in range(count)
+            if index not in completed_ordinals
+        ]
         with ThreadPoolExecutor(max_workers=8) as pool:
             futures = {pool.submit(_probe_one, case, ordinal, axis): ordinal for case, ordinal, axis in tasks}
             for future in as_completed(futures):
@@ -753,7 +804,8 @@ def _authorized_relationship_state(
     accepted: bool,
 ) -> CanonicalState:
     state = case_state(case)
-    candidate = probe_result["decision"].get("nomination")
+    decision = probe_result.get("decision")
+    candidate = decision.get("nomination") if isinstance(decision, dict) else None
     if candidate is None:
         return state
     previous = deepcopy(state)
@@ -848,6 +900,7 @@ def graduation_axis(contract: dict[str, Any]) -> dict[str, Any]:
         )
     return {
         "first_discovery": first,
+        "first_discovery_valid": first.get("status") == "completed",
         "governed_version": governed.version,
         "persisted_structures": ["Fact", "ImpactItem", "Decision", "MutationEvent", "LineageRecord"],
         "rows": rows,
@@ -979,7 +1032,8 @@ def graduate_into_full_state(
     probe_result: dict[str, Any],
     repetition: int,
 ) -> CanonicalState:
-    candidate = probe_result["decision"].get("nomination")
+    decision = probe_result.get("decision")
+    candidate = decision.get("nomination") if isinstance(decision, dict) else None
     if candidate is None:
         return state
     previous = deepcopy(state)
@@ -1034,7 +1088,7 @@ def graduate_into_full_state(
 
 
 def contemporaneous_controls(contract: dict[str, Any], checkpoint: dict[str, Any]) -> dict[str, Any]:
-    runs: list[dict[str, Any]] = []
+    runs: list[dict[str, Any]] = list(checkpoint.get("control_partial", []))
     tasks: list[tuple[dict[str, Any], str, str, str, set[str], dict[str, Any], dict[str, Any]]] = []
     repetitions = contract["contemporaneous_control"]["repetitions"]
     for scale in contract["contemporaneous_control"]["width_points"]:
@@ -1072,6 +1126,8 @@ def contemporaneous_controls(contract: dict[str, Any], checkpoint: dict[str, Any
                     {"axis": "state_width", "scale": scale, "condition": "helm", "repetition": repetition},
                 )
             )
+    completed_run_ids = {run["run_id"] for run in runs}
+    tasks = [task for task in tasks if task[1] not in completed_run_ids]
     with ThreadPoolExecutor(max_workers=6) as pool:
         futures = {pool.submit(_decision_task, *task[:-1]): task[-1] for task in tasks}
         for future in as_completed(futures):
@@ -1085,8 +1141,20 @@ def contemporaneous_controls(contract: dict[str, Any], checkpoint: dict[str, Any
             checkpoint["control_partial"] = runs
             RAW_PATH.write_text(json.dumps(checkpoint, indent=2, sort_keys=True), encoding="utf-8")
 
-    protected_runs: list[dict[str, Any]] = []
+    protected_runs: list[dict[str, Any]] = list(checkpoint.get("protected_control_partial", []))
+    completed_protected = {
+        repetition
+        for repetition in range(1, repetitions + 1)
+        if {
+            row["condition"]
+            for row in protected_runs
+            if row.get("repetition") == repetition
+        }
+        == {"broad", "helm_sparse_unprotected", "helm_sparse_plus_probe"}
+    }
     for repetition in range(1, repetitions + 1):
+        if repetition in completed_protected:
+            continue
         state, case = hidden_relationship_state()
         broad_context, broad_timing = build_baseline_context(state)
         sparse_context, sparse_timing = build_helm_context(state)
@@ -1107,19 +1175,39 @@ def contemporaneous_controls(contract: dict[str, Any], checkpoint: dict[str, Any
             sparse_timing,
         )
         probe = _probe_one(case, repetition, "protected-control")
-        protected_state = graduate_into_full_state(state, case, probe, repetition)
-        protected_context, protected_timing = build_helm_context(protected_state)
-        protected = _decision_task(
-            protected_context,
-            f"protected-helm-{repetition}",
-            "employment-restriction",
-            "verify-employment-restriction",
-            {"capsule-hidden-restriction"},
-            protected_timing,
-        )
-        protected["probe"] = probe
-        protected["combined_tokens"] = protected["total_tokens"] + probe["total_tokens"]
-        protected["combined_cost_usd"] = protected["estimated_model_cost_usd"] + probe["estimated_cost_usd"]
+        if probe.get("status") == "completed":
+            protected_state = graduate_into_full_state(state, case, probe, repetition)
+            protected_context, protected_timing = build_helm_context(protected_state)
+            protected = _decision_task(
+                protected_context,
+                f"protected-helm-{repetition}",
+                "employment-restriction",
+                "verify-employment-restriction",
+                {"capsule-hidden-restriction"},
+                protected_timing,
+            )
+            protected["probe"] = probe
+            protected["combined_tokens"] = protected["total_tokens"] + probe["total_tokens"]
+            protected["combined_cost_usd"] = (
+                protected["estimated_model_cost_usd"] + probe["estimated_cost_usd"]
+            )
+        else:
+            protected = {
+                "run_id": f"protected-helm-{repetition}",
+                "status": "failed",
+                "failure": "Probe contract failed; protected Resolver call was not executed.",
+                "quality": {"correct": False},
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "total_tokens": 0,
+                "latency_ms": 0,
+                "estimated_model_cost_usd": 0,
+                "context_bytes": 0,
+                "active_facts": 0,
+                "probe": probe,
+                "combined_tokens": 0,
+                "combined_cost_usd": "NOT MEASURED",
+            }
         protected_runs.extend(
             [
                 {"condition": "broad", "repetition": repetition, **broad},
@@ -1144,17 +1232,23 @@ def _group_model_runs(runs: list[dict[str, Any]], keys: tuple[str, ...]) -> list
         groups.setdefault(tuple(run[key] for key in keys), []).append(run)
     rows: list[dict[str, Any]] = []
     for identity, items in sorted(groups.items(), key=lambda item: str(item[0])):
+        valid = [item for item in items if item.get("status", "completed") == "completed"]
         row = {key: value for key, value in zip(keys, identity, strict=True)}
+        if not valid:
+            row.update({"repetitions": 0, "provider_failures": len(items)})
+            rows.append(row)
+            continue
         row.update(
             {
-                "repetitions": len(items),
-                "correct_rate": statistics.mean(float(item["quality"]["correct"]) for item in items),
-                "input_tokens": percentile_stats([item["input_tokens"] for item in items]),
-                "total_tokens": percentile_stats([item["total_tokens"] for item in items]),
-                "latency_ms": percentile_stats([item["latency_ms"] for item in items]),
-                "model_cost_usd": percentile_stats([item["estimated_model_cost_usd"] for item in items]),
-                "context_bytes": items[0]["context_bytes"],
-                "active_facts": items[0]["active_facts"],
+                "repetitions": len(valid),
+                "provider_failures": len(items) - len(valid),
+                "correct_rate": statistics.mean(float(item["quality"]["correct"]) for item in valid),
+                "input_tokens": percentile_stats([item["input_tokens"] for item in valid]),
+                "total_tokens": percentile_stats([item["total_tokens"] for item in valid]),
+                "latency_ms": percentile_stats([item["latency_ms"] for item in valid]),
+                "model_cost_usd": percentile_stats([item["estimated_model_cost_usd"] for item in valid]),
+                "context_bytes": valid[0]["context_bytes"],
+                "active_facts": valid[0]["active_facts"],
             }
         )
         rows.append(row)
@@ -1213,6 +1307,14 @@ def execute(*, prepare_only: bool) -> dict[str, Any]:
         raise RuntimeError("Frozen Capsule contract hash changed; refusing execution.")
     contract = json.loads(CONTRACT_PATH.read_text(encoding="utf-8"))
     OUT.mkdir(parents=True, exist_ok=True)
+    resume: dict[str, Any] = {}
+    if RAW_PATH.exists():
+        prior = json.loads(RAW_PATH.read_text(encoding="utf-8"))
+        if (
+            prior.get("status") == "provider-execution-in-progress"
+            and prior.get("contract", {}).get("sha256") == EXPECTED_CONTRACT_SHA256
+        ):
+            resume = prior
     payload: dict[str, Any] = {
         "status": "deterministic-preparation",
         "executed_at": "2026-08-27",
@@ -1232,7 +1334,17 @@ def execute(*, prepare_only: bool) -> dict[str, Any]:
             "domain_pack_changed": False,
             "canonical_helm_changed": False,
         },
+        "execution_failures": list(resume.get("execution_failures", [])),
     }
+    if INITIAL_PROVIDER_FAILURE not in payload["execution_failures"]:
+        payload["execution_failures"].append(INITIAL_PROVIDER_FAILURE)
+    for checkpoint_key in (
+        "control_partial",
+        "protected_control_partial",
+        "probe_rate_partial",
+    ):
+        if checkpoint_key in resume:
+            payload[checkpoint_key] = resume[checkpoint_key]
     payload["axes"]["state_width"] = state_width_axis(contract)
     payload["axes"]["lifecycle_length"] = lifecycle_length_axis(contract)
     payload["axes"]["dependency_density"] = dependency_density_axis(contract)
