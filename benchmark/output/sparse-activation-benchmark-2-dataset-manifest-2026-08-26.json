@@ -1,0 +1,158 @@
+{
+  "entries": [
+    {
+      "expected_decision": "define-veteran-problem",
+      "expected_gate": "venture-problem",
+      "expected_helm_risk": "none",
+      "fact_count": 10,
+      "facts_bytes": 2542,
+      "facts_sha256": "b448d6133ad62c47b65f35c1caee379c62187e77b6e829835bcd6e72a9809848",
+      "required_fact_ids": [
+        "core-problem",
+        "core-customer"
+      ],
+      "scale": 10,
+      "scenario_id": "normal-10"
+    },
+    {
+      "expected_decision": "define-veteran-problem",
+      "expected_gate": "venture-problem",
+      "expected_helm_risk": "none",
+      "fact_count": 100,
+      "facts_bytes": 25794,
+      "facts_sha256": "5160d0fa37f76e0899d99237524f05fe4563f71901a79b9453914730d0c6d0a7",
+      "required_fact_ids": [
+        "core-problem",
+        "core-customer"
+      ],
+      "scale": 100,
+      "scenario_id": "normal-100"
+    },
+    {
+      "expected_decision": "define-veteran-problem",
+      "expected_gate": "venture-problem",
+      "expected_helm_risk": "none",
+      "fact_count": 1000,
+      "facts_bytes": 259250,
+      "facts_sha256": "15274a1b2c8686f987adbb819006560364e2bfba0fd0f330e509b487969ce158",
+      "required_fact_ids": [
+        "core-problem",
+        "core-customer"
+      ],
+      "scale": 1000,
+      "scenario_id": "normal-1000"
+    },
+    {
+      "expected_decision": "define-veteran-problem",
+      "expected_gate": "venture-problem",
+      "expected_helm_risk": "none",
+      "fact_count": 10000,
+      "facts_bytes": 2602846,
+      "facts_sha256": "6b68020bd71ff6a9e467c9aed4fdee0b9ea69ce3487cd4d4a2acae98f0a464fd",
+      "required_fact_ids": [
+        "core-problem",
+        "core-customer"
+      ],
+      "scale": 10000,
+      "scenario_id": "normal-10000"
+    },
+    {
+      "expected_decision": "define-veteran-problem",
+      "expected_gate": "venture-problem",
+      "expected_helm_risk": "none",
+      "fact_count": 100000,
+      "facts_bytes": 26128842,
+      "facts_sha256": "efcadd158988e23997a9fe4d3baadf2a8aed5b2726b521a947445daca210adfc",
+      "required_fact_ids": [
+        "core-problem",
+        "core-customer"
+      ],
+      "scale": 100000,
+      "scenario_id": "normal-100000"
+    },
+    {
+      "expected_decision": "verify-employment-restriction",
+      "expected_gate": "employment-restriction",
+      "expected_helm_risk": "Dependency is outside the active Slice and absent from the installed dependency map.",
+      "fact_count": 1000,
+      "facts_bytes": 259324,
+      "facts_sha256": "ef6a17a3e99512b6292d32208184e9153a8350d4243a29cedbf18bf68bfe352c",
+      "required_fact_ids": [
+        "adv-employment-restriction"
+      ],
+      "scale": 1000,
+      "scenario_id": "hidden-dependency"
+    },
+    {
+      "expected_decision": "resolve-location-deadline",
+      "expected_gate": "location-deadline",
+      "expected_helm_risk": "The current model projection does not include the separately exposed Impact item.",
+      "fact_count": 1000,
+      "facts_bytes": 259273,
+      "facts_sha256": "f6d2d6b9ba4a43e8ba393096fcafe8ce234b0825796a57709577747b38a8d80d",
+      "required_fact_ids": [
+        "adv-location-deadline"
+      ],
+      "scale": 1000,
+      "scenario_id": "cross-domain-collision"
+    },
+    {
+      "expected_decision": "revalidate-certification",
+      "expected_gate": "renew-certification",
+      "expected_helm_risk": "The stale fact is intentionally ineligible as ordinary evidence and requires Impact revalidation.",
+      "fact_count": 1000,
+      "facts_bytes": 259318,
+      "facts_sha256": "cd7d391eee1668173273c456be47d2108c685749c1c8a3a8140b044194400c91",
+      "required_fact_ids": [
+        "adv-expiring-certification"
+      ],
+      "scale": 1000,
+      "scenario_id": "temporal-activation"
+    },
+    {
+      "expected_decision": "resolve-authority-conflict",
+      "expected_gate": "authority-conflict",
+      "expected_helm_risk": "none",
+      "fact_count": 1000,
+      "facts_bytes": 259291,
+      "facts_sha256": "5e2f499af373f09587402025a867aca978239ca6ae363a0611014a29e2020ced",
+      "required_fact_ids": [
+        "adv-authority-conflict"
+      ],
+      "scale": 1000,
+      "scenario_id": "conflict"
+    },
+    {
+      "expected_decision": "verify-employment-restriction",
+      "expected_gate": "employment-restriction",
+      "expected_helm_risk": "A one-condition model projection is expected to miss simultaneous material dependencies.",
+      "fact_count": 1000,
+      "facts_bytes": 259399,
+      "facts_sha256": "54162c6db1b94aad6c15d33576dc458ab3ce2cfc25a73480ec6274db4d742772",
+      "required_fact_ids": [
+        "adv-employment-restriction",
+        "adv-location-deadline",
+        "adv-expiring-certification"
+      ],
+      "scale": 1000,
+      "scenario_id": "dense-dependency"
+    },
+    {
+      "expected_decision": "define-veteran-problem",
+      "expected_gate": "venture-problem",
+      "expected_helm_risk": "Selection overhead may exceed the value of removing a few facts.",
+      "fact_count": 10,
+      "facts_bytes": 2542,
+      "facts_sha256": "b448d6133ad62c47b65f35c1caee379c62187e77b6e829835bcd6e72a9809848",
+      "required_fact_ids": [
+        "core-problem",
+        "core-customer"
+      ],
+      "scale": 10,
+      "scenario_id": "cheap-context"
+    }
+  ],
+  "generator": "benchmark/run_sparse_activation_benchmark.py",
+  "normal_fact_pattern": "4 fixed consequential facts followed by deterministic seeded realistic filler; 4/5 filler records intersect a plausible decision Slice and 1/5 is unrelated",
+  "seed": 20260826
+}

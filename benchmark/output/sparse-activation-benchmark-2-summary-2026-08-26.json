@@ -1,0 +1,1830 @@
+{
+  "groups": [
+    {
+      "active_context_facts_mean": 9.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "baseline",
+      "context_bytes_mean": 4049.0,
+      "correct_rate": 1.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 0.0015000005078036338,
+        "mean": 0.0012800002878066152,
+        "median": 0.0012999989849049598,
+        "min": 0.0011000010999850929,
+        "stdev": 0.00017888497000091987
+      },
+      "dependency_recall_mean": 1.0,
+      "end_to_end_ms": {
+        "max": 4344.824100000551,
+        "mean": 2747.8080400025647,
+        "median": 2367.536600006133,
+        "min": 1987.855400002445,
+        "stdev": 928.8074742693898
+      },
+      "failed": 0,
+      "false_activations_mean": 1.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 10,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": 1446.0,
+        "mean": 1446.0,
+        "median": 1446.0,
+        "min": 1446.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 1.0,
+      "model_cost_usd_mean": 0.00138975,
+      "model_latency_ms": {
+        "max": 4344.708000000537,
+        "mean": 2747.6990400013165,
+        "median": 2367.4426000034146,
+        "min": 1987.7331999996386,
+        "stdev": 928.8059903664816
+      },
+      "output_tokens": {
+        "max": 85.0,
+        "mean": 81.4,
+        "median": 81.0,
+        "min": 78.0,
+        "stdev": 3.0495901363953815
+      },
+      "preprocessing_ms": {
+        "max": 0.048800000513438135,
+        "mean": 0.04145999992033467,
+        "median": 0.04239999907440506,
+        "min": 0.034500000765547156,
+        "stdev": 0.005832494935605681
+      },
+      "retrieval_ms": {
+        "max": 0.07230000119307078,
+        "mean": 0.0662600010400638,
+        "median": 0.06969999958528206,
+        "min": 0.058400000852998346,
+        "stdev": 0.006108436120466669
+      },
+      "scenario_id": "cheap-context",
+      "total_system_cost_usd_mean": 0.0014629669130600679,
+      "total_tokens": {
+        "max": 1839.0,
+        "mean": 1606.8,
+        "median": 1531.0,
+        "min": 1524.0,
+        "stdev": 135.02296101034077
+      }
+    },
+    {
+      "active_context_facts_mean": 8.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "helm",
+      "context_bytes_mean": 5768.0,
+      "correct_rate": 1.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 0.012299999070819467,
+        "mean": 0.01078000059351325,
+        "median": 0.010300002031726763,
+        "min": 0.00960000033956021,
+        "stdev": 0.0011606030856020782
+      },
+      "dependency_recall_mean": 1.0,
+      "end_to_end_ms": {
+        "max": 8980.179800004407,
+        "mean": 3781.8139200040605,
+        "median": 2513.474100000167,
+        "min": 1618.7780000072962,
+        "stdev": 2985.2178609475864
+      },
+      "failed": 0,
+      "false_activations_mean": 2.0,
+      "frontier_selection_ms": {
+        "max": 0.08150000212481245,
+        "mean": 0.07450000121025369,
+        "median": 0.07499999992433004,
+        "min": 0.06830000347690657,
+        "stdev": 0.005949369857431855
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 10,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": 1993.0,
+        "mean": 1993.0,
+        "median": 1993.0,
+        "min": 1993.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 2.0,
+      "model_cost_usd_mean": 0.0018127500000000001,
+      "model_latency_ms": {
+        "max": 8979.837599999883,
+        "mean": 3781.5677600003255,
+        "median": 2513.261000000057,
+        "min": 1618.5493000011775,
+        "stdev": 2985.1678533318823
+      },
+      "output_tokens": {
+        "max": 86.0,
+        "mean": 84.8,
+        "median": 85.0,
+        "min": 82.0,
+        "stdev": 1.6431676725154984
+      },
+      "preprocessing_ms": {
+        "max": 0.06750000102329068,
+        "mean": 0.05490000112331472,
+        "median": 0.05310000051395036,
+        "min": 0.046799999836366624,
+        "stdev": 0.008100308663432821
+      },
+      "retrieval_ms": {
+        "max": 0.18940000154543668,
+        "mean": 0.10598000080790371,
+        "median": 0.08800000068731606,
+        "min": 0.07779999941703863,
+        "stdev": 0.046955958532703665
+      },
+      "scenario_id": "cheap-context",
+      "total_system_cost_usd_mean": 0.0019133680688801075,
+      "total_tokens": {
+        "max": 2079.0,
+        "mean": 2077.8,
+        "median": 2078.0,
+        "min": 2075.0,
+        "stdev": 1.6431676725154984
+      }
+    },
+    {
+      "active_context_facts_mean": 384.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "baseline",
+      "context_bytes_mean": 104405.0,
+      "correct_rate": 1.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 0.0038000034692231566,
+        "mean": 0.0029400005587376654,
+        "median": 0.0030000010156072676,
+        "min": 0.0021999985619913787,
+        "stdev": 0.0005813795980411819
+      },
+      "dependency_recall_mean": 1.0,
+      "end_to_end_ms": {
+        "max": 3014.153100004478,
+        "mean": 2598.7684200008516,
+        "median": 2541.173499997967,
+        "min": 2312.940999996499,
+        "stdev": 262.51096275100247
+      },
+      "failed": 0,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 2.0,
+      "input_tokens": {
+        "max": 24872.0,
+        "mean": 24872.0,
+        "median": 24872.0,
+        "min": 24872.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 616.0,
+      "model_cost_usd_mean": 0.018923999999999996,
+      "model_latency_ms": {
+        "max": 3005.712099999073,
+        "mean": 2591.2314199995308,
+        "median": 2533.3188000004156,
+        "min": 2305.6728999981715,
+        "stdev": 262.0188858320249
+      },
+      "output_tokens": {
+        "max": 92.0,
+        "mean": 72.0,
+        "median": 68.0,
+        "min": 64.0,
+        "stdev": 11.40175425099138
+      },
+      "preprocessing_ms": {
+        "max": 0.6514000015158672,
+        "mean": 0.6063000000722241,
+        "median": 0.5996999971102923,
+        "min": 0.5803000021842308,
+        "stdev": 0.02969570708260787
+      },
+      "retrieval_ms": {
+        "max": 7.78580000041984,
+        "mean": 6.9277600006898865,
+        "median": 6.75260000207345,
+        "min": 6.201700001838617,
+        "stdev": 0.6079068779683514
+      },
+      "scenario_id": "conflict",
+      "total_system_cost_usd_mean": 0.01899326736313002,
+      "total_tokens": {
+        "max": 24964.0,
+        "mean": 24944.0,
+        "median": 24940.0,
+        "min": 24936.0,
+        "stdev": 11.40175425099138
+      }
+    },
+    {
+      "active_context_facts_mean": 1.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "helm",
+      "context_bytes_mean": 4368.0,
+      "correct_rate": 1.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 0.25269999969168566,
+        "mean": 0.17435999980079941,
+        "median": 0.16390000018873252,
+        "min": 0.12789999891538173,
+        "stdev": 0.04859668775239576
+      },
+      "dependency_recall_mean": 1.0,
+      "end_to_end_ms": {
+        "max": 2644.0909000011743,
+        "mean": 2081.4008400011517,
+        "median": 2036.3035000045784,
+        "min": 1738.2366999991063,
+        "stdev": 337.59779824059126
+      },
+      "failed": 0,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.19180000163032673,
+        "mean": 0.1840400007495191,
+        "median": 0.18869999985327013,
+        "min": 0.16770000001997687,
+        "stdev": 0.009877145426586303
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": 1638.0,
+        "mean": 1638.0,
+        "median": 1638.0,
+        "min": 1638.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 999.0,
+      "model_cost_usd_mean": 0.001482,
+      "model_latency_ms": {
+        "max": 2642.5683999987086,
+        "mean": 2079.835699999967,
+        "median": 2034.7217000016826,
+        "min": 1736.8048000025738,
+        "stdev": 337.5921786694917
+      },
+      "output_tokens": {
+        "max": 85.0,
+        "mean": 67.6,
+        "median": 68.0,
+        "min": 54.0,
+        "stdev": 11.414902540100814
+      },
+      "preprocessing_ms": {
+        "max": 0.05100000271340832,
+        "mean": 0.044320000597508624,
+        "median": 0.04239999907440506,
+        "min": 0.042100000428035855,
+        "stdev": 0.0037943392759322157
+      },
+      "retrieval_ms": {
+        "max": 1.268500000151107,
+        "mean": 1.1624200000369456,
+        "median": 1.1732999992091209,
+        "min": 1.0785999984364025,
+        "stdev": 0.0739207482960703
+      },
+      "scenario_id": "conflict",
+      "total_system_cost_usd_mean": 0.0015375571222600304,
+      "total_tokens": {
+        "max": 1723.0,
+        "mean": 1705.6,
+        "median": 1706.0,
+        "min": 1692.0,
+        "stdev": 11.414902540100814
+      }
+    },
+    {
+      "active_context_facts_mean": 384.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "baseline",
+      "context_bytes_mean": 104620.0,
+      "correct_rate": 1.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 0.08100000195554458,
+        "mean": 0.04095999975106679,
+        "median": 0.03469999865046702,
+        "min": 0.01939999856404029,
+        "stdev": 0.02471888061145149
+      },
+      "dependency_recall_mean": 1.0,
+      "end_to_end_ms": {
+        "max": 23836.614600000757,
+        "mean": 7597.731939999358,
+        "median": 3253.870900000038,
+        "min": 2914.16609999942,
+        "stdev": 9115.342545830625
+      },
+      "failed": 0,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 2.0,
+      "input_tokens": {
+        "max": 24947.0,
+        "mean": 24947.0,
+        "median": 24947.0,
+        "min": 24947.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 616.0,
+      "model_cost_usd_mean": 0.01899825,
+      "model_latency_ms": {
+        "max": 23829.27969999946,
+        "mean": 7590.464119998796,
+        "median": 3246.2711999978637,
+        "min": 2907.0233999991615,
+        "stdev": 9115.33566929388
+      },
+      "output_tokens": {
+        "max": 97.0,
+        "mean": 76.8,
+        "median": 72.0,
+        "min": 69.0,
+        "stdev": 11.606032913963324
+      },
+      "preprocessing_ms": {
+        "max": 0.8321999994223006,
+        "mean": 0.6946000001335051,
+        "median": 0.640500002191402,
+        "min": 0.5846999993082136,
+        "stdev": 0.10958088310301685
+      },
+      "retrieval_ms": {
+        "max": 6.987000000663102,
+        "mean": 6.532260000676615,
+        "median": 6.497900001704693,
+        "min": 6.022400000802008,
+        "stdev": 0.3521044347879465
+      },
+      "scenario_id": "cross-domain-collision",
+      "total_system_cost_usd_mean": 0.01919998989640998,
+      "total_tokens": {
+        "max": 25291.0,
+        "mean": 25078.6,
+        "median": 25023.0,
+        "min": 25016.0,
+        "stdev": 119.24051324948245
+      }
+    },
+    {
+      "active_context_facts_mean": 1.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "helm",
+      "context_bytes_mean": 4384.0,
+      "correct_rate": 1.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 1.1567000001377892,
+        "mean": 0.36150000014458783,
+        "median": 0.15859999984968454,
+        "min": 0.121900000522146,
+        "stdev": 0.44599093609489215
+      },
+      "dependency_recall_mean": 1.0,
+      "end_to_end_ms": {
+        "max": 3833.55059999667,
+        "mean": 2735.093319997395,
+        "median": 2596.9463999972504,
+        "min": 1870.2921000040078,
+        "stdev": 713.5129128791446
+      },
+      "failed": 0,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.1894999986689072,
+        "mean": 0.18153999917558394,
+        "median": 0.18419999832985923,
+        "min": 0.1646999990043696,
+        "stdev": 0.010037579812317936
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": 1697.0,
+        "mean": 1697.0,
+        "median": 1697.0,
+        "min": 1697.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 999.0,
+      "model_cost_usd_mean": 0.0015615,
+      "model_latency_ms": {
+        "max": 3830.8077000001504,
+        "mean": 2733.016759999009,
+        "median": 2595.2962999981537,
+        "min": 1868.150099999184,
+        "stdev": 713.2129334580875
+      },
+      "output_tokens": {
+        "max": 79.0,
+        "mean": 77.0,
+        "median": 78.0,
+        "min": 74.0,
+        "stdev": 2.0
+      },
+      "preprocessing_ms": {
+        "max": 0.09929999941959977,
+        "mean": 0.05767999973613769,
+        "median": 0.047999998059822246,
+        "min": 0.04199999966658652,
+        "stdev": 0.023553704512199302
+      },
+      "retrieval_ms": {
+        "max": 1.8616999986988958,
+        "mean": 1.4758399993297644,
+        "median": 1.3486999996530358,
+        "min": 1.2033999992127065,
+        "stdev": 0.2818239746198222
+      },
+      "scenario_id": "cross-domain-collision",
+      "total_system_cost_usd_mean": 0.001634379972979931,
+      "total_tokens": {
+        "max": 1776.0,
+        "mean": 1774.0,
+        "median": 1775.0,
+        "min": 1771.0,
+        "stdev": 2.0
+      }
+    },
+    {
+      "active_context_facts_mean": 384.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "baseline",
+      "context_bytes_mean": 105574.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.046200002543628216,
+        "mean": 0.029900001391069964,
+        "median": 0.02800000220304355,
+        "min": 0.022399999579647556,
+        "stdev": 0.00964105885377601
+      },
+      "dependency_recall_mean": 0.3333333333333333,
+      "end_to_end_ms": {
+        "max": 4859.174399996846,
+        "mean": 3491.57989999876,
+        "median": 3690.2435000010883,
+        "min": 2486.6761999983282,
+        "stdev": 948.9509066582796
+      },
+      "failed": 0,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 4.0,
+      "input_tokens": {
+        "max": 25176.0,
+        "mean": 25176.0,
+        "median": 25176.0,
+        "min": 25176.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 616.0,
+      "model_cost_usd_mean": 0.019150499999999997,
+      "model_latency_ms": {
+        "max": 4852.461399997992,
+        "mean": 3484.1809999983525,
+        "median": 3682.6819999987492,
+        "min": 2479.0646999972523,
+        "stdev": 949.1929317642883
+      },
+      "output_tokens": {
+        "max": 78.0,
+        "mean": 71.6,
+        "median": 72.0,
+        "min": 60.0,
+        "stdev": 7.162401831787993
+      },
+      "preprocessing_ms": {
+        "max": 0.6692999995721038,
+        "mean": 0.6324599991785362,
+        "median": 0.6440999968617689,
+        "min": 0.583999997616047,
+        "stdev": 0.03769380631198023
+      },
+      "retrieval_ms": {
+        "max": 7.20539999747416,
+        "mean": 6.736539999837987,
+        "median": 6.852499998785788,
+        "min": 6.105899999965914,
+        "stdev": 0.4119527790632227
+      },
+      "scenario_id": "dense-dependency",
+      "total_system_cost_usd_mean": 0.019243426867349967,
+      "total_tokens": {
+        "max": 25254.0,
+        "mean": 25247.6,
+        "median": 25248.0,
+        "min": 25236.0,
+        "stdev": 7.162401831787993
+      }
+    },
+    {
+      "active_context_facts_mean": 1.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "helm",
+      "context_bytes_mean": 4450.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 0.20189999850117601,
+        "mean": 0.15133999913814478,
+        "median": 0.15029999849502929,
+        "min": 0.12369999967631884,
+        "stdev": 0.031019074419289805
+      },
+      "dependency_recall_mean": 0.3333333333333333,
+      "end_to_end_ms": {
+        "max": 4077.040500000294,
+        "mean": 2402.6876799965976,
+        "median": 2067.437299996527,
+        "min": 1596.0529999974824,
+        "stdev": 1007.0894592402933
+      },
+      "failed": 0,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.19830000019283034,
+        "mean": 0.18175999939558096,
+        "median": 0.1778999976522755,
+        "min": 0.16289999985019676,
+        "stdev": 0.013859942677972872
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": 1702.0,
+        "mean": 1702.0,
+        "median": 1702.0,
+        "min": 1702.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 999.0,
+      "model_cost_usd_mean": 0.0015397499999999999,
+      "model_latency_ms": {
+        "max": 4075.457099999767,
+        "mean": 2400.9130799997365,
+        "median": 2065.468199998577,
+        "min": 1594.1182000024128,
+        "stdev": 1007.1777670560499
+      },
+      "output_tokens": {
+        "max": 73.0,
+        "mean": 70.2,
+        "median": 70.0,
+        "min": 67.0,
+        "stdev": 2.3874672772626644
+      },
+      "preprocessing_ms": {
+        "max": 0.07689999983995222,
+        "mean": 0.05353999949875288,
+        "median": 0.048999998398358,
+        "min": 0.04239999907440506,
+        "stdev": 0.013442209967413927
+      },
+      "retrieval_ms": {
+        "max": 1.5791999976499937,
+        "mean": 1.3879599988285918,
+        "median": 1.4026999997440726,
+        "min": 1.175699999294011,
+        "stdev": 0.191061280109923
+      },
+      "scenario_id": "dense-dependency",
+      "total_system_cost_usd_mean": 0.0016038212235199097,
+      "total_tokens": {
+        "max": 1775.0,
+        "mean": 1772.2,
+        "median": 1772.0,
+        "min": 1769.0,
+        "stdev": 2.3874672772626644
+      }
+    },
+    {
+      "active_context_facts_mean": 384.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "baseline",
+      "context_bytes_mean": 104259.0,
+      "correct_rate": 1.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 0.0026999987312592566,
+        "mean": 0.0022600004740525037,
+        "median": 0.0022000021999701858,
+        "min": 0.0018999999156221747,
+        "stdev": 0.0003049582937524861
+      },
+      "dependency_recall_mean": 1.0,
+      "end_to_end_ms": {
+        "max": 5225.612599999295,
+        "mean": 4388.420800000313,
+        "median": 4314.694300002884,
+        "min": 3787.2334999992745,
+        "stdev": 520.9265634102527
+      },
+      "failed": 0,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": 24842.0,
+        "mean": 24842.0,
+        "median": 24842.0,
+        "min": 24842.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 616.0,
+      "model_cost_usd_mean": 0.018914999999999998,
+      "model_latency_ms": {
+        "max": 5218.389199999365,
+        "mean": 4381.211739999708,
+        "median": 4307.568399999582,
+        "min": 3780.415900000662,
+        "stdev": 520.8143845849395
+      },
+      "output_tokens": {
+        "max": 92.0,
+        "mean": 75.6,
+        "median": 72.0,
+        "min": 69.0,
+        "stdev": 9.44986772394196
+      },
+      "preprocessing_ms": {
+        "max": 1.314600001933286,
+        "mean": 0.7857600001443643,
+        "median": 0.6571999983862042,
+        "min": 0.6227999983821064,
+        "stdev": 0.2965486867879625
+      },
+      "retrieval_ms": {
+        "max": 6.627599999774247,
+        "mean": 6.421039999986533,
+        "median": 6.435999999666819,
+        "min": 6.1683999992965255,
+        "stdev": 0.18696029846986933
+      },
+      "scenario_id": "hidden-dependency",
+      "total_system_cost_usd_mean": 0.019031693151200006,
+      "total_tokens": {
+        "max": 25232.0,
+        "mean": 25180.2,
+        "median": 25179.0,
+        "min": 25103.0,
+        "stdev": 50.74150175152486
+      }
+    },
+    {
+      "active_context_facts_mean": 1.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "helm",
+      "context_bytes_mean": 4467.0,
+      "correct_rate": 1.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 0.5485000001499429,
+        "mean": 0.4016400002001319,
+        "median": 0.4138000003877096,
+        "min": 0.28469999961089343,
+        "stdev": 0.10102800558464138
+      },
+      "dependency_recall_mean": 1.0,
+      "end_to_end_ms": {
+        "max": 2536.7752999954973,
+        "mean": 2101.2896599982923,
+        "median": 2014.477500000794,
+        "min": 1772.976500000368,
+        "stdev": 306.5485272350011
+      },
+      "failed": 0,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.33350000012433156,
+        "mean": 0.2375799995206762,
+        "median": 0.19439999960013665,
+        "min": 0.17980000120587647,
+        "stdev": 0.07355339509658362
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": 1704.0,
+        "mean": 1704.0,
+        "median": 1704.0,
+        "min": 1704.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 999.0,
+      "model_cost_usd_mean": 0.0015495,
+      "model_latency_ms": {
+        "max": 2533.684299996821,
+        "mean": 2098.9913199999137,
+        "median": 2012.513300000137,
+        "min": 1771.2458000023616,
+        "stdev": 306.10945133558783
+      },
+      "output_tokens": {
+        "max": 77.0,
+        "mean": 72.4,
+        "median": 72.0,
+        "min": 70.0,
+        "stdev": 2.8809720581775866
+      },
+      "preprocessing_ms": {
+        "max": 0.19669999892357737,
+        "mean": 0.08049999960348941,
+        "median": 0.051300001359777525,
+        "min": 0.04739999712910503,
+        "stdev": 0.06507906697722846
+      },
+      "retrieval_ms": {
+        "max": 2.4479999992763624,
+        "mean": 1.5786199990543537,
+        "median": 1.3679000003321562,
+        "min": 1.0694999982661102,
+        "stdev": 0.542449911964758
+      },
+      "scenario_id": "hidden-dependency",
+      "total_system_cost_usd_mean": 0.0016055841759899548,
+      "total_tokens": {
+        "max": 1781.0,
+        "mean": 1776.4,
+        "median": 1776.0,
+        "min": 1774.0,
+        "stdev": 2.8809720581775866
+      }
+    },
+    {
+      "active_context_facts_mean": 9.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "baseline",
+      "context_bytes_mean": 4049.0,
+      "correct_rate": 1.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 0.007099999493220821,
+        "mean": 0.0025999994250014424,
+        "median": 0.0011999982234556228,
+        "min": 0.0011000010999850929,
+        "stdev": 0.002584569324459152
+      },
+      "dependency_recall_mean": 1.0,
+      "end_to_end_ms": {
+        "max": 5683.605299996998,
+        "mean": 3880.854140000156,
+        "median": 4086.1229999973148,
+        "min": 2428.8980000055744,
+        "stdev": 1265.0852707333468
+      },
+      "failed": 0,
+      "false_activations_mean": 1.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 10,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": 1446.0,
+        "mean": 1446.0,
+        "median": 1446.0,
+        "min": 1446.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 1.0,
+      "model_cost_usd_mean": 0.00138675,
+      "model_latency_ms": {
+        "max": 5683.448200001294,
+        "mean": 3880.742760001158,
+        "median": 4086.02830000018,
+        "min": 2428.8022000000637,
+        "stdev": 1265.0659543830027
+      },
+      "output_tokens": {
+        "max": 82.0,
+        "mean": 80.6,
+        "median": 81.0,
+        "min": 79.0,
+        "stdev": 1.51657508881031
+      },
+      "preprocessing_ms": {
+        "max": 0.052699997468153015,
+        "mean": 0.039319999632425606,
+        "median": 0.035799999750452116,
+        "min": 0.03409999771974981,
+        "stdev": 0.007827961694631139
+      },
+      "retrieval_ms": {
+        "max": 0.09729999874252826,
+        "mean": 0.06945999994059093,
+        "median": 0.060500002291519195,
+        "min": 0.05949999831500463,
+        "stdev": 0.01608440196859722
+      },
+      "scenario_id": "normal-10",
+      "total_system_cost_usd_mean": 0.001489992634710004,
+      "total_tokens": {
+        "max": 1797.0,
+        "mean": 1669.6,
+        "median": 1740.0,
+        "min": 1525.0,
+        "stdev": 133.56571416347833
+      }
+    },
+    {
+      "active_context_facts_mean": 8.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "helm",
+      "context_bytes_mean": 5768.0,
+      "correct_rate": 1.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 0.014199998986441642,
+        "mean": 0.012060000153724104,
+        "median": 0.011500000255182385,
+        "min": 0.009700001101009548,
+        "stdev": 0.0019346828712175942
+      },
+      "dependency_recall_mean": 1.0,
+      "end_to_end_ms": {
+        "max": 2440.78840000293,
+        "mean": 2134.501280002587,
+        "median": 2139.5292000015615,
+        "min": 1865.2089000024716,
+        "stdev": 237.31844219354937
+      },
+      "failed": 0,
+      "false_activations_mean": 1.8,
+      "frontier_selection_ms": {
+        "max": 0.145500001963228,
+        "mean": 0.09620000055292621,
+        "median": 0.08929999967222102,
+        "min": 0.07159999950090423,
+        "stdev": 0.028587847972625584
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 10,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": 1993.0,
+        "mean": 1993.0,
+        "median": 1993.0,
+        "min": 1993.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 2.0,
+      "model_cost_usd_mean": 0.00181575,
+      "model_latency_ms": {
+        "max": 2440.583700001298,
+        "mean": 2134.242340000492,
+        "median": 2139.268999999331,
+        "min": 1864.9120000009134,
+        "stdev": 237.3581458564354
+      },
+      "output_tokens": {
+        "max": 89.0,
+        "mean": 85.6,
+        "median": 86.0,
+        "min": 82.0,
+        "stdev": 2.701851217221259
+      },
+      "preprocessing_ms": {
+        "max": 0.05690000034519471,
+        "mean": 0.05220000020926818,
+        "median": 0.051700000767596066,
+        "min": 0.04740000076708384,
+        "stdev": 0.003463379832369221
+      },
+      "retrieval_ms": {
+        "max": 0.14000000010128133,
+        "mean": 0.09848000117926858,
+        "median": 0.0895000011951197,
+        "min": 0.0760000002628658,
+        "stdev": 0.024743422982891075
+      },
+      "scenario_id": "normal-10",
+      "total_system_cost_usd_mean": 0.0018727142839200686,
+      "total_tokens": {
+        "max": 2082.0,
+        "mean": 2078.6,
+        "median": 2079.0,
+        "min": 2075.0,
+        "stdev": 2.701851217221259
+      }
+    },
+    {
+      "active_context_facts_mean": 81.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "baseline",
+      "context_bytes_mean": 22929.0,
+      "correct_rate": 1.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 0.0020000006770715117,
+        "mean": 0.0016600002709310502,
+        "median": 0.0016000012692529708,
+        "min": 0.0012999989849049598,
+        "stdev": 0.0003286341549787353
+      },
+      "dependency_recall_mean": 1.0,
+      "end_to_end_ms": {
+        "max": 3360.2426999968884,
+        "mean": 2682.1511799978907,
+        "median": 2923.1615999997302,
+        "min": 1865.4622999965795,
+        "stdev": 730.2480686211871
+      },
+      "failed": 0,
+      "false_activations_mean": 1.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 100,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": 5818.0,
+        "mean": 5818.0,
+        "median": 5818.0,
+        "min": 5818.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 19.0,
+      "model_cost_usd_mean": 0.0046575,
+      "model_latency_ms": {
+        "max": 3359.516299999086,
+        "mean": 2681.456059998891,
+        "median": 2922.5406000005023,
+        "min": 1864.63289999665,
+        "stdev": 730.2752988136558
+      },
+      "output_tokens": {
+        "max": 83.0,
+        "mean": 78.4,
+        "median": 79.0,
+        "min": 74.0,
+        "stdev": 3.847076812334269
+      },
+      "preprocessing_ms": {
+        "max": 0.18450000061420724,
+        "mean": 0.15513999896938913,
+        "median": 0.15079999866429716,
+        "min": 0.13979999857838266,
+        "stdev": 0.01792130127387305
+      },
+      "retrieval_ms": {
+        "max": 0.6766000005882233,
+        "mean": 0.5383199997595511,
+        "median": 0.4895000020042062,
+        "min": 0.47899999844958074,
+        "stdev": 0.08551845980045865
+      },
+      "scenario_id": "normal-100",
+      "total_system_cost_usd_mean": 0.004728977006269944,
+      "total_tokens": {
+        "max": 5901.0,
+        "mean": 5896.4,
+        "median": 5897.0,
+        "min": 5892.0,
+        "stdev": 3.847076812334269
+      }
+    },
+    {
+      "active_context_facts_mean": 8.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "helm",
+      "context_bytes_mean": 5762.0,
+      "correct_rate": 1.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 0.05919999966863543,
+        "mean": 0.05396000051405281,
+        "median": 0.05820000296807848,
+        "min": 0.04640000042854808,
+        "stdev": 0.006507918453620916
+      },
+      "dependency_recall_mean": 1.0,
+      "end_to_end_ms": {
+        "max": 5149.738999996771,
+        "mean": 2937.0850000006612,
+        "median": 2551.357600001211,
+        "min": 2101.593800005503,
+        "stdev": 1257.3632669500446
+      },
+      "failed": 0,
+      "false_activations_mean": 1.8,
+      "frontier_selection_ms": {
+        "max": 0.21909999850322492,
+        "mean": 0.1740599996992387,
+        "median": 0.17529999968246557,
+        "min": 0.14870000086375512,
+        "stdev": 0.028439900741356158
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 100,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": 1997.0,
+        "mean": 1997.0,
+        "median": 1997.0,
+        "min": 1997.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 92.0,
+      "model_cost_usd_mean": 0.0018037499999999998,
+      "model_latency_ms": {
+        "max": 5149.2767999989155,
+        "mean": 2936.6224400000647,
+        "median": 2550.7944999990286,
+        "min": 2101.1855000033393,
+        "stdev": 1257.3600824883665
+      },
+      "output_tokens": {
+        "max": 86.0,
+        "mean": 81.6,
+        "median": 83.0,
+        "min": 72.0,
+        "stdev": 5.594640292279746
+      },
+      "preprocessing_ms": {
+        "max": 0.05570000212173909,
+        "mean": 0.05180000080144964,
+        "median": 0.05190000229049474,
+        "min": 0.047999998059822246,
+        "stdev": 0.0034095466851995133
+      },
+      "retrieval_ms": {
+        "max": 0.23009999858913943,
+        "mean": 0.18273999958182685,
+        "median": 0.17489999663666822,
+        "min": 0.16260000120382756,
+        "stdev": 0.027360792185610168
+      },
+      "scenario_id": "normal-100",
+      "total_system_cost_usd_mean": 0.0018819827525000175,
+      "total_tokens": {
+        "max": 2083.0,
+        "mean": 2078.6,
+        "median": 2080.0,
+        "min": 2069.0,
+        "stdev": 5.594640292279746
+      }
+    },
+    {
+      "active_context_facts_mean": 384.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "baseline",
+      "context_bytes_mean": 104185.0,
+      "correct_rate": 1.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 0.004499997885432094,
+        "mean": 0.0026999987312592566,
+        "median": 0.0022999993234407157,
+        "min": 0.0021000014385208488,
+        "stdev": 0.0010124221911403197
+      },
+      "dependency_recall_mean": 1.0,
+      "end_to_end_ms": {
+        "max": 9642.498499993962,
+        "mean": 5490.61953999917,
+        "median": 4607.8294000035385,
+        "min": 2907.65420000389,
+        "stdev": 2655.671637198544
+      },
+      "failed": 0,
+      "false_activations_mean": 1.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": 24839.0,
+        "mean": 24839.0,
+        "median": 24839.0,
+        "min": 24839.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 616.0,
+      "model_cost_usd_mean": 0.01898925,
+      "model_latency_ms": {
+        "max": 9635.556299999735,
+        "mean": 5483.368060000794,
+        "median": 4600.533000000723,
+        "min": 2900.6618000021263,
+        "stdev": 2655.7130844652233
+      },
+      "output_tokens": {
+        "max": 112.0,
+        "mean": 96.0,
+        "median": 106.0,
+        "min": 69.0,
+        "stdev": 18.694919095839918
+      },
+      "preprocessing_ms": {
+        "max": 0.9193000005325302,
+        "mean": 0.6933399992703926,
+        "median": 0.6371999988914467,
+        "min": 0.5703999995603226,
+        "stdev": 0.14746587109768247
+      },
+      "retrieval_ms": {
+        "max": 7.025200000498444,
+        "mean": 6.5554400003748015,
+        "median": 6.419700002879836,
+        "min": 6.178899999213172,
+        "stdev": 0.34027633302881705
+      },
+      "scenario_id": "normal-1000",
+      "total_system_cost_usd_mean": 0.019135151417809977,
+      "total_tokens": {
+        "max": 25296.0,
+        "mean": 25173.8,
+        "median": 25193.0,
+        "min": 24923.0,
+        "stdev": 148.75382348027227
+      }
+    },
+    {
+      "active_context_facts_mean": 8.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "helm",
+      "context_bytes_mean": 5783.0,
+      "correct_rate": 1.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 0.8560999995097518,
+        "mean": 0.7148799995775335,
+        "median": 0.7644999968761113,
+        "min": 0.4886999995505903,
+        "stdev": 0.14455560115751673
+      },
+      "dependency_recall_mean": 1.0,
+      "end_to_end_ms": {
+        "max": 2346.9834999996237,
+        "mean": 1936.4596199979133,
+        "median": 1729.5978999973158,
+        "min": 1654.1167999930622,
+        "stdev": 329.00852145718903
+      },
+      "failed": 0,
+      "false_activations_mean": 2.0,
+      "frontier_selection_ms": {
+        "max": 0.2516999993531499,
+        "mean": 0.19929999980377033,
+        "median": 0.19130000146105886,
+        "min": 0.17719999959808774,
+        "stdev": 0.030157668884783443
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": 2001.0,
+        "mean": 2001.0,
+        "median": 2001.0,
+        "min": 2001.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 992.0,
+      "model_cost_usd_mean": 0.0018202500000000003,
+      "model_latency_ms": {
+        "max": 2344.4085999981326,
+        "mean": 1934.0380999994522,
+        "median": 1727.1719999989728,
+        "min": 1652.2694999985106,
+        "stdev": 328.86424522759444
+      },
+      "output_tokens": {
+        "max": 87.0,
+        "mean": 85.2,
+        "median": 86.0,
+        "min": 83.0,
+        "stdev": 2.04939015319192
+      },
+      "preprocessing_ms": {
+        "max": 0.07159999950090423,
+        "mean": 0.061719999939668924,
+        "median": 0.061499998992076144,
+        "min": 0.05669999882229604,
+        "stdev": 0.005985565526614824
+      },
+      "retrieval_ms": {
+        "max": 1.7951000008906703,
+        "mean": 1.4456199991400354,
+        "median": 1.5209000011964235,
+        "min": 1.1246999965806026,
+        "stdev": 0.2605072226399379
+      },
+      "scenario_id": "normal-1000",
+      "total_system_cost_usd_mean": 0.0018719661799299447,
+      "total_tokens": {
+        "max": 2088.0,
+        "mean": 2086.2,
+        "median": 2087.0,
+        "min": 2084.0,
+        "stdev": 2.04939015319192
+      }
+    },
+    {
+      "active_context_facts_mean": 384.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "baseline",
+      "context_bytes_mean": 107018.0,
+      "correct_rate": 1.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 0.0036000019463244826,
+        "mean": 0.002920000406447798,
+        "median": 0.0026000016077887267,
+        "min": 0.0024000000848900527,
+        "stdev": 0.0005805181412277069
+      },
+      "dependency_recall_mean": 1.0,
+      "end_to_end_ms": {
+        "max": 4530.604300001869,
+        "mean": 3732.804900001065,
+        "median": 3585.018300003867,
+        "min": 2646.975100000418,
+        "stdev": 774.8032046376022
+      },
+      "failed": 0,
+      "false_activations_mean": 1.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 10000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": 25630.0,
+        "mean": 25630.0,
+        "median": 25630.0,
+        "min": 25630.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 9616.0,
+      "model_cost_usd_mean": 0.01959975,
+      "model_latency_ms": {
+        "max": 4467.252900001768,
+        "mean": 3662.866000000213,
+        "median": 3514.9950999984867,
+        "min": 2579.8453000024892,
+        "stdev": 778.1568589004316
+      },
+      "output_tokens": {
+        "max": 120.0,
+        "mean": 100.6,
+        "median": 111.0,
+        "min": 73.0,
+        "stdev": 19.449935732541636
+      },
+      "preprocessing_ms": {
+        "max": 0.7398000016110018,
+        "mean": 0.6306199997197837,
+        "median": 0.6126000007498078,
+        "min": 0.5787999980384484,
+        "stdev": 0.06366499958387631
+      },
+      "retrieval_ms": {
+        "max": 84.39670000007027,
+        "mean": 69.30536000072607,
+        "median": 66.51469999997062,
+        "min": 62.770000000455184,
+        "stdev": 8.838955168832591
+      },
+      "scenario_id": "normal-10000",
+      "total_system_cost_usd_mean": 0.01969906932985003,
+      "total_tokens": {
+        "max": 26013.0,
+        "mean": 25832.0,
+        "median": 25750.0,
+        "min": 25718.0,
+        "stdev": 134.16221524706575
+      }
+    },
+    {
+      "active_context_facts_mean": 8.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "helm",
+      "context_bytes_mean": 5765.0,
+      "correct_rate": 1.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 11.639600001217332,
+        "mean": 10.200059998896904,
+        "median": 9.979999998904532,
+        "min": 9.104900000238558,
+        "stdev": 0.9857014605827629
+      },
+      "dependency_recall_mean": 1.0,
+      "end_to_end_ms": {
+        "max": 2592.742699995142,
+        "mean": 2030.8556599979056,
+        "median": 1804.4803999982832,
+        "min": 1752.9012999948463,
+        "stdev": 370.352047577011
+      },
+      "failed": 0,
+      "false_activations_mean": 1.2,
+      "frontier_selection_ms": {
+        "max": 0.37909999809926376,
+        "mean": 0.34486000004108064,
+        "median": 0.35030000071856193,
+        "min": 0.3098999986832496,
+        "stdev": 0.028404805935445126
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 10000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": 2001.0,
+        "mean": 2001.0,
+        "median": 2001.0,
+        "min": 2001.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 9992.0,
+      "model_cost_usd_mean": 0.0017865000000000003,
+      "model_latency_ms": {
+        "max": 2567.563799999334,
+        "mean": 2004.444159999548,
+        "median": 1779.3759999985923,
+        "min": 1727.1602999971947,
+        "stdev": 371.2749866115753
+      },
+      "output_tokens": {
+        "max": 84.0,
+        "mean": 76.2,
+        "median": 79.0,
+        "min": 66.0,
+        "stdev": 7.463243262818116
+      },
+      "preprocessing_ms": {
+        "max": 0.07760000153211877,
+        "mean": 0.0680000004649628,
+        "median": 0.06439999924623407,
+        "min": 0.061899998399894685,
+        "stdev": 0.0065867304115880924
+      },
+      "retrieval_ms": {
+        "max": 18.319700000574812,
+        "mean": 15.798579998954665,
+        "median": 15.612499999406282,
+        "min": 14.088199997786433,
+        "stdev": 1.5451679424225853
+      },
+      "scenario_id": "normal-10000",
+      "total_system_cost_usd_mean": 0.0018407176749899445,
+      "total_tokens": {
+        "max": 2085.0,
+        "mean": 2077.2,
+        "median": 2080.0,
+        "min": 2067.0,
+        "stdev": 7.463243262818116
+      }
+    },
+    {
+      "active_context_facts_mean": 384.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "baseline",
+      "context_bytes_mean": 107019.0,
+      "correct_rate": 1.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 0.00419999923906289,
+        "mean": 0.0036999990697950125,
+        "median": 0.0036999990697950125,
+        "min": 0.0030999981390777975,
+        "stdev": 0.0005049754899132533
+      },
+      "dependency_recall_mean": 1.0,
+      "end_to_end_ms": {
+        "max": 7514.373699999851,
+        "mean": 4872.201719998702,
+        "median": 3726.766600000701,
+        "min": 3506.8739999987883,
+        "stdev": 1807.8462723332414
+      },
+      "failed": 0,
+      "false_activations_mean": 1.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 100000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": 25631.0,
+        "mean": 25631.0,
+        "median": 25631.0,
+        "min": 25631.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 99616.0,
+      "model_cost_usd_mean": 0.019599750000000003,
+      "model_latency_ms": {
+        "max": 6814.395299999887,
+        "mean": 4172.486059999937,
+        "median": 3032.9576000003726,
+        "min": 2804.1406000011193,
+        "stdev": 1806.9261423454054
+      },
+      "output_tokens": {
+        "max": 118.0,
+        "mean": 100.4,
+        "median": 112.0,
+        "min": 78.0,
+        "stdev": 19.667231630303235
+      },
+      "preprocessing_ms": {
+        "max": 0.8123000006889924,
+        "mean": 0.6504000004497357,
+        "median": 0.6193000008352101,
+        "min": 0.5990999998175539,
+        "stdev": 0.09114312930426371
+      },
+      "retrieval_ms": {
+        "max": 701.9173999979103,
+        "mean": 699.0615599992452,
+        "median": 699.376000000484,
+        "min": 693.1855000002543,
+        "stdev": 3.5618151815685906
+      },
+      "scenario_id": "normal-100000",
+      "total_system_cost_usd_mean": 0.019729263345579968,
+      "total_tokens": {
+        "max": 26035.0,
+        "mean": 25796.6,
+        "median": 25745.0,
+        "min": 25711.0,
+        "stdev": 134.12978789217553
+      }
+    },
+    {
+      "active_context_facts_mean": 8.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "helm",
+      "context_bytes_mean": 5781.0,
+      "correct_rate": 1.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 142.9236999974819,
+        "mean": 138.54456000044593,
+        "median": 137.97060000069905,
+        "min": 135.3084000002127,
+        "stdev": 2.7744436715194998
+      },
+      "dependency_recall_mean": 1.0,
+      "end_to_end_ms": {
+        "max": 4813.739199998963,
+        "mean": 3476.9319000006362,
+        "median": 3510.861599999771,
+        "min": 2208.8989000003494,
+        "stdev": 1036.5313331483162
+      },
+      "failed": 0,
+      "false_activations_mean": 2.0,
+      "frontier_selection_ms": {
+        "max": 3.6705000020447187,
+        "mean": 2.6261799997882918,
+        "median": 2.6575999982014764,
+        "min": 1.8784999992931262,
+        "stdev": 0.6807240912158085
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 100000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": 2008.0,
+        "mean": 2008.0,
+        "median": 2008.0,
+        "min": 2008.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 99992.0,
+      "model_cost_usd_mean": 0.0018262500000000002,
+      "model_latency_ms": {
+        "max": 4479.516700001113,
+        "mean": 3146.829119999893,
+        "median": 3184.6970000005967,
+        "min": 1883.2830999999715,
+        "stdev": 1033.9162157151225
+      },
+      "output_tokens": {
+        "max": 89.0,
+        "mean": 85.4,
+        "median": 87.0,
+        "min": 79.0,
+        "stdev": 3.847076812334269
+      },
+      "preprocessing_ms": {
+        "max": 0.0911999995878432,
+        "mean": 0.07802000036463141,
+        "median": 0.07589999950141646,
+        "min": 0.07170000026235357,
+        "stdev": 0.007651600841117397
+      },
+      "retrieval_ms": {
+        "max": 191.17570000162232,
+        "mean": 188.85402000014437,
+        "median": 188.49190000037197,
+        "min": 185.97109999973327,
+        "stdev": 2.068305978330335
+      },
+      "scenario_id": "normal-100000",
+      "total_system_cost_usd_mean": 0.001918788695350017,
+      "total_tokens": {
+        "max": 2097.0,
+        "mean": 2093.4,
+        "median": 2095.0,
+        "min": 2087.0,
+        "stdev": 3.847076812334269
+      }
+    },
+    {
+      "active_context_facts_mean": 384.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "baseline",
+      "context_bytes_mean": 104668.0,
+      "correct_rate": 1.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 0.02479999966453761,
+        "mean": 0.02294000005349517,
+        "median": 0.023200002033263445,
+        "min": 0.01939999856404029,
+        "stdev": 0.0021326046718557873
+      },
+      "dependency_recall_mean": 1.0,
+      "end_to_end_ms": {
+        "max": 5537.960199999361,
+        "mean": 3855.590340001072,
+        "median": 3422.9347000000416,
+        "min": 3179.4303999995464,
+        "stdev": 984.5882340527329
+      },
+      "failed": 0,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 2.0,
+      "input_tokens": {
+        "max": 24956.0,
+        "mean": 24956.0,
+        "median": 24956.0,
+        "min": 24956.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 616.0,
+      "model_cost_usd_mean": 0.018975749999999996,
+      "model_latency_ms": {
+        "max": 5530.815699999948,
+        "mean": 3848.496420000447,
+        "median": 3416.0321000017575,
+        "min": 3172.1701999995275,
+        "stdev": 984.579837540951
+      },
+      "output_tokens": {
+        "max": 72.0,
+        "mean": 69.0,
+        "median": 70.0,
+        "min": 66.0,
+        "stdev": 2.449489742783178
+      },
+      "preprocessing_ms": {
+        "max": 0.8013000006030779,
+        "mean": 0.6954200005566236,
+        "median": 0.6642000007559545,
+        "min": 0.5959000009170268,
+        "stdev": 0.0848444279214691
+      },
+      "retrieval_ms": {
+        "max": 6.573099999513943,
+        "mean": 6.375560000014957,
+        "median": 6.4191000019491185,
+        "min": 6.11879999996745,
+        "stdev": 0.1697886422673045
+      },
+      "scenario_id": "temporal-activation",
+      "total_system_cost_usd_mean": 0.019078323144010027,
+      "total_tokens": {
+        "max": 25304.0,
+        "mean": 25212.0,
+        "median": 25236.0,
+        "min": 25023.0,
+        "stdev": 109.7565487795603
+      }
+    },
+    {
+      "active_context_facts_mean": 1.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 5,
+      "condition": "helm",
+      "context_bytes_mean": 4446.0,
+      "correct_rate": 1.0,
+      "decision_correct_rate": 1.0,
+      "dependency_lookup_ms": {
+        "max": 0.30109999715932645,
+        "mean": 0.21081999948364682,
+        "median": 0.1742999993439298,
+        "min": 0.1233000002685003,
+        "stdev": 0.07668804952120525
+      },
+      "dependency_recall_mean": 1.0,
+      "end_to_end_ms": {
+        "max": 2287.1594000025652,
+        "mean": 2006.4572600007523,
+        "median": 2106.859000003169,
+        "min": 1547.3092999927758,
+        "stdev": 282.1227727733354
+      },
+      "failed": 0,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.3618000009737443,
+        "mean": 0.22046000012778677,
+        "median": 0.18709999858401716,
+        "min": 0.17120000120485201,
+        "stdev": 0.07992645414376078
+      },
+      "gate_correct_rate": 1.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": 1711.0,
+        "mean": 1711.0,
+        "median": 1711.0,
+        "min": 1711.0,
+        "stdev": 0.0
+      },
+      "latent_facts_mean": 999.0,
+      "model_cost_usd_mean": 0.00155775,
+      "model_latency_ms": {
+        "max": 2285.138300001563,
+        "mean": 2004.6306000003824,
+        "median": 2105.088899999828,
+        "min": 1545.439499997883,
+        "stdev": 282.06565872312456
+      },
+      "output_tokens": {
+        "max": 76.0,
+        "mean": 73.2,
+        "median": 73.0,
+        "min": 71.0,
+        "stdev": 1.9235384061671346
+      },
+      "preprocessing_ms": {
+        "max": 0.06690000009257346,
+        "mean": 0.05286000086925924,
+        "median": 0.050400001782691106,
+        "min": 0.046200002543628216,
+        "stdev": 0.008135600470608273
+      },
+      "retrieval_ms": {
+        "max": 1.4414999968721531,
+        "mean": 1.3425199998891912,
+        "median": 1.4162000006763265,
+        "min": 1.1045999999623746,
+        "stdev": 0.13985641520202297
+      },
+      "scenario_id": "temporal-activation",
+      "total_system_cost_usd_mean": 0.0016113211173900202,
+      "total_tokens": {
+        "max": 1787.0,
+        "mean": 1784.2,
+        "median": 1784.0,
+        "min": 1782.0,
+        "stdev": 1.9235384061671346
+      }
+    }
+  ]
+}
