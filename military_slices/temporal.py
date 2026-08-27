@@ -100,6 +100,7 @@ class ConsequentialImpactIndex:
 
     profile_id: str
     source_state_version: int
+    fact_by_id: dict[str, Fact]
     authoritative_fact_ids: tuple[str, ...]
     build_ms: float
 
@@ -143,6 +144,7 @@ def build_consequential_impact_index(state: CanonicalState) -> ConsequentialImpa
     index = ConsequentialImpactIndex(
         profile_id=state.profile_id,
         source_state_version=state.version,
+        fact_by_id={fact.id: fact for fact in state.facts},
         authoritative_fact_ids=ids,
         build_ms=(time.perf_counter() - started) * 1000,
     )
@@ -490,7 +492,8 @@ def consequential_impact_projection(
     and non-blocking reminders remain Latent.
     """
 
-    fact_index = {fact.id: fact for fact in state.facts}
+    lookup = index or consequential_impact_index(state)
+    fact_index = lookup.fact_by_id
     conflicted = sorted(
         (
             gate
@@ -534,7 +537,6 @@ def consequential_impact_projection(
                 question=impact.question,
             )
 
-    lookup = index or consequential_impact_index(state)
     for fact_id in lookup.authoritative_fact_ids:
         fact = fact_index.get(fact_id)
         if fact is not None:

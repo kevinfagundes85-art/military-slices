@@ -39,7 +39,7 @@
             {
               "changed": true,
               "fact_id": "adv-employment-restriction",
-              "lookup_ms": 0.08800000068731606,
+              "lookup_ms": 0.013599998055724427,
               "packet_fact_count": 1,
               "replay_same_object": true,
               "replay_write": false,
@@ -48,7 +48,7 @@
             {
               "changed": true,
               "fact_id": "adv-expiring-certification",
-              "lookup_ms": 0.09819999831961468,
+              "lookup_ms": 0.27520000003278255,
               "packet_fact_count": 1,
               "replay_same_object": true,
               "replay_write": false,
@@ -57,7 +57,7 @@
             {
               "changed": true,
               "fact_id": "adv-location-deadline",
-              "lookup_ms": 0.06539999958476983,
+              "lookup_ms": 0.29290000020409934,
               "packet_fact_count": 1,
               "replay_same_object": true,
               "replay_write": false,
@@ -65,7 +65,7 @@
             }
           ],
           "version_delta": 3,
-          "wall_ms": 24.621700002171565
+          "wall_ms": 24.77340000041295
         },
         {
           "all_recalled": true,
@@ -84,7 +84,7 @@
             {
               "changed": true,
               "fact_id": "adv-employment-restriction",
-              "lookup_ms": 0.07619999814778566,
+              "lookup_ms": 0.013900000340072438,
               "packet_fact_count": 1,
               "replay_same_object": true,
               "replay_write": false,
@@ -93,7 +93,7 @@
             {
               "changed": true,
               "fact_id": "adv-expiring-certification",
-              "lookup_ms": 0.07679999907850288,
+              "lookup_ms": 0.013699998817173764,
               "packet_fact_count": 1,
               "replay_same_object": true,
               "replay_write": false,
@@ -102,7 +102,7 @@
             {
               "changed": true,
               "fact_id": "adv-location-deadline",
-              "lookup_ms": 0.0774000000092201,
+              "lookup_ms": 0.013299999409355223,
               "packet_fact_count": 1,
               "replay_same_object": true,
               "replay_write": false,
@@ -110,7 +110,7 @@
             }
           ],
           "version_delta": 3,
-          "wall_ms": 30.708700000104727
+          "wall_ms": 32.455900000059046
         },
         {
           "all_recalled": true,
@@ -129,7 +129,7 @@
             {
               "changed": true,
               "fact_id": "adv-employment-restriction",
-              "lookup_ms": 0.07700000060140155,
+              "lookup_ms": 0.022799998987466097,
               "packet_fact_count": 1,
               "replay_same_object": true,
               "replay_write": false,
@@ -138,7 +138,7 @@
             {
               "changed": true,
               "fact_id": "adv-expiring-certification",
-              "lookup_ms": 0.08420000085607171,
+              "lookup_ms": 0.015899997379165143,
               "packet_fact_count": 1,
               "replay_same_object": true,
               "replay_write": false,
@@ -147,7 +147,7 @@
             {
               "changed": true,
               "fact_id": "adv-location-deadline",
-              "lookup_ms": 0.11830000221380033,
+              "lookup_ms": 0.013199998647905886,
               "packet_fact_count": 1,
               "replay_same_object": true,
               "replay_write": false,
@@ -155,7 +155,7 @@
             }
           ],
           "version_delta": 3,
-          "wall_ms": 25.223900000128197
+          "wall_ms": 25.214299999788636
         },
         {
           "all_recalled": true,
@@ -174,7 +174,7 @@
             {
               "changed": true,
               "fact_id": "adv-employment-restriction",
-              "lookup_ms": 0.07809999806340784,
+              "lookup_ms": 0.014000001101521775,
               "packet_fact_count": 1,
               "replay_same_object": true,
               "replay_write": false,
@@ -183,7 +183,7 @@
             {
               "changed": true,
               "fact_id": "adv-expiring-certification",
-              "lookup_ms": 0.09240000144927762,
+              "lookup_ms": 0.018299997464055195,
               "packet_fact_count": 1,
               "replay_same_object": true,
               "replay_write": false,
@@ -192,7 +192,7 @@
             {
               "changed": true,
               "fact_id": "adv-location-deadline",
-              "lookup_ms": 0.07360000017797574,
+              "lookup_ms": 0.020600000425474718,
               "packet_fact_count": 1,
               "replay_same_object": true,
               "replay_write": false,
@@ -200,7 +200,7 @@
             }
           ],
           "version_delta": 3,
-          "wall_ms": 23.35809999931371
+          "wall_ms": 25.454499998886604
         },
         {
           "all_recalled": true,
@@ -219,7 +219,7 @@
             {
               "changed": true,
               "fact_id": "adv-employment-restriction",
-              "lookup_ms": 0.08550000347895548,
+              "lookup_ms": 0.011699998140102252,
               "packet_fact_count": 1,
               "replay_same_object": true,
               "replay_write": false,
@@ -228,7 +228,7 @@
             {
               "changed": true,
               "fact_id": "adv-expiring-certification",
-              "lookup_ms": 0.07899999764049426,
+              "lookup_ms": 0.01420000262442045,
               "packet_fact_count": 1,
               "replay_same_object": true,
               "replay_write": false,
@@ -237,7 +237,7 @@
             {
               "changed": true,
               "fact_id": "adv-location-deadline",
-              "lookup_ms": 0.07570000161649659,
+              "lookup_ms": 0.01759999940986745,
               "packet_fact_count": 1,
               "replay_same_object": true,
               "replay_write": false,
@@ -245,7 +245,7 @@
             }
           ],
           "version_delta": 3,
-          "wall_ms": 24.984499999845866
+          "wall_ms": 24.74609999990207
         }
       ],
       "simultaneous_control": {
@@ -266,135 +266,135 @@
           "correct": false,
           "expected_material": true,
           "id": "paraphrased-restriction",
-          "index_build_ms": 0.015099998563528061,
+          "index_build_ms": 0.005999998393235728,
           "interrupted": false,
-          "lookup_ms": 0.0033000032999552786,
+          "lookup_ms": 0.0032000025385059416,
           "source": null
         },
         {
           "correct": false,
           "expected_material": true,
           "id": "indirect-restriction",
-          "index_build_ms": 0.0047000030463095754,
+          "index_build_ms": 0.004900000931229442,
           "interrupted": false,
-          "lookup_ms": 0.0029000002541579306,
+          "lookup_ms": 0.0028000031306874007,
           "source": null
         },
         {
           "correct": false,
           "expected_material": true,
           "id": "equivalent-blocker",
-          "index_build_ms": 0.005699999746866524,
+          "index_build_ms": 0.0036999990697950125,
           "interrupted": false,
-          "lookup_ms": 0.008600000001024455,
+          "lookup_ms": 0.0019999970390927047,
           "source": null
         },
         {
           "correct": false,
           "expected_material": true,
           "id": "cross-domain-consequence",
-          "index_build_ms": 0.007099999493220821,
+          "index_build_ms": 0.004300000000512227,
           "interrupted": false,
-          "lookup_ms": 0.0037999998312443495,
+          "lookup_ms": 0.0018000027921516448,
           "source": null
         },
         {
           "correct": true,
           "expected_material": true,
           "id": "temporal-activation",
-          "index_build_ms": 0.0030000010156072676,
+          "index_build_ms": 0.0018000027921516448,
           "interrupted": true,
-          "lookup_ms": 0.007499998901039362,
+          "lookup_ms": 0.006199999916134402,
           "source": "blocking_impact"
         },
         {
           "correct": true,
           "expected_material": true,
           "id": "changed-deadline",
-          "index_build_ms": 0.0026000016077887267,
+          "index_build_ms": 0.0016000012692529708,
           "interrupted": true,
-          "lookup_ms": 0.007300001016119495,
+          "lookup_ms": 0.0041000021155923605,
           "source": "blocking_impact"
         },
         {
           "correct": true,
           "expected_material": false,
           "id": "stale-authority",
-          "index_build_ms": 0.0025000008463393897,
+          "index_build_ms": 0.0018999999156221747,
           "interrupted": false,
-          "lookup_ms": 0.0037999998312443495,
+          "lookup_ms": 0.0020999978005420417,
           "source": null
         },
         {
           "correct": false,
           "expected_material": false,
           "id": "superseded-evidence",
-          "index_build_ms": 0.006300000677583739,
+          "index_build_ms": 0.005699999746866524,
           "interrupted": true,
-          "lookup_ms": 0.006899997970322147,
+          "lookup_ms": 0.005300000339047983,
           "source": "authoritative_interrupt"
         },
         {
           "correct": true,
           "expected_material": true,
           "id": "authoritative-conflict",
-          "index_build_ms": 0.004600002284860238,
+          "index_build_ms": 0.0036000019463244826,
           "interrupted": true,
-          "lookup_ms": 0.005999998393235728,
+          "lookup_ms": 0.004800000169780105,
           "source": "authoritative_interrupt"
         },
         {
           "correct": true,
           "expected_material": false,
           "id": "benign-authority",
-          "index_build_ms": 0.004400000761961564,
+          "index_build_ms": 0.0040000013541430235,
           "interrupted": false,
-          "lookup_ms": 0.0026999987312592566,
+          "lookup_ms": 0.0017999991541728377,
           "source": null
         },
         {
           "correct": true,
           "expected_material": false,
           "id": "unrelated-deadline",
-          "index_build_ms": 0.0016999983927235007,
+          "index_build_ms": 0.0017999991541728377,
           "interrupted": false,
-          "lookup_ms": 0.0022999993234407157,
+          "lookup_ms": 0.0016000012692529708,
           "source": null
         },
         {
           "correct": true,
           "expected_material": false,
           "id": "nonblocking-reminder",
-          "index_build_ms": 0.0017000020307023078,
+          "index_build_ms": 0.0016999983927235007,
           "interrupted": false,
-          "lookup_ms": 0.0020000006770715117,
+          "lookup_ms": 0.0016999983927235007,
           "source": null
         },
         {
           "correct": false,
           "expected_material": false,
           "id": "misleading-lexical-match",
-          "index_build_ms": 0.0037000027077738196,
+          "index_build_ms": 0.0035000011848751456,
           "interrupted": true,
-          "lookup_ms": 0.004400000761961564,
+          "lookup_ms": 0.0034000004234258085,
           "source": "authoritative_interrupt"
         },
         {
           "correct": true,
           "expected_material": true,
           "id": "multiple-impacts",
-          "index_build_ms": 0.0016000012692529708,
+          "index_build_ms": 0.0013999997463542968,
           "interrupted": true,
-          "lookup_ms": 0.004500001523410901,
+          "lookup_ms": 0.0039000005926936865,
           "source": "blocking_impact"
         },
         {
           "correct": false,
           "expected_material": false,
           "id": "irrelevant-high-authority",
-          "index_build_ms": 0.0031000017770566046,
+          "index_build_ms": 0.0034000004234258085,
           "interrupted": true,
-          "lookup_ms": 0.0039000005926936865,
+          "lookup_ms": 0.0035000011848751456,
           "source": "authoritative_interrupt"
         }
       ],
@@ -513,7 +513,7 @@
       "reason": "A valid Probe comparison requires model-mediated bounded discovery. Provider initialization failed; no deterministic proxy was substituted."
     }
   },
-  "git_head": "83007f241e2d96e942d2edc06879eb01a874106e",
-  "git_status": "M benchmark/run_sparse_activation_benchmark.py\n M military_slices/app.py\n M military_slices/engine.py\n M military_slices/models.py\n M military_slices/path_runtime.py\n M military_slices/temporal.py\n M static/app.js\n M static/index.html\n M static/styles.css\n M tests/test_gate_closure_contracts.py\n?? benchmark/contracts/gate6_probe_2026-08-27.json\n?? benchmark/output/helm-gate-closure-raw-2026-08-27.json\n?? benchmark/output/sparse-activation-gate-closure-dataset-manifest-2026-08-26.json\n?? benchmark/output/sparse-activation-gate-closure-raw-2026-08-26.json\n?? benchmark/output/sparse-activation-gate-closure-summary-2026-08-26.csv\n?? benchmark/output/sparse-activation-gate-closure-summary-2026-08-26.json\n?? benchmark/run_gate_closure_evidence.py",
+  "git_head": "73e9b86b63fe96a6493e6c3c1a92a9aec16d7a53",
+  "git_status": "M benchmark/output/sparse-activation-gate-closure-raw-2026-08-26.json\n M benchmark/output/sparse-activation-gate-closure-summary-2026-08-26.csv\n M benchmark/output/sparse-activation-gate-closure-summary-2026-08-26.json\n M military_slices/temporal.py\n?? HELM_GATE_CLOSURE_EVIDENCE_2026-08-27.md",
   "production_mutations": 0
 }
