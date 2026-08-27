@@ -84,7 +84,7 @@ OUT = ROOT / "benchmark/output"
 RAW_PATH = OUT / "helm-capsule-scale-falsification-raw-2026-08-27.json"
 CSV_PATH = OUT / "helm-capsule-scale-falsification-summary-2026-08-27.csv"
 EXPECTED_CONTRACT_SHA256 = "2223b61d7c751698b9b11127c998b29e644529293a7ac7ee8cfe47101839fce3"
-IMPLEMENTATION_COMMIT = "PENDING_FROZEN_IMPLEMENTATION_COMMIT"
+IMPLEMENTATION_COMMIT = "63b198d5359e747efa56e33a483118969484a5c1"
 FIXED_NOW = datetime(2026, 8, 27, tzinfo=UTC)
 FIXED_TODAY = date(2026, 8, 27)
 
