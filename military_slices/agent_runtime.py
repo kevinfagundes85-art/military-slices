@@ -333,6 +333,9 @@ class Resolver:
                 raise ValueError("Transition language referenced an item outside the bounded horizon.")
             if horizon.active_gate_id not in proposal.referenced_checklist_ids:
                 raise ValueError("Transition language did not remain anchored to the foreground item.")
+            visible_language = f"{proposal.acknowledgment}\n{proposal.consequence}".casefold()
+            if any(item.id.casefold() in visible_language for item in horizon.checklist):
+                raise ValueError("Transition language exposed an internal checklist identity.")
             telemetry["latency_ms"] = int((time.perf_counter() - started) * 1000)
             return AcquisitionTransitionResult(
                 acknowledgment=proposal.acknowledgment,
@@ -565,8 +568,10 @@ class Resolver:
                 "next useful uncertainty. Do not answer, replace, broaden, or add another question. Do not "
                 "introduce facts, advice, policy, eligibility, certainty, a mission, a path, or a commitment. "
                 "Do not say the user is qualified or that an outcome will work. Do not mention HELM, Gates, "
-                "Slices, Payloads, models, checklists, governance, or architecture. Reference the foreground "
-                "checklist id and no item outside the supplied horizon. Return the output schema exactly."
+                "Slices, Payloads, models, checklists, governance, architecture, or any internal identifier. "
+                "Put the foreground checklist id only in referenced_checklist_ids; never include it in "
+                "acknowledgment or consequence. Reference no item outside the supplied horizon. Return the "
+                "output schema exactly."
             ),
             output_schema=AcquisitionTransitionProposal,
         )

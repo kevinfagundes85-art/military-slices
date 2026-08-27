@@ -162,6 +162,43 @@ def test_transition_language_cannot_escape_recomputed_horizon(
     assert "private" not in result.consequence.casefold()
 
 
+def test_transition_language_cannot_expose_internal_frontier_identity(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    state = _direction_state(
+        "I work in cyber and want to build technology that helps veterans. I prefer remote work.",
+        "transition-language-identity-boundary",
+    )
+    horizon = build_acquisition_horizon(state)
+    assert horizon is not None
+    resolver = Resolver(mode="adk")
+
+    async def leaking_identity(
+        **_: object,
+    ) -> tuple[AcquisitionTransitionProposal, dict[str, object]]:
+        return (
+            AcquisitionTransitionProposal(
+                acknowledgment="We recorded your update.",
+                consequence=f"Next, address {horizon.active_gate_id}.",
+                referenced_checklist_ids=[horizon.active_gate_id],
+            ),
+            {"model_calls": 1},
+        )
+
+    monkeypatch.setattr(resolver, "_run_transition_adk", leaking_identity)
+    result = asyncio.run(
+        resolver.transition_language(
+            state=state,
+            horizon=horizon,
+            material_change=["Used what you learned to retire this uncertainty."],
+        )
+    )
+
+    assert result.provider == "deterministic-fallback"
+    assert horizon.active_gate_id not in result.acknowledgment
+    assert horizon.active_gate_id not in result.consequence
+
+
 def test_path_question_rejects_an_answer_too_small_to_carry_evidence() -> None:
     state = _direction_state(
         "I want civilian work in intelligence analysis with remote work.",
