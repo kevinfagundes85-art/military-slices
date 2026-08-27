@@ -132,7 +132,7 @@ The last command requiring Gemini needs valid Google credentials; absence must r
 
 ## 20. Evidence commit
 
-Implementation commit: `73e9b86b63fe96a6493e6c3c1a92a9aec16d7a53`. Evidence commit: the Git commit containing this report; exact hash is recorded in the final BHE handoff.
+Implementation commit: `73e9b86b63fe96a6493e6c3c1a92a9aec16d7a53`. Evidence snapshot commit: `728f973af815ea390e524c76108dd97fee3e2a1c`.
 
 ## 21. Questions requiring NND adjudication
 
