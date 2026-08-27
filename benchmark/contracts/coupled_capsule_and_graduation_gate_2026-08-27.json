@@ -1,0 +1,75 @@
+{
+  "contract_id": "helm-coupled-capsule-and-graduation-gate-2026-08-27",
+  "frozen_before_implementation": true,
+  "baseline_commit": "d03796f",
+  "architecture_classification": {
+    "gate_1": "existing-contract enforcement",
+    "gate_2": "implementation hardening"
+  },
+  "immutable_evidence": {
+    "capsule_contract_sha256": "2223b61d7c751698b9b11127c998b29e644529293a7ac7ee8cfe47101839fce3",
+    "capsule_raw_sha256": "2defa181e6ebaf593bde878fbc654810ca09af2cfa38c37a9eb88f770f2fc820",
+    "gate_3_battery_sha256": "f5d449430200a86bfdd3b56be6cebe68df7ffd65130832117891ba563b7718701",
+    "probe_decisive_raw_sha256": "959478032dc489767f5c3356f4c7af899c84722b821b77798d395985afeaa854"
+  },
+  "gate_1": {
+    "decomposable_counts": [1, 3, 10, 25, 50, 100],
+    "coupled_counts": [3, 10, 25, 50, 100],
+    "frozen_fixture_source": "benchmark/run_capsule_scale_falsification.py::dependency_state",
+    "surface_rule": "A conflicted Gate receives exactly the complete, unique, declared required_evidence set bound to the current Canonical version. A decomposable Gate remains one-fact-at-a-time.",
+    "fail_closed_conditions": [
+      "required evidence identifier is missing",
+      "Gate contract is not bound to the current Canonical version",
+      "duplicate required evidence identifier",
+      "requested evidence falls outside the declared Gate contract"
+    ],
+    "economic_control": {
+      "counts": [3, 25, 100],
+      "conditions": ["helm_minimum_sufficient", "competent_broad_context"],
+      "repetitions": 5,
+      "same_provider_window": true
+    }
+  },
+  "gate_2": {
+    "case_id": "paraphrased-restriction",
+    "frozen_case_source": "benchmark/contracts/gate3_interruption_classifier_2026-08-27.json",
+    "attempts": 10,
+    "minimum_valid_attempts_to_close": 5,
+    "identity_rule": "Bind the expected case identity in the provider response JSON schema and independently reject any returned mismatch.",
+    "retry_policy": "No hidden retry. Every provider call is one visible independent attempt.",
+    "graduation_rule": "Each valid material nomination follows the existing human-authorized examination and graduation path using a fresh Canonical state, then survives restart and requires zero second-pass Probe/model calls for the unchanged relationship."
+  },
+  "provider": {
+    "name": "Vertex AI",
+    "model": "gemini-3.7-flash",
+    "project": "veteran-pathfinder-kf-2026",
+    "location": "global",
+    "temperature": 0,
+    "top_p": 1,
+    "thinking_budget": 512,
+    "max_output_tokens": 4096
+  },
+  "pricing_basis_usd_per_million": {
+    "input": 0.75,
+    "output_and_thought": 3.75
+  },
+  "prohibited_changes": [
+    "new canonical primitive",
+    "Anchor or Path mutation by retrieval",
+    "Gate authority expansion",
+    "broad Canonical serialization",
+    "Probe production activation",
+    "external effects",
+    "Domain Pack policy change",
+    "production deployment or traffic movement",
+    "rejection-memory mechanism"
+  ],
+  "production": {
+    "traffic_movement": false,
+    "probe_activation": false,
+    "profile_mutation": false,
+    "external_effects": false,
+    "domain_pack_change": false,
+    "canonical_helm_change": false
+  }
+}
