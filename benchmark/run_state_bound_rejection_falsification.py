@@ -3,8 +3,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import shutil
-import subprocess
 import time
 from collections.abc import Callable
 from copy import deepcopy
@@ -50,6 +48,30 @@ CONTRACT_PATH = ROOT / "benchmark/contracts/state_bound_rejection_falsification_
 RAW_PATH = ROOT / "benchmark/output/helm-state-bound-rejection-falsification-raw-2026-08-27.json"
 EXPECTED_CONTRACT_SHA256 = "c130b4abfbe048ae2e50fbeba4c31cd8adcbae6d3317ff390d8f9d3d85b37325"
 LOCATION = "global"
+INTERRUPTED_PROVIDER_ATTEMPTS = [
+    {
+        "attempt_id": f"superseded-evidence:{phase}:1",
+        "status": "provider-completed-evidence-write-failed",
+        "failure_class": "HarnessCheckpointFailure",
+        "failure": (
+            "The provider call returned and the case completed in memory, but the elevated process "
+            "could not run git rev-parse before the first checkpoint was written."
+        ),
+        "response_id": "NOT RETAINED",
+        "payload_sha256": "NOT RETAINED",
+        "raw_response_sha256": "NOT RETAINED",
+        "schema_valid": "NOT MEASURED",
+        "identity_valid": "NOT MEASURED",
+        "input_tokens": "NOT MEASURED",
+        "output_tokens": "NOT MEASURED",
+        "total_tokens": "NOT MEASURED",
+        "latency_ms": "NOT MEASURED",
+        "estimated_cost_usd": "NOT MEASURED",
+        "retried_silently": False,
+        "included_in_scored_metrics": False,
+    }
+    for phase in ("A", "B2", "D")
+]
 
 
 def sha256_path(path: Path) -> str:
@@ -58,19 +80,6 @@ def sha256_path(path: Path) -> str:
 
 def state_hash(state: CanonicalState) -> str:
     return sha256_json(state.model_dump(mode="json"))
-
-
-def git_head() -> str:
-    git = shutil.which("git")
-    if git is None:
-        raise RuntimeError("git is required to identify the frozen implementation commit.")
-    return subprocess.run(  # noqa: S603 - fixed git path with fixed read-only arguments
-        [git, "rev-parse", "HEAD"],
-        cwd=ROOT,
-        check=True,
-        capture_output=True,
-        text=True,
-    ).stdout.strip()
 
 
 def validity_dimensions(case: dict[str, Any]) -> list[str]:
@@ -598,6 +607,7 @@ def aggregate(cases: list[dict[str, Any]]) -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, default=RAW_PATH)
+    parser.add_argument("--implementation-commit", required=True)
     args = parser.parse_args()
     contract_hash = sha256_path(CONTRACT_PATH)
     if contract_hash != EXPECTED_CONTRACT_SHA256:
@@ -617,7 +627,8 @@ def main() -> int:
                 {
                     "status": "in_progress",
                     "contract_sha256": contract_hash,
-                    "implementation_commit": git_head(),
+                    "implementation_commit": args.implementation_commit,
+                    "interrupted_provider_attempts": INTERRUPTED_PROVIDER_ATTEMPTS,
                     "completed_cases": results,
                 },
                 indent=2,
@@ -645,12 +656,17 @@ def main() -> int:
         "execution_timestamp_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "duration_ms": (time.perf_counter() - started) * 1000,
         "contract_sha256": contract_hash,
-        "implementation_commit": git_head(),
+        "implementation_commit": args.implementation_commit,
         "provider": "Vertex AI",
         "provider_project": PROJECT,
         "provider_location": LOCATION,
         "model": MODEL,
         "predetermined_provider_calls": contract["provider_attempts"]["total_predetermined_calls"],
+        "interrupted_provider_attempts": INTERRUPTED_PROVIDER_ATTEMPTS,
+        "total_provider_calls_including_interrupted": (
+            contract["provider_attempts"]["total_predetermined_calls"]
+            + len(INTERRUPTED_PROVIDER_ATTEMPTS)
+        ),
         "retry_policy": "zero retries",
         "architecture_classification": contract["architecture_classification"],
         "canonical_helm_amendment": False,
