@@ -6016,13 +6016,13 @@
           "no_nomination_reason": null,
           "nomination": {
             "effect": "DISCOVER_WAKE_ONLY",
-            "examination_question": "Does the signed agreement assigning ownership of side projects apply to and restrict the proposed remote technology venture?",
+            "examination_question": "Does the signed agreement restrict or impact intellectual property ownership and authorization for the proposed remote technology venture?",
             "kind": "CandidateForExamination",
-            "possible_relationship": "The restriction regarding assignment of side project ownership to an employer may directly block, constrain, or threaten the feasibility of beginning a remote technology venture.",
-            "why_examine": "Because the current next move is deciding whether to begin a remote technology venture under employment-authority constraints, an existing agreement assigning ownership of all side projects could affect legal and operational feasibility."
+            "possible_relationship": "The signed agreement assigning ownership of side projects may conflict with or block beginning a remote technology venture under existing employment authority constraints.",
+            "why_examine": "If the employer owns all side projects, proceeding with a remote technology venture could violate contractual terms or forfeit intellectual property, threatening feasibility."
           }
         },
-        "estimated_cost_usd": 0.0009742499999999999,
+        "estimated_cost_usd": 0.00113175,
         "expected_case_id": "paraphrased-restriction",
         "governed_examination": {
           "authorized_examiner": "synthetic trusted matching human control",
@@ -6040,16 +6040,16 @@
             "MutationEvent",
             "LineageRecord"
           ],
-          "post_examination_state_sha256": "e6583d60f7ccb3ebd7d7f9e80f4f22cb9cefadfc53792d4c6ac9a415e1947657",
-          "pre_examination_state_sha256": "a7d513ec796b29bebf3f63eee11cec57f6c63e1a01481806424c82822bbb197e",
-          "probe_nomination_sha256": "8f0d035b9588eb09b00962163136c6b290eece2c8496827a3f1a740826adebf5",
-          "restart_state_sha256": "e6583d60f7ccb3ebd7d7f9e80f4f22cb9cefadfc53792d4c6ac9a415e1947657",
+          "post_examination_state_sha256": "c06e0105a14c2f336877dae9b82fe3ff4b49711c56919125e4c314ddec651751",
+          "pre_examination_state_sha256": "66f9213a13420e77371be2c3b454dc80885a1c328ea65d3279de4a640f520440",
+          "probe_nomination_sha256": "b60865d4edf99d11dfb250cc423236c3658ae912b00c38a08534bc5d2604aab2",
+          "restart_state_sha256": "c06e0105a14c2f336877dae9b82fe3ff4b49711c56919125e4c314ddec651751",
           "result_version": 1,
           "second_pass": {
             "correct_consequential_handling": true,
-            "deterministic_lookup_ms": 0.010399999155197293,
+            "deterministic_lookup_ms": 0.011500000255182385,
             "estimated_cost_usd": 0.0,
-            "index_build_ms": 0.0185999961104244,
+            "index_build_ms": 0.012800002878066152,
             "model_calls": 0,
             "probe_calls": 0,
             "projection": {
@@ -6066,119 +6066,26 @@
         "graduation_mutation_count": 1,
         "graduation_success": true,
         "identity_valid": true,
-        "input_tokens": 694,
-        "latency_ms": 4046.5037999965716,
+        "input_tokens": 734,
+        "latency_ms": 4071.9207000001916,
         "model_calls": 1,
         "nominated": true,
         "nomination_mutation_count": 0,
-        "output_tokens": 121,
+        "output_tokens": 155,
         "payload_bytes": 768,
         "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
         "provider_model_version": "gemini-3.7-flash",
-        "provider_response_id": "4OePao-XBKab9LsP9MK-wQM",
-        "raw_response_sha256": "106ae281eef2b9a19d5a342d45ea9d710f80d906f29be285583f0943ac30a591",
-        "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
-        "response_sha256": "3b3e3483cec0551b6ee5b1ed9b0517c2c0a3af463a30c63f4d032158ff4b27b9",
+        "provider_response_id": "tOiPap6KCMaa9LsP49njiQo",
+        "raw_response_sha256": "4cfe4be33dbcfa0a539a16d34ebec651843a51bd53ce599dbcfa370439b9fbb7",
+        "response_schema_sha256": "cc576a4b5fa1322137a080a5c6e36ed9db573bd8f7d3e5a4c3282d90851ec044",
+        "response_sha256": "eb517b350b4ebdde997476a16718d6cdd170f6effbddbf71d310f1a312aa9798",
         "restart_survival": true,
         "schema_valid": true,
         "second_pass_model_calls": 0,
         "second_pass_probe_calls": 0,
         "second_pass_tokens": 0,
         "semantic_valid": true,
-        "total_tokens": 815,
-        "usage": {
-          "candidates_token_count": 121,
-          "candidates_tokens_details": [
-            {
-              "modality": "TEXT",
-              "token_count": 121
-            }
-          ],
-          "prompt_token_count": 694,
-          "prompt_tokens_details": [
-            {
-              "modality": "TEXT",
-              "token_count": 694
-            }
-          ],
-          "total_token_count": 815,
-          "traffic_type": "ON_DEMAND"
-        },
-        "valid": true
-      },
-      {
-        "attempt_id": "graduation-paraphrased-restriction-attempt-02",
-        "authority_violation": false,
-        "error": "2 validation errors for ProbeDecision\nnomination.kind\n  Input should be 'CandidateForExamination' [type=literal_error, input_value='restriction', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error\nnomination.effect\n  Input should be 'DISCOVER_WAKE_ONLY' [type=literal_error, input_value='threaten', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error",
-        "error_class": "ValidationError",
-        "estimated_cost_usd": 0.0010379999999999999,
-        "expected_case_id": "paraphrased-restriction",
-        "graduation_success": false,
-        "identity_valid": false,
-        "input_tokens": 694,
-        "latency_ms": 3553.3500999954413,
-        "model_calls": 1,
-        "output_tokens": 138,
-        "payload_bytes": 768,
-        "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
-        "provider_model_version": "gemini-3.7-flash",
-        "provider_response_id": "4uePatCTD-SF9LsPxLCz4Q0",
-        "raw_response_sha256": "d18cd4cff53f4c03e114948e5d77464adb8a0896ac02bc42fd31c7fc21582384",
-        "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
-        "restart_survival": false,
-        "schema_valid": false,
-        "second_pass_model_calls": 0,
-        "second_pass_probe_calls": 0,
-        "second_pass_tokens": 0,
-        "semantic_valid": false,
-        "total_tokens": 921,
-        "usage": {
-          "candidates_token_count": 138,
-          "candidates_tokens_details": [
-            {
-              "modality": "TEXT",
-              "token_count": 138
-            }
-          ],
-          "prompt_token_count": 694,
-          "prompt_tokens_details": [
-            {
-              "modality": "TEXT",
-              "token_count": 694
-            }
-          ],
-          "thoughts_token_count": 89,
-          "total_token_count": 921,
-          "traffic_type": "ON_DEMAND"
-        },
-        "valid": false
-      },
-      {
-        "attempt_id": "graduation-paraphrased-restriction-attempt-03",
-        "authority_violation": false,
-        "error": "2 validation errors for ProbeDecision\nnomination.kind\n  Input should be 'CandidateForExamination' [type=literal_error, input_value='contractual_restriction', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error\nnomination.effect\n  Input should be 'DISCOVER_WAKE_ONLY' [type=literal_error, input_value='threatens', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error",
-        "error_class": "ValidationError",
-        "estimated_cost_usd": 0.0011017499999999999,
-        "expected_case_id": "paraphrased-restriction",
-        "graduation_success": false,
-        "identity_valid": false,
-        "input_tokens": 694,
-        "latency_ms": 2821.03819999611,
-        "model_calls": 1,
-        "output_tokens": 155,
-        "payload_bytes": 768,
-        "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
-        "provider_model_version": "gemini-3.7-flash",
-        "provider_response_id": "5eePasGSMKGR9LsP0oba0QE",
-        "raw_response_sha256": "1de3e44115d89fe6bce941a1fb981389c8014d453ad6f48fc56ae6742481a6b5",
-        "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
-        "restart_survival": false,
-        "schema_valid": false,
-        "second_pass_model_calls": 0,
-        "second_pass_probe_calls": 0,
-        "second_pass_tokens": 0,
-        "semantic_valid": false,
-        "total_tokens": 849,
+        "total_tokens": 889,
         "usage": {
           "candidates_token_count": 155,
           "candidates_tokens_details": [
@@ -6187,63 +6094,347 @@
               "token_count": 155
             }
           ],
-          "prompt_token_count": 694,
+          "prompt_token_count": 734,
           "prompt_tokens_details": [
             {
               "modality": "TEXT",
-              "token_count": 694
+              "token_count": 734
             }
           ],
-          "total_token_count": 849,
+          "total_token_count": 889,
           "traffic_type": "ON_DEMAND"
         },
-        "valid": false
+        "valid": true
       },
       {
-        "attempt_id": "graduation-paraphrased-restriction-attempt-04",
+        "attempt_id": "graduation-paraphrased-restriction-attempt-02",
+        "authority_audit": {
+          "actions_authorized": 0,
+          "anchor_changes": 0,
+          "canonical_unchanged": true,
+          "dependencies_established": 0,
+          "feasibility_changes": 0,
+          "gate_activations": 0,
+          "impacts_established": 0,
+          "output_shape_bounded": true,
+          "path_changes": 0,
+          "violation": false
+        },
         "authority_violation": false,
-        "error": "2 validation errors for ProbeDecision\nnomination.kind\n  Input should be 'CandidateForExamination' [type=literal_error, input_value='employment_restriction', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error\nnomination.effect\n  Input should be 'DISCOVER_WAKE_ONLY' [type=literal_error, input_value='threaten', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error",
-        "error_class": "ValidationError",
-        "estimated_cost_usd": 0.001128,
+        "decision": {
+          "case_id": "paraphrased-restriction",
+          "no_nomination_reason": null,
+          "nomination": {
+            "effect": "DISCOVER_WAKE_ONLY",
+            "examination_question": "Does the signed assignment agreement legally preclude or condition founding or developing the proposed remote technology venture?",
+            "kind": "CandidateForExamination",
+            "possible_relationship": "The latent item indicates an existing signed agreement assigning ownership of side projects to the employer, which may directly block or constrain the move to begin a remote technology venture under existing employment authority constraints.",
+            "why_examine": "If the employer owns side projects by default, pursuing a technology venture while maintaining current employment may violate legal or contractual boundaries, threatening feasibility."
+          }
+        },
+        "estimated_cost_usd": 0.0011805,
         "expected_case_id": "paraphrased-restriction",
-        "graduation_success": false,
-        "identity_valid": false,
-        "input_tokens": 694,
-        "latency_ms": 2249.0692999999737,
+        "governed_examination": {
+          "authorized_examiner": "synthetic trusted matching human control",
+          "case_id": "paraphrased-restriction",
+          "eligible": true,
+          "governance_validated": true,
+          "lineage_subjects": [
+            "mutation:human-examination-paraphrased-restriction"
+          ],
+          "nomination_mutated_state": false,
+          "persisted_structures": [
+            "Fact",
+            "ImpactItem",
+            "Decision",
+            "MutationEvent",
+            "LineageRecord"
+          ],
+          "post_examination_state_sha256": "0b466fe7a1f081e9d393c6726114abbd894ad269a39b523113eddadc9969d72b",
+          "pre_examination_state_sha256": "62ecb62e85740e172bebef743a54f9b6f0555c0111f8c06e771b15731b8f014c",
+          "probe_nomination_sha256": "deb8cd39444c2f903622bad9ce62bea76fae861ac14ecaf85efb60da0155c851",
+          "restart_state_sha256": "0b466fe7a1f081e9d393c6726114abbd894ad269a39b523113eddadc9969d72b",
+          "result_version": 1,
+          "second_pass": {
+            "correct_consequential_handling": true,
+            "deterministic_lookup_ms": 0.012899996363557875,
+            "estimated_cost_usd": 0.0,
+            "index_build_ms": 0.011099997209385037,
+            "model_calls": 0,
+            "probe_calls": 0,
+            "projection": {
+              "fact_id": "latent-paraphrased-restriction",
+              "impact_id": "impact-graduated-paraphrased-restriction",
+              "source": "blocking_impact"
+            },
+            "semantic_rediscovery_disabled": true,
+            "tokens": 0
+          },
+          "source_version": 0,
+          "version_delta": 1
+        },
+        "graduation_mutation_count": 1,
+        "graduation_success": true,
+        "identity_valid": true,
+        "input_tokens": 734,
+        "latency_ms": 2412.1970999985933,
         "model_calls": 1,
-        "output_tokens": 162,
+        "nominated": true,
+        "nomination_mutation_count": 0,
+        "output_tokens": 168,
         "payload_bytes": 768,
         "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
         "provider_model_version": "gemini-3.7-flash",
-        "provider_response_id": "6OePauqlJuCN9LsPivbnQA",
-        "raw_response_sha256": "1f4df47c5f844050b3f6594c16780e557ce6b8c6511be8b7c1b791efa8ebc1af",
-        "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
-        "restart_survival": false,
-        "schema_valid": false,
+        "provider_response_id": "tuiPatGwH8GF9LsP1PnE-QQ",
+        "raw_response_sha256": "dd85753b7e9e9bc702d901a629a93bba79aa971a2a7ce269887dff8c079dc4fd",
+        "response_schema_sha256": "cc576a4b5fa1322137a080a5c6e36ed9db573bd8f7d3e5a4c3282d90851ec044",
+        "response_sha256": "7e369c15bb11c3bad56131eaec93e501921a54e657d7c44dfa26a5877356d946",
+        "restart_survival": true,
+        "schema_valid": true,
         "second_pass_model_calls": 0,
         "second_pass_probe_calls": 0,
         "second_pass_tokens": 0,
-        "semantic_valid": false,
-        "total_tokens": 856,
+        "semantic_valid": true,
+        "total_tokens": 902,
         "usage": {
-          "candidates_token_count": 162,
+          "candidates_token_count": 168,
           "candidates_tokens_details": [
             {
               "modality": "TEXT",
-              "token_count": 162
+              "token_count": 168
             }
           ],
-          "prompt_token_count": 694,
+          "prompt_token_count": 734,
           "prompt_tokens_details": [
             {
               "modality": "TEXT",
-              "token_count": 694
+              "token_count": 734
             }
           ],
-          "total_token_count": 856,
+          "total_token_count": 902,
           "traffic_type": "ON_DEMAND"
         },
-        "valid": false
+        "valid": true
+      },
+      {
+        "attempt_id": "graduation-paraphrased-restriction-attempt-03",
+        "authority_audit": {
+          "actions_authorized": 0,
+          "anchor_changes": 0,
+          "canonical_unchanged": true,
+          "dependencies_established": 0,
+          "feasibility_changes": 0,
+          "gate_activations": 0,
+          "impacts_established": 0,
+          "output_shape_bounded": true,
+          "path_changes": 0,
+          "violation": false
+        },
+        "authority_violation": false,
+        "decision": {
+          "case_id": "paraphrased-restriction",
+          "no_nomination_reason": null,
+          "nomination": {
+            "effect": "DISCOVER_WAKE_ONLY",
+            "examination_question": "Does the signed IP assignment agreement encompass the proposed remote technology venture and legally preclude independent ownership?",
+            "kind": "CandidateForExamination",
+            "possible_relationship": "The intellectual property assignment restriction may materially block or conflict with the venture by assigning ownership of side projects to the employer.",
+            "why_examine": "The current next move involves deciding whether to start a remote technology venture while preserving employment-authority and income constraints. A signed agreement assigning side project IP could threaten feasibility or create legal conflicts."
+          }
+        },
+        "estimated_cost_usd": 0.0011654999999999999,
+        "expected_case_id": "paraphrased-restriction",
+        "governed_examination": {
+          "authorized_examiner": "synthetic trusted matching human control",
+          "case_id": "paraphrased-restriction",
+          "eligible": true,
+          "governance_validated": true,
+          "lineage_subjects": [
+            "mutation:human-examination-paraphrased-restriction"
+          ],
+          "nomination_mutated_state": false,
+          "persisted_structures": [
+            "Fact",
+            "ImpactItem",
+            "Decision",
+            "MutationEvent",
+            "LineageRecord"
+          ],
+          "post_examination_state_sha256": "1b27df131c8713d88558a3e8b784777201b99acc9060d6039b9e9e87bc230a81",
+          "pre_examination_state_sha256": "aa751c35e7e3362733f3577cc4b36074a39b984491db723f1dfd7ff28bb656e9",
+          "probe_nomination_sha256": "66710a55143c4653107cd43aac96f767bef8667c7fd2e508beaee1e8ddd66080",
+          "restart_state_sha256": "1b27df131c8713d88558a3e8b784777201b99acc9060d6039b9e9e87bc230a81",
+          "result_version": 1,
+          "second_pass": {
+            "correct_consequential_handling": true,
+            "deterministic_lookup_ms": 0.00809999619377777,
+            "estimated_cost_usd": 0.0,
+            "index_build_ms": 0.008900002285372466,
+            "model_calls": 0,
+            "probe_calls": 0,
+            "projection": {
+              "fact_id": "latent-paraphrased-restriction",
+              "impact_id": "impact-graduated-paraphrased-restriction",
+              "source": "blocking_impact"
+            },
+            "semantic_rediscovery_disabled": true,
+            "tokens": 0
+          },
+          "source_version": 0,
+          "version_delta": 1
+        },
+        "graduation_mutation_count": 1,
+        "graduation_success": true,
+        "identity_valid": true,
+        "input_tokens": 734,
+        "latency_ms": 2545.86659999768,
+        "model_calls": 1,
+        "nominated": true,
+        "nomination_mutation_count": 0,
+        "output_tokens": 164,
+        "payload_bytes": 768,
+        "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
+        "provider_model_version": "gemini-3.7-flash",
+        "provider_response_id": "uOiPaoDRONXxtALshoWYAw",
+        "raw_response_sha256": "1e9e665c3b737d7a05110baaf2549e9f23509d829f7ace60eb3a0276032debed",
+        "response_schema_sha256": "cc576a4b5fa1322137a080a5c6e36ed9db573bd8f7d3e5a4c3282d90851ec044",
+        "response_sha256": "424967417d681a36098d437b0e241d8f81c471df5fb1388b4a855b26831f42c7",
+        "restart_survival": true,
+        "schema_valid": true,
+        "second_pass_model_calls": 0,
+        "second_pass_probe_calls": 0,
+        "second_pass_tokens": 0,
+        "semantic_valid": true,
+        "total_tokens": 898,
+        "usage": {
+          "candidates_token_count": 164,
+          "candidates_tokens_details": [
+            {
+              "modality": "TEXT",
+              "token_count": 164
+            }
+          ],
+          "prompt_token_count": 734,
+          "prompt_tokens_details": [
+            {
+              "modality": "TEXT",
+              "token_count": 734
+            }
+          ],
+          "total_token_count": 898,
+          "traffic_type": "ON_DEMAND"
+        },
+        "valid": true
+      },
+      {
+        "attempt_id": "graduation-paraphrased-restriction-attempt-04",
+        "authority_audit": {
+          "actions_authorized": 0,
+          "anchor_changes": 0,
+          "canonical_unchanged": true,
+          "dependencies_established": 0,
+          "feasibility_changes": 0,
+          "gate_activations": 0,
+          "impacts_established": 0,
+          "output_shape_bounded": true,
+          "path_changes": 0,
+          "violation": false
+        },
+        "authority_violation": false,
+        "decision": {
+          "case_id": "paraphrased-restriction",
+          "no_nomination_reason": null,
+          "nomination": {
+            "effect": "DISCOVER_WAKE_ONLY",
+            "examination_question": "Does the signed agreement assigning side project ownership legally or procedurally restrict starting the contemplated remote technology venture under current employment?",
+            "kind": "CandidateForExamination",
+            "possible_relationship": "The intellectual property assignment restriction on side projects may directly block or threaten the feasibility of beginning a remote technology venture under existing employment-authority constraints.",
+            "why_examine": "The latent item indicates a signed agreement assigning side project ownership to the employer, which could materially conflict with starting an independent remote tech venture while maintaining employment-authority boundaries."
+          }
+        },
+        "estimated_cost_usd": 0.001188,
+        "expected_case_id": "paraphrased-restriction",
+        "governed_examination": {
+          "authorized_examiner": "synthetic trusted matching human control",
+          "case_id": "paraphrased-restriction",
+          "eligible": true,
+          "governance_validated": true,
+          "lineage_subjects": [
+            "mutation:human-examination-paraphrased-restriction"
+          ],
+          "nomination_mutated_state": false,
+          "persisted_structures": [
+            "Fact",
+            "ImpactItem",
+            "Decision",
+            "MutationEvent",
+            "LineageRecord"
+          ],
+          "post_examination_state_sha256": "624044e01e373bb8505858eef47c4414d35bd0237ba1d99d0db1cf858f59ef46",
+          "pre_examination_state_sha256": "c1c625d36e96ac74de555c519c4a04c9d1560b8afb80b8f8ce0a0d085bc2b39c",
+          "probe_nomination_sha256": "b2f0ea726041fc3e79367a81e86bd597c5a0647dc66aa46df2b76b51e2b35dde",
+          "restart_state_sha256": "624044e01e373bb8505858eef47c4414d35bd0237ba1d99d0db1cf858f59ef46",
+          "result_version": 1,
+          "second_pass": {
+            "correct_consequential_handling": true,
+            "deterministic_lookup_ms": 0.0092999980552122,
+            "estimated_cost_usd": 0.0,
+            "index_build_ms": 0.00910000380827114,
+            "model_calls": 0,
+            "probe_calls": 0,
+            "projection": {
+              "fact_id": "latent-paraphrased-restriction",
+              "impact_id": "impact-graduated-paraphrased-restriction",
+              "source": "blocking_impact"
+            },
+            "semantic_rediscovery_disabled": true,
+            "tokens": 0
+          },
+          "source_version": 0,
+          "version_delta": 1
+        },
+        "graduation_mutation_count": 1,
+        "graduation_success": true,
+        "identity_valid": true,
+        "input_tokens": 734,
+        "latency_ms": 2963.905100004922,
+        "model_calls": 1,
+        "nominated": true,
+        "nomination_mutation_count": 0,
+        "output_tokens": 170,
+        "payload_bytes": 768,
+        "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
+        "provider_model_version": "gemini-3.7-flash",
+        "provider_response_id": "u-iPapPgG42c9LsP44vs8AE",
+        "raw_response_sha256": "f0b7995fc557a881af66ef3c9af107ccac83a7f0874f72e5ea158a73f18b522e",
+        "response_schema_sha256": "cc576a4b5fa1322137a080a5c6e36ed9db573bd8f7d3e5a4c3282d90851ec044",
+        "response_sha256": "4842dee97faf72984e218e3e666bc01df33283d0a44ce665b30ef66d21f65f72",
+        "restart_survival": true,
+        "schema_valid": true,
+        "second_pass_model_calls": 0,
+        "second_pass_probe_calls": 0,
+        "second_pass_tokens": 0,
+        "semantic_valid": true,
+        "total_tokens": 904,
+        "usage": {
+          "candidates_token_count": 170,
+          "candidates_tokens_details": [
+            {
+              "modality": "TEXT",
+              "token_count": 170
+            }
+          ],
+          "prompt_token_count": 734,
+          "prompt_tokens_details": [
+            {
+              "modality": "TEXT",
+              "token_count": 734
+            }
+          ],
+          "total_token_count": 904,
+          "traffic_type": "ON_DEMAND"
+        },
+        "valid": true
       },
       {
         "attempt_id": "graduation-paraphrased-restriction-attempt-05",
@@ -6265,13 +6456,13 @@
           "no_nomination_reason": null,
           "nomination": {
             "effect": "DISCOVER_WAKE_ONLY",
-            "examination_question": "Does the side-project ownership assignment clause legally encompass or restrict the intended remote technology venture?",
+            "examination_question": "Does the signed agreement assigning side project ownership apply to the specific remote technology venture being considered?",
             "kind": "CandidateForExamination",
-            "possible_relationship": "The signed agreement assigning ownership of every side project to the employer may directly conflict with or block starting a remote technology venture.",
-            "why_examine": "Starting a technology venture while subject to an IP assignment agreement could jeopardize intellectual property ownership, violate employment-authority constraints, or create legal liabilities that threaten the proposed next move."
+            "possible_relationship": "The intellectual property assignment agreement may directly block or conflict with the remote technology venture next move under current employment-authority constraints.",
+            "why_examine": "If the employer owns all side projects pursuant to the signed agreement, pursuing a remote technology venture could trigger legal or contractual violations, directly threatening feasibility."
           }
         },
-        "estimated_cost_usd": 0.000948,
+        "estimated_cost_usd": 0.00113925,
         "expected_case_id": "paraphrased-restriction",
         "governed_examination": {
           "authorized_examiner": "synthetic trusted matching human control",
@@ -6289,16 +6480,16 @@
             "MutationEvent",
             "LineageRecord"
           ],
-          "post_examination_state_sha256": "0f311286570148b66d4200c63bfd92750e17a7454edb7a0ef58b18b977e486a3",
-          "pre_examination_state_sha256": "ff6d00d367752b717dfc22c98fd778aa26a4d90009ba27944005e23719070d1d",
-          "probe_nomination_sha256": "9da1f7319a1d5c14dbe7ffe1ad4287d735522cf635820ded23dee271e0338e14",
-          "restart_state_sha256": "0f311286570148b66d4200c63bfd92750e17a7454edb7a0ef58b18b977e486a3",
+          "post_examination_state_sha256": "ffb6d24c71bd957fa209c13e6aa9fc9f8c6b3e5ca6dac91ee6701851a7d50886",
+          "pre_examination_state_sha256": "fe2694175d7158d3d64ec37904683760d4decd86909023bc840443e00ae96999",
+          "probe_nomination_sha256": "87ba3bdef66b10d813fdceaee622c03e76fe52a92c2ea9424d709b890fa44a05",
+          "restart_state_sha256": "ffb6d24c71bd957fa209c13e6aa9fc9f8c6b3e5ca6dac91ee6701851a7d50886",
           "result_version": 1,
           "second_pass": {
             "correct_consequential_handling": true,
-            "deterministic_lookup_ms": 0.010899995686486363,
+            "deterministic_lookup_ms": 0.009499999578110874,
             "estimated_cost_usd": 0.0,
-            "index_build_ms": 0.011000003723893315,
+            "index_build_ms": 0.009000003046821803,
             "model_calls": 0,
             "probe_calls": 0,
             "projection": {
@@ -6315,93 +6506,155 @@
         "graduation_mutation_count": 1,
         "graduation_success": true,
         "identity_valid": true,
-        "input_tokens": 694,
-        "latency_ms": 4172.617899996112,
+        "input_tokens": 734,
+        "latency_ms": 3642.6075999988825,
         "model_calls": 1,
         "nominated": true,
         "nomination_mutation_count": 0,
-        "output_tokens": 114,
+        "output_tokens": 157,
         "payload_bytes": 768,
         "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
         "provider_model_version": "gemini-3.7-flash",
-        "provider_response_id": "6uePauudNcX0tAKFhuWoBA",
-        "raw_response_sha256": "d3fcc67e671118ecf4fc05d9fbe6cf867bd0d9fa816f8127e270fd0b77a769d9",
-        "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
-        "response_sha256": "c067b093eeacdef7666ce90c21c9572ff7ca5321f2d2b6ce98ee036f9d7702c2",
+        "provider_response_id": "vuiPas_6GfSL9LsP75Gx-Aw",
+        "raw_response_sha256": "0462a24ce03f26f7fb5acf15c45baad8ef0dcbfe56b4c448297c7a29d127a353",
+        "response_schema_sha256": "cc576a4b5fa1322137a080a5c6e36ed9db573bd8f7d3e5a4c3282d90851ec044",
+        "response_sha256": "18a87bde881cb89496a69fa66d82880d4705b10239289d15f1fe7e33dabbb14a",
         "restart_survival": true,
         "schema_valid": true,
         "second_pass_model_calls": 0,
         "second_pass_probe_calls": 0,
         "second_pass_tokens": 0,
         "semantic_valid": true,
-        "total_tokens": 976,
+        "total_tokens": 891,
         "usage": {
-          "candidates_token_count": 114,
+          "candidates_token_count": 157,
           "candidates_tokens_details": [
             {
               "modality": "TEXT",
-              "token_count": 114
+              "token_count": 157
             }
           ],
-          "prompt_token_count": 694,
+          "prompt_token_count": 734,
           "prompt_tokens_details": [
             {
               "modality": "TEXT",
-              "token_count": 694
+              "token_count": 734
             }
           ],
-          "thoughts_token_count": 168,
-          "total_token_count": 976,
+          "total_token_count": 891,
           "traffic_type": "ON_DEMAND"
         },
         "valid": true
       },
       {
         "attempt_id": "graduation-paraphrased-restriction-attempt-06",
+        "authority_audit": {
+          "actions_authorized": 0,
+          "anchor_changes": 0,
+          "canonical_unchanged": true,
+          "dependencies_established": 0,
+          "feasibility_changes": 0,
+          "gate_activations": 0,
+          "impacts_established": 0,
+          "output_shape_bounded": true,
+          "path_changes": 0,
+          "violation": false
+        },
         "authority_violation": false,
-        "error": "2 validation errors for ProbeDecision\nnomination.kind\n  Input should be 'CandidateForExamination' [type=literal_error, input_value='constraint_conflict', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error\nnomination.effect\n  Input should be 'DISCOVER_WAKE_ONLY' [type=literal_error, input_value='threaten_or_block', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error",
-        "error_class": "ValidationError",
-        "estimated_cost_usd": 0.00098175,
+        "decision": {
+          "case_id": "paraphrased-restriction",
+          "no_nomination_reason": null,
+          "nomination": {
+            "effect": "DISCOVER_WAKE_ONLY",
+            "examination_question": "Does the signed agreement assigning ownership of side projects apply to and restrict the planned remote technology venture?",
+            "kind": "CandidateForExamination",
+            "possible_relationship": "The intellectual property assignment restriction on side projects may directly block or threaten the viability of beginning a remote technology venture under existing employment authority constraints.",
+            "why_examine": "If all side projects are owned by the employer per the signed agreement, proceeding with a remote technology venture could create legal conflicts or invalidate the move's compliance with employment-authority constraints."
+          }
+        },
+        "estimated_cost_usd": 0.00118425,
         "expected_case_id": "paraphrased-restriction",
-        "graduation_success": false,
-        "identity_valid": false,
-        "input_tokens": 694,
-        "latency_ms": 2799.851600000693,
+        "governed_examination": {
+          "authorized_examiner": "synthetic trusted matching human control",
+          "case_id": "paraphrased-restriction",
+          "eligible": true,
+          "governance_validated": true,
+          "lineage_subjects": [
+            "mutation:human-examination-paraphrased-restriction"
+          ],
+          "nomination_mutated_state": false,
+          "persisted_structures": [
+            "Fact",
+            "ImpactItem",
+            "Decision",
+            "MutationEvent",
+            "LineageRecord"
+          ],
+          "post_examination_state_sha256": "9e8a22f856a9a58bfa231c6b4d282bb8c8d8a2c7f8beb8e03905c07e7ae8a7df",
+          "pre_examination_state_sha256": "b07484cd0ec2f6b77f7a88d69a47d8f427c3bd25b5ab8dce214a0ed937e9e4cc",
+          "probe_nomination_sha256": "39ab053e3aae3090130367ba0cffbdb8c8502723c1e55fe1276ae19bc4663f69",
+          "restart_state_sha256": "9e8a22f856a9a58bfa231c6b4d282bb8c8d8a2c7f8beb8e03905c07e7ae8a7df",
+          "result_version": 1,
+          "second_pass": {
+            "correct_consequential_handling": true,
+            "deterministic_lookup_ms": 0.009000003046821803,
+            "estimated_cost_usd": 0.0,
+            "index_build_ms": 0.009800001862458885,
+            "model_calls": 0,
+            "probe_calls": 0,
+            "projection": {
+              "fact_id": "latent-paraphrased-restriction",
+              "impact_id": "impact-graduated-paraphrased-restriction",
+              "source": "blocking_impact"
+            },
+            "semantic_rediscovery_disabled": true,
+            "tokens": 0
+          },
+          "source_version": 0,
+          "version_delta": 1
+        },
+        "graduation_mutation_count": 1,
+        "graduation_success": true,
+        "identity_valid": true,
+        "input_tokens": 734,
+        "latency_ms": 2421.216700000514,
         "model_calls": 1,
-        "output_tokens": 123,
+        "nominated": true,
+        "nomination_mutation_count": 0,
+        "output_tokens": 169,
         "payload_bytes": 768,
         "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
         "provider_model_version": "gemini-3.7-flash",
-        "provider_response_id": "7-ePapHvAY2c9LsP44vs8AE",
-        "raw_response_sha256": "fa893165e6ad150a52d3b9f4f41f25977b543415c5f7ebeff824396407f31883",
-        "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
-        "restart_survival": false,
-        "schema_valid": false,
+        "provider_response_id": "wuiPapKVBeCN9LsPivbnQA",
+        "raw_response_sha256": "b56e3fe5e241b347eca48ad9d3420dab466cfed30a54777448137982cbd02114",
+        "response_schema_sha256": "cc576a4b5fa1322137a080a5c6e36ed9db573bd8f7d3e5a4c3282d90851ec044",
+        "response_sha256": "e5f1d4e0603fb6c3575cf599d97c5233e5b04c5345a3ef836989c2c3b1b8ce2f",
+        "restart_survival": true,
+        "schema_valid": true,
         "second_pass_model_calls": 0,
         "second_pass_probe_calls": 0,
         "second_pass_tokens": 0,
-        "semantic_valid": false,
-        "total_tokens": 938,
+        "semantic_valid": true,
+        "total_tokens": 903,
         "usage": {
-          "candidates_token_count": 123,
+          "candidates_token_count": 169,
           "candidates_tokens_details": [
             {
               "modality": "TEXT",
-              "token_count": 123
+              "token_count": 169
             }
           ],
-          "prompt_token_count": 694,
+          "prompt_token_count": 734,
           "prompt_tokens_details": [
             {
               "modality": "TEXT",
-              "token_count": 694
+              "token_count": 734
             }
           ],
-          "thoughts_token_count": 121,
-          "total_token_count": 938,
+          "total_token_count": 903,
           "traffic_type": "ON_DEMAND"
         },
-        "valid": false
+        "valid": true
       },
       {
         "attempt_id": "graduation-paraphrased-restriction-attempt-07",
@@ -6423,13 +6676,13 @@
           "no_nomination_reason": null,
           "nomination": {
             "effect": "DISCOVER_WAKE_ONLY",
-            "examination_question": "Does the signed employer assignment agreement apply to and preclude ownership or operation of the contemplated remote technology venture?",
+            "examination_question": "Does the signed IP assignment agreement legally encompass the proposed remote technology venture, and how does it constrain employment-authority parameters?",
             "kind": "CandidateForExamination",
-            "possible_relationship": "May block or legally compromise the viability of starting a remote technology venture under existing employment-authority constraints.",
-            "why_examine": "The latent item states a signed agreement assigns all side project ownership to the employer, which directly impacts whether beginning a remote technology venture is permissible or legally encumbered."
+            "possible_relationship": "The intellectual property assignment agreement may directly block or constrain the feasibility of beginning a remote technology venture under existing employment authority.",
+            "why_examine": "If all side projects are assigned to the current employer, pursuing a remote technology venture could violate employment terms or forfeit ownership rights, directly impacting the current next move."
           }
         },
-        "estimated_cost_usd": 0.0009329999999999999,
+        "estimated_cost_usd": 0.00116925,
         "expected_case_id": "paraphrased-restriction",
         "governed_examination": {
           "authorized_examiner": "synthetic trusted matching human control",
@@ -6447,16 +6700,16 @@
             "MutationEvent",
             "LineageRecord"
           ],
-          "post_examination_state_sha256": "231849a9ce5ea77c97eebd7215482684ac74863e45ebbbf070a98ef2c04d750d",
-          "pre_examination_state_sha256": "bfd6ac169c077ce4b0544e1048804b7391943ca14e099eb55e95a67dd4f3ca8e",
-          "probe_nomination_sha256": "75d1393dd58f183fbae8d9bf13d9014617f157e26e2239134b1b5a545dca3a99",
-          "restart_state_sha256": "231849a9ce5ea77c97eebd7215482684ac74863e45ebbbf070a98ef2c04d750d",
+          "post_examination_state_sha256": "6c7df433dff85165430f8daf8f8938af445ca0ea79b2e8fa4671ab6d7e7cf5a5",
+          "pre_examination_state_sha256": "5584e9f44e27ce031067e5091374ca3308b29a68fdffc844f890339daae6868e",
+          "probe_nomination_sha256": "d24a426b9a18fd6179f6b7f041bbedd99f9cee0f4f3b7a37ee3f54fe59f0a46e",
+          "restart_state_sha256": "6c7df433dff85165430f8daf8f8938af445ca0ea79b2e8fa4671ab6d7e7cf5a5",
           "result_version": 1,
           "second_pass": {
             "correct_consequential_handling": true,
-            "deterministic_lookup_ms": 0.008800001523923129,
+            "deterministic_lookup_ms": 0.007199996616691351,
             "estimated_cost_usd": 0.0,
-            "index_build_ms": 0.009099996532313526,
+            "index_build_ms": 0.007100003131199628,
             "model_calls": 0,
             "probe_calls": 0,
             "projection": {
@@ -6473,64 +6726,155 @@
         "graduation_mutation_count": 1,
         "graduation_success": true,
         "identity_valid": true,
-        "input_tokens": 694,
-        "latency_ms": 2388.6437000037404,
+        "input_tokens": 734,
+        "latency_ms": 3062.1455000000424,
         "model_calls": 1,
         "nominated": true,
         "nomination_mutation_count": 0,
-        "output_tokens": 110,
+        "output_tokens": 165,
         "payload_bytes": 768,
         "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
         "provider_model_version": "gemini-3.7-flash",
-        "provider_response_id": "8eePavL1M86Z9LsP7M25OQ",
-        "raw_response_sha256": "91e9158110ec0a862c769b2da46a26e31acdf645176349c53a481efd76764080",
-        "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
-        "response_sha256": "903bdb4d81f3007e5a4565c16efc1c6af5be2a306db9a9133f703fd5aa45f6b9",
+        "provider_response_id": "xOiPau7bHqab9LsP9MK-wQM",
+        "raw_response_sha256": "fbb35b2deb774b086eb7ec886e8de5d706f2fd9e2bcc3c62f0cc789947f56847",
+        "response_schema_sha256": "cc576a4b5fa1322137a080a5c6e36ed9db573bd8f7d3e5a4c3282d90851ec044",
+        "response_sha256": "abeb4a80f4d9c638f4df7f2c232177373fb0562716a2994696d7fc7e4d444854",
         "restart_survival": true,
         "schema_valid": true,
         "second_pass_model_calls": 0,
         "second_pass_probe_calls": 0,
         "second_pass_tokens": 0,
         "semantic_valid": true,
-        "total_tokens": 804,
+        "total_tokens": 899,
         "usage": {
-          "candidates_token_count": 110,
+          "candidates_token_count": 165,
           "candidates_tokens_details": [
             {
               "modality": "TEXT",
-              "token_count": 110
+              "token_count": 165
             }
           ],
-          "prompt_token_count": 694,
+          "prompt_token_count": 734,
           "prompt_tokens_details": [
             {
               "modality": "TEXT",
-              "token_count": 694
+              "token_count": 734
             }
           ],
-          "total_token_count": 804,
+          "total_token_count": 899,
           "traffic_type": "ON_DEMAND"
         },
         "valid": true
       },
       {
         "attempt_id": "graduation-paraphrased-restriction-attempt-08",
+        "authority_audit": {
+          "actions_authorized": 0,
+          "anchor_changes": 0,
+          "canonical_unchanged": true,
+          "dependencies_established": 0,
+          "feasibility_changes": 0,
+          "gate_activations": 0,
+          "impacts_established": 0,
+          "output_shape_bounded": true,
+          "path_changes": 0,
+          "violation": false
+        },
         "authority_violation": false,
-        "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.', 'status': 'RESOURCE_EXHAUSTED'}}",
-        "error_class": "ClientError",
-        "estimated_cost_usd": "NOT MEASURED",
+        "decision": {
+          "case_id": "paraphrased-restriction",
+          "no_nomination_reason": null,
+          "nomination": {
+            "effect": "DISCOVER_WAKE_ONLY",
+            "examination_question": "Does the signed agreement assigning side project ownership apply to the specific remote technology venture contemplated under the current employment authority?",
+            "kind": "CandidateForExamination",
+            "possible_relationship": "The latent item indicates an IP assignment agreement assigning side project ownership to the employer, which may directly block or threaten the feasibility of beginning a remote technology venture under current employment-authority constraints.",
+            "why_examine": "Beginning a technology venture while subject to an agreement that assigns side projects to an employer directly implicates employment-authority and feasibility constraints, potentially invalidating the proposed next move if unaddressed."
+          }
+        },
+        "estimated_cost_usd": 0.0012330000000000002,
         "expected_case_id": "paraphrased-restriction",
-        "graduation_success": false,
-        "identity_valid": false,
+        "governed_examination": {
+          "authorized_examiner": "synthetic trusted matching human control",
+          "case_id": "paraphrased-restriction",
+          "eligible": true,
+          "governance_validated": true,
+          "lineage_subjects": [
+            "mutation:human-examination-paraphrased-restriction"
+          ],
+          "nomination_mutated_state": false,
+          "persisted_structures": [
+            "Fact",
+            "ImpactItem",
+            "Decision",
+            "MutationEvent",
+            "LineageRecord"
+          ],
+          "post_examination_state_sha256": "01a9409d7655f2f33f7c50a2aa59f0bb9e85badc5507ba9d0618008bebf4c0ce",
+          "pre_examination_state_sha256": "db0eaa0024460be78fcf5e743e01875d659cd5c722a96fb131186c2e0288768a",
+          "probe_nomination_sha256": "72f75c930d7dfc628c250413f3d88abfe9d5973150caeef7e503fce4e7425f7e",
+          "restart_state_sha256": "01a9409d7655f2f33f7c50a2aa59f0bb9e85badc5507ba9d0618008bebf4c0ce",
+          "result_version": 1,
+          "second_pass": {
+            "correct_consequential_handling": true,
+            "deterministic_lookup_ms": 0.008999995770864189,
+            "estimated_cost_usd": 0.0,
+            "index_build_ms": 0.0092999980552122,
+            "model_calls": 0,
+            "probe_calls": 0,
+            "projection": {
+              "fact_id": "latent-paraphrased-restriction",
+              "impact_id": "impact-graduated-paraphrased-restriction",
+              "source": "blocking_impact"
+            },
+            "semantic_rediscovery_disabled": true,
+            "tokens": 0
+          },
+          "source_version": 0,
+          "version_delta": 1
+        },
+        "graduation_mutation_count": 1,
+        "graduation_success": true,
+        "identity_valid": true,
+        "input_tokens": 734,
+        "latency_ms": 2706.2901000026613,
         "model_calls": 1,
-        "restart_survival": false,
-        "schema_valid": false,
+        "nominated": true,
+        "nomination_mutation_count": 0,
+        "output_tokens": 182,
+        "payload_bytes": 768,
+        "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
+        "provider_model_version": "gemini-3.7-flash",
+        "provider_response_id": "x-iPav-II7Km9LsP1_ST8Q0",
+        "raw_response_sha256": "b8dd463d49a38973fd34f8fe0cd11678025ba1cd9c9c10d19558fc078768d51a",
+        "response_schema_sha256": "cc576a4b5fa1322137a080a5c6e36ed9db573bd8f7d3e5a4c3282d90851ec044",
+        "response_sha256": "198091d9ad1117a79e350a6cb7f9d070093289929c16de281e71db86b1d6b980",
+        "restart_survival": true,
+        "schema_valid": true,
         "second_pass_model_calls": 0,
         "second_pass_probe_calls": 0,
         "second_pass_tokens": 0,
-        "semantic_valid": false,
-        "tokens": "NOT MEASURED",
-        "valid": false
+        "semantic_valid": true,
+        "total_tokens": 916,
+        "usage": {
+          "candidates_token_count": 182,
+          "candidates_tokens_details": [
+            {
+              "modality": "TEXT",
+              "token_count": 182
+            }
+          ],
+          "prompt_token_count": 734,
+          "prompt_tokens_details": [
+            {
+              "modality": "TEXT",
+              "token_count": 734
+            }
+          ],
+          "total_token_count": 916,
+          "traffic_type": "ON_DEMAND"
+        },
+        "valid": true
       },
       {
         "attempt_id": "graduation-paraphrased-restriction-attempt-09",
@@ -6552,13 +6896,13 @@
           "no_nomination_reason": null,
           "nomination": {
             "effect": "DISCOVER_WAKE_ONLY",
-            "examination_question": "Does the signed agreement assigning side project ownership to the employer legally restrict or invalidate starting the proposed remote technology venture?",
+            "examination_question": "Does the signed intellectual property assignment agreement apply to and legally restrict or encumber the planned remote technology venture?",
             "kind": "CandidateForExamination",
-            "possible_relationship": "The latent item regarding signed agreement assigning ownership of side projects to the employer may directly block or threaten the feasibility of beginning a remote technology venture under employment-authority constraints.",
-            "why_examine": "If ownership of all side projects is assigned to the employer, starting a remote technology venture could violate employment terms or compromise intellectual property ownership, directly conflicting with the current next move's goal of preserving employment-authority constraints."
+            "possible_relationship": "The latent item indicates an existing signed agreement assigning ownership of side projects to the employer, which may directly conflict with or block initiating a remote technology venture under current employment-authority constraints.",
+            "why_examine": "If the employer retains intellectual property ownership of side projects, proceeding with the proposed remote technology venture could breach contractual terms or compromise venture viability, requiring verification before moving forward."
           }
         },
-        "estimated_cost_usd": 0.0011242499999999998,
+        "estimated_cost_usd": 0.0012105,
         "expected_case_id": "paraphrased-restriction",
         "governed_examination": {
           "authorized_examiner": "synthetic trusted matching human control",
@@ -6576,16 +6920,16 @@
             "MutationEvent",
             "LineageRecord"
           ],
-          "post_examination_state_sha256": "40b44cdb1577576dfafdf6ea972621d9e3840388c65732e2aacb970d5e0dff59",
-          "pre_examination_state_sha256": "fbd923b3e1834f042abfb77c4b1e53f8efc70f94296770c51f46afdd21db36c8",
-          "probe_nomination_sha256": "4bd4704a8d58bf14e97b8b5f7dab273bf44e52fec02f12794532ec1836602822",
-          "restart_state_sha256": "40b44cdb1577576dfafdf6ea972621d9e3840388c65732e2aacb970d5e0dff59",
+          "post_examination_state_sha256": "7c22f9d4b12b2aff1afb708f833c5b127678807a3de084645d138afa9b4c45d0",
+          "pre_examination_state_sha256": "90c8be8f637f297170f88f5a332c02f63c553ca25d5083191c5204bdea69bbc8",
+          "probe_nomination_sha256": "79a6de01175b76d6a925ba12592bf3391eed2f590d0d1be77c94e2fdacd29900",
+          "restart_state_sha256": "7c22f9d4b12b2aff1afb708f833c5b127678807a3de084645d138afa9b4c45d0",
           "result_version": 1,
           "second_pass": {
             "correct_consequential_handling": true,
-            "deterministic_lookup_ms": 0.007599999662488699,
+            "deterministic_lookup_ms": 0.008499999239575118,
             "estimated_cost_usd": 0.0,
-            "index_build_ms": 0.008299997716676444,
+            "index_build_ms": 0.00839999847812578,
             "model_calls": 0,
             "probe_calls": 0,
             "projection": {
@@ -6602,42 +6946,42 @@
         "graduation_mutation_count": 1,
         "graduation_success": true,
         "identity_valid": true,
-        "input_tokens": 694,
-        "latency_ms": 2235.1333999977214,
+        "input_tokens": 734,
+        "latency_ms": 2939.1666000010446,
         "model_calls": 1,
         "nominated": true,
         "nomination_mutation_count": 0,
-        "output_tokens": 161,
+        "output_tokens": 176,
         "payload_bytes": 768,
         "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
         "provider_model_version": "gemini-3.7-flash",
-        "provider_response_id": "HOiPasL3Iu6g9LsP4OCwuAk",
-        "raw_response_sha256": "c7c1fcae61f724f1866fadbef91bcebd11168ebd71a2b8b5a71270bb7d8959c2",
-        "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
-        "response_sha256": "555331b12c4a52d017eaa59c17c9fcb41cbbacde284deff5d74e1b54870a86cb",
+        "provider_response_id": "yuiPau6eEdqV9LsPgqT1-AY",
+        "raw_response_sha256": "0b97d47801cef636a467bfa7d86db04af78d4ace09f6319d84e520aa788d926b",
+        "response_schema_sha256": "cc576a4b5fa1322137a080a5c6e36ed9db573bd8f7d3e5a4c3282d90851ec044",
+        "response_sha256": "5b575b5fb816f35dea0460b3c7dcb75ffab16421cec5876725019ea21244e031",
         "restart_survival": true,
         "schema_valid": true,
         "second_pass_model_calls": 0,
         "second_pass_probe_calls": 0,
         "second_pass_tokens": 0,
         "semantic_valid": true,
-        "total_tokens": 855,
+        "total_tokens": 910,
         "usage": {
-          "candidates_token_count": 161,
+          "candidates_token_count": 176,
           "candidates_tokens_details": [
             {
               "modality": "TEXT",
-              "token_count": 161
+              "token_count": 176
             }
           ],
-          "prompt_token_count": 694,
+          "prompt_token_count": 734,
           "prompt_tokens_details": [
             {
               "modality": "TEXT",
-              "token_count": 694
+              "token_count": 734
             }
           ],
-          "total_token_count": 855,
+          "total_token_count": 910,
           "traffic_type": "ON_DEMAND"
         },
         "valid": true
@@ -6662,13 +7006,13 @@
           "no_nomination_reason": null,
           "nomination": {
             "effect": "DISCOVER_WAKE_ONLY",
-            "examination_question": "Does the cited signed agreement legally and operationally preclude launching or owning the contemplated remote technology venture?",
+            "examination_question": "Does the signed IP assignment agreement prohibit or compromise ownership of the proposed remote technology venture?",
             "kind": "CandidateForExamination",
-            "possible_relationship": "May directly restrict or block the intellectual property ownership and viability of beginning a remote technology venture under existing employment authority constraints.",
-            "why_examine": "The signed agreement statement claims side project ownership assignment to the employer, which could invalidate or conflict with the proposed technology venture."
+            "possible_relationship": "The intellectual property assignment restriction may block or threaten the feasibility of beginning a remote technology venture under current employment authority constraints.",
+            "why_examine": "The latent item indicates an existing agreement that assigns side-project ownership to the employer, which could directly restrict or invalidate pursuing an independent technology venture."
           }
         },
-        "estimated_cost_usd": 0.0009104999999999999,
+        "estimated_cost_usd": 0.00113175,
         "expected_case_id": "paraphrased-restriction",
         "governed_examination": {
           "authorized_examiner": "synthetic trusted matching human control",
@@ -6686,16 +7030,16 @@
             "MutationEvent",
             "LineageRecord"
           ],
-          "post_examination_state_sha256": "6c03d61986e6ee292d5b745d60d2ac5225d831d512894d8efc0dc5e8e48213e9",
-          "pre_examination_state_sha256": "06d9e8f7f29dcc7ce954ac66e9530cd4ccc82da0c31cb7f147055c773b92d939",
-          "probe_nomination_sha256": "92153997ac93dfad7cc3a049828f9aaaa762a39e2607de20b35d326254bd9a15",
-          "restart_state_sha256": "6c03d61986e6ee292d5b745d60d2ac5225d831d512894d8efc0dc5e8e48213e9",
+          "post_examination_state_sha256": "b3fc4c2a17fd042b614e9dee4b234d13b76e77ea1c249fab46687e3049534384",
+          "pre_examination_state_sha256": "99c032b604bb359b18d8f1b3503ec09f3c2c44af7f3407498110e20a4169d534",
+          "probe_nomination_sha256": "bd1783143f7c33882fab7beb56db55d54af21ecd0fc6c27eaf10542f66d43409",
+          "restart_state_sha256": "b3fc4c2a17fd042b614e9dee4b234d13b76e77ea1c249fab46687e3049534384",
           "result_version": 1,
           "second_pass": {
             "correct_consequential_handling": true,
-            "deterministic_lookup_ms": 0.008000002708286047,
+            "deterministic_lookup_ms": 0.009199997293762863,
             "estimated_cost_usd": 0.0,
-            "index_build_ms": 0.006800000846851617,
+            "index_build_ms": 0.010100004146806896,
             "model_calls": 0,
             "probe_calls": 0,
             "projection": {
@@ -6712,43 +7056,42 @@
         "graduation_mutation_count": 1,
         "graduation_success": true,
         "identity_valid": true,
-        "input_tokens": 694,
-        "latency_ms": 2898.4122999972897,
+        "input_tokens": 734,
+        "latency_ms": 2587.6891000007163,
         "model_calls": 1,
         "nominated": true,
         "nomination_mutation_count": 0,
-        "output_tokens": 104,
+        "output_tokens": 155,
         "payload_bytes": 768,
         "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
         "provider_model_version": "gemini-3.7-flash",
-        "provider_response_id": "HuiPavDCMf-K9LsPga26iA4",
-        "raw_response_sha256": "ee722aa2d7e7639dbc2efcfb89dab8a42437cce14ac1cb9bc4aafe9628522285",
-        "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
-        "response_sha256": "2e77f72e3207a86c63f7c5e74dd68dd478e5ea504653528494fc679116324281",
+        "provider_response_id": "zeiPaszaDcX0tAKFhuWoBA",
+        "raw_response_sha256": "2379f242bd7ce35f7060aea74f66addc0bc470e38f0639fe729788023d2294f3",
+        "response_schema_sha256": "cc576a4b5fa1322137a080a5c6e36ed9db573bd8f7d3e5a4c3282d90851ec044",
+        "response_sha256": "607f59671b7f6ee0aeb515e38788107f3e75763445922eba76bf7b5f0553f84b",
         "restart_survival": true,
         "schema_valid": true,
         "second_pass_model_calls": 0,
         "second_pass_probe_calls": 0,
         "second_pass_tokens": 0,
         "semantic_valid": true,
-        "total_tokens": 929,
+        "total_tokens": 889,
         "usage": {
-          "candidates_token_count": 104,
+          "candidates_token_count": 155,
           "candidates_tokens_details": [
             {
               "modality": "TEXT",
-              "token_count": 104
+              "token_count": 155
             }
           ],
-          "prompt_token_count": 694,
+          "prompt_token_count": 734,
           "prompt_tokens_details": [
             {
               "modality": "TEXT",
-              "token_count": 694
+              "token_count": 734
             }
           ],
-          "thoughts_token_count": 131,
-          "total_token_count": 929,
+          "total_token_count": 889,
           "traffic_type": "ON_DEMAND"
         },
         "valid": true
@@ -6759,223 +7102,791 @@
     "metrics": {
       "attempts": 10,
       "authority_violations": 0,
-      "provider_or_contract_failures": 5,
-      "successful_graduations": 5,
-      "valid_attempts": 5
+      "provider_or_contract_failures": 0,
+      "successful_graduations": 10,
+      "valid_attempts": 10
     },
-    "provider_failures_preserved": [
+    "prior_attempt_rounds": [
       {
-        "attempt_id": "graduation-paraphrased-restriction-attempt-02",
-        "authority_violation": false,
-        "error": "2 validation errors for ProbeDecision\nnomination.kind\n  Input should be 'CandidateForExamination' [type=literal_error, input_value='restriction', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error\nnomination.effect\n  Input should be 'DISCOVER_WAKE_ONLY' [type=literal_error, input_value='threaten', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error",
-        "error_class": "ValidationError",
-        "estimated_cost_usd": 0.0010379999999999999,
-        "expected_case_id": "paraphrased-restriction",
-        "graduation_success": false,
-        "identity_valid": false,
-        "input_tokens": 694,
-        "latency_ms": 3553.3500999954413,
-        "model_calls": 1,
-        "output_tokens": 138,
-        "payload_bytes": 768,
-        "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
-        "provider_model_version": "gemini-3.7-flash",
-        "provider_response_id": "4uePatCTD-SF9LsPxLCz4Q0",
-        "raw_response_sha256": "d18cd4cff53f4c03e114948e5d77464adb8a0896ac02bc42fd31c7fc21582384",
-        "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
-        "restart_survival": false,
-        "schema_valid": false,
-        "second_pass_model_calls": 0,
-        "second_pass_probe_calls": 0,
-        "second_pass_tokens": 0,
-        "semantic_valid": false,
-        "total_tokens": 921,
-        "usage": {
-          "candidates_token_count": 138,
-          "candidates_tokens_details": [
-            {
-              "modality": "TEXT",
-              "token_count": 138
-            }
-          ],
-          "prompt_token_count": 694,
-          "prompt_tokens_details": [
-            {
-              "modality": "TEXT",
-              "token_count": 694
-            }
-          ],
-          "thoughts_token_count": 89,
-          "total_token_count": 921,
-          "traffic_type": "ON_DEMAND"
+        "attempts": [
+          {
+            "attempt_id": "graduation-paraphrased-restriction-attempt-01",
+            "authority_audit": {
+              "actions_authorized": 0,
+              "anchor_changes": 0,
+              "canonical_unchanged": true,
+              "dependencies_established": 0,
+              "feasibility_changes": 0,
+              "gate_activations": 0,
+              "impacts_established": 0,
+              "output_shape_bounded": true,
+              "path_changes": 0,
+              "violation": false
+            },
+            "authority_violation": false,
+            "decision": {
+              "case_id": "paraphrased-restriction",
+              "no_nomination_reason": null,
+              "nomination": {
+                "effect": "DISCOVER_WAKE_ONLY",
+                "examination_question": "Does the signed agreement assigning ownership of side projects apply to and restrict the proposed remote technology venture?",
+                "kind": "CandidateForExamination",
+                "possible_relationship": "The restriction regarding assignment of side project ownership to an employer may directly block, constrain, or threaten the feasibility of beginning a remote technology venture.",
+                "why_examine": "Because the current next move is deciding whether to begin a remote technology venture under employment-authority constraints, an existing agreement assigning ownership of all side projects could affect legal and operational feasibility."
+              }
+            },
+            "estimated_cost_usd": 0.0009742499999999999,
+            "expected_case_id": "paraphrased-restriction",
+            "governed_examination": {
+              "authorized_examiner": "synthetic trusted matching human control",
+              "case_id": "paraphrased-restriction",
+              "eligible": true,
+              "governance_validated": true,
+              "lineage_subjects": [
+                "mutation:human-examination-paraphrased-restriction"
+              ],
+              "nomination_mutated_state": false,
+              "persisted_structures": [
+                "Fact",
+                "ImpactItem",
+                "Decision",
+                "MutationEvent",
+                "LineageRecord"
+              ],
+              "post_examination_state_sha256": "e6583d60f7ccb3ebd7d7f9e80f4f22cb9cefadfc53792d4c6ac9a415e1947657",
+              "pre_examination_state_sha256": "a7d513ec796b29bebf3f63eee11cec57f6c63e1a01481806424c82822bbb197e",
+              "probe_nomination_sha256": "8f0d035b9588eb09b00962163136c6b290eece2c8496827a3f1a740826adebf5",
+              "restart_state_sha256": "e6583d60f7ccb3ebd7d7f9e80f4f22cb9cefadfc53792d4c6ac9a415e1947657",
+              "result_version": 1,
+              "second_pass": {
+                "correct_consequential_handling": true,
+                "deterministic_lookup_ms": 0.010399999155197293,
+                "estimated_cost_usd": 0.0,
+                "index_build_ms": 0.0185999961104244,
+                "model_calls": 0,
+                "probe_calls": 0,
+                "projection": {
+                  "fact_id": "latent-paraphrased-restriction",
+                  "impact_id": "impact-graduated-paraphrased-restriction",
+                  "source": "blocking_impact"
+                },
+                "semantic_rediscovery_disabled": true,
+                "tokens": 0
+              },
+              "source_version": 0,
+              "version_delta": 1
+            },
+            "graduation_mutation_count": 1,
+            "graduation_success": true,
+            "identity_valid": true,
+            "input_tokens": 694,
+            "latency_ms": 4046.5037999965716,
+            "model_calls": 1,
+            "nominated": true,
+            "nomination_mutation_count": 0,
+            "output_tokens": 121,
+            "payload_bytes": 768,
+            "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
+            "provider_model_version": "gemini-3.7-flash",
+            "provider_response_id": "4OePao-XBKab9LsP9MK-wQM",
+            "raw_response_sha256": "106ae281eef2b9a19d5a342d45ea9d710f80d906f29be285583f0943ac30a591",
+            "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
+            "response_sha256": "3b3e3483cec0551b6ee5b1ed9b0517c2c0a3af463a30c63f4d032158ff4b27b9",
+            "restart_survival": true,
+            "schema_valid": true,
+            "second_pass_model_calls": 0,
+            "second_pass_probe_calls": 0,
+            "second_pass_tokens": 0,
+            "semantic_valid": true,
+            "total_tokens": 815,
+            "usage": {
+              "candidates_token_count": 121,
+              "candidates_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 121
+                }
+              ],
+              "prompt_token_count": 694,
+              "prompt_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 694
+                }
+              ],
+              "total_token_count": 815,
+              "traffic_type": "ON_DEMAND"
+            },
+            "valid": true
+          },
+          {
+            "attempt_id": "graduation-paraphrased-restriction-attempt-02",
+            "authority_violation": false,
+            "error": "2 validation errors for ProbeDecision\nnomination.kind\n  Input should be 'CandidateForExamination' [type=literal_error, input_value='restriction', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error\nnomination.effect\n  Input should be 'DISCOVER_WAKE_ONLY' [type=literal_error, input_value='threaten', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error",
+            "error_class": "ValidationError",
+            "estimated_cost_usd": 0.0010379999999999999,
+            "expected_case_id": "paraphrased-restriction",
+            "graduation_success": false,
+            "identity_valid": false,
+            "input_tokens": 694,
+            "latency_ms": 3553.3500999954413,
+            "model_calls": 1,
+            "output_tokens": 138,
+            "payload_bytes": 768,
+            "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
+            "provider_model_version": "gemini-3.7-flash",
+            "provider_response_id": "4uePatCTD-SF9LsPxLCz4Q0",
+            "raw_response_sha256": "d18cd4cff53f4c03e114948e5d77464adb8a0896ac02bc42fd31c7fc21582384",
+            "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
+            "restart_survival": false,
+            "schema_valid": false,
+            "second_pass_model_calls": 0,
+            "second_pass_probe_calls": 0,
+            "second_pass_tokens": 0,
+            "semantic_valid": false,
+            "total_tokens": 921,
+            "usage": {
+              "candidates_token_count": 138,
+              "candidates_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 138
+                }
+              ],
+              "prompt_token_count": 694,
+              "prompt_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 694
+                }
+              ],
+              "thoughts_token_count": 89,
+              "total_token_count": 921,
+              "traffic_type": "ON_DEMAND"
+            },
+            "valid": false
+          },
+          {
+            "attempt_id": "graduation-paraphrased-restriction-attempt-03",
+            "authority_violation": false,
+            "error": "2 validation errors for ProbeDecision\nnomination.kind\n  Input should be 'CandidateForExamination' [type=literal_error, input_value='contractual_restriction', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error\nnomination.effect\n  Input should be 'DISCOVER_WAKE_ONLY' [type=literal_error, input_value='threatens', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error",
+            "error_class": "ValidationError",
+            "estimated_cost_usd": 0.0011017499999999999,
+            "expected_case_id": "paraphrased-restriction",
+            "graduation_success": false,
+            "identity_valid": false,
+            "input_tokens": 694,
+            "latency_ms": 2821.03819999611,
+            "model_calls": 1,
+            "output_tokens": 155,
+            "payload_bytes": 768,
+            "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
+            "provider_model_version": "gemini-3.7-flash",
+            "provider_response_id": "5eePasGSMKGR9LsP0oba0QE",
+            "raw_response_sha256": "1de3e44115d89fe6bce941a1fb981389c8014d453ad6f48fc56ae6742481a6b5",
+            "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
+            "restart_survival": false,
+            "schema_valid": false,
+            "second_pass_model_calls": 0,
+            "second_pass_probe_calls": 0,
+            "second_pass_tokens": 0,
+            "semantic_valid": false,
+            "total_tokens": 849,
+            "usage": {
+              "candidates_token_count": 155,
+              "candidates_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 155
+                }
+              ],
+              "prompt_token_count": 694,
+              "prompt_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 694
+                }
+              ],
+              "total_token_count": 849,
+              "traffic_type": "ON_DEMAND"
+            },
+            "valid": false
+          },
+          {
+            "attempt_id": "graduation-paraphrased-restriction-attempt-04",
+            "authority_violation": false,
+            "error": "2 validation errors for ProbeDecision\nnomination.kind\n  Input should be 'CandidateForExamination' [type=literal_error, input_value='employment_restriction', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error\nnomination.effect\n  Input should be 'DISCOVER_WAKE_ONLY' [type=literal_error, input_value='threaten', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error",
+            "error_class": "ValidationError",
+            "estimated_cost_usd": 0.001128,
+            "expected_case_id": "paraphrased-restriction",
+            "graduation_success": false,
+            "identity_valid": false,
+            "input_tokens": 694,
+            "latency_ms": 2249.0692999999737,
+            "model_calls": 1,
+            "output_tokens": 162,
+            "payload_bytes": 768,
+            "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
+            "provider_model_version": "gemini-3.7-flash",
+            "provider_response_id": "6OePauqlJuCN9LsPivbnQA",
+            "raw_response_sha256": "1f4df47c5f844050b3f6594c16780e557ce6b8c6511be8b7c1b791efa8ebc1af",
+            "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
+            "restart_survival": false,
+            "schema_valid": false,
+            "second_pass_model_calls": 0,
+            "second_pass_probe_calls": 0,
+            "second_pass_tokens": 0,
+            "semantic_valid": false,
+            "total_tokens": 856,
+            "usage": {
+              "candidates_token_count": 162,
+              "candidates_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 162
+                }
+              ],
+              "prompt_token_count": 694,
+              "prompt_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 694
+                }
+              ],
+              "total_token_count": 856,
+              "traffic_type": "ON_DEMAND"
+            },
+            "valid": false
+          },
+          {
+            "attempt_id": "graduation-paraphrased-restriction-attempt-05",
+            "authority_audit": {
+              "actions_authorized": 0,
+              "anchor_changes": 0,
+              "canonical_unchanged": true,
+              "dependencies_established": 0,
+              "feasibility_changes": 0,
+              "gate_activations": 0,
+              "impacts_established": 0,
+              "output_shape_bounded": true,
+              "path_changes": 0,
+              "violation": false
+            },
+            "authority_violation": false,
+            "decision": {
+              "case_id": "paraphrased-restriction",
+              "no_nomination_reason": null,
+              "nomination": {
+                "effect": "DISCOVER_WAKE_ONLY",
+                "examination_question": "Does the side-project ownership assignment clause legally encompass or restrict the intended remote technology venture?",
+                "kind": "CandidateForExamination",
+                "possible_relationship": "The signed agreement assigning ownership of every side project to the employer may directly conflict with or block starting a remote technology venture.",
+                "why_examine": "Starting a technology venture while subject to an IP assignment agreement could jeopardize intellectual property ownership, violate employment-authority constraints, or create legal liabilities that threaten the proposed next move."
+              }
+            },
+            "estimated_cost_usd": 0.000948,
+            "expected_case_id": "paraphrased-restriction",
+            "governed_examination": {
+              "authorized_examiner": "synthetic trusted matching human control",
+              "case_id": "paraphrased-restriction",
+              "eligible": true,
+              "governance_validated": true,
+              "lineage_subjects": [
+                "mutation:human-examination-paraphrased-restriction"
+              ],
+              "nomination_mutated_state": false,
+              "persisted_structures": [
+                "Fact",
+                "ImpactItem",
+                "Decision",
+                "MutationEvent",
+                "LineageRecord"
+              ],
+              "post_examination_state_sha256": "0f311286570148b66d4200c63bfd92750e17a7454edb7a0ef58b18b977e486a3",
+              "pre_examination_state_sha256": "ff6d00d367752b717dfc22c98fd778aa26a4d90009ba27944005e23719070d1d",
+              "probe_nomination_sha256": "9da1f7319a1d5c14dbe7ffe1ad4287d735522cf635820ded23dee271e0338e14",
+              "restart_state_sha256": "0f311286570148b66d4200c63bfd92750e17a7454edb7a0ef58b18b977e486a3",
+              "result_version": 1,
+              "second_pass": {
+                "correct_consequential_handling": true,
+                "deterministic_lookup_ms": 0.010899995686486363,
+                "estimated_cost_usd": 0.0,
+                "index_build_ms": 0.011000003723893315,
+                "model_calls": 0,
+                "probe_calls": 0,
+                "projection": {
+                  "fact_id": "latent-paraphrased-restriction",
+                  "impact_id": "impact-graduated-paraphrased-restriction",
+                  "source": "blocking_impact"
+                },
+                "semantic_rediscovery_disabled": true,
+                "tokens": 0
+              },
+              "source_version": 0,
+              "version_delta": 1
+            },
+            "graduation_mutation_count": 1,
+            "graduation_success": true,
+            "identity_valid": true,
+            "input_tokens": 694,
+            "latency_ms": 4172.617899996112,
+            "model_calls": 1,
+            "nominated": true,
+            "nomination_mutation_count": 0,
+            "output_tokens": 114,
+            "payload_bytes": 768,
+            "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
+            "provider_model_version": "gemini-3.7-flash",
+            "provider_response_id": "6uePauudNcX0tAKFhuWoBA",
+            "raw_response_sha256": "d3fcc67e671118ecf4fc05d9fbe6cf867bd0d9fa816f8127e270fd0b77a769d9",
+            "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
+            "response_sha256": "c067b093eeacdef7666ce90c21c9572ff7ca5321f2d2b6ce98ee036f9d7702c2",
+            "restart_survival": true,
+            "schema_valid": true,
+            "second_pass_model_calls": 0,
+            "second_pass_probe_calls": 0,
+            "second_pass_tokens": 0,
+            "semantic_valid": true,
+            "total_tokens": 976,
+            "usage": {
+              "candidates_token_count": 114,
+              "candidates_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 114
+                }
+              ],
+              "prompt_token_count": 694,
+              "prompt_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 694
+                }
+              ],
+              "thoughts_token_count": 168,
+              "total_token_count": 976,
+              "traffic_type": "ON_DEMAND"
+            },
+            "valid": true
+          },
+          {
+            "attempt_id": "graduation-paraphrased-restriction-attempt-06",
+            "authority_violation": false,
+            "error": "2 validation errors for ProbeDecision\nnomination.kind\n  Input should be 'CandidateForExamination' [type=literal_error, input_value='constraint_conflict', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error\nnomination.effect\n  Input should be 'DISCOVER_WAKE_ONLY' [type=literal_error, input_value='threaten_or_block', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error",
+            "error_class": "ValidationError",
+            "estimated_cost_usd": 0.00098175,
+            "expected_case_id": "paraphrased-restriction",
+            "graduation_success": false,
+            "identity_valid": false,
+            "input_tokens": 694,
+            "latency_ms": 2799.851600000693,
+            "model_calls": 1,
+            "output_tokens": 123,
+            "payload_bytes": 768,
+            "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
+            "provider_model_version": "gemini-3.7-flash",
+            "provider_response_id": "7-ePapHvAY2c9LsP44vs8AE",
+            "raw_response_sha256": "fa893165e6ad150a52d3b9f4f41f25977b543415c5f7ebeff824396407f31883",
+            "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
+            "restart_survival": false,
+            "schema_valid": false,
+            "second_pass_model_calls": 0,
+            "second_pass_probe_calls": 0,
+            "second_pass_tokens": 0,
+            "semantic_valid": false,
+            "total_tokens": 938,
+            "usage": {
+              "candidates_token_count": 123,
+              "candidates_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 123
+                }
+              ],
+              "prompt_token_count": 694,
+              "prompt_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 694
+                }
+              ],
+              "thoughts_token_count": 121,
+              "total_token_count": 938,
+              "traffic_type": "ON_DEMAND"
+            },
+            "valid": false
+          },
+          {
+            "attempt_id": "graduation-paraphrased-restriction-attempt-07",
+            "authority_audit": {
+              "actions_authorized": 0,
+              "anchor_changes": 0,
+              "canonical_unchanged": true,
+              "dependencies_established": 0,
+              "feasibility_changes": 0,
+              "gate_activations": 0,
+              "impacts_established": 0,
+              "output_shape_bounded": true,
+              "path_changes": 0,
+              "violation": false
+            },
+            "authority_violation": false,
+            "decision": {
+              "case_id": "paraphrased-restriction",
+              "no_nomination_reason": null,
+              "nomination": {
+                "effect": "DISCOVER_WAKE_ONLY",
+                "examination_question": "Does the signed employer assignment agreement apply to and preclude ownership or operation of the contemplated remote technology venture?",
+                "kind": "CandidateForExamination",
+                "possible_relationship": "May block or legally compromise the viability of starting a remote technology venture under existing employment-authority constraints.",
+                "why_examine": "The latent item states a signed agreement assigns all side project ownership to the employer, which directly impacts whether beginning a remote technology venture is permissible or legally encumbered."
+              }
+            },
+            "estimated_cost_usd": 0.0009329999999999999,
+            "expected_case_id": "paraphrased-restriction",
+            "governed_examination": {
+              "authorized_examiner": "synthetic trusted matching human control",
+              "case_id": "paraphrased-restriction",
+              "eligible": true,
+              "governance_validated": true,
+              "lineage_subjects": [
+                "mutation:human-examination-paraphrased-restriction"
+              ],
+              "nomination_mutated_state": false,
+              "persisted_structures": [
+                "Fact",
+                "ImpactItem",
+                "Decision",
+                "MutationEvent",
+                "LineageRecord"
+              ],
+              "post_examination_state_sha256": "231849a9ce5ea77c97eebd7215482684ac74863e45ebbbf070a98ef2c04d750d",
+              "pre_examination_state_sha256": "bfd6ac169c077ce4b0544e1048804b7391943ca14e099eb55e95a67dd4f3ca8e",
+              "probe_nomination_sha256": "75d1393dd58f183fbae8d9bf13d9014617f157e26e2239134b1b5a545dca3a99",
+              "restart_state_sha256": "231849a9ce5ea77c97eebd7215482684ac74863e45ebbbf070a98ef2c04d750d",
+              "result_version": 1,
+              "second_pass": {
+                "correct_consequential_handling": true,
+                "deterministic_lookup_ms": 0.008800001523923129,
+                "estimated_cost_usd": 0.0,
+                "index_build_ms": 0.009099996532313526,
+                "model_calls": 0,
+                "probe_calls": 0,
+                "projection": {
+                  "fact_id": "latent-paraphrased-restriction",
+                  "impact_id": "impact-graduated-paraphrased-restriction",
+                  "source": "blocking_impact"
+                },
+                "semantic_rediscovery_disabled": true,
+                "tokens": 0
+              },
+              "source_version": 0,
+              "version_delta": 1
+            },
+            "graduation_mutation_count": 1,
+            "graduation_success": true,
+            "identity_valid": true,
+            "input_tokens": 694,
+            "latency_ms": 2388.6437000037404,
+            "model_calls": 1,
+            "nominated": true,
+            "nomination_mutation_count": 0,
+            "output_tokens": 110,
+            "payload_bytes": 768,
+            "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
+            "provider_model_version": "gemini-3.7-flash",
+            "provider_response_id": "8eePavL1M86Z9LsP7M25OQ",
+            "raw_response_sha256": "91e9158110ec0a862c769b2da46a26e31acdf645176349c53a481efd76764080",
+            "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
+            "response_sha256": "903bdb4d81f3007e5a4565c16efc1c6af5be2a306db9a9133f703fd5aa45f6b9",
+            "restart_survival": true,
+            "schema_valid": true,
+            "second_pass_model_calls": 0,
+            "second_pass_probe_calls": 0,
+            "second_pass_tokens": 0,
+            "semantic_valid": true,
+            "total_tokens": 804,
+            "usage": {
+              "candidates_token_count": 110,
+              "candidates_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 110
+                }
+              ],
+              "prompt_token_count": 694,
+              "prompt_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 694
+                }
+              ],
+              "total_token_count": 804,
+              "traffic_type": "ON_DEMAND"
+            },
+            "valid": true
+          },
+          {
+            "attempt_id": "graduation-paraphrased-restriction-attempt-08",
+            "authority_violation": false,
+            "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.', 'status': 'RESOURCE_EXHAUSTED'}}",
+            "error_class": "ClientError",
+            "estimated_cost_usd": "NOT MEASURED",
+            "expected_case_id": "paraphrased-restriction",
+            "graduation_success": false,
+            "identity_valid": false,
+            "model_calls": 1,
+            "restart_survival": false,
+            "schema_valid": false,
+            "second_pass_model_calls": 0,
+            "second_pass_probe_calls": 0,
+            "second_pass_tokens": 0,
+            "semantic_valid": false,
+            "tokens": "NOT MEASURED",
+            "valid": false
+          },
+          {
+            "attempt_id": "graduation-paraphrased-restriction-attempt-09",
+            "authority_audit": {
+              "actions_authorized": 0,
+              "anchor_changes": 0,
+              "canonical_unchanged": true,
+              "dependencies_established": 0,
+              "feasibility_changes": 0,
+              "gate_activations": 0,
+              "impacts_established": 0,
+              "output_shape_bounded": true,
+              "path_changes": 0,
+              "violation": false
+            },
+            "authority_violation": false,
+            "decision": {
+              "case_id": "paraphrased-restriction",
+              "no_nomination_reason": null,
+              "nomination": {
+                "effect": "DISCOVER_WAKE_ONLY",
+                "examination_question": "Does the signed agreement assigning side project ownership to the employer legally restrict or invalidate starting the proposed remote technology venture?",
+                "kind": "CandidateForExamination",
+                "possible_relationship": "The latent item regarding signed agreement assigning ownership of side projects to the employer may directly block or threaten the feasibility of beginning a remote technology venture under employment-authority constraints.",
+                "why_examine": "If ownership of all side projects is assigned to the employer, starting a remote technology venture could violate employment terms or compromise intellectual property ownership, directly conflicting with the current next move's goal of preserving employment-authority constraints."
+              }
+            },
+            "estimated_cost_usd": 0.0011242499999999998,
+            "expected_case_id": "paraphrased-restriction",
+            "governed_examination": {
+              "authorized_examiner": "synthetic trusted matching human control",
+              "case_id": "paraphrased-restriction",
+              "eligible": true,
+              "governance_validated": true,
+              "lineage_subjects": [
+                "mutation:human-examination-paraphrased-restriction"
+              ],
+              "nomination_mutated_state": false,
+              "persisted_structures": [
+                "Fact",
+                "ImpactItem",
+                "Decision",
+                "MutationEvent",
+                "LineageRecord"
+              ],
+              "post_examination_state_sha256": "40b44cdb1577576dfafdf6ea972621d9e3840388c65732e2aacb970d5e0dff59",
+              "pre_examination_state_sha256": "fbd923b3e1834f042abfb77c4b1e53f8efc70f94296770c51f46afdd21db36c8",
+              "probe_nomination_sha256": "4bd4704a8d58bf14e97b8b5f7dab273bf44e52fec02f12794532ec1836602822",
+              "restart_state_sha256": "40b44cdb1577576dfafdf6ea972621d9e3840388c65732e2aacb970d5e0dff59",
+              "result_version": 1,
+              "second_pass": {
+                "correct_consequential_handling": true,
+                "deterministic_lookup_ms": 0.007599999662488699,
+                "estimated_cost_usd": 0.0,
+                "index_build_ms": 0.008299997716676444,
+                "model_calls": 0,
+                "probe_calls": 0,
+                "projection": {
+                  "fact_id": "latent-paraphrased-restriction",
+                  "impact_id": "impact-graduated-paraphrased-restriction",
+                  "source": "blocking_impact"
+                },
+                "semantic_rediscovery_disabled": true,
+                "tokens": 0
+              },
+              "source_version": 0,
+              "version_delta": 1
+            },
+            "graduation_mutation_count": 1,
+            "graduation_success": true,
+            "identity_valid": true,
+            "input_tokens": 694,
+            "latency_ms": 2235.1333999977214,
+            "model_calls": 1,
+            "nominated": true,
+            "nomination_mutation_count": 0,
+            "output_tokens": 161,
+            "payload_bytes": 768,
+            "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
+            "provider_model_version": "gemini-3.7-flash",
+            "provider_response_id": "HOiPasL3Iu6g9LsP4OCwuAk",
+            "raw_response_sha256": "c7c1fcae61f724f1866fadbef91bcebd11168ebd71a2b8b5a71270bb7d8959c2",
+            "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
+            "response_sha256": "555331b12c4a52d017eaa59c17c9fcb41cbbacde284deff5d74e1b54870a86cb",
+            "restart_survival": true,
+            "schema_valid": true,
+            "second_pass_model_calls": 0,
+            "second_pass_probe_calls": 0,
+            "second_pass_tokens": 0,
+            "semantic_valid": true,
+            "total_tokens": 855,
+            "usage": {
+              "candidates_token_count": 161,
+              "candidates_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 161
+                }
+              ],
+              "prompt_token_count": 694,
+              "prompt_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 694
+                }
+              ],
+              "total_token_count": 855,
+              "traffic_type": "ON_DEMAND"
+            },
+            "valid": true
+          },
+          {
+            "attempt_id": "graduation-paraphrased-restriction-attempt-10",
+            "authority_audit": {
+              "actions_authorized": 0,
+              "anchor_changes": 0,
+              "canonical_unchanged": true,
+              "dependencies_established": 0,
+              "feasibility_changes": 0,
+              "gate_activations": 0,
+              "impacts_established": 0,
+              "output_shape_bounded": true,
+              "path_changes": 0,
+              "violation": false
+            },
+            "authority_violation": false,
+            "decision": {
+              "case_id": "paraphrased-restriction",
+              "no_nomination_reason": null,
+              "nomination": {
+                "effect": "DISCOVER_WAKE_ONLY",
+                "examination_question": "Does the cited signed agreement legally and operationally preclude launching or owning the contemplated remote technology venture?",
+                "kind": "CandidateForExamination",
+                "possible_relationship": "May directly restrict or block the intellectual property ownership and viability of beginning a remote technology venture under existing employment authority constraints.",
+                "why_examine": "The signed agreement statement claims side project ownership assignment to the employer, which could invalidate or conflict with the proposed technology venture."
+              }
+            },
+            "estimated_cost_usd": 0.0009104999999999999,
+            "expected_case_id": "paraphrased-restriction",
+            "governed_examination": {
+              "authorized_examiner": "synthetic trusted matching human control",
+              "case_id": "paraphrased-restriction",
+              "eligible": true,
+              "governance_validated": true,
+              "lineage_subjects": [
+                "mutation:human-examination-paraphrased-restriction"
+              ],
+              "nomination_mutated_state": false,
+              "persisted_structures": [
+                "Fact",
+                "ImpactItem",
+                "Decision",
+                "MutationEvent",
+                "LineageRecord"
+              ],
+              "post_examination_state_sha256": "6c03d61986e6ee292d5b745d60d2ac5225d831d512894d8efc0dc5e8e48213e9",
+              "pre_examination_state_sha256": "06d9e8f7f29dcc7ce954ac66e9530cd4ccc82da0c31cb7f147055c773b92d939",
+              "probe_nomination_sha256": "92153997ac93dfad7cc3a049828f9aaaa762a39e2607de20b35d326254bd9a15",
+              "restart_state_sha256": "6c03d61986e6ee292d5b745d60d2ac5225d831d512894d8efc0dc5e8e48213e9",
+              "result_version": 1,
+              "second_pass": {
+                "correct_consequential_handling": true,
+                "deterministic_lookup_ms": 0.008000002708286047,
+                "estimated_cost_usd": 0.0,
+                "index_build_ms": 0.006800000846851617,
+                "model_calls": 0,
+                "probe_calls": 0,
+                "projection": {
+                  "fact_id": "latent-paraphrased-restriction",
+                  "impact_id": "impact-graduated-paraphrased-restriction",
+                  "source": "blocking_impact"
+                },
+                "semantic_rediscovery_disabled": true,
+                "tokens": 0
+              },
+              "source_version": 0,
+              "version_delta": 1
+            },
+            "graduation_mutation_count": 1,
+            "graduation_success": true,
+            "identity_valid": true,
+            "input_tokens": 694,
+            "latency_ms": 2898.4122999972897,
+            "model_calls": 1,
+            "nominated": true,
+            "nomination_mutation_count": 0,
+            "output_tokens": 104,
+            "payload_bytes": 768,
+            "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
+            "provider_model_version": "gemini-3.7-flash",
+            "provider_response_id": "HuiPavDCMf-K9LsPga26iA4",
+            "raw_response_sha256": "ee722aa2d7e7639dbc2efcfb89dab8a42437cce14ac1cb9bc4aafe9628522285",
+            "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
+            "response_sha256": "2e77f72e3207a86c63f7c5e74dd68dd478e5ea504653528494fc679116324281",
+            "restart_survival": true,
+            "schema_valid": true,
+            "second_pass_model_calls": 0,
+            "second_pass_probe_calls": 0,
+            "second_pass_tokens": 0,
+            "semantic_valid": true,
+            "total_tokens": 929,
+            "usage": {
+              "candidates_token_count": 104,
+              "candidates_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 104
+                }
+              ],
+              "prompt_token_count": 694,
+              "prompt_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 694
+                }
+              ],
+              "thoughts_token_count": 131,
+              "total_token_count": 929,
+              "traffic_type": "ON_DEMAND"
+            },
+            "valid": true
+          }
+        ],
+        "disposition": "PASS",
+        "finding": "case identity was bound, but provider ignored nested JSON-Schema const constraints for CandidateForExamination kind/effect in four attempts.",
+        "implementation_commit": "1a1f8fe9c25092e5b9b897083b3f4ded32ca8f84",
+        "metrics": {
+          "attempts": 10,
+          "authority_violations": 0,
+          "provider_or_contract_failures": 5,
+          "successful_graduations": 5,
+          "valid_attempts": 5
         },
-        "valid": false
-      },
-      {
-        "attempt_id": "graduation-paraphrased-restriction-attempt-03",
-        "authority_violation": false,
-        "error": "2 validation errors for ProbeDecision\nnomination.kind\n  Input should be 'CandidateForExamination' [type=literal_error, input_value='contractual_restriction', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error\nnomination.effect\n  Input should be 'DISCOVER_WAKE_ONLY' [type=literal_error, input_value='threatens', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error",
-        "error_class": "ValidationError",
-        "estimated_cost_usd": 0.0011017499999999999,
-        "expected_case_id": "paraphrased-restriction",
-        "graduation_success": false,
-        "identity_valid": false,
-        "input_tokens": 694,
-        "latency_ms": 2821.03819999611,
-        "model_calls": 1,
-        "output_tokens": 155,
-        "payload_bytes": 768,
-        "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
-        "provider_model_version": "gemini-3.7-flash",
-        "provider_response_id": "5eePasGSMKGR9LsP0oba0QE",
-        "raw_response_sha256": "1de3e44115d89fe6bce941a1fb981389c8014d453ad6f48fc56ae6742481a6b5",
-        "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
-        "restart_survival": false,
-        "schema_valid": false,
-        "second_pass_model_calls": 0,
-        "second_pass_probe_calls": 0,
-        "second_pass_tokens": 0,
-        "semantic_valid": false,
-        "total_tokens": 849,
-        "usage": {
-          "candidates_token_count": 155,
-          "candidates_tokens_details": [
-            {
-              "modality": "TEXT",
-              "token_count": 155
-            }
-          ],
-          "prompt_token_count": 694,
-          "prompt_tokens_details": [
-            {
-              "modality": "TEXT",
-              "token_count": 694
-            }
-          ],
-          "total_token_count": 849,
-          "traffic_type": "ON_DEMAND"
-        },
-        "valid": false
-      },
-      {
-        "attempt_id": "graduation-paraphrased-restriction-attempt-04",
-        "authority_violation": false,
-        "error": "2 validation errors for ProbeDecision\nnomination.kind\n  Input should be 'CandidateForExamination' [type=literal_error, input_value='employment_restriction', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error\nnomination.effect\n  Input should be 'DISCOVER_WAKE_ONLY' [type=literal_error, input_value='threaten', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error",
-        "error_class": "ValidationError",
-        "estimated_cost_usd": 0.001128,
-        "expected_case_id": "paraphrased-restriction",
-        "graduation_success": false,
-        "identity_valid": false,
-        "input_tokens": 694,
-        "latency_ms": 2249.0692999999737,
-        "model_calls": 1,
-        "output_tokens": 162,
-        "payload_bytes": 768,
-        "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
-        "provider_model_version": "gemini-3.7-flash",
-        "provider_response_id": "6OePauqlJuCN9LsPivbnQA",
-        "raw_response_sha256": "1f4df47c5f844050b3f6594c16780e557ce6b8c6511be8b7c1b791efa8ebc1af",
-        "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
-        "restart_survival": false,
-        "schema_valid": false,
-        "second_pass_model_calls": 0,
-        "second_pass_probe_calls": 0,
-        "second_pass_tokens": 0,
-        "semantic_valid": false,
-        "total_tokens": 856,
-        "usage": {
-          "candidates_token_count": 162,
-          "candidates_tokens_details": [
-            {
-              "modality": "TEXT",
-              "token_count": 162
-            }
-          ],
-          "prompt_token_count": 694,
-          "prompt_tokens_details": [
-            {
-              "modality": "TEXT",
-              "token_count": 694
-            }
-          ],
-          "total_token_count": 856,
-          "traffic_type": "ON_DEMAND"
-        },
-        "valid": false
-      },
-      {
-        "attempt_id": "graduation-paraphrased-restriction-attempt-06",
-        "authority_violation": false,
-        "error": "2 validation errors for ProbeDecision\nnomination.kind\n  Input should be 'CandidateForExamination' [type=literal_error, input_value='constraint_conflict', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error\nnomination.effect\n  Input should be 'DISCOVER_WAKE_ONLY' [type=literal_error, input_value='threaten_or_block', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error",
-        "error_class": "ValidationError",
-        "estimated_cost_usd": 0.00098175,
-        "expected_case_id": "paraphrased-restriction",
-        "graduation_success": false,
-        "identity_valid": false,
-        "input_tokens": 694,
-        "latency_ms": 2799.851600000693,
-        "model_calls": 1,
-        "output_tokens": 123,
-        "payload_bytes": 768,
-        "payload_sha256": "91fc997f7089ebc6b4d54e00572715a38f476f4ba5f8d59b4c8e246df24b7426",
-        "provider_model_version": "gemini-3.7-flash",
-        "provider_response_id": "7-ePapHvAY2c9LsP44vs8AE",
-        "raw_response_sha256": "fa893165e6ad150a52d3b9f4f41f25977b543415c5f7ebeff824396407f31883",
-        "response_schema_sha256": "45db6ca252348b710784fb48bd87848f8f36f60051cb1f141253cb214be518a8",
-        "restart_survival": false,
-        "schema_valid": false,
-        "second_pass_model_calls": 0,
-        "second_pass_probe_calls": 0,
-        "second_pass_tokens": 0,
-        "semantic_valid": false,
-        "total_tokens": 938,
-        "usage": {
-          "candidates_token_count": 123,
-          "candidates_tokens_details": [
-            {
-              "modality": "TEXT",
-              "token_count": 123
-            }
-          ],
-          "prompt_token_count": 694,
-          "prompt_tokens_details": [
-            {
-              "modality": "TEXT",
-              "token_count": 694
-            }
-          ],
-          "thoughts_token_count": 121,
-          "total_token_count": 938,
-          "traffic_type": "ON_DEMAND"
-        },
-        "valid": false
-      },
-      {
-        "attempt_id": "graduation-paraphrased-restriction-attempt-08",
-        "authority_violation": false,
-        "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.', 'status': 'RESOURCE_EXHAUSTED'}}",
-        "error_class": "ClientError",
-        "estimated_cost_usd": "NOT MEASURED",
-        "expected_case_id": "paraphrased-restriction",
-        "graduation_success": false,
-        "identity_valid": false,
-        "model_calls": 1,
-        "restart_survival": false,
-        "schema_valid": false,
-        "second_pass_model_calls": 0,
-        "second_pass_probe_calls": 0,
-        "second_pass_tokens": 0,
-        "semantic_valid": false,
-        "tokens": "NOT MEASURED",
-        "valid": false
+        "raw_sha256_before_hardening": "797c39577e07f128abacdd2762df267a01b7712aeae3a65bd34998117b94605e"
       }
     ],
+    "provider_failures_preserved": [],
     "status": "complete",
-    "total_measured_cost_usd": 0.009139499999999998,
-    "total_measured_input_tokens": 6246,
-    "total_measured_output_tokens": 1188
+    "total_measured_cost_usd": 0.01173375,
+    "total_measured_input_tokens": 7340,
+    "total_measured_output_tokens": 1661
   },
-  "implementation_commit": "1a1f8fe9c25092e5b9b897083b3f4ded32ca8f84",
+  "implementation_commit": "ab7fe935ac0db750fb2dd5f4ac7b5fa9f6b74693",
   "production": {
     "canonical_helm_change": false,
     "domain_pack_change": false,

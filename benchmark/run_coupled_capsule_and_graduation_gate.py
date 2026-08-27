@@ -439,9 +439,9 @@ def execute_gate_2_from_existing() -> dict[str, Any]:
                     "semantic_valid": False,
                     "graduation_success": False,
                     "restart_survival": False,
-                    "second_pass_probe_calls": 0,
-                    "second_pass_model_calls": 0,
-                    "second_pass_tokens": 0,
+                    "second_pass_probe_calls": 0,  # nosec B105 - telemetry count, not a credential
+                    "second_pass_model_calls": 0,  # nosec B105 - telemetry count, not a credential
+                    "second_pass_tokens": 0,  # nosec B105 - telemetry count, not a credential
                     "authority_violation": False,
                     "error_class": type(exc).__name__,
                     "error": str(exc),
@@ -459,9 +459,9 @@ def execute_gate_2_from_existing() -> dict[str, Any]:
                     "semantic_valid": False,
                     "graduation_success": False,
                     "restart_survival": False,
-                    "second_pass_probe_calls": 0,
-                    "second_pass_model_calls": 0,
-                    "second_pass_tokens": 0,
+                    "second_pass_probe_calls": 0,  # nosec B105 - telemetry count, not a credential
+                    "second_pass_model_calls": 0,  # nosec B105 - telemetry count, not a credential
+                    "second_pass_tokens": 0,  # nosec B105 - telemetry count, not a credential
                     "authority_violation": False,
                 }
             )
