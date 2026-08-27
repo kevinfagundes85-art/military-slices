@@ -1,0 +1,109 @@
+{
+  "contract_id": "helm-whole-lifecycle-vs-broad-context-falsification-2026-08-27",
+  "manifest_sealed_at": "2026-08-27T00:00:00Z",
+  "status": "PACKAGE_COMPLETE_NOT_EXECUTED",
+  "artifacts": {
+    "frozen_design": {
+      "file": "WHOLE_LIFECYCLE_BENCHMARK_DESIGN_2026-08-27.md",
+      "sha256": "47543121bb6f68daa40a532a96ba89272c424a578b29692864d4e5278e5e8524"
+    },
+    "frozen_contract": {
+      "file": "whole_lifecycle_benchmark_contract_2026-08-27.json",
+      "sha256": "ba8f8a33e97aa4b3bd5cfdbddd6d6261c7c75970bfa4532227ff3519346f3aee"
+    },
+    "corrigendum": {
+      "file": "BENCHMARK_CORRIGENDUM_2026-08-27.md",
+      "sha256": "b36a6475edafd454f29b7690bd8bd4c013c917edab6b180bb799d98a517a0c99"
+    },
+    "arm_b_system_prompt": {
+      "file": "arm_b_system_prompt_2026-08-27.md",
+      "sha256": "3fd3a77a2c2b6512e39b627a70c92f23526ba3273e49031e45010e3a50099041"
+    },
+    "runtime_corpus": {
+      "file": "whole_lifecycle_runtime_corpus_2026-08-27.json",
+      "sha256": "5553d3224786cad139fdb96a768b056684b03ddac2eb81ad9b047f89ca58e265",
+      "size_bytes": 784972,
+      "delivered_to_BHE": true
+    },
+    "sealed_ground_truth": {
+      "file": "whole_lifecycle_ground_truth_SEALED_2026-08-27.json",
+      "sha256": "9a32c3c91a70e826b93dd043d94d752bae3270a09d9db1048d6f9c7b7749fe23",
+      "size_bytes": 167862,
+      "delivered_to_BHE": false,
+      "retained_by": "NND",
+      "release_condition": "only after BHE returns immutable, hash-committed outputs for both Arm H and Arm B on all 240 tasks"
+    },
+    "sealed_scoring_key": {
+      "file": "whole_lifecycle_scoring_key_SEALED_2026-08-27.json",
+      "sha256": "4836020de5cd448afb08a55044084e0f873620d1691c2d379b753873efaba9be",
+      "size_bytes": 59726,
+      "delivered_to_BHE": false,
+      "retained_by": "NND",
+      "release_condition": "only after BHE returns immutable, hash-committed outputs for both Arm H and Arm B on all 240 tasks"
+    },
+    "role_attestation": {
+      "file": "WHOLE_LIFECYCLE_BENCHMARK_ROLE_ATTESTATION_2026-08-27.md",
+      "sha256": "7c6bacd730318749e93e09086797e2cd629843ce0cac579f4e3294d03bf45aef",
+      "delivered_to_BHE": true
+    }
+  },
+  "corpus_composition": {
+    "task_count": 240,
+    "category_count": 8,
+    "tasks_per_category": 30,
+    "generator_seed": 20260827,
+    "categories": [
+      "decomposable_sequential",
+      "coupled_simultaneous_at_scale",
+      "exact_structural_repeat",
+      "paraphrase_reentry",
+      "true_invalidation_becomes_consequential",
+      "irrelevant_distractor_change",
+      "misleading_lexical_trap",
+      "base_rate_non_material"
+    ]
+  },
+  "provider": {
+    "model": "gemini-3.7-flash",
+    "shared_across_arms": true
+  },
+  "frozen_scoring_constants": {
+    "lambda_attention_usd": 0.15,
+    "lambda_harm_usd_per_severity_point": 0.02,
+    "critical_harm_codes": ["H1", "H2"],
+    "non_critical_harm_codes": ["H3", "H4", "H5", "H6", "H7"],
+    "secondary_category_weights_sum_check": 1.00
+  },
+  "roles": {
+    "corpus_author": "NND",
+    "runtime_operator": "BHE",
+    "scorer_independent_adjudicator": "NND"
+  },
+  "validation_performed_before_sealing": {
+    "task_count_equals_240": true,
+    "categories_equal_8": true,
+    "exactly_30_tasks_per_category": true,
+    "one_ground_truth_record_per_task": true,
+    "one_scoring_key_record_per_task": true,
+    "no_orphan_task_ids": true,
+    "no_duplicate_task_ids": true,
+    "runtime_corpus_zero_category_labels": true,
+    "runtime_corpus_zero_ground_truth_answers": true,
+    "runtime_corpus_zero_harm_labels": true,
+    "runtime_corpus_zero_scoring_weights": true,
+    "runtime_corpus_zero_expected_winner_fields": true,
+    "secondary_category_weights_total_1_00": true,
+    "arm_b_prompt_hash_matches_corrigendum": true,
+    "all_package_hashes_recomputed_and_verified": true
+  },
+  "execution_status": {
+    "corpus_generation_complete": true,
+    "provider_calls_made": 0,
+    "arm_h_executed": false,
+    "arm_b_executed": false,
+    "scoring_performed": false,
+    "helm_implementation_altered": false,
+    "production_altered": false
+  },
+  "sealed_answer_content_included_in_this_manifest": false
+}

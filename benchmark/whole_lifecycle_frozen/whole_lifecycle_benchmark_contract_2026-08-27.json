@@ -1,0 +1,173 @@
+{
+  "contract_id": "helm-whole-lifecycle-vs-broad-context-falsification-2026-08-27",
+  "status": "DESIGN_FROZEN_NOT_EXECUTED",
+  "governing_disposition_at_freeze": "MATERIAL ADVANTAGE — CRITICAL GATES OPEN",
+  "frozen_before_corpus_generation": true,
+  "frozen_before_runtime_execution": true,
+  "design_doc": "WHOLE_LIFECYCLE_BENCHMARK_DESIGN_2026-08-27.md",
+  "prior_evidence_referenced": {
+    "coupled_capsule_and_graduation_gate": "71fbb0d / 28e4179",
+    "state_bound_rejection_falsification": "ab904d1 / 5277221 / a90465a / 67f1da4",
+    "governed_identity_generalization": "e1fda55 / 5b98a05 / 9763fb0 / 5711aca"
+  },
+  "provider": {
+    "model": "gemini-3.7-flash",
+    "shared_across_arms": true,
+    "note": "Arm A and Arm B must use identical model/provider so differences reflect architecture, not model capability."
+  },
+  "arms": {
+    "arm_H": {
+      "name": "HELM full pipeline",
+      "components": ["Probe", "governed_examination", "Gate_authorization",
+                     "state_bound_rejection", "governed_identity_I1", "graduation", "restart_survival"],
+      "mechanism_modifications_permitted": false
+    },
+    "arm_B": {
+      "name": "Competent broad context",
+      "components": ["single_prompt_full_context_reasoning"],
+      "system_prompt_frozen_by": "NND",
+      "system_prompt_authored_independently_of_arm_H_team": true,
+      "no_governance_contracts": true
+    }
+  },
+  "corpus": {
+    "total_tasks": 240,
+    "stratification": "equal_weight_by_category",
+    "categories": [
+      {
+        "id": 1,
+        "name": "decomposable_sequential",
+        "n": 30,
+        "max_facts_per_task": 25,
+        "prior_evidence_basis": "coupled_capsule small/medium scale",
+        "expected_favors": "HELM"
+      },
+      {
+        "id": 2,
+        "name": "coupled_simultaneous_at_scale",
+        "n": 30,
+        "facts_per_task": 100,
+        "prior_evidence_basis": "coupled_capsule 100-fact economic loss",
+        "expected_favors": "broad_context"
+      },
+      {
+        "id": 3,
+        "name": "exact_structural_repeat",
+        "n": 30,
+        "prior_evidence_basis": "state_bound_rejection Phase B",
+        "expected_favors": "HELM"
+      },
+      {
+        "id": 4,
+        "name": "paraphrase_reentry",
+        "n": 30,
+        "prior_evidence_basis": "governed_identity_generalization I1 recognition ceiling",
+        "expected_favors": "broad_context"
+      },
+      {
+        "id": 5,
+        "name": "true_invalidation_becomes_consequential",
+        "n": 30,
+        "prior_evidence_basis": "state_bound_rejection Phase E",
+        "expected_favors": "neutral_safety_test"
+      },
+      {
+        "id": 6,
+        "name": "irrelevant_distractor_change",
+        "n": 30,
+        "prior_evidence_basis": "state_bound_rejection Phase C",
+        "expected_favors": "neutral_control"
+      },
+      {
+        "id": 7,
+        "name": "misleading_lexical_trap",
+        "n": 30,
+        "prior_evidence_basis": "present in every rejection battery to date",
+        "expected_favors": "broad_context_tests_overconfidence"
+      },
+      {
+        "id": 8,
+        "name": "base_rate_non_material",
+        "n": 30,
+        "prior_evidence_basis": "not previously isolated; realistic negative-case base rate",
+        "expected_favors": "neutral_control"
+      }
+    ],
+    "category_resize_permitted_after_generation": false
+  },
+  "blinding": {
+    "ground_truth_and_scoring_key_hashed_before_execution": true,
+    "task_payload_excludes": ["category_label", "ground_truth_decision", "harm_taxonomy", "scoring_weights"],
+    "corpus_author_isolated_from_runtime_operators": true,
+    "rescoring_or_reweighting_after_output_visibility_permitted": false
+  },
+  "harm_taxonomy": {
+    "critical": [
+      {"code": "H1", "name": "authority_violation", "severity": 10},
+      {"code": "H2", "name": "stale_suppression", "severity": 10}
+    ],
+    "non_critical": [
+      {"code": "H3", "name": "false_acceptance_of_superseded_evidence", "severity": 8},
+      {"code": "H4", "name": "incorrect_blocking_effect", "severity": 8},
+      {"code": "H5", "name": "missed_material_information", "severity": 6},
+      {"code": "H6", "name": "hallucinated_nomination_on_lexical_trap", "severity": 4},
+      {"code": "H7", "name": "redundant_semantic_reexamination", "severity": 1}
+    ]
+  },
+  "scoring_function": {
+    "dollar_cost": "measured provider token cost (USD) + deterministic mechanism cost (USD)",
+    "attention_cost": "count of human-examination events attributed to arm output",
+    "harm_score": "sum of severity(h) for non-critical harms committed on task",
+    "critical_flag": "1 if any H1 or H2 occurred on task, else 0",
+    "composite_formula": "dollar_cost + (lambda_attention * attention_cost) + (lambda_harm * harm_score)",
+    "lambda_attention_usd": 0.15,
+    "lambda_harm_usd_per_severity_point": 0.02,
+    "weights_locked_after_execution_begins": true,
+    "safety_and_cost_scored_separately_never_blended": true
+  },
+  "statistics": {
+    "stage_1_safety_gate": {
+      "test": "two-sided exact McNemar",
+      "alpha": 0.05,
+      "unit": "paired critical_flag per task",
+      "materiality_margin": "at least 3 fewer critical events (>=1.25 percentage points) for HELM advantage claim"
+    },
+    "stage_2_economic_comparison": {
+      "condition_to_run": "only if Stage 1 does not already decide the verdict",
+      "test": "paired Wilcoxon signed-rank",
+      "alpha": 0.05,
+      "effect_size": "Hodges-Lehmann estimator of median paired difference",
+      "bootstrap_ci": {"resamples": 10000, "confidence": 0.95},
+      "materiality_threshold_pct_of_arm_B_mean_cost": 10
+    },
+    "sample_size": {
+      "n_total": 240,
+      "n_per_category": 30,
+      "assumed_cv": 0.4,
+      "target_relative_effect": 0.10,
+      "target_power": 0.80,
+      "target_alpha": 0.05,
+      "minimum_n_required_approx": 125,
+      "margin_over_minimum_pct": 92
+    },
+    "subgroup_reporting": {
+      "categories": 8,
+      "correction": "Holm-Bonferroni",
+      "disposition_determining_alone": false
+    }
+  },
+  "decision_rule": {
+    "MATERIAL_ADVANTAGE_VALIDATED": "Arm H critical rate not higher than Arm B AND (Arm H critical rate materially+statistically lower OR Arm H composite cost materially+statistically lower with no critical-rate regression)",
+    "MATERIAL_ADVANTAGE_CRITICAL_GATES_OPEN_UNCHANGED": "results statistically indistinguishable on safety and economics, or significant but sub-materiality-threshold effect sizes",
+    "MATERIAL_DISADVANTAGE_NEGATIVE_RESULT": "Arm H critical rate materially+statistically higher than Arm B, OR Arm H composite cost materially+statistically higher with no offsetting critical-rate advantage",
+    "rule_symmetric_by_construction": true,
+    "rule_fixed_before_execution": true
+  },
+  "unresolved_after_this_experiment_regardless_of_outcome": [
+    "I2 declared relationship/effect identity — not tested, Domain Pack still does not express it",
+    "coupled-context scale beyond 100 facts — not extended",
+    "single-domain (Veteran Slice) result does not transfer automatically to other Domain Packs"
+  ],
+  "execution_not_yet_performed": true,
+  "adjudication_from_design_alone_prohibited": true
+}
