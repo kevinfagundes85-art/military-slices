@@ -13,6 +13,7 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 from military_slices.engine import deterministic_hypotheses, transition_window
 from military_slices.models import AcquisitionHorizon, CanonicalState, CareerHypothesis, SliceName
 from military_slices.slices import project_slice_context
+from military_slices.temporal import consequential_impact_projection
 
 LOGGER = logging.getLogger("military_slices.agent")
 
@@ -121,6 +122,21 @@ def calculate_transition_windows(separation_date: str) -> dict[str, str]:
 
 def _minimal_context(state: CanonicalState) -> dict[str, Any]:
     context = project_slice_context(state, SliceName.CAREER)
+    interruption = consequential_impact_projection(state)
+    if interruption is not None:
+        context["consequential_interrupt"] = {
+            "source": interruption.source,
+            "fact_id": interruption.fact_id,
+            "field_key": interruption.field_key,
+            "statement": interruption.statement,
+            "authority": interruption.authority.value,
+            "status": interruption.status.value,
+            "affected_slices": [item.value for item in interruption.affected_slices],
+            "impact_id": interruption.impact_id,
+            "gate_id": interruption.gate_id,
+            "question": interruption.question,
+            "effect": "re-evaluate the current projection; no mutation or authorization",
+        }
     context["requested_action"] = "propose up to three career hypotheses only for the active employment task"
     return context
 

@@ -68,7 +68,36 @@ class ExternalFactUpdate:
     evidence_id: str
 
 
+@dataclass(frozen=True)
+class ConsequentialImpactProjection:
+    """One read-only interruption that can force model-context re-evaluation.
+
+    This is an ephemeral projection over existing governed state. It is not a
+    persisted Gate, Impact, fact, or authorization.
+    """
+
+    source: Literal["conflicted_gate", "blocking_impact", "authoritative_interrupt"]
+    fact_id: str
+    field_key: str
+    statement: str
+    authority: Authority
+    status: FreshnessStatus
+    affected_slices: tuple[SliceName, ...]
+    impact_id: str | None = None
+    gate_id: str | None = None
+    question: str | None = None
+
+
 ExternalRefresher = Callable[[Fact], ExternalFactUpdate | None]
+
+_AUTHORITATIVE_INTERRUPT_TERMS = (
+    "restriction",
+    "conflict",
+    "prohibit",
+    "forbid",
+    "not permitted",
+    "not allowed",
+)
 
 
 def _stable_id(prefix: str, *parts: str) -> str:
@@ -380,6 +409,81 @@ def evaluate_elapsed_freshness(
 
 def current_impact(state: CanonicalState) -> ImpactItem | None:
     return min(state.impacts, key=lambda item: (not item.blocking, item.created_at), default=None)
+
+
+def consequential_impact_projection(state: CanonicalState) -> ConsequentialImpactProjection | None:
+    """Project the smallest material interruption without mutating governed state.
+
+    Precedence is existing conflicted Gate evidence, an existing blocking Impact,
+    then an unmaterialized authoritative blocker from any bounded Slice. The
+    cross-Slice check is deliberate because an external restriction can change
+    the current move even when its source Slice is not active. Ordinary evidence
+    and non-blocking reminders remain Latent.
+    """
+
+    fact_index = {fact.id: fact for fact in state.facts}
+    conflicted = sorted(
+        (
+            gate
+            for gate in state.gates
+            if gate.state.value == "CONFLICTED" and gate.required_evidence
+        ),
+        key=lambda gate: (-gate.value_score, gate.id),
+    )
+    for gate in conflicted:
+        for fact_id in gate.required_evidence:
+            fact = fact_index.get(fact_id)
+            if fact is not None:
+                return ConsequentialImpactProjection(
+                    source="conflicted_gate",
+                    fact_id=fact.id,
+                    field_key=fact.field_key,
+                    statement=fact.statement,
+                    authority=fact.authority,
+                    status=fact.status,
+                    affected_slices=tuple(fact.affected_slices),
+                    gate_id=gate.id,
+                    question=gate.question,
+                )
+
+    blocking = sorted(
+        (item for item in state.impacts if item.blocking),
+        key=lambda item: (item.created_at, item.id),
+    )
+    for impact in blocking:
+        fact = fact_index.get(impact.fact_id)
+        if fact is not None:
+            return ConsequentialImpactProjection(
+                source="blocking_impact",
+                fact_id=fact.id,
+                field_key=fact.field_key,
+                statement=fact.statement,
+                authority=fact.authority,
+                status=fact.status,
+                affected_slices=tuple(fact.affected_slices),
+                impact_id=impact.id,
+                question=impact.question,
+            )
+
+    for fact in sorted(state.facts, key=lambda item: item.id):
+        searchable = f"{fact.field_key} {fact.statement}".casefold()
+        if (
+            fact.authority == Authority.AUTHORITATIVE_SOURCE
+            and fact.status == FreshnessStatus.VALID
+            and bool(fact.affected_slices)
+            and any(term in searchable for term in _AUTHORITATIVE_INTERRUPT_TERMS)
+        ):
+            return ConsequentialImpactProjection(
+                source="authoritative_interrupt",
+                fact_id=fact.id,
+                field_key=fact.field_key,
+                statement=fact.statement,
+                authority=fact.authority,
+                status=fact.status,
+                affected_slices=tuple(fact.affected_slices),
+                question="Does this authoritative information change or block the current next move?",
+            )
+    return None
 
 
 def _normalized_update(fact: Fact, value: str) -> tuple[str, str]:

@@ -23,6 +23,7 @@ from military_slices.security import verify_session
 from military_slices.store import MemoryStore
 from military_slices.temporal import (
     ExternalFactUpdate,
+    consequential_impact_projection,
     current_impact,
     evaluate_elapsed_freshness,
     propagate_temporal_changes,
@@ -312,6 +313,83 @@ def test_blocking_impact_cannot_be_dismissed() -> None:
             value=None,
             idempotency_key="blocking-dismiss",
         )
+
+
+def test_blocking_impact_forces_one_read_only_cross_slice_projection() -> None:
+    before = employment_state("impact-projection")
+    primary = max(before.gates, key=lambda item: item.value_score)
+    primary.dependencies.append("relocation_willingness")
+    after = deepcopy(before)
+    after.career_target = "Role requiring relocation"
+    updated = propagate_temporal_changes(before, after)
+    frozen = updated.model_dump_json()
+
+    projection = consequential_impact_projection(updated)
+
+    assert projection is not None
+    assert projection.source == "blocking_impact"
+    assert projection.fact_id == "relocation-fact"
+    assert projection.affected_slices == (SliceName.LOCATION,)
+    assert updated.model_dump_json() == frozen
+
+
+def test_unmaterialized_authoritative_blocker_can_force_re_evaluation() -> None:
+    state = employment_state("authoritative-interrupt")
+    state.facts.append(
+        Fact(
+            id="employer-restriction",
+            statement="A signed agreement prohibits outside product development.",
+            value="outside product development prohibited",
+            authority=Authority.AUTHORITATIVE_SOURCE,
+            affected_slices=[SliceName.LOCATION],
+            field_key="external_employment_restriction",
+        )
+    )
+
+    projection = consequential_impact_projection(state)
+
+    assert projection is not None
+    assert projection.source == "authoritative_interrupt"
+    assert projection.fact_id == "employer-restriction"
+
+
+def test_nonblocking_or_benign_authoritative_context_does_not_widen_frontier() -> None:
+    state = employment_state("nonmaterial-interrupt")
+    state.facts.extend(
+        [
+            Fact(
+                id="active-application-nonblocking",
+                statement="My current application is awaiting an interview.",
+                value="awaiting interview",
+                authority=Authority.HUMAN,
+                affected_slices=[SliceName.CAREER],
+                field_key="active_application",
+                freshness_class=FreshnessClass.VOLATILE,
+                last_validated_at=utc_now() - timedelta(days=15),
+            ),
+            Fact(
+                id="authoritative-role-reference",
+                statement="O*NET lists a current occupational reference for program management.",
+                value="occupational reference",
+                authority=Authority.AUTHORITATIVE_SOURCE,
+                affected_slices=[SliceName.CAREER],
+                field_key="occupational_reference",
+            ),
+            Fact(
+                id="unmaterialized-unrelated-deadline",
+                statement="An unrelated administrative record has a filing deadline next month.",
+                value="filing deadline next month",
+                authority=Authority.AUTHORITATIVE_SOURCE,
+                affected_slices=[SliceName.LOCATION],
+                field_key="administrative_deadline",
+            ),
+        ]
+    )
+    updated = evaluate_elapsed_freshness(state)
+
+    assert current_impact(updated) is not None
+    assert current_impact(updated).blocking is False
+    assert consequential_impact_projection(updated) is None
 
 
 def test_external_expiring_fact_refreshes_from_authoritative_source_without_prompt() -> None:

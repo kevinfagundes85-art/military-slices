@@ -48,7 +48,7 @@ from military_slices.models import (
     SurfaceType,
 )
 from military_slices.path_runtime import refresh_path_state
-from military_slices.temporal import current_impact
+from military_slices.temporal import consequential_impact_projection, current_impact
 
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT_DIR = ROOT / "benchmark" / "output"
@@ -620,17 +620,40 @@ def build_helm_context(state: CanonicalState) -> tuple[dict[str, Any], dict[str,
     frontier_ms = (time.perf_counter() - frontier_started) * 1000
     dependency_started = time.perf_counter()
     impact = current_impact(projection)
+    interruption = consequential_impact_projection(projection)
     dependency_ms = (time.perf_counter() - dependency_started) * 1000
     retrieval_started = time.perf_counter()
     horizon = build_acquisition_horizon(projection)
-    refs = set(horizon.checklist[0].evidence_refs if horizon else [])
+    refs = (
+        {interruption.fact_id}
+        if interruption is not None
+        else set(horizon.checklist[0].evidence_refs if horizon else [])
+    )
     fact_index = {fact.id: fact for fact in projection.facts}
     active_facts = [_fact_payload(fact_index[ref]) for ref in sorted(refs) if ref in fact_index]
     retrieval_ms = (time.perf_counter() - retrieval_started) * 1000
     runtime_gate_key = (
         "authority-conflict"
         if foreground and foreground.state == GateState.CONFLICTED
+        else "re-evaluate-from-consequential-impact"
+        if interruption is not None
         else "venture-problem"
+    )
+    interruption_payload = (
+        {
+            "source": interruption.source,
+            "fact_id": interruption.fact_id,
+            "field_key": interruption.field_key,
+            "authority": interruption.authority.value,
+            "status": interruption.status.value,
+            "affected_slices": [item.value for item in interruption.affected_slices],
+            "impact_id": interruption.impact_id,
+            "gate_id": interruption.gate_id,
+            "question": interruption.question,
+            "effect": "re-evaluate the current candidate Gate; no mutation or authorization",
+        }
+        if interruption is not None
+        else None
     )
     context = {
         "anchor": projection.human_anchor,
@@ -653,7 +676,10 @@ def build_helm_context(state: CanonicalState) -> tuple[dict[str, Any], dict[str,
             "status": projection.domain_pack.status.value,
         },
         "observation_only": {
-            "impact_present_but_not_in_current_model_projection": impact.id if impact else None,
+            "impact_present_but_not_in_current_model_projection": (
+                impact.id if impact and interruption is None else None
+            ),
+            "consequential_impact_re_evaluation": interruption_payload,
         },
     }
     serialization_started = time.perf_counter()
@@ -675,6 +701,7 @@ def build_helm_context(state: CanonicalState) -> tuple[dict[str, Any], dict[str,
         "datastore_writes": 0,
         "probe_calls": 0,
         "impact_visible_to_runtime": bool(impact),
+        "impact_forced_re_evaluation": interruption is not None,
     }
 
 
@@ -1132,7 +1159,7 @@ def write_csv(path: Path, summaries: dict[str, Any]) -> None:
             writer.writerow(row)
 
 
-async def execute_all(benchmark_commit: str) -> dict[str, Path]:
+async def execute_all(benchmark_commit: str, output_label: str = "") -> dict[str, Path]:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     normal = [
         Scenario(
@@ -1147,6 +1174,7 @@ async def execute_all(benchmark_commit: str) -> dict[str, Path]:
     ]
     scenarios = [*normal, *ADVERSARIAL]
     manifest = runtime_manifest(benchmark_commit)
+    manifest["benchmark_run"] = output_label or "benchmark-1-compatible"
     dataset = dataset_manifest(scenarios)
     records: list[dict[str, Any]] = []
     harness = ModelHarness()
@@ -1175,10 +1203,11 @@ async def execute_all(benchmark_commit: str) -> dict[str, Path]:
     finally:
         await harness.close()
     summaries = summarize(records)
-    raw_path = OUTPUT_DIR / f"sparse-activation-raw-{DATE_STAMP}.json"
-    summary_path = OUTPUT_DIR / f"sparse-activation-summary-{DATE_STAMP}.json"
-    dataset_path = OUTPUT_DIR / f"sparse-activation-dataset-manifest-{DATE_STAMP}.json"
-    csv_path = OUTPUT_DIR / f"sparse-activation-summary-{DATE_STAMP}.csv"
+    suffix = f"-{output_label}" if output_label else ""
+    raw_path = OUTPUT_DIR / f"sparse-activation{suffix}-raw-{DATE_STAMP}.json"
+    summary_path = OUTPUT_DIR / f"sparse-activation{suffix}-summary-{DATE_STAMP}.json"
+    dataset_path = OUTPUT_DIR / f"sparse-activation{suffix}-dataset-manifest-{DATE_STAMP}.json"
+    csv_path = OUTPUT_DIR / f"sparse-activation{suffix}-summary-{DATE_STAMP}.csv"
     raw_payload = {
         "manifest": manifest,
         "dataset_manifest_sha256": sha256_text(canonical_json(dataset)),
@@ -1195,7 +1224,10 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Run the HELM sparse activation computational benchmark.")
     parser.add_argument("--prepare-only", action="store_true")
     parser.add_argument("--benchmark-commit")
+    parser.add_argument("--output-label", default="")
     args = parser.parse_args()
+    if args.output_label and not args.output_label.replace("-", "").isalnum():
+        parser.error("--output-label may contain only letters, numbers, and hyphens")
     benchmark_commit = args.benchmark_commit or git("rev-parse", "HEAD")
     normal = [
         Scenario(
@@ -1220,7 +1252,7 @@ def main() -> None:
         }
         print(json.dumps(payload, indent=2, sort_keys=True))
         return
-    paths = asyncio.run(execute_all(benchmark_commit))
+    paths = asyncio.run(execute_all(benchmark_commit, args.output_label))
     print(json.dumps({key: str(value) for key, value in paths.items()}, indent=2, sort_keys=True))
 
 
