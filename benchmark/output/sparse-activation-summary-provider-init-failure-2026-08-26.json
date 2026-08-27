@@ -1,0 +1,1830 @@
+{
+  "groups": [
+    {
+      "active_context_facts_mean": 9.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "baseline",
+      "context_bytes_mean": 4049.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.0017000020307023078,
+        "mean": 0.0012800002878066152,
+        "median": 0.0012000018614344299,
+        "min": 0.0010999974620062858,
+        "stdev": 0.0002489989382786542
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 10,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 1.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.038399997720262036,
+        "mean": 0.03521999897202477,
+        "median": 0.03369999831193127,
+        "min": 0.03260000084992498,
+        "stdev": 0.002672451885509762
+      },
+      "retrieval_ms": {
+        "max": 0.07100000220816582,
+        "mean": 0.06208000049809925,
+        "median": 0.060200000007171184,
+        "min": 0.05830000009154901,
+        "stdev": 0.005233260171604437
+      },
+      "scenario_id": "cheap-context",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 8.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "helm",
+      "context_bytes_mean": 5726.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.0013999997463542968,
+        "mean": 0.0011999996786471456,
+        "median": 0.0012999989849049598,
+        "min": 0.0008999995770864189,
+        "stdev": 0.00019999970391092482
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.11720000111381523,
+        "mean": 0.07903999940026551,
+        "median": 0.07069999992381781,
+        "min": 0.06759999814676121,
+        "stdev": 0.021417120305996875
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 10,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 2.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.05690000034519471,
+        "mean": 0.05020000025979243,
+        "median": 0.04909999915980734,
+        "min": 0.04760000228998251,
+        "stdev": 0.0038032879325898008
+      },
+      "retrieval_ms": {
+        "max": 0.10449999899719842,
+        "mean": 0.08283999995910563,
+        "median": 0.07790000017848797,
+        "min": 0.07410000034724362,
+        "stdev": 0.012284054159658631
+      },
+      "scenario_id": "cheap-context",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 384.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "baseline",
+      "context_bytes_mean": 104405.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.004300000000512227,
+        "mean": 0.0031799994758330286,
+        "median": 0.0030999981390777975,
+        "min": 0.0025999979698099196,
+        "stdev": 0.0006610602762111548
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 2.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 616.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.6898999999975786,
+        "mean": 0.617160000547301,
+        "median": 0.6049000003258698,
+        "min": 0.5724000002373941,
+        "stdev": 0.047821678819612363
+      },
+      "retrieval_ms": {
+        "max": 6.066399997507688,
+        "mean": 5.633879999368219,
+        "median": 5.531499999051448,
+        "min": 5.478300001414027,
+        "stdev": 0.24528535721046857
+      },
+      "scenario_id": "conflict",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 8.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "helm",
+      "context_bytes_mean": 5713.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.0016999983927235007,
+        "mean": 0.001259998680325225,
+        "median": 0.0011999982234556228,
+        "min": 0.0010000003385357559,
+        "stdev": 0.00027018482271327546
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.21920000290265307,
+        "mean": 0.1880400006484706,
+        "median": 0.17560000196681358,
+        "min": 0.1674999984970782,
+        "stdev": 0.023303928355051476
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 992.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.06089999806135893,
+        "mean": 0.05447999938041903,
+        "median": 0.05360000068321824,
+        "min": 0.04780000017490238,
+        "stdev": 0.00533638399776824
+      },
+      "retrieval_ms": {
+        "max": 1.5058000026328955,
+        "mean": 1.3748599994869437,
+        "median": 1.4660999986517709,
+        "min": 1.1488999989524018,
+        "stdev": 0.16571277342949303
+      },
+      "scenario_id": "conflict",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 384.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "baseline",
+      "context_bytes_mean": 104620.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.025600002118153498,
+        "mean": 0.021320000814739615,
+        "median": 0.01939999856404029,
+        "min": 0.018100003217114136,
+        "stdev": 0.0035828758672619603
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 2.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 616.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.6733000009262469,
+        "mean": 0.6380000006174669,
+        "median": 0.6689000001642853,
+        "min": 0.5774999990535434,
+        "stdev": 0.046469452444429245
+      },
+      "retrieval_ms": {
+        "max": 6.602000001294073,
+        "mean": 5.8235200005583465,
+        "median": 5.909399998927256,
+        "min": 5.163500001799548,
+        "stdev": 0.5435364539210156
+      },
+      "scenario_id": "cross-domain-collision",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 8.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "helm",
+      "context_bytes_mean": 5767.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.0018999999156221747,
+        "mean": 0.0015799996617715806,
+        "median": 0.0016000012692529708,
+        "min": 0.0011999982234556228,
+        "stdev": 0.00028635688663603025
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.20650000078603625,
+        "mean": 0.17597999976715073,
+        "median": 0.16770000001997687,
+        "min": 0.16239999968092889,
+        "stdev": 0.018471248560432293
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 992.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.0532000012753997,
+        "mean": 0.051560000429162756,
+        "median": 0.05190000229049474,
+        "min": 0.04859999899053946,
+        "stdev": 0.001738678521159114
+      },
+      "retrieval_ms": {
+        "max": 1.543800000945339,
+        "mean": 1.2611600002855994,
+        "median": 1.1679999988700729,
+        "min": 1.1216000020795036,
+        "stdev": 0.17316549345866455
+      },
+      "scenario_id": "cross-domain-collision",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 384.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "baseline",
+      "context_bytes_mean": 105574.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.030700000934302807,
+        "mean": 0.02610000010463409,
+        "median": 0.025099998310906813,
+        "min": 0.022100000933278352,
+        "stdev": 0.004190464416507461
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 4.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 616.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.6883999994897749,
+        "mean": 0.6413799994334113,
+        "median": 0.6195999994815793,
+        "min": 0.5931999985477887,
+        "stdev": 0.04336152804896764
+      },
+      "retrieval_ms": {
+        "max": 6.426600000850158,
+        "mean": 5.890440000075614,
+        "median": 5.8373999963805545,
+        "min": 5.477200000314042,
+        "stdev": 0.41949120183204197
+      },
+      "scenario_id": "dense-dependency",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 8.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "helm",
+      "context_bytes_mean": 5767.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.0020999978005420417,
+        "mean": 0.0016799989680293947,
+        "median": 0.0015999976312741637,
+        "min": 0.0015000005078036338,
+        "stdev": 0.000248997038913114
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.19729999985429458,
+        "mean": 0.1728800001728814,
+        "median": 0.16659999891999178,
+        "min": 0.16090000281110406,
+        "stdev": 0.014855705582828125
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 992.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.10840000322787091,
+        "mean": 0.0767800011090003,
+        "median": 0.0760000002628658,
+        "min": 0.05980000059935264,
+        "stdev": 0.01989226066837444
+      },
+      "retrieval_ms": {
+        "max": 1.5934000002744142,
+        "mean": 1.3681999997061212,
+        "median": 1.3834999990649521,
+        "min": 1.1675999994622543,
+        "stdev": 0.16176660655681352
+      },
+      "scenario_id": "dense-dependency",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 384.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "baseline",
+      "context_bytes_mean": 104259.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.006399997801054269,
+        "mean": 0.002939999831141904,
+        "median": 0.0020000006770715117,
+        "min": 0.0017000020307023078,
+        "stdev": 0.0019705316071286258
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 616.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.8658000006107613,
+        "mean": 0.6980200007092208,
+        "median": 0.6728999978804495,
+        "min": 0.5775999998149928,
+        "stdev": 0.11510463526907866
+      },
+      "retrieval_ms": {
+        "max": 6.60280000010971,
+        "mean": 5.6114199993317015,
+        "median": 5.4123999980220105,
+        "min": 5.122700000356417,
+        "stdev": 0.5734440578071003
+      },
+      "scenario_id": "hidden-dependency",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 8.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "helm",
+      "context_bytes_mean": 5741.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.0013000026228837669,
+        "mean": 0.0012000011338386685,
+        "median": 0.0012000018614344299,
+        "min": 0.0010000003385357559,
+        "stdev": 0.00012247467712956977
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.3529999994498212,
+        "mean": 0.20753999924636446,
+        "median": 0.17149999985122122,
+        "min": 0.16179999875021167,
+        "stdev": 0.08174975861508722
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 992.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.05759999839938246,
+        "mean": 0.05181999804335646,
+        "median": 0.049799997213995084,
+        "min": 0.04809999882127158,
+        "stdev": 0.003963836604406176
+      },
+      "retrieval_ms": {
+        "max": 1.5316999997594394,
+        "mean": 1.2778599993907847,
+        "median": 1.2668999988818541,
+        "min": 1.1320999983581714,
+        "stdev": 0.16325530010948267
+      },
+      "scenario_id": "hidden-dependency",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 9.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "baseline",
+      "context_bytes_mean": 4049.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.034500000765547156,
+        "mean": 0.008359998901141807,
+        "median": 0.0020999978005420417,
+        "min": 0.0011999982234556228,
+        "stdev": 0.014619953180614383
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 10,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 1.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.04199999966658652,
+        "mean": 0.037460000021383166,
+        "median": 0.03840000135824084,
+        "min": 0.03269999797339551,
+        "stdev": 0.003950063555834783
+      },
+      "retrieval_ms": {
+        "max": 0.08259999958681874,
+        "mean": 0.06964000058360398,
+        "median": 0.06860000212327577,
+        "min": 0.061899998399894685,
+        "stdev": 0.007857035279790935
+      },
+      "scenario_id": "normal-10",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 8.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "helm",
+      "context_bytes_mean": 5726.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.0018999999156221747,
+        "mean": 0.0014399993233382702,
+        "median": 0.0012999989849049598,
+        "min": 0.0010999974620062858,
+        "stdev": 0.00034351267849735484
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.08759999764151871,
+        "mean": 0.08003999973880127,
+        "median": 0.07840000034775585,
+        "min": 0.0746000005165115,
+        "stdev": 0.005244805606881161
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 10,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 2.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.06740000026184134,
+        "mean": 0.053979999938746914,
+        "median": 0.04949999856762588,
+        "min": 0.04780000017490238,
+        "stdev": 0.008123238444972931
+      },
+      "retrieval_ms": {
+        "max": 0.24739999935263768,
+        "mean": 0.1236599993717391,
+        "median": 0.08099999831756577,
+        "min": 0.07850000110920519,
+        "stdev": 0.07276405706296372
+      },
+      "scenario_id": "normal-10",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 81.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "baseline",
+      "context_bytes_mean": 22929.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.0027999994927085936,
+        "mean": 0.001979999797185883,
+        "median": 0.0016999983927235007,
+        "min": 0.0013999997463542968,
+        "stdev": 0.0006300795098737736
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 100,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 19.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.1878000002761837,
+        "mean": 0.16020000039134175,
+        "median": 0.1517000018793624,
+        "min": 0.1480999999330379,
+        "stdev": 0.016563514186866853
+      },
+      "retrieval_ms": {
+        "max": 0.7401999973808415,
+        "mean": 0.6361399995512329,
+        "median": 0.6011000004946254,
+        "min": 0.5350999999791384,
+        "stdev": 0.08383533190312523
+      },
+      "scenario_id": "normal-100",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 8.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "helm",
+      "context_bytes_mean": 5720.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.0013999997463542968,
+        "mean": 0.0011599993740674108,
+        "median": 0.0010999974620062858,
+        "min": 0.0010000003385357559,
+        "stdev": 0.0001516579440438533
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.17909999951370992,
+        "mean": 0.1673400001891423,
+        "median": 0.16320000213454477,
+        "min": 0.1556999995955266,
+        "stdev": 0.009910246754011889
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 100,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 92.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.06959999882383272,
+        "mean": 0.05545999883906916,
+        "median": 0.05149999924469739,
+        "min": 0.048899997636908665,
+        "stdev": 0.008755170054601212
+      },
+      "retrieval_ms": {
+        "max": 0.19939999765483662,
+        "mean": 0.18469999922672287,
+        "median": 0.18069999714498408,
+        "min": 0.1711999975668732,
+        "stdev": 0.011211155078305338
+      },
+      "scenario_id": "normal-100",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 384.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "baseline",
+      "context_bytes_mean": 104185.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.00419999923906289,
+        "mean": 0.0028599992219824344,
+        "median": 0.0025999979698099196,
+        "min": 0.0022999993234407157,
+        "stdev": 0.0007635442964836621
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 616.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.6729000015184283,
+        "mean": 0.5967400007648394,
+        "median": 0.5807000015920494,
+        "min": 0.570500000321772,
+        "stdev": 0.0429246204046177
+      },
+      "retrieval_ms": {
+        "max": 5.943799998931354,
+        "mean": 5.717120000190334,
+        "median": 5.763699999079108,
+        "min": 5.394600000727223,
+        "stdev": 0.199882457358872
+      },
+      "scenario_id": "normal-1000",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 8.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "helm",
+      "context_bytes_mean": 5741.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.0012000018614344299,
+        "mean": 0.0011800002539530396,
+        "median": 0.0011999982234556228,
+        "min": 0.0011000010999850929,
+        "stdev": 4.4720886640693284e-05
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.19039999824599363,
+        "mean": 0.1732199998514261,
+        "median": 0.17120000120485201,
+        "min": 0.16340000001946464,
+        "stdev": 0.010270442300405839
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 992.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.05850000161444768,
+        "mean": 0.05498000100487843,
+        "median": 0.05779999992228113,
+        "min": 0.04930000068270601,
+        "stdev": 0.004457240799558555
+      },
+      "retrieval_ms": {
+        "max": 1.570300002640579,
+        "mean": 1.3152800005627796,
+        "median": 1.2763000013364945,
+        "min": 1.1121999996248633,
+        "stdev": 0.19447023486372553
+      },
+      "scenario_id": "normal-1000",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 384.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "baseline",
+      "context_bytes_mean": 107018.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.009199997293762863,
+        "mean": 0.004579999949783087,
+        "median": 0.0036999990697950125,
+        "min": 0.0028000031306874007,
+        "stdev": 0.0026233550536499395
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 10000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 9616.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.7167000003391877,
+        "mean": 0.6618799998250324,
+        "median": 0.6661999977950472,
+        "min": 0.6213999986357521,
+        "stdev": 0.03620341196714259
+      },
+      "retrieval_ms": {
+        "max": 104.95570000057342,
+        "mean": 73.73210000077961,
+        "median": 65.11270000191871,
+        "min": 63.11659999846597,
+        "stdev": 17.799586121963628
+      },
+      "scenario_id": "normal-10000",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 8.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "helm",
+      "context_bytes_mean": 5723.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.0012000018614344299,
+        "mean": 0.0011599993740674108,
+        "median": 0.0011999982234556228,
+        "min": 0.0010000003385357559,
+        "stdev": 8.94421799596685e-05
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.35180000122636557,
+        "mean": 0.3333200002089143,
+        "median": 0.34080000114045106,
+        "min": 0.3133999998681247,
+        "stdev": 0.01673341086519557
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 10000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 9992.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.09999999747378752,
+        "mean": 0.07217999882414006,
+        "median": 0.06609999763895757,
+        "min": 0.06360000043059699,
+        "stdev": 0.015633361014921833
+      },
+      "retrieval_ms": {
+        "max": 17.588399998203386,
+        "mean": 16.92957999839564,
+        "median": 17.336199998680968,
+        "min": 16.107199997350108,
+        "stdev": 0.7003987097705866
+      },
+      "scenario_id": "normal-10000",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 384.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "baseline",
+      "context_bytes_mean": 107019.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.004600002284860238,
+        "mean": 0.0038200007111299783,
+        "median": 0.0036999990697950125,
+        "min": 0.0034000004234258085,
+        "stdev": 0.00046043527838570775
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 100000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 99616.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.6233999993128236,
+        "mean": 0.5956199995125644,
+        "median": 0.5894999994779937,
+        "min": 0.5832999995618593,
+        "stdev": 0.015901477784636166
+      },
+      "retrieval_ms": {
+        "max": 818.6427999971784,
+        "mean": 726.0729800000263,
+        "median": 709.3168000028527,
+        "min": 695.4925000027288,
+        "stdev": 52.19337894497146
+      },
+      "scenario_id": "normal-100000",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 8.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "helm",
+      "context_bytes_mean": 5739.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.0016000012692529708,
+        "mean": 0.0014200006262399256,
+        "median": 0.0015000005078036338,
+        "min": 0.0012000018614344299,
+        "stdev": 0.00016431680074215936
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 3.1624000002921093,
+        "mean": 2.7723799998057075,
+        "median": 2.67840000014985,
+        "min": 2.425399998173816,
+        "stdev": 0.37018314814949166
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 100000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 99992.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.1033000007737428,
+        "mean": 0.08648000002722256,
+        "median": 0.08329999764100648,
+        "min": 0.07790000017848797,
+        "stdev": 0.010172119265494155
+      },
+      "retrieval_ms": {
+        "max": 222.70279999793274,
+        "mean": 204.3820399987453,
+        "median": 199.86229999994976,
+        "min": 197.36969999939902,
+        "stdev": 10.49138655678358
+      },
+      "scenario_id": "normal-100000",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 384.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "baseline",
+      "context_bytes_mean": 104668.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.025800000003073364,
+        "mean": 0.019800000154646114,
+        "median": 0.018599999748403206,
+        "min": 0.016900001355679706,
+        "stdev": 0.003503569496400316
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "stdev": 0.0
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 2.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 616.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.7484999987354968,
+        "mean": 0.6495399989944417,
+        "median": 0.6518000009236857,
+        "min": 0.5872999972780235,
+        "stdev": 0.0622566709725892
+      },
+      "retrieval_ms": {
+        "max": 5.90580000061891,
+        "mean": 5.627079999976559,
+        "median": 5.746099999669241,
+        "min": 5.046999998739921,
+        "stdev": 0.3433747042680879
+      },
+      "scenario_id": "temporal-activation",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    },
+    {
+      "active_context_facts_mean": 8.0,
+      "active_tasks_mean": 1.0,
+      "attempted": 5,
+      "completed": 0,
+      "condition": "helm",
+      "context_bytes_mean": 5772.0,
+      "correct_rate": 0.0,
+      "decision_correct_rate": 0.0,
+      "dependency_lookup_ms": {
+        "max": 0.0016000012692529708,
+        "mean": 0.0013600001693703234,
+        "median": 0.0012000018614344299,
+        "min": 0.0011999982234556228,
+        "stdev": 0.00021908836655922342
+      },
+      "dependency_recall_mean": 0.0,
+      "end_to_end_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "failed": 5,
+      "false_activations_mean": 0.0,
+      "frontier_selection_ms": {
+        "max": 0.2012999975704588,
+        "mean": 0.1787999994121492,
+        "median": 0.17719999959808774,
+        "min": 0.16630000027362257,
+        "stdev": 0.0136961663047908
+      },
+      "gate_correct_rate": 0.0,
+      "governed_fact_count": 1000,
+      "horizon_size_mean": 1.0,
+      "input_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "latent_facts_mean": 992.0,
+      "model_cost_usd_mean": NaN,
+      "model_latency_ms": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "output_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      },
+      "preprocessing_ms": {
+        "max": 0.0594000011915341,
+        "mean": 0.05444000125862658,
+        "median": 0.05289999899105169,
+        "min": 0.05140000212122686,
+        "stdev": 0.003623948091230208
+      },
+      "retrieval_ms": {
+        "max": 1.522900001873495,
+        "mean": 1.3320600002771243,
+        "median": 1.3410000028670765,
+        "min": 1.2189999979455024,
+        "stdev": 0.1228198816090805
+      },
+      "scenario_id": "temporal-activation",
+      "total_system_cost_usd_mean": NaN,
+      "total_tokens": {
+        "max": null,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "stdev": null
+      }
+    }
+  ]
+}
