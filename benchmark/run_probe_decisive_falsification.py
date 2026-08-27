@@ -203,6 +203,15 @@ def identity_bound_probe_schema(case_id: str) -> dict[str, Any]:
 
     schema = deepcopy(ProbeDecision.model_json_schema())
     schema["properties"]["case_id"] = {"type": "string", "enum": [case_id]}
+    stack: list[Any] = [schema]
+    while stack:
+        current = stack.pop()
+        if isinstance(current, dict):
+            if "const" in current:
+                current["enum"] = [current.pop("const")]
+            stack.extend(current.values())
+        elif isinstance(current, list):
+            stack.extend(current)
     return schema
 
 

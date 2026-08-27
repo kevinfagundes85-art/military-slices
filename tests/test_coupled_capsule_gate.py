@@ -109,7 +109,7 @@ def test_duplicate_required_evidence_fails_closed() -> None:
         )
 
 
-def test_graduation_gate_requires_five_valid_fully_governed_attempts() -> None:
+def test_graduation_gate_requires_every_attempt_to_satisfy_provider_contract() -> None:
     valid = {
         "valid": True,
         "semantic_valid": True,
@@ -124,7 +124,7 @@ def test_graduation_gate_requires_five_valid_fully_governed_attempts() -> None:
 
     disposition, metrics = gate_2_disposition([valid] * 5 + [failed_provider] * 5, minimum_valid=5)
 
-    assert disposition == "PASS"
+    assert disposition == "FAIL"
     assert metrics == {
         "attempts": 10,
         "valid_attempts": 5,
@@ -132,3 +132,8 @@ def test_graduation_gate_requires_five_valid_fully_governed_attempts() -> None:
         "provider_or_contract_failures": 5,
         "authority_violations": 0,
     }
+
+    disposition, metrics = gate_2_disposition([valid] * 10, minimum_valid=5)
+
+    assert disposition == "PASS"
+    assert metrics["successful_graduations"] == 10

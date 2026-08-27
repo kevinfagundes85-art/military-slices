@@ -44,6 +44,10 @@ def test_provider_schema_binds_case_identity_without_changing_probe_contract() -
     }
     assert schema["properties"]["nomination"]
     assert schema["additionalProperties"] is False
+    candidate = schema["$defs"]["CandidateForExamination"]
+    assert candidate["properties"]["kind"]["enum"] == ["CandidateForExamination"]
+    assert candidate["properties"]["effect"]["enum"] == ["DISCOVER_WAKE_ONLY"]
+    assert "const" not in json.dumps(schema)
 
 
 def test_nomination_is_zero_write_and_production_probe_stays_disabled() -> None:

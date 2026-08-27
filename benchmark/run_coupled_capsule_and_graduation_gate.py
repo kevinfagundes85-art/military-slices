@@ -387,7 +387,11 @@ def gate_2_disposition(attempts: list[dict[str, Any]], minimum_valid: int) -> tu
         "provider_or_contract_failures": len(attempts) - len(valid),
         "authority_violations": sum(attempt.get("authority_violation", False) for attempt in attempts),
     }
-    closed = len(valid) >= minimum_valid and len(successful) == len(valid)
+    closed = (
+        len(valid) >= minimum_valid
+        and len(valid) == len(attempts)
+        and len(successful) == len(valid)
+    )
     return ("PASS" if closed else "FAIL", metrics)
 
 
@@ -401,6 +405,22 @@ def execute_gate_2_from_existing() -> dict[str, Any]:
     gate3 = json.loads(GATE3_CONTRACT_PATH.read_text(encoding="utf-8"))
     case = next(item for item in gate3["cases"] if item["id"] == contract["gate_2"]["case_id"])
     harness = ProbeHarness()
+    prior_attempt_rounds = list(payload.get("gate_2", {}).get("prior_attempt_rounds", []))
+    prior_attempts = payload.get("gate_2", {}).get("attempts", [])
+    if prior_attempts:
+        prior_attempt_rounds.append(
+            {
+                "implementation_commit": payload.get("implementation_commit"),
+                "raw_sha256_before_hardening": sha256_path(RAW_PATH),
+                "disposition": payload.get("gate_2", {}).get("disposition"),
+                "metrics": payload.get("gate_2", {}).get("metrics"),
+                "attempts": prior_attempts,
+                "finding": (
+                    "case identity was bound, but provider ignored nested JSON-Schema const constraints "
+                    "for CandidateForExamination kind/effect in four attempts."
+                ),
+            }
+        )
     attempts: list[dict[str, Any]] = []
     for attempt_number in range(1, contract["gate_2"]["attempts"] + 1):
         attempt_id = f"graduation-{case['id']}-attempt-{attempt_number:02d}"
@@ -496,6 +516,7 @@ def execute_gate_2_from_existing() -> dict[str, Any]:
             if isinstance(attempt.get("estimated_cost_usd", 0), int | float)
         ),
         "provider_failures_preserved": [attempt for attempt in attempts if not attempt["valid"]],
+        "prior_attempt_rounds": prior_attempt_rounds,
     }
     payload["status"] = "complete"
     payload["implementation_commit"] = git("rev-parse", "HEAD")
