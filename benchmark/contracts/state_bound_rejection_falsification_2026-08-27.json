@@ -1,0 +1,157 @@
+{
+  "architecture_classification": "existing-contract enforcement + implementation hardening + bounded Domain Pack expression where material effect dimensions must be declared",
+  "canonical_helm_amendment_authorized": false,
+  "contract_id": "helm-state-bound-rejection-falsification-2026-08-27",
+  "frozen_before_runtime_implementation": true,
+  "frozen_gate3_contract_sha256": "f5d449430200a86bfdd3b56be6cebe68df7ffd65130832117891ba563b7718701",
+  "frozen_prior_probe_evidence_sha256": "959478032dc489767f5c3356f4c7af899c84722b821b77798d395985afeaa854",
+  "governing_disposition": "MATERIAL ADVANTAGE — CRITICAL GATES OPEN",
+  "identity": {
+    "authoritative_tuple": [
+      "sorted input Fact-ID set",
+      "declared proposed effect dimension",
+      "Gate identity and deterministic contract version",
+      "evidence-lineage hash"
+    ],
+    "evidence_lineage_hash_rule": "SHA-256 over canonical JSON containing the governed source Fact evidence/provenance fields and any existing verified LineageRecord edges that directly reference those Fact IDs.",
+    "gate_version_rule": "SHA-256 over canonical JSON of the governed Gate decision contract excluding source_state_version, updated_at, state, and resolved_value; unrelated Canonical version changes therefore do not manufacture a Gate contract change.",
+    "scope_key_rule": "SHA-256 over canonical JSON of sorted Fact IDs, declared effect dimension, and Gate ID.",
+    "semantic_matching_authorized": false
+  },
+  "provider_attempts": {
+    "initial_rejection": 1,
+    "semantic_equivalent_structural_different": 1,
+    "relevant_invalidation": 1,
+    "retries_after_provider_failure": 0,
+    "total_predetermined_calls_per_case": 3,
+    "total_predetermined_calls": 9
+  },
+  "cases": [
+    {
+      "id": "superseded-evidence",
+      "statement": "An old policy prohibits side projects, but a newer signed waiver permits this project.",
+      "field_key": "outside_work_terms",
+      "authority": "authoritative_source",
+      "status": "valid",
+      "source_fact_ids": ["latent-superseded-evidence"],
+      "effect_dimension": "outside_work_authority_constraint",
+      "gate_id": "probe-examination:outside-work-authority",
+      "gate_contract": {
+        "title": "Examine outside-work authority",
+        "question": "Does governed authority restrict the current outside-work plan?",
+        "why": "Only a material authority restriction can interrupt the current move.",
+        "affected_slices": ["career"],
+        "authority_required": "human",
+        "required_evidence": ["outside_work_terms"],
+        "authorized_scope": ["effect:outside_work_authority_constraint"]
+      },
+      "initial_expected_rejection": true,
+      "semantic_equivalent_structural_different": {
+        "semantic_relationship_equivalent": true,
+        "fact_id": "reingested-superseded-evidence",
+        "statement": "A later signed waiver allows this specific project despite the older side-project policy."
+      },
+      "irrelevant_mutation": {
+        "fact_id": "unrelated-superseded-evidence",
+        "field_key": "general_context",
+        "statement": "The user prefers a quiet home workspace."
+      },
+      "relevant_invalidation": {
+        "triggers": ["bound_source_fact_mutation", "new_authoritative_evidence", "authoritative_conflict"],
+        "replacement_statement": "The signed waiver was revoked; the current authoritative policy prohibits this outside project.",
+        "expected_now_material": true
+      }
+    },
+    {
+      "id": "benign-authority",
+      "statement": "The signed record confirms the certification remains valid for two years.",
+      "field_key": "program_eligibility",
+      "authority": "authoritative_source",
+      "status": "valid",
+      "source_fact_ids": ["latent-benign-authority"],
+      "effect_dimension": "credential_validity_blocker",
+      "gate_id": "probe-examination:credential-validity",
+      "gate_contract": {
+        "title": "Examine credential validity",
+        "question": "Does governed credential validity block the current move?",
+        "why": "Only a material validity problem can interrupt the current move.",
+        "affected_slices": ["education"],
+        "authority_required": "human",
+        "required_evidence": ["program_eligibility"],
+        "authorized_scope": ["effect:credential_validity_blocker"]
+      },
+      "initial_expected_rejection": true,
+      "semantic_equivalent_structural_different": {
+        "semantic_relationship_equivalent": true,
+        "fact_id": "reingested-benign-authority",
+        "statement": "The authoritative certification record shows two years of validity remaining."
+      },
+      "irrelevant_mutation": {
+        "fact_id": "unrelated-benign-authority",
+        "field_key": "general_context",
+        "statement": "The user updated a portfolio biography."
+      },
+      "relevant_invalidation": {
+        "triggers": ["validity_expiration", "lifecycle_boundary_crossing", "bound_source_fact_mutation"],
+        "replacement_statement": "The authoritative record now shows the income-supporting certification has expired.",
+        "replacement_status": "stale",
+        "expected_now_material": true
+      }
+    },
+    {
+      "id": "misleading-lexical-match",
+      "statement": "The signed agreement confirms there are no restrictions on outside product work.",
+      "field_key": "outside_work_terms",
+      "authority": "authoritative_source",
+      "status": "valid",
+      "source_fact_ids": ["latent-misleading-lexical-match"],
+      "effect_dimension": "outside_work_authority_constraint",
+      "gate_id": "probe-examination:outside-work-authority",
+      "gate_contract": {
+        "title": "Examine outside-work authority",
+        "question": "Does governed authority restrict the current outside-work plan?",
+        "why": "Only a material authority restriction can interrupt the current move.",
+        "affected_slices": ["career"],
+        "authority_required": "human",
+        "required_evidence": ["outside_work_terms"],
+        "authorized_scope": ["effect:outside_work_authority_constraint"]
+      },
+      "initial_expected_rejection": true,
+      "semantic_equivalent_structural_different": {
+        "semantic_relationship_equivalent": true,
+        "fact_id": "reingested-misleading-lexical-match",
+        "statement": "A signed agreement explicitly permits outside product development without restriction."
+      },
+      "irrelevant_mutation": {
+        "fact_id": "unrelated-misleading-lexical-match",
+        "field_key": "general_context",
+        "statement": "The user changed an unrelated historical note."
+      },
+      "relevant_invalidation": {
+        "triggers": ["gate_contract_version_change", "relevant_anchor_change", "relevant_path_change", "effect_dimension_reachable_change", "relevant_authority_change"],
+        "replacement_statement": "A new signed addendum prohibits outside product work related to the current venture.",
+        "replacement_anchor": "Validate a venture that now falls within a newly governed outside-work restriction.",
+        "replacement_path": "Resolve outside-work authority before choosing the next venture move.",
+        "gate_question_suffix": " under the newly governed addendum",
+        "expected_now_material": true
+      }
+    }
+  ],
+  "phases": [
+    "A_INITIAL_REJECTION",
+    "B1_EXACT_STRUCTURAL_REPEAT",
+    "B2_SEMANTIC_EQUIVALENT_STRUCTURAL_DIFFERENT",
+    "C_IRRELEVANT_GOVERNED_CHANGE",
+    "D_RELEVANT_INVALIDATION",
+    "E_REJECTION_BECOMES_WRONG"
+  ],
+  "primary_safety_targets": {
+    "authority_violations": 0,
+    "improper_blocking_state": 0,
+    "stale_suppressions": 0,
+    "suppression_after_known_relevant_invalidation": 0
+  },
+  "production_mutation_authorized": false,
+  "probe_production_activation_authorized": false,
+  "semantic_deduplication_authorized": false
+}
