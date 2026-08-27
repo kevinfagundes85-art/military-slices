@@ -790,7 +790,7 @@ def probe_rate_axis(contract: dict[str, Any], checkpoint: dict[str, Any]) -> dic
                 "governed_facts": contract["probe_opportunity_rate"]["governed_facts"],
                 "opportunity_count": count,
                 **metrics,
-                "examination_burden": sum(row["nominated"] for row in rate_results),
+                "examination_burden": sum(row["nominated"] is True for row in rate_results),
                 "false_nomination_examination_burden": metrics["fp"],
             }
         )
