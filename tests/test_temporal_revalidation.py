@@ -293,7 +293,7 @@ def test_blocking_dependency_makes_revalidation_primary_without_adding_a_gate() 
     impact = current_impact(updated)
     assert impact is not None and impact.blocking
     assert [gate.id for gate in updated.gates] == gate_ids
-    assert len(updated.active_tasks) <= 3
+    assert len(updated.active_tasks) == 1
 
 
 def test_blocking_impact_cannot_be_dismissed() -> None:

@@ -43,6 +43,7 @@ from military_slices.path_runtime import (
     detect_separation_type,
     detect_service,
     normalize_service_choice,
+    path_task_gate_id,
     refresh_path_state,
     resolve_human_anchor,
     resume_target_specificity,
@@ -1053,7 +1054,7 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
     ):
         completed_gate_ids = {decision.gate_id for decision in state.decisions}
         for task in state.active_tasks:
-            task_gate_id = stable_id("path-task", task.id, task.title)
+            task_gate_id = path_task_gate_id(task)
             if task_gate_id in completed_gate_ids:
                 continue
             task_title = task.title.strip().rstrip(".")

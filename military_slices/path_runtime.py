@@ -482,6 +482,25 @@ def _title(task: str) -> str:
     return titled if titled.endswith((".", "?", "!")) else titled + "."
 
 
+def path_task_gate_id(task: ActiveTask) -> str:
+    """Return the stable Gate identity for one Path task without activating it."""
+    digest = hashlib.sha256("\x1f".join((task.id, task.title)).encode()).hexdigest()[:16]
+    return f"path-task_{digest}"
+
+
+def _smallest_consequential_frontier(
+    state: CanonicalState,
+    candidates: list[ActiveTask],
+) -> list[ActiveTask]:
+    """Activate only the first unresolved condition that can change the next move."""
+    completed = {decision.gate_id for decision in state.decisions}
+    return [
+        candidate
+        for candidate in candidates
+        if path_task_gate_id(candidate) not in completed
+    ][:1]
+
+
 def _task_slices(domain: str | None) -> list[SliceName]:
     return {
         "resume": [SliceName.RESUME, SliceName.CAREER],
@@ -770,7 +789,7 @@ def refresh_path_state(state: CanonicalState, *, today: date | None = None) -> C
         tasks = list(dict.fromkeys(tasks))[:3]
 
     slices = _task_slices(domain)
-    state.active_tasks = [
+    candidate_tasks = [
         ActiveTask(
             id=f"path-{window_id.lower()}-{index}",
             title=_title(task),
@@ -780,6 +799,7 @@ def refresh_path_state(state: CanonicalState, *, today: date | None = None) -> C
         )
         for index, task in enumerate(tasks[:3], start=1)
     ]
+    state.active_tasks = _smallest_consequential_frontier(state, candidate_tasks)
     active_slices = set(slices)
     state.latent_fact_count = sum(
         1 for fact in state.facts if active_slices and not active_slices.intersection(fact.affected_slices)

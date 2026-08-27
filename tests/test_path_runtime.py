@@ -46,7 +46,7 @@ def test_declared_resume_target_suppresses_unrelated_career_activation() -> None
     )
     assert state.human_anchor is not None
     assert state.path_target_state == "PREPARATION_BASELINE_READY"
-    assert len(state.active_tasks) == 3
+    assert len(state.active_tasks) == 1
     assert all("career recommendation" not in task.title.casefold() for task in state.active_tasks)
     assert active_gate(state) is None
 
@@ -71,7 +71,7 @@ def test_generic_resume_anchor_requests_target_without_reauthorizing_document() 
         idempotency_key="resume-routing-0003",
     )
     assert active_gate(state) is None
-    assert len(state.active_tasks) == 3
+    assert len(state.active_tasks) == 1
     assert state.career_hypotheses == []
 
 
