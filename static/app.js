@@ -365,7 +365,11 @@ function renderTimeline(state) {
 }
 
 function renderPath(state) {
-  $("#current-target").textContent = state.human_anchor || "Choose what matters first.";
+  const acceptedDirection = state.career_hypotheses?.find((item) => item.status === "accepted")?.title;
+  $("#current-target").textContent = acceptedDirection
+    || state.career_target
+    || state.human_anchor
+    || "Choose what matters first.";
   const service = serviceLabels[state.service];
   const timing = windowLabels[state.current_timeline_window];
   if (!service && state.current_timeline_window === "PATH_IDENTITY") {

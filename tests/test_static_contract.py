@@ -107,7 +107,7 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
     assert "Look at this another way" in html
     assert "Choose a relevant part of your plan" in html
-    assert "/static/app.js?v=12" in html
+    assert "/static/app.js?v=13" in html
     assert "/static/styles.css?v=10" in html
 
 
@@ -250,6 +250,14 @@ def test_recomputed_conversation_lead_is_visible_only_after_a_material_change() 
     assert "horizon.consequence" in script
     assert "renderPrimary(next, showFeedback)" in script
     assert "conversationLead(acquisition, showConversationLead)" in script
+
+
+def test_current_target_projects_the_accepted_direction_before_the_broader_anchor() -> None:
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    render_path = script[script.index("function renderPath") : script.index("function taskHorizon")]
+    assert 'item.status === "accepted"' in render_path
+    assert "acceptedDirection" in render_path
+    assert render_path.index("acceptedDirection") < render_path.index("state.human_anchor")
 
 
 def test_progressive_disclosure_and_feedback_are_state_earned() -> None:
