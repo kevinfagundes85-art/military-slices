@@ -1,0 +1,55 @@
+axis,point,class,governed_state,active_facts,payload_bytes,correct,cost_usd,model_calls,probe_calls,input_tokens,total_tokens,deterministic_ms,note
+state_width,10,deterministic,10,8,5768,True,0,0,0,0,0,0.2813000028254464,
+state_width,100,deterministic,100,8,5739,True,0,0,0,0,0,0.41560000317986123,
+state_width,1000,deterministic,1000,8,5766,True,0,0,0,0,0,1.5715000008640345,
+state_width,10000,deterministic,10000,8,5762,True,0,0,0,0,0,18.635399999766378,
+state_width,100000,deterministic,100000,8,5774,True,0,0,0,0,0,284.6417999971891,
+lifecycle_length,0,deterministic,0,0,4187,True,0,0,0,0,0,0.17899999875226058,
+lifecycle_length,10,deterministic,10,0,4188,True,0,0,0,0,0,0.21910000214120373,
+lifecycle_length,100,deterministic,100,0,4189,True,0,0,0,0,0,0.17320000188192353,
+lifecycle_length,1000,deterministic,1000,0,4190,True,0,0,0,0,0,0.43510000250535086,
+dependency_density,0,decomposable,0,0,1846,True,0.0,0,0,0,0,0.054600004659732804,minimum_sufficient=0
+dependency_density,1,decomposable,1,1,2451,True,0.0,0,0,0,0,0.5888000050617848,minimum_sufficient=1
+dependency_density,3,decomposable,3,1,2451,True,0.0,0,0,0,0,1.5190000049187802,minimum_sufficient=1
+dependency_density,10,decomposable,10,1,2451,True,0.0,0,0,0,0,10.901099998591235,minimum_sufficient=1
+dependency_density,25,decomposable,25,1,2451,True,0.0,0,0,0,0,54.557400006160606,minimum_sufficient=1
+dependency_density,50,decomposable,50,1,2451,True,0.0,0,0,0,0,196.0540999971272,minimum_sufficient=1
+dependency_density,100,decomposable,100,1,2451,True,0.0,0,0,0,0,1005.912199994782,minimum_sufficient=1
+dependency_density,0,coupled,0,0,1846,True,0.0,0,0,0,0,0.07099999493220821,minimum_sufficient=0
+dependency_density,1,coupled,1,1,4564,True,0.0,0,0,0,0,0.1412999990861863,minimum_sufficient=1
+dependency_density,3,coupled,3,1,4602,False,0.0,0,0,0,0,0.12190000416012481,minimum_sufficient=3
+dependency_density,10,coupled,10,1,4701,False,0.0,0,0,0,0,0.15350000830949284,minimum_sufficient=10
+dependency_density,25,coupled,25,1,4701,False,0.0,0,0,0,0,0.19980000433861278,minimum_sufficient=25
+dependency_density,50,coupled,50,1,4701,False,0.0,0,0,0,0,0.22699999681208283,minimum_sufficient=50
+dependency_density,100,coupled,100,1,4705,False,0.0,0,0,0,0,0.33990000156336464,minimum_sufficient=100
+probe_opportunity_rate,0,probe,1000,0,NOT MEASURED,0,0,0,0,0,0,NOT MEASURED,provider_failures=0
+probe_opportunity_rate,0.1,probe,1000,1,NOT MEASURED,0,0,0,1,0,0,NOT MEASURED,provider_failures=1
+probe_opportunity_rate,1,probe,1000,10,NOT MEASURED,7,0.011988,0,10,5774,7816,NOT MEASURED,provider_failures=1
+probe_opportunity_rate,5,probe,1000,50,NOT MEASURED,37,0.05193375,0,50,28855,36933,NOT MEASURED,provider_failures=5
+probe_opportunity_rate,10,probe,1000,100,NOT MEASURED,80,0.11598975,0,100,61538,80161,NOT MEASURED,provider_failures=4
+graduation,1,deterministic-repeat,0,NOT MEASURED,NOT MEASURED,0,4.005379499507399e-07,0,0,0,0,0.020299998141126707,first_discovery_valid=False
+graduation,10,deterministic-repeat,0,NOT MEASURED,NOT MEASURED,0,4.0040015005833995e-07,0,0,0,0,0.0015100002201506868,first_discovery_valid=False
+graduation,100,deterministic-repeat,0,NOT MEASURED,NOT MEASURED,0,4.0284875019315226e-07,0,0,0,0,0.001075000072887633,first_discovery_valid=False
+graduation,1000,deterministic-repeat,0,NOT MEASURED,NOT MEASURED,0,4.281668490079028e-07,0,0,0,0,0.0010628999625623692,first_discovery_valid=False
+rejected_nomination,superseded-evidence,repeat-after-rejection,1,0,NOT MEASURED,True,0.00178575,0,1,0,993,NOT MEASURED,repeat_nominated=True
+rejected_nomination,benign-authority,repeat-after-rejection,1,0,NOT MEASURED,True,NOT MEASURED,0,1,0,0,NOT MEASURED,repeat_nominated=None
+rejected_nomination,misleading-lexical-match,repeat-after-rejection,1,0,NOT MEASURED,True,0.0016845000000000002,0,1,0,966,NOT MEASURED,repeat_nominated=True
+temporal_movement,serving-18-months,PREPARE,currently_serving,0,4154,True,0,0,0,0,0,0.14509999891743064,PATH_IDENTIFIED
+temporal_movement,serving-12-months,PREPARE,leaving_within_12_months,0,4169,True,0,0,0,0,0,0.13140000010025688,PREPARATION_BASELINE_READY
+temporal_movement,serving-6-months,SEPARATE,leaving_within_12_months,0,4145,True,0,0,0,0,0,0.11720000111381523,CAPSTONE_READY
+temporal_movement,serving-90-days,TRANSITION,leaving_within_12_months,0,4139,True,0,0,0,0,0,0.12079999942216091,FINAL_OUT_READY
+temporal_movement,serving-45-days,TRANSITION,leaving_within_12_months,0,4139,True,0,0,0,0,0,0.12540000170702115,FINAL_OUT_READY
+temporal_movement,transition-month,STABILIZE,leaving_within_12_months,0,4162,True,0,0,0,0,0,0.11410000297473744,POST_SERVICE_STABLE
+temporal_movement,post-30-days,STABILIZE,separated_within_last_year,0,4162,True,0,0,0,0,0,0.11930000619031489,POST_SERVICE_STABLE
+temporal_movement,post-1-year,STABILIZE,separated_1_to_5_years,0,4162,True,0,0,0,0,0,0.16939999841270037,POST_SERVICE_STABLE
+temporal_movement,post-3-years,STABILIZE,separated_1_to_5_years,0,4162,True,0,0,0,0,0,0.14040000314707868,POST_SERVICE_STABLE
+multiple_slices,1,deterministic,1,1,3617,True,0,0,0,0,0,0.14259999807109125,irrelevant_slice_leakage=0
+multiple_slices,2,deterministic,2,1,3617,True,0,0,0,0,0,0.10480000128154643,irrelevant_slice_leakage=0
+multiple_slices,3,deterministic,3,1,3617,True,0,0,0,0,0,0.10950000796583481,irrelevant_slice_leakage=0
+multiple_slices,5,deterministic,5,2,3838,True,0,0,0,0,0,0.11190000077476725,irrelevant_slice_leakage=1
+contemporaneous_control,10,broad,10,9,4049,1.0,0.0012375,5,0,1239,1321.2,NOT MEASURED,provider_failures=0
+contemporaneous_control,10,helm,10,8,5768,1.0,0.00165375,5,0,1786,1869.8,NOT MEASURED,provider_failures=0
+contemporaneous_control,1000,broad,1000,384,104185,1.0,0.0191025,5,0,24632,24799.6,NOT MEASURED,provider_failures=0
+contemporaneous_control,1000,helm,1000,8,5783,1.0,0.00171375,5,0,1794,1892.2,NOT MEASURED,provider_failures=0
+contemporaneous_control,100000,broad,100000,384,107019,1.0,0.019481999999999996,5,0,25424,25534.4,NOT MEASURED,provider_failures=0
+contemporaneous_control,100000,helm,100000,8,5781,1.0,0.00179775,5,0,1801,1920.2,NOT MEASURED,provider_failures=0

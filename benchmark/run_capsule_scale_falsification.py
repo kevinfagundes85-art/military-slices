@@ -1257,44 +1257,167 @@ def _group_model_runs(runs: list[dict[str, Any]], keys: tuple[str, ...]) -> list
 
 def write_csv(payload: dict[str, Any]) -> None:
     rows: list[dict[str, Any]] = []
-    for item in payload["axes"]["state_width"]["rows"]:
+
+    def add_row(
+        *,
+        axis: str,
+        point: Any,
+        row_class: str,
+        governed_state: Any,
+        active_facts: Any,
+        payload_bytes: Any,
+        correct: Any,
+        cost_usd: Any,
+        model_calls: Any = 0,
+        probe_calls: Any = 0,
+        input_tokens: Any = 0,
+        total_tokens: Any = 0,
+        deterministic_ms: Any = "NOT MEASURED",
+        note: str = "",
+    ) -> None:
         rows.append(
             {
-                "axis": "state_width",
-                "point": item["scale"],
-                "class": "deterministic",
-                "governed_state": item["governed_facts"],
-                "active_facts": item["active_facts"],
-                "payload_bytes": item["payload_bytes"],
-                "correct": True,
-                "cost_usd": 0,
+                "axis": axis,
+                "point": point,
+                "class": row_class,
+                "governed_state": governed_state,
+                "active_facts": active_facts,
+                "payload_bytes": payload_bytes,
+                "correct": correct,
+                "cost_usd": cost_usd,
+                "model_calls": model_calls,
+                "probe_calls": probe_calls,
+                "input_tokens": input_tokens,
+                "total_tokens": total_tokens,
+                "deterministic_ms": deterministic_ms,
+                "note": note,
             }
+        )
+
+    for item in payload["axes"]["state_width"]["rows"]:
+        add_row(
+            axis="state_width",
+            point=item["scale"],
+            row_class="deterministic",
+            governed_state=item["governed_facts"],
+            active_facts=item["active_facts"],
+            payload_bytes=item["payload_bytes"],
+            correct=True,
+            cost_usd=0,
+            deterministic_ms=item["total_deterministic_ms"],
+        )
+    for item in payload["axes"]["lifecycle_length"]["rows"]:
+        add_row(
+            axis="lifecycle_length",
+            point=item["governed_decisions"],
+            row_class="deterministic",
+            governed_state=item["governed_decisions"],
+            active_facts=item["active_facts"],
+            payload_bytes=item["payload_bytes"],
+            correct=item["historical_decisions_in_payload"] == 0,
+            cost_usd=0,
+            deterministic_ms=item["total_deterministic_ms"],
         )
     for item in payload["axes"]["dependency_density"]["rows"]:
-        rows.append(
-            {
-                "axis": "dependency_density",
-                "point": item["dependency_count"],
-                "class": item["class"],
-                "governed_state": item["governed_facts"],
-                "active_facts": item["active_facts"],
-                "payload_bytes": item["payload_bytes"],
-                "correct": item["all_dependencies_accounted"],
-                "cost_usd": item["estimated_model_cost_usd"],
-            }
+        add_row(
+            axis="dependency_density",
+            point=item["dependency_count"],
+            row_class=item["class"],
+            governed_state=item["governed_facts"],
+            active_facts=item["active_facts"],
+            payload_bytes=item["payload_bytes"],
+            correct=item["all_dependencies_accounted"],
+            cost_usd=item["estimated_model_cost_usd"],
+            model_calls=item["model_calls"],
+            input_tokens=item["model_input_tokens"],
+            deterministic_ms=item["total_deterministic_ms"] + item["resolution_ms"],
+            note=f"minimum_sufficient={item['minimum_sufficient_fact_count']}",
         )
     for item in payload["axes"]["probe_opportunity_rate"]["rates"]:
-        rows.append(
-            {
-                "axis": "probe_opportunity_rate",
-                "point": item["rate_percent"],
-                "class": "probe",
-                "governed_state": item["governed_facts"],
-                "active_facts": item["opportunity_count"],
-                "payload_bytes": "NOT MEASURED",
-                "correct": item["tp"] + item["tn"],
-                "cost_usd": item["estimated_cost_usd"],
-            }
+        add_row(
+            axis="probe_opportunity_rate",
+            point=item["rate_percent"],
+            row_class="probe",
+            governed_state=item["governed_facts"],
+            active_facts=item["opportunity_count"],
+            payload_bytes="NOT MEASURED",
+            correct=item["tp"] + item["tn"],
+            cost_usd=item["estimated_cost_usd"],
+            probe_calls=item["probe_calls"],
+            input_tokens=item["input_tokens"],
+            total_tokens=item["total_tokens"],
+            note=f"provider_failures={item['provider_failures']}",
+        )
+    for item in payload["axes"]["graduation"]["rows"]:
+        add_row(
+            axis="graduation",
+            point=item["repeat_count"],
+            row_class="deterministic-repeat",
+            governed_state=payload["axes"]["graduation"]["governed_version"],
+            active_facts="NOT MEASURED",
+            payload_bytes="NOT MEASURED",
+            correct=item["correct"],
+            cost_usd=item["estimated_cost_usd"],
+            model_calls=item["model_calls"],
+            probe_calls=item["probe_calls"],
+            total_tokens=item["tokens"],
+            deterministic_ms=item["deterministic_lookup_ms"]["mean"],
+            note=f"first_discovery_valid={payload['axes']['graduation']['first_discovery_valid']}",
+        )
+    for item in payload["axes"]["rejected_nominations"]["rows"]:
+        add_row(
+            axis="rejected_nomination",
+            point=item["case_id"],
+            row_class="repeat-after-rejection",
+            governed_state=item["rejection_version_delta"],
+            active_facts=item["persisted_after_rejection"]["blocking_impacts"],
+            payload_bytes="NOT MEASURED",
+            correct=item["path_unchanged"] and item["anchor_unchanged"],
+            cost_usd=item["repeat_cost_usd"],
+            probe_calls=item["repeat_probe_calls"],
+            total_tokens=item["repeat_tokens"],
+            note=f"repeat_nominated={item['repeat_nominated']}",
+        )
+    for item in payload["axes"]["temporal_movement"]["rows"]:
+        add_row(
+            axis="temporal_movement",
+            point=item["id"],
+            row_class=item["stage"],
+            governed_state=item["lifecycle"],
+            active_facts=item["active_facts"],
+            payload_bytes=item["payload_bytes"],
+            correct=not item["future_task_leak_for_post_service"],
+            cost_usd=0,
+            deterministic_ms=item["total_deterministic_ms"],
+            note=item["current_path_target"],
+        )
+    for item in payload["axes"]["multiple_slices"]["rows"]:
+        add_row(
+            axis="multiple_slices",
+            point=item["available_context_domains"],
+            row_class="deterministic",
+            governed_state=item["governed_facts"],
+            active_facts=item["active_facts"],
+            payload_bytes=item["payload_bytes"],
+            correct=item["actual_active_gate_count"] == 1,
+            cost_usd=0,
+            deterministic_ms=item["total_deterministic_ms"],
+            note=f"irrelevant_slice_leakage={item['irrelevant_slice_leakage']}",
+        )
+    for item in payload["derived"]["width_model_groups"]:
+        add_row(
+            axis="contemporaneous_control",
+            point=item["scale"],
+            row_class=item["condition"],
+            governed_state=item["scale"],
+            active_facts=item["active_facts"],
+            payload_bytes=item["context_bytes"],
+            correct=item["correct_rate"],
+            cost_usd=item["model_cost_usd"]["mean"],
+            model_calls=item["repetitions"],
+            input_tokens=item["input_tokens"]["mean"],
+            total_tokens=item["total_tokens"]["mean"],
+            note=f"provider_failures={item['provider_failures']}",
         )
     with CSV_PATH.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
