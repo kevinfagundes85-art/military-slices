@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import subprocess  # nosec B404
 import time
 from copy import deepcopy
 from pathlib import Path
@@ -46,6 +45,7 @@ OUT = ROOT / "benchmark/output"
 RAW_OUT = OUT / "helm-probe-decisive-falsification-raw-2026-08-27.json"
 DATE_STAMP = "2026-08-27"
 EXPECTED_CONTRACT_SHA256 = "f5d449430200a86bfdd3b56be6ceb68df7ffd65130832117891ba563b7718701"
+IMPLEMENTATION_COMMIT = "0d93e39c3f531bbfc9644ec022a89f813900dead"
 MODEL = "gemini-3.7-flash"
 PROVIDER = "Vertex AI"
 PROJECT = "veteran-pathfinder-kf-2026"
@@ -64,10 +64,101 @@ LEXICAL_CONTROL = {
     "precision": 4 / 7,
     "recall": 4 / 8,
 }
+INTERRUPTED_ATTEMPT = {
+    "status": "provider-completed-evidence-write-failed",
+    "reason": "All provider calls completed, then git identity lookup failed before raw evidence write.",
+    "semantic_contract_changed_before_scored_repeat": False,
+    "provider_calls": 15,
+    "raw_rationales_retained": False,
+    "input_output_token_split_retained": False,
+    "estimated_cost_usd": "NOT MEASURED",
+    "console_rows": [
+        {
+            "case_id": "paraphrased-restriction",
+            "nominated": True,
+            "correct": True,
+            "total_tokens": 785,
+            "latency_ms": 4065.3,
+        },
+        {
+            "case_id": "indirect-restriction",
+            "nominated": True,
+            "correct": True,
+            "total_tokens": 798,
+            "latency_ms": 1855.2,
+        },
+        {
+            "case_id": "equivalent-blocker",
+            "nominated": True,
+            "correct": True,
+            "total_tokens": 888,
+            "latency_ms": 2994.0,
+        },
+        {
+            "case_id": "cross-domain-consequence",
+            "nominated": True,
+            "correct": True,
+            "total_tokens": 804,
+            "latency_ms": 2172.2,
+        },
+        {
+            "case_id": "temporal-activation",
+            "nominated": True,
+            "correct": True,
+            "total_tokens": 1025,
+            "latency_ms": 3685.8,
+        },
+        {"case_id": "changed-deadline", "nominated": True, "correct": True, "total_tokens": 1027, "latency_ms": 3877.0},
+        {"case_id": "stale-authority", "nominated": False, "correct": True, "total_tokens": 721, "latency_ms": 1503.0},
+        {
+            "case_id": "superseded-evidence",
+            "nominated": True,
+            "correct": False,
+            "total_tokens": 869,
+            "latency_ms": 2547.4,
+        },
+        {
+            "case_id": "authoritative-conflict",
+            "nominated": True,
+            "correct": True,
+            "total_tokens": 759,
+            "latency_ms": 2163.1,
+        },
+        {"case_id": "benign-authority", "nominated": True, "correct": False, "total_tokens": 788, "latency_ms": 2321.1},
+        {
+            "case_id": "unrelated-deadline",
+            "nominated": False,
+            "correct": True,
+            "total_tokens": 784,
+            "latency_ms": 2210.5,
+        },
+        {
+            "case_id": "nonblocking-reminder",
+            "nominated": False,
+            "correct": True,
+            "total_tokens": 800,
+            "latency_ms": 2211.2,
+        },
+        {
+            "case_id": "misleading-lexical-match",
+            "nominated": True,
+            "correct": False,
+            "total_tokens": 1049,
+            "latency_ms": 3357.6,
+        },
+        {"case_id": "multiple-impacts", "nominated": True, "correct": True, "total_tokens": 792, "latency_ms": 2203.5},
+        {
+            "case_id": "irrelevant-high-authority",
+            "nominated": False,
+            "correct": True,
+            "total_tokens": 727,
+            "latency_ms": 1606.8,
+        },
+    ],
+}
 CURRENT_DECISION_CONTEXT = {
     "human_anchor": (
-        "Choose and validate a post-service direction while preserving location, income, "
-        "and authority constraints."
+        "Choose and validate a post-service direction while preserving location, income, and authority constraints."
     ),
     "path_target": "Validate the next practical move without creating an unauthorized effect.",
     "current_next_move": (
@@ -123,16 +214,6 @@ def sha256_path(path: Path) -> str:
     return sha256_bytes(path.read_bytes())
 
 
-def git(*args: str) -> str:
-    return subprocess.run(  # noqa: S603  # nosec B603 B607
-        ["git", *args],  # noqa: S607
-        cwd=ROOT,
-        check=True,
-        capture_output=True,
-        text=True,
-    ).stdout.strip()
-
-
 def state_sha256(state: CanonicalState) -> str:
     return sha256_json(state.model_dump(mode="json"))
 
@@ -170,11 +251,7 @@ def case_state(case: dict[str, Any]) -> CanonicalState:
 
 
 def probe_payload(case: dict[str, Any]) -> dict[str, Any]:
-    latent = {
-        key: value
-        for key, value in case.items()
-        if key not in {"expected_material"}
-    }
+    latent = {key: value for key, value in case.items() if key not in {"expected_material"}}
     return {
         "contract": {
             "authority": "DISCOVER/WAKE only",
@@ -226,9 +303,7 @@ class ProbeHarness:
         else:
             decision = ProbeDecision.model_validate_json(response.text or "")
         if decision.case_id != case["id"]:
-            raise ValueError(
-                f"Provider returned case_id {decision.case_id!r}; expected {case['id']!r}."
-            )
+            raise ValueError(f"Provider returned case_id {decision.case_id!r}; expected {case['id']!r}.")
         usage = response.usage_metadata.to_json_dict() if response.usage_metadata else {}
         input_tokens = integer_metric(usage, "prompt_token_count")
         output_tokens = integer_metric(usage, "candidates_token_count")
@@ -263,8 +338,7 @@ def authority_audit(
 ) -> dict[str, Any]:
     nomination = result["decision"].get("nomination")
     allowed_shape = nomination is None or (
-        nomination.get("kind") == "CandidateForExamination"
-        and nomination.get("effect") == "DISCOVER_WAKE_ONLY"
+        nomination.get("kind") == "CandidateForExamination" and nomination.get("effect") == "DISCOVER_WAKE_ONLY"
     )
     return {
         "canonical_unchanged": state_sha256(before) == state_sha256(after),
@@ -400,13 +474,9 @@ def normal_sparse_control() -> dict[str, Any]:
     )
     state = build_state(scenario)
     context, instrumentation = build_helm_context(state)
-    historical = json.loads(
-        (OUT / "sparse-activation-benchmark-2-summary-2026-08-26.json").read_text(encoding="utf-8")
-    )
+    historical = json.loads((OUT / "sparse-activation-benchmark-2-summary-2026-08-26.json").read_text(encoding="utf-8"))
     group = next(
-        item
-        for item in historical["groups"]
-        if item["scenario_id"] == "normal-100000" and item["condition"] == "helm"
+        item for item in historical["groups"] if item["scenario_id"] == "normal-100000" and item["condition"] == "helm"
     )
     return {
         "current_deterministic": {
@@ -455,9 +525,7 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "mean_latency_ms": sum(row["latency_ms"] for row in rows) / len(rows),
         "total_estimated_probe_cost_usd": sum(row["estimated_cost_usd"] for row in rows),
         "false_nomination_cost_usd": sum(
-            row["estimated_cost_usd"]
-            for row in rows
-            if not row["expected_material"] and row["nominated"]
+            row["estimated_cost_usd"] for row in rows if not row["expected_material"] and row["nominated"]
         ),
         "missed_consequence_count": fn,
         "authority_violations": sum(row["authority_audit"]["violation"] for row in rows),
@@ -486,6 +554,20 @@ def execute() -> Path:
             "authority_audit": audit,
         }
         rows.append(row)
+        RAW_OUT.write_text(
+            json.dumps(
+                {
+                    "status": "scored-repeat-in-progress",
+                    "implementation_commit": IMPLEMENTATION_COMMIT,
+                    "contract_sha256": sha256_path(CONTRACT),
+                    "interrupted_attempt": INTERRUPTED_ATTEMPT,
+                    "completed_rows": rows,
+                },
+                indent=2,
+                sort_keys=True,
+            ),
+            encoding="utf-8",
+        )
         print(
             canonical_json(
                 {
@@ -506,8 +588,9 @@ def execute() -> Path:
     ]
     payload = {
         "executed_at": DATE_STAMP,
-        "implementation_commit": git("rev-parse", "HEAD"),
-        "git_status_before_evidence": git("status", "--short"),
+        "implementation_commit": IMPLEMENTATION_COMMIT,
+        "evidence_writer_fix_commit": "recorded in final evidence after commit",
+        "interrupted_attempt": INTERRUPTED_ATTEMPT,
         "contract": {
             "path": str(CONTRACT.relative_to(ROOT)).replace("\\", "/"),
             "sha256": sha256_path(CONTRACT),
