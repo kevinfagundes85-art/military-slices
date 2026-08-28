@@ -107,7 +107,7 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
     assert "View connected areas" in html
     assert "Choose a relevant part of your plan" in html
-    assert "/static/app.js?v=43" in html
+    assert "/static/app.js?v=44" in html
     assert "/static/styles.css?v=26" in html
 
 
