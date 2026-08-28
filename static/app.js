@@ -276,7 +276,7 @@ function render(next, options = {}) {
   renderProgress(next.progress, next.state, next.active_gate);
   renderHelmFocus(next.state, next.active_gate);
   renderLenses(next.state, next.lenses);
-  renderPrimary(next, showFeedback);
+  renderPrimary(next, showFeedback, options.reentry ?? false);
   primary.scrollTop = 0;
   renderImpact(next.impact);
   const visibleFeedback = executionMode(next.state) === "COMPLETE" ? null : (showFeedback ? next.what_changed : null);
@@ -706,6 +706,78 @@ function itemList(items, emptyCopy) {
   return `<ul>${values.map((item) => `<li>${escapeHtml(humanCopy(item))}</li>`).join("")}</ul>`;
 }
 
+function formatPlanDate(value) {
+  if (!value) return "";
+  const localDate = value.length === 7
+    ? `${value}-01T12:00:00`
+    : (value.length === 10 ? `${value}T12:00:00` : value);
+  const date = new Date(localDate);
+  if (Number.isNaN(date.getTime())) return humanCopy(value);
+  return value.length === 7
+    ? date.toLocaleDateString(undefined, { month: "long", year: "numeric" })
+    : date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+}
+
+function planNotes(items, emptyCopy) {
+  if (!items?.length) return `<p class="plan-empty">${escapeHtml(emptyCopy)}</p>`;
+  return `<ul class="plan-note-list">${items.map((item) => {
+    const dateKind = {
+      known: "Known date",
+      veteran_target: "Your target",
+      planned: "Planned date",
+    }[item.date_kind] || "";
+    const meta = [item.status, dateKind, formatPlanDate(item.date), item.source].filter(Boolean);
+    return `<li>
+      <strong>${escapeHtml(humanCopy(item.title))}</strong>
+      ${item.detail ? `<p>${escapeHtml(humanCopy(item.detail))}</p>` : ""}
+      ${meta.length ? `<small>${escapeHtml(meta.map(humanCopy).join(" · "))}</small>` : ""}
+    </li>`;
+  }).join("")}</ul>`;
+}
+
+function renderTransitionPlan(plan) {
+  const direction = plan.direction
+    ? `<div class="plan-direction">
+        <div><strong>${escapeHtml(plan.direction.title)}</strong><span>${escapeHtml(plan.direction.status)}</span></div>
+        <h4>Why this direction</h4>
+        ${planNotes((plan.direction.why || []).map((title) => ({ title })), "No reason has been recorded yet.")}
+        <h4>Alternatives kept available</h4>
+        ${planNotes((plan.direction.alternatives || []).map((title) => ({ title })), "No alternatives are currently being held open.")}
+      </div>`
+    : '<p class="plan-empty">No working direction has been chosen yet.</p>';
+  const decisions = (plan.decisions || []).map((item) => ({
+    title: item.decision,
+    detail: item.context,
+    date: item.decided_at,
+    status: item.current ? "Current" : "Earlier",
+  }));
+  $("#transition-plan-content").innerHTML = `
+    <section class="plan-objective"><h3>My objective</h3><p>${escapeHtml(humanCopy(plan.objective || "No objective has been recorded yet."))}</p></section>
+    <section><h3>My direction</h3>${direction}</section>
+    <section><h3>What I bring</h3>${planNotes(plan.what_i_bring, "Nothing has been recorded here yet.")}</section>
+    <section><h3>What matters to me</h3>${planNotes(plan.what_matters_to_me, "No preferences or constraints have been recorded yet.")}</section>
+    <section><h3>Decisions I’ve made</h3>${planNotes(decisions, "No decisions have been recorded yet.")}</section>
+    <section><h3>What I’m testing</h3>${planNotes(plan.active_experiments, "No active test is waiting.")}</section>
+    <section><h3>What I learned</h3>${planNotes(plan.completed_experiments, "No test result has been recorded yet.")}</section>
+    <section><h3>What changed my plan</h3>${planNotes(plan.changes, "No material plan change has been recorded yet.")}</section>
+    <section><h3>What I still need to figure out</h3>${planNotes(plan.unresolved, "No unresolved item is currently recorded.")}</section>
+    <section><h3>What I need to do next</h3>${planNotes(plan.next_actions, "No next action is currently recorded.")}</section>
+    <section><h3>Timeline</h3>${planNotes(plan.timeline, "No important date has been recorded yet.")}</section>
+  `;
+}
+
+async function openTransitionPlan() {
+  const dialog = $("#transition-plan-dialog");
+  $("#transition-plan-content").innerHTML = '<p class="plan-empty">Building your current plan…</p>';
+  dialog.showModal();
+  try {
+    renderTransitionPlan(await api("/api/plan"));
+    $("#transition-plan-title").focus();
+  } catch (error) {
+    showInlineGuidance(dialog, error.message);
+  }
+}
+
 function openDirectionLearning(item) {
   openAdd(false);
   setAddPanelCopy(
@@ -742,8 +814,16 @@ function changeWorkingDirection(item) {
   $("#fog-bank-text").focus();
 }
 
-function directionDecisionValues(state) {
-  return (state.decisions || [])
+function directionDecisionValues(state, item) {
+  const decisions = state.decisions || [];
+  let directionIndex = -1;
+  decisions.forEach((decision, index) => {
+    if (decision.gate_id !== "career-direction") return;
+    const selected = String(decision.value || "").split(":").slice(1).join(":").trim().toLowerCase();
+    if (selected === String(item.title || "").trim().toLowerCase()) directionIndex = index;
+  });
+  return decisions
+    .slice(directionIndex + 1)
     .filter((decision) => decision.gate_id?.startsWith("path-task_"))
     .map((decision) => humanCopy(decision.value))
     .filter(Boolean)
@@ -779,8 +859,8 @@ function directionAwaitingNextMove(state, item) {
   return Boolean(latestCycleEntry?.toLowerCase().startsWith(learningPrefix));
 }
 
-function renderAcceptedExploration(item, state) {
-  const decisions = directionDecisionValues(state);
+function renderAcceptedExploration(item, state, reentry = false) {
+  const decisions = directionDecisionValues(state, item);
   const learnings = directionLearningValues(state, item);
   const nextTestValues = directionNextTestValues(state, item);
   const experiment = nextTestValues.at(-1)
@@ -788,6 +868,7 @@ function renderAcceptedExploration(item, state) {
   const recordedDecisions = decisions.length >= 3 ? decisions.slice(0, -1) : decisions;
   if (directionAwaitingNextMove(state, item)) {
     primary.innerHTML = `
+      ${reentry ? '<div class="reentry-brief"><strong>Welcome back.</strong><span>You recorded what happened. Decide how it changes the plan.</span></div>' : ""}
       <div class="section-kicker">Use what you learned</div>
       <h2 id="primary-title">What do you want to do next?</h2>
       <p class="gate-copy">You tested this direction and learned something real. Use that result now instead of leaving it buried in the plan.</p>
@@ -816,6 +897,7 @@ function renderAcceptedExploration(item, state) {
       ? ["Run the experiment you described, then add the result—especially anything that changed your trust in this direction."]
       : item.possible_gaps);
   primary.innerHTML = `
+    ${reentry ? `<div class="reentry-brief"><strong>Welcome back.</strong><span>You planned to test ${escapeHtml(experiment)} What happened?</span></div>` : ""}
     <div class="section-kicker">Explore the direction</div>
     <h2 id="primary-title">Your working direction: ${escapeHtml(item.title)}</h2>
     <p class="gate-copy">This is the live decision record—not a permanent commitment. Add evidence whenever the real world changes your view.</p>
@@ -993,7 +1075,7 @@ function conversationLead(horizon, visible) {
   `;
 }
 
-function renderPrimary(next, showConversationLead = false) {
+function renderPrimary(next, showConversationLead = false, reentry = false) {
   const state = next.state;
   const gate = next.active_gate;
   const acquisition = next.acquisition_horizon;
@@ -1019,7 +1101,7 @@ function renderPrimary(next, showConversationLead = false) {
   if (!gate) {
     const accepted = state.career_hypotheses.find((item) => item.status === "accepted");
     if (accepted) {
-      renderAcceptedExploration(accepted, state);
+      renderAcceptedExploration(accepted, state, reentry);
       return;
     }
     const hasTasks = Boolean(state.active_tasks?.length);
@@ -1876,7 +1958,7 @@ async function uploadArtifact(event) {
 
 async function loadState() {
   try {
-    render(await api("/api/state"), { showFeedback: false });
+    render(await api("/api/state"), { showFeedback: false, reentry: !hasRendered });
   } catch (error) {
     primary.innerHTML = `<h2 id="primary-title">We couldn’t load your plan.</h2><p>${escapeHtml(error.message)}</p><button id="retry" class="button button-primary">Try again</button>`;
     $("#retry").addEventListener("click", loadState);
@@ -1938,6 +2020,16 @@ $("#open-planning-route").addEventListener("click", () => $("#planning-route-dia
 $("#close-planning-route").addEventListener("click", () => $("#planning-route-dialog").close());
 $("#planning-route-dialog").addEventListener("click", (event) => {
   if (event.target === $("#planning-route-dialog")) $("#planning-route-dialog").close();
+});
+$("#open-transition-plan").addEventListener("click", openTransitionPlan);
+$("#close-transition-plan").addEventListener("click", () => $("#transition-plan-dialog").close());
+$("#transition-plan-dialog").addEventListener("click", (event) => {
+  if (event.target === $("#transition-plan-dialog")) $("#transition-plan-dialog").close();
+});
+$("#print-transition-plan").addEventListener("click", () => {
+  document.body.classList.add("printing-plan");
+  window.print();
+  document.body.classList.remove("printing-plan");
 });
 $("#boot-shell").hidden = true;
 contentGrid.hidden = false;

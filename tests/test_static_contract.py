@@ -107,8 +107,8 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
     assert "View connected areas" in html
     assert "Choose a relevant part of your plan" in html
-    assert "/static/app.js?v=44" in html
-    assert "/static/styles.css?v=26" in html
+    assert "/static/app.js?v=46" in html
+    assert "/static/styles.css?v=27" in html
 
 
 def test_primary_decision_precedes_plan_scaffolding_and_requires_an_explicit_choice() -> None:
@@ -326,7 +326,7 @@ def test_direction_exploration_observes_before_commit_and_builds_forward_afterwa
     assert "Decisions you made" in accepted
     assert "What you learned" in accepted
     assert "What to test next" in accepted
-    assert "directionDecisionValues(state)" in accepted
+    assert "directionDecisionValues(state, item)" in accepted
     assert "directionLearningValues(state, item)" in accepted
     assert "Add a job description or update" not in script
     assert "compare them with a real job description" not in script
@@ -373,7 +373,7 @@ def test_recomputed_conversation_lead_is_visible_only_after_a_material_change() 
     assert "function conversationLead" in script
     assert "horizon?.acknowledgment" in script
     assert "horizon.consequence" in script
-    assert "renderPrimary(next, showFeedback)" in script
+    assert "renderPrimary(next, showFeedback, options.reentry ?? false)" in script
     assert "conversationLead(acquisition, showConversationLead)" in script
 
 
@@ -393,7 +393,7 @@ def test_progressive_disclosure_and_feedback_are_state_earned() -> None:
     assert '$(".context-column").hidden = !contextVisible' in script
     assert "hasRendered && next.state.version !== previousVersion" in script
     assert "renderChanged(visibleFeedback)" in script
-    assert 'render(await api("/api/state"), { showFeedback: false })' in script
+    assert 'render(await api("/api/state"), { showFeedback: false, reentry: !hasRendered })' in script
 
 
 def test_fog_bank_is_persistent_human_control_not_an_automatic_mutation() -> None:

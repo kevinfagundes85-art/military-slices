@@ -411,7 +411,9 @@ def anchor_domain(anchor: str | None) -> str | None:
         )
     ) or _venture_product_objective(lower):
         return "employment"
-    if re.search(r"\bbecome\s+(?:a|an)\s+[a-z][a-z -]{2,60}\b", lower):
+    if re.search(r"\bbecom(?:e|ing)\s+(?:a|an)\s+[a-z][a-z -]{2,60}\b", lower):
+        return "employment"
+    if any(term in lower for term in ("analyst", "manager", "engineer", "specialist", "coordinator")):
         return "employment"
     if any(term in lower for term in ("direction", "deciding", "decide")):
         return "undecided"

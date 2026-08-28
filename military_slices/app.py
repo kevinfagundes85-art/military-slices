@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Annotated, Any, cast
 
 from fastapi import Cookie, FastAPI, File, Form, HTTPException, Request, Response, UploadFile
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from military_slices.acquisition import build_acquisition_horizon, evaluate_acquisition
@@ -62,6 +62,7 @@ from military_slices.models import (
     WhatIfRequest,
 )
 from military_slices.path_runtime import PACK_VERSION
+from military_slices.plan import TransitionPlan, build_transition_plan, render_plan_html
 from military_slices.security import (
     LocalRateLimiter,
     TokenError,
@@ -152,6 +153,31 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
         profile_id = _profile(response, military_slices_session)
         state = reconstitute_state(application.state.store.get(profile_id))
         return _envelope(state)
+
+    @application.get("/api/plan", response_model=TransitionPlan)
+    async def transition_plan(
+        response: Response,
+        military_slices_session: Annotated[str | None, Cookie()] = None,
+    ) -> TransitionPlan:
+        profile_id = _profile(response, military_slices_session)
+        state = reconstitute_state(application.state.store.get(profile_id))
+        return build_transition_plan(state)
+
+    @application.get("/api/plan/export", response_class=HTMLResponse)
+    async def export_transition_plan(
+        response: Response,
+        military_slices_session: Annotated[str | None, Cookie()] = None,
+    ) -> HTMLResponse:
+        profile_id = _profile(response, military_slices_session)
+        state = reconstitute_state(application.state.store.get(profile_id))
+        document = render_plan_html(build_transition_plan(state))
+        return HTMLResponse(
+            content=document,
+            headers={
+                "Cache-Control": "no-store",
+                "Content-Disposition": 'attachment; filename="my-military-slices-transition-plan.html"',
+            },
+        )
 
     @application.get("/api/lenses")
     async def lenses(

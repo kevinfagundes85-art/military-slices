@@ -121,6 +121,16 @@ def test_ai_tool_goal_produces_product_builder_directions() -> None:
     assert any("AI product" in item.title for item in hypotheses)
 
 
+def test_explicit_veteran_transition_work_survives_unrelated_military_background() -> None:
+    hypotheses = deterministic_hypotheses(
+        "I worked in Navy logistics, but I want to explore veteran transition support.",
+        [],
+    )
+
+    assert hypotheses[0].title == "Veteran transition program coordinator"
+    assert all("Logistics Analyst" != item.title for item in hypotheses)
+
+
 def test_novel_product_platform_goal_is_transition_relevant() -> None:
     result = orient("I want to build a peer-to-peer disaster logistics platform for Guard families.")
 

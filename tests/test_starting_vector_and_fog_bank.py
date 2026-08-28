@@ -17,6 +17,7 @@ from military_slices.engine import (
     reconstitute_state,
 )
 from military_slices.models import (
+    GateState,
     LifecyclePosition,
     MilitaryStateSubject,
     PlanningActor,
@@ -402,6 +403,7 @@ def test_insufficient_fog_bank_context_requests_one_detail_and_writes_nothing() 
 
 def test_fog_bank_recognizes_a_human_declared_ai_product_direction() -> None:
     current = _wrong_frame_state()
+    prior_direction_decisions = [item for item in current.decisions if item.gate_id == "career-direction"]
     text = "Change my career plan and focus on building AI tools for veterans."
 
     proposal = examine_fog_bank(current, text)
@@ -414,6 +416,9 @@ def test_fog_bank_recognizes_a_human_declared_ai_product_direction() -> None:
     assert updated.human_anchor == "focus on building AI tools for veterans"
     assert updated.current_goal == updated.human_anchor
     assert updated.career_hypotheses == []
+    assert [item for item in updated.decisions if item.gate_id == "career-direction"] == prior_direction_decisions
+    reopened = next((gate for gate in updated.gates if gate.id == "career-direction"), None)
+    assert reopened is None or reopened.state in {GateState.UNKNOWN, GateState.PARTIAL}
 
 
 def test_fog_bank_corrects_service_branch_without_changing_the_plan_goal() -> None:

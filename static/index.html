@@ -6,8 +6,8 @@
     <meta name="theme-color" content="#08141f">
     <meta name="description" content="Military SLICES helps U.S. service members connect career, education, location, and résumé decisions into one transition plan.">
     <title>Military SLICES</title>
-    <link rel="stylesheet" href="/static/styles.css?v=26">
-    <script src="/static/app.js?v=44" defer></script>
+    <link rel="stylesheet" href="/static/styles.css?v=27">
+    <script src="/static/app.js?v=46" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the next decision</a>
@@ -104,6 +104,7 @@
               <dd id="focus-scope">Only what can change this decision.</dd>
             </div>
           </dl>
+          <button id="open-transition-plan" class="button button-primary plan-open-button" type="button">View my transition plan</button>
           <button id="open-planning-route" class="planning-route-button" type="button">
             <span>
               <strong>Open your full plan checklist</strong>
@@ -142,6 +143,22 @@
             </dl>
             <ol id="planning-obstacles" class="planning-obstacles"></ol>
         </section>
+      </dialog>
+
+      <dialog id="transition-plan-dialog" class="transition-plan-dialog" aria-labelledby="transition-plan-title">
+        <div class="dialog-heading plan-dialog-heading">
+          <div>
+            <div class="section-kicker">My transition plan</div>
+            <h2 id="transition-plan-title">Where I’m going and what happens next.</h2>
+          </div>
+          <button id="close-transition-plan" class="dialog-close" type="button" aria-label="Close my transition plan">×</button>
+        </div>
+        <p class="plan-dialog-intro">This plan grew from the information and decisions you reviewed. Missing sections stay honest instead of being filled with guesses.</p>
+        <div class="plan-dialog-actions">
+          <a id="export-transition-plan" class="button button-primary" href="/api/plan/export" download>Export my plan</a>
+          <button id="print-transition-plan" class="button button-secondary" type="button">Print or save as PDF</button>
+        </div>
+        <div id="transition-plan-content" class="transition-plan-content" aria-live="polite"></div>
       </dialog>
 
       <section id="lens-cloud-shell" class="lens-cloud-shell" aria-labelledby="lens-cloud-title" hidden>

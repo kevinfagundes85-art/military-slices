@@ -541,6 +541,10 @@ def apply_fog_bank_reorientation(
             if change.proposed_value != state.human_anchor:
                 state.career_target = None
                 state.career_hypotheses = []
+                # A new human-authored outcome invalidates the old direction
+                # selection without erasing its decision history.  Recompute a
+                # fresh direction Gate instead of preserving the old YES state.
+                state.gates = [gate for gate in state.gates if gate.id != "career-direction"]
             state.human_anchor = change.proposed_value
             state.current_goal = change.proposed_value
     state.original_intents.append(proposal.reviewed_input)
@@ -1524,6 +1528,35 @@ def deterministic_hypotheses(text: str, rejected: list[str]) -> list[CareerHypot
                     "Veteran technology program lead",
                     "See whether leading a veteran technology program fits your skills and goals.",
                     ["O*NET 13-1082.00", "BLS Occupational Outlook Handbook"],
+                ),
+            ]
+        )
+    elif any(
+        term in lower
+        for term in (
+            "veteran transition program",
+            "transition support",
+            "helping veterans",
+            "help veterans",
+            "veteran services",
+        )
+    ):
+        families.extend(
+            [
+                (
+                    "Veteran transition program coordinator",
+                    "See whether helping veterans navigate programs and next steps fits the work you want.",
+                    ["O*NET 21-1093.00", "BLS Occupational Outlook Handbook"],
+                ),
+                (
+                    "Veteran services navigator",
+                    "See whether one-to-one guidance and resource coordination fits you.",
+                    ["O*NET 21-1093.00"],
+                ),
+                (
+                    "Transition program operations coordinator",
+                    "See whether improving the delivery of transition programs fits your planning experience.",
+                    ["O*NET 13-1082.00"],
                 ),
             ]
         )
