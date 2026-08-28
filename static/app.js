@@ -226,6 +226,7 @@ function applyProgressiveDisclosure(next, showFeedback) {
   contentGrid.hidden = false;
   contentGrid.classList.toggle("fresh-start", !started);
   document.body.dataset.planState = started ? executionMode(next.state).toLowerCase() : "fresh";
+  document.body.classList.toggle("dashboard-active", started);
 }
 
 function render(next, options = {}) {
@@ -264,12 +265,48 @@ function renderHelmFocus(state, gate) {
   const mode = executionMode(state);
   const scope = (gate?.affected_slices || []).map((slice) => labels[slice] || humanCopy(slice));
   const heldBack = Number(state.latent_fact_count || 0);
+  const activeFacts = (state.facts || []).filter((fact) => fact.status !== "stale").length;
   $("#focus-state").textContent = mode === "PARALYZED" ? "Needs attention" : (mode === "COMPLETE" ? "Complete" : "Active");
   $("#focus-now").textContent = gate ? humanCopy(gate.title) : (mode === "COMPLETE" ? "No decision is waiting." : "Your current plan is caught up.");
   $("#focus-scope").textContent = scope.length ? scope.join(" · ") : "No additional plan area is active.";
   $("#focus-background").textContent = heldBack
     ? `${heldBack} ${heldBack === 1 ? "detail stays" : "details stay"} in the background until needed.`
     : "Other details stay available without being pulled into this decision.";
+  $("#metric-active").textContent = String(activeFacts);
+  $("#metric-latent").textContent = String(heldBack);
+  $("#metric-tasks").textContent = String((state.active_tasks || []).length);
+}
+
+function bindFocusCarousel() {
+  const track = $("#focus-carousel");
+  const previous = $("#focus-previous");
+  const next = $("#focus-next");
+  const position = $("#focus-position");
+  if (!track || !previous || !next || !position) return;
+  const total = track.children.length;
+  let activeIndex = 0;
+  let scrollTimer;
+  const reflect = () => {
+    position.textContent = `Focus ${activeIndex + 1} of ${total}`;
+    previous.disabled = activeIndex === 0;
+    next.disabled = activeIndex === total - 1;
+  };
+  const update = (index) => {
+    activeIndex = Math.max(0, Math.min(total - 1, index));
+    track.scrollTo({ left: track.clientWidth * activeIndex, behavior: "smooth" });
+    reflect();
+  };
+  previous.addEventListener("click", () => update(activeIndex - 1));
+  next.addEventListener("click", () => update(activeIndex + 1));
+  track.addEventListener("scroll", () => {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      if (!track.clientWidth) return;
+      activeIndex = Math.max(0, Math.min(total - 1, Math.round(track.scrollLeft / track.clientWidth)));
+      reflect();
+    }, 100);
+  }, { passive: true });
+  reflect();
 }
 
 function buildLensTopics(state, lenses) {
@@ -1567,6 +1604,7 @@ $("#close-fog-bank").addEventListener("click", () => {
 });
 $("#what-if-form").addEventListener("submit", createWhatIf);
 $("#fog-bank-form").addEventListener("submit", examineFogBank);
+bindFocusCarousel();
 
 $("#boot-shell").hidden = true;
 contentGrid.hidden = false;

@@ -105,10 +105,10 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert "Keep my current plan" in script
     assert "Add this to my plan" in script
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
-    assert "Look at this another way" in html
+    assert "View connected areas" in html
     assert "Choose a relevant part of your plan" in html
-    assert "/static/app.js?v=17" in html
-    assert "/static/styles.css?v=15" in html
+    assert "/static/app.js?v=18" in html
+    assert "/static/styles.css?v=16" in html
 
 
 def test_primary_decision_precedes_plan_scaffolding_and_requires_an_explicit_choice() -> None:
@@ -228,8 +228,8 @@ def test_helm_workspace_keeps_input_visible_and_routes_unmodeled_directions_to_r
     script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
     css = (ROOT / "static" / "styles.css").read_text(encoding="utf-8")
 
-    assert "Update your plan" in html
-    assert "Tell your plan what changed." in html
+    assert "Command your plan" in html
+    assert "What changed?" in html
     assert 'id="helm-focus-title"' in html
     assert 'id="focus-now"' in html
     assert 'id="focus-scope"' in html
@@ -243,7 +243,7 @@ def test_helm_workspace_keeps_input_visible_and_routes_unmodeled_directions_to_r
     assert "grid-template-columns: minmax(0, 1.8fr) minmax(300px, 0.8fr)" in css
     assert ".hypothesis-grid" in css and "scroll-snap-type: x mandatory" in css
     assert "bindDirectionCarousel" in script
-    assert "min-height: 58px" in css
+    assert "min-height: 70px" in css
     assert "grid-row: 1" in css
 
 
@@ -309,7 +309,7 @@ def test_fog_bank_is_persistent_human_control_not_an_automatic_mutation() -> Non
     html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
     script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
     assert 'id="open-fog-bank"' in html
-    assert "Something doesn’t fit" in html
+    assert "Fix the plan" in html
     assert 'id="fog-bank-panel"' in html
     assert "Nothing changes until you review and accept" in html
     assert 'api("/api/fog-bank"' in script
@@ -335,7 +335,7 @@ def test_trust_boundary_copy_distinguishes_text_and_artifact_authority() -> None
     combined = html + script
     assert "Nothing is saved until you confirm" not in combined
     assert "Nothing changes until you choose" in html
-    assert "A file is used only after you choose it" in combined
+    assert "including files—before it enters the plan" in combined
     assert 'api("/api/artifact"' in script
 
 
@@ -386,7 +386,7 @@ def test_lens_cloud_is_deterministic_bounded_and_non_mutating_until_explicit_act
     assert '$("#lens-cloud-shell").hidden = true' in render
     assert '$("#open-lenses").hidden = !topics.length' in render
     assert 'id="open-lenses"' in html
-    assert "Look at this another way" in html
+    assert "View connected areas" in html
 
 
 def test_lens_cloud_is_secondary_and_empty_domain_surfaces_are_not_padded() -> None:

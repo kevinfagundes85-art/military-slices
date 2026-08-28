@@ -6,8 +6,8 @@
     <meta name="theme-color" content="#08141f">
     <meta name="description" content="Military SLICES helps U.S. service members connect career, education, location, and résumé decisions into one transition plan.">
     <title>Military SLICES</title>
-    <link rel="stylesheet" href="/static/styles.css?v=15">
-    <script src="/static/app.js?v=17" defer></script>
+    <link rel="stylesheet" href="/static/styles.css?v=16">
+    <script src="/static/app.js?v=18" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the next decision</a>
@@ -87,11 +87,23 @@
           <div class="helm-focus-heading">
             <div>
               <div class="section-kicker">HELM focus</div>
-              <h2 id="helm-focus-title">What matters for this decision.</h2>
+              <h2 id="helm-focus-title">Why this is in front of you.</h2>
             </div>
             <span id="focus-state" class="focus-state">Active</span>
           </div>
-          <dl class="focus-grid">
+          <dl class="helm-metrics" aria-label="How HELM is focusing your plan">
+            <div><dt>Using now</dt><dd id="metric-active">0</dd></div>
+            <div><dt>Held back</dt><dd id="metric-latent">0</dd></div>
+            <div><dt>Next moves</dt><dd id="metric-tasks">0</dd></div>
+          </dl>
+          <div class="focus-carousel-heading">
+            <span id="focus-position">Focus 1 of 3</span>
+            <div class="carousel-controls" aria-label="Browse HELM focus">
+              <button id="focus-previous" class="carousel-button" type="button" aria-label="Previous HELM focus">←</button>
+              <button id="focus-next" class="carousel-button" type="button" aria-label="Next HELM focus">→</button>
+            </div>
+          </div>
+          <dl id="focus-carousel" class="focus-grid" tabindex="0">
             <div>
               <dt>Working on now</dt>
               <dd id="focus-now">Loading the current decision…</dd>
@@ -106,6 +118,12 @@
             </div>
           </dl>
         </section>
+        <nav class="control-nav" aria-label="Plan tools" hidden>
+          <button id="open-lenses" class="button button-quiet" type="button" aria-expanded="false">View connected areas</button>
+          <button id="open-fog-bank" class="button button-secondary" type="button">Fix the plan</button>
+          <button id="open-history" class="button button-quiet" type="button">Earlier plans</button>
+          <button id="open-what-if" class="button button-quiet" type="button">Try a what-if</button>
+        </nav>
       </section>
 
       <section id="lens-cloud-shell" class="lens-cloud-shell" aria-labelledby="lens-cloud-title" hidden>
@@ -121,21 +139,13 @@
         <div id="lens-preview" class="lens-preview" hidden></div>
       </section>
 
-      <nav class="control-nav" aria-label="Review and explore your plan" hidden>
-        <button id="open-lenses" class="button button-quiet" type="button" aria-expanded="false">Look at this another way</button>
-        <button id="open-fog-bank" class="button button-secondary" type="button">Something doesn’t fit</button>
-        <button id="open-history" class="button button-quiet" type="button">Review earlier plans</button>
-        <button id="open-what-if" class="button button-quiet" type="button">Explore a different choice</button>
-      </nav>
-
       <section id="add-panel" class="add-panel" hidden aria-labelledby="add-title">
         <button id="close-add" class="clear-input" type="button">Clear</button>
-        <div class="section-kicker">Update your plan</div>
-        <h2 id="add-title">Tell your plan what changed.</h2>
-        <p class="muted">Share a change, correct something, or add a file. You can stay on the decision in front of you.</p>
+        <div class="section-kicker">Command your plan</div>
+        <h2 id="add-title">What changed?</h2>
         <form id="input-form">
-          <label for="input-text">What changed or needs correcting?</label>
-          <textarea id="input-text" maxlength="12000" rows="7" placeholder="For example: I need remote work now, and I want to test building a technology company for veterans."></textarea>
+          <label class="visually-hidden" for="input-text">What changed or needs correcting?</label>
+          <textarea id="input-text" maxlength="12000" rows="2" placeholder="Tell HELM what changed…"></textarea>
           <div class="input-actions">
             <label class="button button-secondary file-button" for="artifact-file">Add a file</label>
             <input id="artifact-file" class="visually-hidden" type="file" accept=".txt,.pdf,.docx,.png,.jpg,.jpeg,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/png,image/jpeg">
@@ -143,7 +153,7 @@
             <button class="button button-primary" type="submit">Review update</button>
           </div>
         </form>
-        <p class="trust-note">You review the update before it changes your plan. A file is used only after you choose it.</p>
+        <p class="trust-note">You approve every change—including files—before it enters the plan.</p>
       </section>
 
       <section id="review-panel" class="review-panel" hidden aria-labelledby="review-title">
