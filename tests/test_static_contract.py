@@ -107,7 +107,7 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
     assert "View connected areas" in html
     assert "Choose a relevant part of your plan" in html
-    assert "/static/app.js?v=19" in html
+    assert "/static/app.js?v=20" in html
     assert "/static/styles.css?v=17" in html
 
 
@@ -248,6 +248,9 @@ def test_helm_workspace_keeps_input_visible_and_routes_unmodeled_directions_to_r
     assert html.index('id="orientation-shell"') < html.index('class="context-column"')
     assert html.index('class="context-column"') < html.index('class="helm-focus"')
     assert 'if (reviewReturn === "add") $("#input-text").value = "";' in script
+    assert "function isGenericPlanChange" in script
+    assert 'showInlineGuidance($("#fog-bank-panel"), "What part of the plan do you want to change?")' in script
+    assert "primary.scrollTop = 0" in script
 
 
 def test_saved_research_copy_is_projected_into_direct_human_language() -> None:

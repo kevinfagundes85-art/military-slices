@@ -241,6 +241,7 @@ function render(next, options = {}) {
   renderHelmFocus(next.state, next.active_gate);
   renderLenses(next.state, next.lenses);
   renderPrimary(next, showFeedback);
+  primary.scrollTop = 0;
   renderImpact(next.impact);
   const visibleFeedback = executionMode(next.state) === "COMPLETE" ? null : (showFeedback ? next.what_changed : null);
   renderChanged(visibleFeedback);
@@ -1300,8 +1301,20 @@ async function orientInput(event) {
     $("#input-text").focus();
     return;
   }
+  if (isGenericPlanChange(text)) {
+    openFogBank();
+    showInlineGuidance($("#fog-bank-panel"), "What part of the plan do you want to change?");
+    return;
+  }
   reviewReturn = "add";
   await requestOrientation(text, event.submitter);
+}
+
+function isGenericPlanChange(text) {
+  const normalized = text.toLowerCase().replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim();
+  const shortCommand = normalized.split(" ").filter(Boolean).length <= 9;
+  const asksForChange = /\b(change|update|fix|redo|revise)\b/.test(normalized);
+  return shortCommand && asksForChange && /\b(my\s+)?plan\b/.test(normalized);
 }
 
 async function orientColdInput(event) {
