@@ -757,8 +757,16 @@ function renderPrimary(next, showConversationLead = false) {
       </details>
     ` : ""}`;
   } else if (gate.surface === "compare" && hypotheses.length) {
-    control = `<div class="hypothesis-grid">${hypotheses.map((item) => `
-      <article class="hypothesis">
+    control = `
+      <div class="carousel-heading">
+        <span id="direction-position" class="carousel-position" aria-live="polite">Direction 1 of ${hypotheses.length}</span>
+        <div class="carousel-controls" aria-label="Browse directions">
+          <button id="direction-previous" class="carousel-button" type="button" aria-label="Previous direction">←</button>
+          <button id="direction-next" class="carousel-button" type="button" aria-label="Next direction">→</button>
+        </div>
+      </div>
+      <div id="direction-carousel" class="hypothesis-grid" tabindex="0">${hypotheses.map((item, index) => `
+      <article class="hypothesis" aria-label="Direction ${index + 1} of ${hypotheses.length}">
         <h3>${escapeHtml(item.title)}</h3>
         <p>${escapeHtml(humanCopy(item.rationale))}</p>
         <p><strong>What may already fit</strong><br>${escapeHtml(humanCopy(item.capability_matches.join(" · ")))}</p>
@@ -795,6 +803,42 @@ function renderPrimary(next, showConversationLead = false) {
   document.querySelectorAll(".hypothesis-explore").forEach((button) => {
     button.addEventListener("click", () => renderHypothesisExploration(button.dataset.id));
   });
+  if (gate.surface === "compare" && hypotheses.length) {
+    bindDirectionCarousel(hypotheses.length);
+  }
+}
+
+function bindDirectionCarousel(total) {
+  const track = $("#direction-carousel");
+  const previous = $("#direction-previous");
+  const next = $("#direction-next");
+  const position = $("#direction-position");
+  if (!track || !previous || !next || !position) return;
+
+  let activeIndex = 0;
+  let scrollTimer;
+  const reflect = () => {
+    position.textContent = `Direction ${activeIndex + 1} of ${total}`;
+    previous.disabled = activeIndex === 0;
+    next.disabled = activeIndex === total - 1;
+  };
+  const update = (index, behavior = "smooth") => {
+    activeIndex = Math.max(0, Math.min(total - 1, index));
+    track.scrollTo({ left: track.clientWidth * activeIndex, behavior });
+    reflect();
+  };
+
+  previous.addEventListener("click", () => update(activeIndex - 1));
+  next.addEventListener("click", () => update(activeIndex + 1));
+  track.addEventListener("scroll", () => {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      if (!track.clientWidth) return;
+      activeIndex = Math.max(0, Math.min(total - 1, Math.round(track.scrollLeft / track.clientWidth)));
+      reflect();
+    }, 100);
+  }, { passive: true });
+  update(0, "auto");
 }
 
 function impactUpdateMarkup(impact) {

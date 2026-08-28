@@ -107,8 +107,8 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
     assert "Look at this another way" in html
     assert "Choose a relevant part of your plan" in html
-    assert "/static/app.js?v=16" in html
-    assert "/static/styles.css?v=14" in html
+    assert "/static/app.js?v=17" in html
+    assert "/static/styles.css?v=15" in html
 
 
 def test_primary_decision_precedes_plan_scaffolding_and_requires_an_explicit_choice() -> None:
@@ -241,8 +241,9 @@ def test_helm_workspace_keeps_input_visible_and_routes_unmodeled_directions_to_r
     assert "Your plan advanced while you were writing" in script
     assert ".add-panel {" in css and "position: sticky" in css
     assert "grid-template-columns: minmax(0, 1.8fr) minmax(300px, 0.8fr)" in css
-    assert "grid-column: 1 / -1" in css
-    assert "min-height: 74px" in css
+    assert ".hypothesis-grid" in css and "scroll-snap-type: x mandatory" in css
+    assert "bindDirectionCarousel" in script
+    assert "min-height: 58px" in css
     assert "grid-row: 1" in css
 
 
