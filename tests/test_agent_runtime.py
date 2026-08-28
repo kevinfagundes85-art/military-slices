@@ -6,7 +6,7 @@ import json
 import pytest
 
 from military_slices.agent_runtime import Resolver, ResolverProposal, _extract_json
-from military_slices.engine import new_state
+from military_slices.engine import deterministic_hypotheses, new_state
 
 
 def test_governed_agent_json_accepts_fenced_final_response() -> None:
@@ -50,3 +50,17 @@ def test_resolver_timeout_falls_back_instead_of_spinning(monkeypatch: pytest.Mon
     assert result.telemetry["fallback"] is True
     assert result.telemetry["error_class"] == "TimeoutError"
     assert result.hypotheses
+
+
+def test_deterministic_fallback_preserves_explicit_cybersecurity_direction() -> None:
+    hypotheses = deterministic_hypotheses(
+        "I want a stable remote cybersecurity analyst job and cannot relocate.",
+        [],
+    )
+
+    assert [item.title for item in hypotheses] == [
+        "Cybersecurity Analyst",
+        "Security Operations Analyst",
+        "Cybersecurity Compliance Analyst",
+    ]
+    assert all(any("15-1212.00" in source for source in item.evidence) for item in hypotheses)

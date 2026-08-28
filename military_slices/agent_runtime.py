@@ -105,6 +105,9 @@ def authoritative_role_evidence(role_family: str) -> dict[str, Any]:
         "maintenance": "49-1011.00",
         "quality": "13-1199.00",
         "customer success": "13-1161.00",
+        "cybersecurity": "15-1212.00",
+        "security operations": "15-1212.00",
+        "information security": "15-1212.00",
     }
     code = next((value for key, value in onet_codes.items() if key in normalized), None)
     return {

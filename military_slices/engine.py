@@ -1514,6 +1514,26 @@ def deterministic_hypotheses(text: str, rejected: list[str]) -> list[CareerHypot
                 ),
             ]
         )
+    elif any(term in lower for term in ("cybersecurity", "cyber security", "cyber analyst", "information security")):
+        families.extend(
+            [
+                (
+                    "Cybersecurity Analyst",
+                    "See whether protecting systems and investigating security problems fits the work you want.",
+                    ["O*NET 15-1212.00", "BLS Occupational Outlook Handbook"],
+                ),
+                (
+                    "Security Operations Analyst",
+                    "See whether monitoring threats and responding to security events fits you.",
+                    ["O*NET 15-1212.00"],
+                ),
+                (
+                    "Cybersecurity Compliance Analyst",
+                    "See whether checking security controls and explaining risk fits you.",
+                    ["O*NET 15-1212.00", "O*NET 13-1041.00"],
+                ),
+            ]
+        )
     elif any(term in lower for term in ("intelligence", "analysis", "brief", "research")):
         families.extend(
             [
