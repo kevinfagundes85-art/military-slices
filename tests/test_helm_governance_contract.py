@@ -391,10 +391,26 @@ def test_resolver_nomination_is_audited_but_does_not_close_human_gate() -> None:
         "expected_version": 0,
         "idempotency_key": "nomination-audit-0001",
     }
-    response = client.post(
+    starting_response = client.post(
         "/api/confirm",
         json=body,
     )
+
+    assert starting_response.status_code == 200
+    starting_payload = starting_response.json()
+    assert starting_payload["active_gate"]["id"] == "career-direction"
+    assert starting_payload["active_gate"]["surface"] == "text"
+    assert resolver.calls == 0
+
+    direction_text = "I want predictable daytime operations work that uses planning and coordination."
+    direction_orientation = client.post("/api/orient", json={"text": direction_text}).json()
+    direction_body = {
+        "token": direction_orientation["token"],
+        "reviewed_input": direction_orientation["reviewed_input"],
+        "expected_version": starting_payload["state"]["version"],
+        "idempotency_key": "nomination-audit-direction-0001",
+    }
+    response = client.post("/api/confirm", json=direction_body)
 
     assert response.status_code == 200
     state = response.json()["state"]
@@ -414,7 +430,7 @@ def test_resolver_nomination_is_audited_but_does_not_close_human_gate() -> None:
     receipt = " ".join(response.json()["what_changed"]["consequences"])
     assert "ready to explore" in receipt
     assert not any(term in receipt.casefold() for term in ("helm", "adk", "gemini", "resolver", "governor"))
-    replay = client.post("/api/confirm", json=body)
+    replay = client.post("/api/confirm", json=direction_body)
     assert replay.status_code == 200
     assert replay.json()["state"]["version"] == state["version"]
     assert resolver.calls == 1

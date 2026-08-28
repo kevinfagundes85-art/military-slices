@@ -57,6 +57,7 @@ from military_slices.models import (
     SliceName,
     StartingVectorRequest,
     StateEnvelope,
+    SurfaceType,
     WhatIfPromotionRequest,
     WhatIfRequest,
 )
@@ -343,6 +344,7 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             return _envelope(current)
         if current.version != payload.expected_version:
             raise VersionConflictError("Your plan changed in another tab. Refresh to continue.")
+        prior_gate = active_gate(current)
         oriented = orient(
             payload.reviewed_input,
             context=current if current.starting_vector_complete else None,
@@ -358,7 +360,18 @@ def create_app(*, store: StateStore | None = None, resolver: Resolver | None = N
             oriented,
             idempotency_key=payload.idempotency_key,
         )
-        updated, agent_result = await _resolve_current_gate(application, updated)
+        # Preserve the human sequence: a general transition update establishes
+        # the career-direction question; only a direct answer to that governed
+        # text Gate authorizes the Resolver to nominate candidate directions.
+        explicit_direction_turn = bool(
+            prior_gate
+            and prior_gate.id == "career-direction"
+            and prior_gate.surface == SurfaceType.TEXT
+        )
+        if explicit_direction_turn:
+            updated, agent_result = await _resolve_current_gate(application, updated)
+        else:
+            agent_result = None
         agent_telemetry = agent_result.telemetry if agent_result else {}
         updated = _record_governed_mutation(
             current=current,

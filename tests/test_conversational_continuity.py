@@ -244,13 +244,30 @@ def test_decision_response_acknowledges_then_builds_to_new_foreground_question()
             "idempotency_key": "api-continuity-confirm",
         },
     ).json()
-    hypothesis = confirmed["state"]["career_hypotheses"][0]
+    assert confirmed["active_gate"]["id"] == "career-direction"
+    assert confirmed["active_gate"]["surface"] == "text"
+    assert confirmed["state"]["career_hypotheses"] == []
+
+    explicit_direction = client.post(
+        "/api/orient",
+        json={"text": "I want to test intelligence analysis work that I can do remotely."},
+    ).json()
+    nominated = client.post(
+        "/api/confirm",
+        json={
+            "token": explicit_direction["token"],
+            "reviewed_input": explicit_direction["reviewed_input"],
+            "expected_version": confirmed["state"]["version"],
+            "idempotency_key": "api-continuity-direction-intent",
+        },
+    ).json()
+    hypothesis = nominated["state"]["career_hypotheses"][0]
     response = client.post(
         "/api/decision",
         json={
             "gate_id": "career-direction",
             "value": f"explore:{hypothesis['title']}",
-            "expected_version": confirmed["state"]["version"],
+            "expected_version": nominated["state"]["version"],
             "idempotency_key": "api-continuity-direction",
         },
     )
