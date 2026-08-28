@@ -1,0 +1,28 @@
+{
+  "experiment": "adaptive_resolver_aperture_t1_r4",
+  "date": "2026-08-28",
+  "disposition": "T1-R4 INCONCLUSIVE — INVALID REPLICATION CORPUS / RESEARCH STOP",
+  "provider_execution_performed": false,
+  "rows": {"expected": 720, "executed": 0, "adjudicated": 0},
+  "provider_attempts": 0,
+  "provider_cost_usd": 0.0,
+  "h0_h1_unchanged": true,
+  "r3_preserved": true,
+  "invalid_corpus": {
+    "reason": "placeholder questions and throwaway identifiers; not executable Veteran Slice case files",
+    "preserved_drive_shards": [
+      {"name": "helm_arav1_t1_r4_public_corpus_shard_01_of_24_2026-08-28.json", "drive_id": "1hkiqb57LbGKPU6nLN_3ekHDv53XiVT4e"},
+      {"name": "helm_arav1_t1_r4_public_corpus_shard_02_of_24_2026-08-28.json", "drive_id": "1X3dC8sl7L0vwO1sh2nSopeT4WZGhKlpH"}
+    ]
+  },
+  "completion_claim_withdrawn": true,
+  "classification": [
+    "measurement-contract/corpus-construction failure",
+    "role-separation/instrumentation limitation"
+  ],
+  "architecture_defect_demonstrated": false,
+  "positive_h1_evidence_established": false,
+  "negative_h1_evidence_established": false,
+  "research_stop": {"no_r5": true, "return_to_military_slices": true},
+  "production_unchanged": true
+}
