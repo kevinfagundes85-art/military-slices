@@ -400,6 +400,22 @@ def test_insufficient_fog_bank_context_requests_one_detail_and_writes_nothing() 
     assert active_gate(state) is not None
 
 
+def test_fog_bank_recognizes_a_human_declared_ai_product_direction() -> None:
+    current = _wrong_frame_state()
+    text = "Change my career plan and focus on building AI tools for veterans."
+
+    proposal = examine_fog_bank(current, text)
+
+    assert proposal.status == "review_ready"
+    anchor_change = next(change for change in proposal.changes if change.field == "human_anchor")
+    assert anchor_change.proposed_value == "focus on building AI tools for veterans"
+
+    updated = apply_fog_bank_reorientation(current, proposal, idempotency_key="fog-ai-tools-0001")
+    assert updated.human_anchor == "focus on building AI tools for veterans"
+    assert updated.current_goal == updated.human_anchor
+    assert updated.career_hypotheses == []
+
+
 def test_fog_bank_acceptance_rejects_a_stale_source_version() -> None:
     state = _wrong_frame_state()
     proposal = examine_fog_bank(state, FOG_INPUT)

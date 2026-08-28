@@ -1213,6 +1213,7 @@ async function examineFogBank(event) {
 
 function renderFogBank(proposal) {
   const result = $("#fog-bank-result");
+  $("#fog-bank-panel").querySelector(".inline-guidance")?.remove();
   result.hidden = false;
   if (proposal.status === "clarification_needed") {
     result.innerHTML = `
@@ -1258,6 +1259,7 @@ async function acceptFogBank() {
       }),
     });
     pendingFogBank = null;
+    $("#input-text").value = "";
     $("#fog-bank-panel").hidden = true;
     document.body.classList.remove("inspection-open");
     contentGrid.hidden = false;

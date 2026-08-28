@@ -150,6 +150,16 @@ def _anchor_clauses(orientation: OrientationResult) -> list[str]:
     return clauses
 
 
+def _venture_product_objective(value: str) -> bool:
+    return bool(
+        re.search(
+            r"\b(?:build|building|create|creating)\s+"
+            r"(?:an?\s+)?(?:tool|product|app|platform|solution|service)s?\b",
+            value,
+        )
+    )
+
+
 def _anchor_candidate(clause: str) -> tuple[int, int, str, str] | None:
     lower = clause.casefold()
     domain = anchor_domain(clause)
@@ -218,13 +228,18 @@ def _anchor_candidate(clause: str) -> tuple[int, int, str, str] | None:
             "start a company",
             "build a business",
             "start a business",
+            "build ai",
+            "building ai",
+            "create ai",
+            "creating ai",
             "startup",
             "founder",
         )
-    )
+    ) or _venture_product_objective(lower)
     explicit_objective = bool(
         explicit_target
         or re.search(r"\bi\s+(?:want|need|plan|hope)\s+to\b", lower)
+        or re.search(r"^(?:focus|focused)\s+on\b", lower)
         or re.search(r"\bi\s+(?:want|need)\s+(?:my|a|the)\s+(?:resume|résumé|cv)\b", lower)
         or re.search(r"\bi\s+(?:want|need)\s+[^.!?]{0,40}\b(?:civilian\s+)?(?:work|employment|job)\b", lower)
         or re.search(r"\bwe\s+(?:want|need|plan)\s+to\b", lower)
@@ -278,10 +293,14 @@ def _canonical_anchor(clause: str, candidate_class: str, domain: str) -> str:
                 "build a business",
                 "start a business",
                 "build something",
+                "build ai",
+                "building ai",
+                "create ai",
+                "creating ai",
                 "startup",
                 "founder",
             )
-        )
+        ) or _venture_product_objective(lower)
         if existing_civilian_work or venture_objective:
             return clause.strip()
         return "Find civilian work"
@@ -370,10 +389,14 @@ def anchor_domain(anchor: str | None) -> str | None:
             "build a business",
             "start a business",
             "build something",
+            "build ai",
+            "building ai",
+            "create ai",
+            "creating ai",
             "startup",
             "founder",
         )
-    ):
+    ) or _venture_product_objective(lower):
         return "employment"
     if re.search(r"\bbecome\s+(?:a|an)\s+[a-z][a-z -]{2,60}\b", lower):
         return "employment"

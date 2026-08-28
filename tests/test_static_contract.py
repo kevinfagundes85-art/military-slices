@@ -107,7 +107,7 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
     assert "View connected areas" in html
     assert "Choose a relevant part of your plan" in html
-    assert "/static/app.js?v=21" in html
+    assert "/static/app.js?v=23" in html
     assert "/static/styles.css?v=17" in html
 
 
@@ -321,6 +321,7 @@ def test_fog_bank_is_persistent_human_control_not_an_automatic_mutation() -> Non
     assert "Nothing changes until you review and accept" in html
     assert 'api("/api/fog-bank"' in script
     assert 'api("/api/fog-bank/accept"' in script
+    assert 'pendingFogBank = null;\n    $("#input-text").value = "";' in script
     assert "Keep my current plan" in script
     assert "Use this update" in script
     assert "Nothing changes unless you approve it" in script
