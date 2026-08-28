@@ -1,0 +1,3183 @@
+{
+  "contract_id": "helm-whole-lifecycle-v2-2026-08-27",
+  "records": {
+    "WLB2-0001": {
+      "task_id": "WLB2-0001",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-7b65772c9e0ef275",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0001",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0002": {
+      "task_id": "WLB2-0002",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-b4449587f47ec742",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0002",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0003": {
+      "task_id": "WLB2-0003",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-64997aff2c811469",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0003",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0004": {
+      "task_id": "WLB2-0004",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-82732aff14f8f5bf",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0004",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0005": {
+      "task_id": "WLB2-0005",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-bdd989d90c34191b",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0005",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0006": {
+      "task_id": "WLB2-0006",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-7707cf3d75955f5a",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0006",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0007": {
+      "task_id": "WLB2-0007",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-d08dba39accd9dc7",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0007",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0008": {
+      "task_id": "WLB2-0008",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-fad4b48a67ff2c04",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0008",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0009": {
+      "task_id": "WLB2-0009",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-1a067328b5dd9e85",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0009",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0010": {
+      "task_id": "WLB2-0010",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-5a7fa20d1f6ff6de",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0010",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0011": {
+      "task_id": "WLB2-0011",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-abf9df87ddbb8fd7",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0011",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0012": {
+      "task_id": "WLB2-0012",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-79d007c921d60dba",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0012",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0013": {
+      "task_id": "WLB2-0013",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-0b146101cdba9679",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0013",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0014": {
+      "task_id": "WLB2-0014",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-1d2ba6ac115c7e74",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0014",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0015": {
+      "task_id": "WLB2-0015",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-c952f1b1b94d4e9f",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0015",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0016": {
+      "task_id": "WLB2-0016",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-196137904c0f985e",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0016",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0017": {
+      "task_id": "WLB2-0017",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-d022a6f13f0a4899",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0017",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0018": {
+      "task_id": "WLB2-0018",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-79bc0cc7146e3b48",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0018",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0019": {
+      "task_id": "WLB2-0019",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-9d08c1b57b892cf0",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0019",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0020": {
+      "task_id": "WLB2-0020",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-a65fcb35743e6a54",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0020",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0021": {
+      "task_id": "WLB2-0021",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-2c10aa32dc3f79ec",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0021",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0022": {
+      "task_id": "WLB2-0022",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-0306f57e315a3101",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0022",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0023": {
+      "task_id": "WLB2-0023",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-2bf568fd9ceca68b",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0023",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0024": {
+      "task_id": "WLB2-0024",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-e9530762c30d9f10",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0024",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0025": {
+      "task_id": "WLB2-0025",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-3984100d6fe624a2",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0025",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0026": {
+      "task_id": "WLB2-0026",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-94431d6321d802fc",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0026",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0027": {
+      "task_id": "WLB2-0027",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-0c6fb486e5d282c1",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0027",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0028": {
+      "task_id": "WLB2-0028",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-21403987c0cf1e82",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0028",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0029": {
+      "task_id": "WLB2-0029",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-3ddded688dbb954c",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0029",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0030": {
+      "task_id": "WLB2-0030",
+      "mechanism": "probe_nomination",
+      "control_events": [
+        {
+          "event_id": "CE-2db183b5b8c7965a",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-CAREER-WLB2-0030",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career gap confirmed material. Certification gap is path-blocking for cybersecurity track.",
+          "validity_conditions": [
+            "lifecycle_position in [leaving_within_12_months, currently_serving]"
+          ],
+          "invalidation_conditions": [
+            "certification obtained",
+            "target changed"
+          ],
+          "arm_b_equivalent": "After reviewing the file, the career counselor confirms: the cybersecurity certification gap is material and path-blocking at this stage."
+        }
+      ]
+    },
+    "WLB2-0061": {
+      "task_id": "WLB2-0061",
+      "mechanism": "governed_acceptance",
+      "control_events": [
+        {
+          "event_id": "CE-27af57945a088237",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-SB-WLB2-0061",
+          "response": "ACCEPT",
+          "authoritative_statement": "Commander approval verified. SkillBridge authorization is valid.",
+          "validity_conditions": [
+            "separation_date not passed",
+            "commander_approval not rescinded"
+          ],
+          "invalidation_conditions": [
+            "approval rescinded",
+            "separation executed"
+          ],
+          "arm_b_equivalent": "The counselor has reviewed and confirmed: the commander approval is valid and the service member is authorized for SkillBridge."
+        }
+      ]
+    },
+    "WLB2-0062": {
+      "task_id": "WLB2-0062",
+      "mechanism": "governed_acceptance",
+      "control_events": [
+        {
+          "event_id": "CE-27fd01d554f84eba",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-SB-WLB2-0062",
+          "response": "ACCEPT",
+          "authoritative_statement": "Commander approval verified. SkillBridge authorization is valid.",
+          "validity_conditions": [
+            "separation_date not passed",
+            "commander_approval not rescinded"
+          ],
+          "invalidation_conditions": [
+            "approval rescinded",
+            "separation executed"
+          ],
+          "arm_b_equivalent": "The counselor has reviewed and confirmed: the commander approval is valid and the service member is authorized for SkillBridge."
+        }
+      ]
+    },
+    "WLB2-0063": {
+      "task_id": "WLB2-0063",
+      "mechanism": "governed_acceptance",
+      "control_events": [
+        {
+          "event_id": "CE-bb21a72df57748d1",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-SB-WLB2-0063",
+          "response": "ACCEPT",
+          "authoritative_statement": "Commander approval verified. SkillBridge authorization is valid.",
+          "validity_conditions": [
+            "separation_date not passed",
+            "commander_approval not rescinded"
+          ],
+          "invalidation_conditions": [
+            "approval rescinded",
+            "separation executed"
+          ],
+          "arm_b_equivalent": "The counselor has reviewed and confirmed: the commander approval is valid and the service member is authorized for SkillBridge."
+        }
+      ]
+    },
+    "WLB2-0064": {
+      "task_id": "WLB2-0064",
+      "mechanism": "governed_acceptance",
+      "control_events": [
+        {
+          "event_id": "CE-425d3f8bc121685c",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-SB-WLB2-0064",
+          "response": "ACCEPT",
+          "authoritative_statement": "Commander approval verified. SkillBridge authorization is valid.",
+          "validity_conditions": [
+            "separation_date not passed",
+            "commander_approval not rescinded"
+          ],
+          "invalidation_conditions": [
+            "approval rescinded",
+            "separation executed"
+          ],
+          "arm_b_equivalent": "The counselor has reviewed and confirmed: the commander approval is valid and the service member is authorized for SkillBridge."
+        }
+      ]
+    },
+    "WLB2-0065": {
+      "task_id": "WLB2-0065",
+      "mechanism": "governed_acceptance",
+      "control_events": [
+        {
+          "event_id": "CE-7bce5802fb5bf154",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-SB-WLB2-0065",
+          "response": "ACCEPT",
+          "authoritative_statement": "Commander approval verified. SkillBridge authorization is valid.",
+          "validity_conditions": [
+            "separation_date not passed",
+            "commander_approval not rescinded"
+          ],
+          "invalidation_conditions": [
+            "approval rescinded",
+            "separation executed"
+          ],
+          "arm_b_equivalent": "The counselor has reviewed and confirmed: the commander approval is valid and the service member is authorized for SkillBridge."
+        }
+      ]
+    },
+    "WLB2-0066": {
+      "task_id": "WLB2-0066",
+      "mechanism": "governed_acceptance",
+      "control_events": [
+        {
+          "event_id": "CE-96f3a8d5fdf6c687",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-SB-WLB2-0066",
+          "response": "ACCEPT",
+          "authoritative_statement": "Commander approval verified. SkillBridge authorization is valid.",
+          "validity_conditions": [
+            "separation_date not passed",
+            "commander_approval not rescinded"
+          ],
+          "invalidation_conditions": [
+            "approval rescinded",
+            "separation executed"
+          ],
+          "arm_b_equivalent": "The counselor has reviewed and confirmed: the commander approval is valid and the service member is authorized for SkillBridge."
+        }
+      ]
+    },
+    "WLB2-0067": {
+      "task_id": "WLB2-0067",
+      "mechanism": "governed_acceptance",
+      "control_events": [
+        {
+          "event_id": "CE-a956e0c0feafe4ba",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-SB-WLB2-0067",
+          "response": "ACCEPT",
+          "authoritative_statement": "Commander approval verified. SkillBridge authorization is valid.",
+          "validity_conditions": [
+            "separation_date not passed",
+            "commander_approval not rescinded"
+          ],
+          "invalidation_conditions": [
+            "approval rescinded",
+            "separation executed"
+          ],
+          "arm_b_equivalent": "The counselor has reviewed and confirmed: the commander approval is valid and the service member is authorized for SkillBridge."
+        }
+      ]
+    },
+    "WLB2-0068": {
+      "task_id": "WLB2-0068",
+      "mechanism": "governed_acceptance",
+      "control_events": [
+        {
+          "event_id": "CE-d3433a707919b36c",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-SB-WLB2-0068",
+          "response": "ACCEPT",
+          "authoritative_statement": "Commander approval verified. SkillBridge authorization is valid.",
+          "validity_conditions": [
+            "separation_date not passed",
+            "commander_approval not rescinded"
+          ],
+          "invalidation_conditions": [
+            "approval rescinded",
+            "separation executed"
+          ],
+          "arm_b_equivalent": "The counselor has reviewed and confirmed: the commander approval is valid and the service member is authorized for SkillBridge."
+        }
+      ]
+    },
+    "WLB2-0069": {
+      "task_id": "WLB2-0069",
+      "mechanism": "governed_acceptance",
+      "control_events": [
+        {
+          "event_id": "CE-cbf4b28736d3dfbd",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-SB-WLB2-0069",
+          "response": "ACCEPT",
+          "authoritative_statement": "Commander approval verified. SkillBridge authorization is valid.",
+          "validity_conditions": [
+            "separation_date not passed",
+            "commander_approval not rescinded"
+          ],
+          "invalidation_conditions": [
+            "approval rescinded",
+            "separation executed"
+          ],
+          "arm_b_equivalent": "The counselor has reviewed and confirmed: the commander approval is valid and the service member is authorized for SkillBridge."
+        }
+      ]
+    },
+    "WLB2-0070": {
+      "task_id": "WLB2-0070",
+      "mechanism": "governed_acceptance",
+      "control_events": [
+        {
+          "event_id": "CE-5374dff6fa911c03",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-SB-WLB2-0070",
+          "response": "ACCEPT",
+          "authoritative_statement": "Commander approval verified. SkillBridge authorization is valid.",
+          "validity_conditions": [
+            "separation_date not passed",
+            "commander_approval not rescinded"
+          ],
+          "invalidation_conditions": [
+            "approval rescinded",
+            "separation executed"
+          ],
+          "arm_b_equivalent": "The counselor has reviewed and confirmed: the commander approval is valid and the service member is authorized for SkillBridge."
+        }
+      ]
+    },
+    "WLB2-0071": {
+      "task_id": "WLB2-0071",
+      "mechanism": "governed_rejection",
+      "control_events": [
+        {
+          "event_id": "CE-f830545cb133f03d",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-SB-REJ-WLB2-0071",
+          "response": "REJECT",
+          "authoritative_statement": "No commander endorsement. Rank above DAF threshold. Request rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained",
+            "rank above threshold"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained",
+            "rank threshold changes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: no commander endorsement is on file, and the service member's rank exceeds the current SkillBridge approval threshold. The request is rejected."
+        }
+      ]
+    },
+    "WLB2-0072": {
+      "task_id": "WLB2-0072",
+      "mechanism": "governed_rejection",
+      "control_events": [
+        {
+          "event_id": "CE-cd83a0441384616e",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-SB-REJ-WLB2-0072",
+          "response": "REJECT",
+          "authoritative_statement": "No commander endorsement. Rank above DAF threshold. Request rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained",
+            "rank above threshold"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained",
+            "rank threshold changes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: no commander endorsement is on file, and the service member's rank exceeds the current SkillBridge approval threshold. The request is rejected."
+        }
+      ]
+    },
+    "WLB2-0073": {
+      "task_id": "WLB2-0073",
+      "mechanism": "governed_rejection",
+      "control_events": [
+        {
+          "event_id": "CE-9a2c4572f5132218",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-SB-REJ-WLB2-0073",
+          "response": "REJECT",
+          "authoritative_statement": "No commander endorsement. Rank above DAF threshold. Request rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained",
+            "rank above threshold"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained",
+            "rank threshold changes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: no commander endorsement is on file, and the service member's rank exceeds the current SkillBridge approval threshold. The request is rejected."
+        }
+      ]
+    },
+    "WLB2-0074": {
+      "task_id": "WLB2-0074",
+      "mechanism": "governed_rejection",
+      "control_events": [
+        {
+          "event_id": "CE-dc72cc55eecc23e3",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-SB-REJ-WLB2-0074",
+          "response": "REJECT",
+          "authoritative_statement": "No commander endorsement. Rank above DAF threshold. Request rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained",
+            "rank above threshold"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained",
+            "rank threshold changes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: no commander endorsement is on file, and the service member's rank exceeds the current SkillBridge approval threshold. The request is rejected."
+        }
+      ]
+    },
+    "WLB2-0075": {
+      "task_id": "WLB2-0075",
+      "mechanism": "governed_rejection",
+      "control_events": [
+        {
+          "event_id": "CE-fecbcfdc5538d604",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-SB-REJ-WLB2-0075",
+          "response": "REJECT",
+          "authoritative_statement": "No commander endorsement. Rank above DAF threshold. Request rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained",
+            "rank above threshold"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained",
+            "rank threshold changes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: no commander endorsement is on file, and the service member's rank exceeds the current SkillBridge approval threshold. The request is rejected."
+        }
+      ]
+    },
+    "WLB2-0076": {
+      "task_id": "WLB2-0076",
+      "mechanism": "governed_rejection",
+      "control_events": [
+        {
+          "event_id": "CE-a5fcd7697a21bc63",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-SB-REJ-WLB2-0076",
+          "response": "REJECT",
+          "authoritative_statement": "No commander endorsement. Rank above DAF threshold. Request rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained",
+            "rank above threshold"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained",
+            "rank threshold changes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: no commander endorsement is on file, and the service member's rank exceeds the current SkillBridge approval threshold. The request is rejected."
+        }
+      ]
+    },
+    "WLB2-0077": {
+      "task_id": "WLB2-0077",
+      "mechanism": "governed_rejection",
+      "control_events": [
+        {
+          "event_id": "CE-2c3a0e056be7c6af",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-SB-REJ-WLB2-0077",
+          "response": "REJECT",
+          "authoritative_statement": "No commander endorsement. Rank above DAF threshold. Request rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained",
+            "rank above threshold"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained",
+            "rank threshold changes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: no commander endorsement is on file, and the service member's rank exceeds the current SkillBridge approval threshold. The request is rejected."
+        }
+      ]
+    },
+    "WLB2-0078": {
+      "task_id": "WLB2-0078",
+      "mechanism": "governed_rejection",
+      "control_events": [
+        {
+          "event_id": "CE-845f453ea27c314d",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-SB-REJ-WLB2-0078",
+          "response": "REJECT",
+          "authoritative_statement": "No commander endorsement. Rank above DAF threshold. Request rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained",
+            "rank above threshold"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained",
+            "rank threshold changes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: no commander endorsement is on file, and the service member's rank exceeds the current SkillBridge approval threshold. The request is rejected."
+        }
+      ]
+    },
+    "WLB2-0079": {
+      "task_id": "WLB2-0079",
+      "mechanism": "governed_rejection",
+      "control_events": [
+        {
+          "event_id": "CE-d4bb74c275afe486",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-SB-REJ-WLB2-0079",
+          "response": "REJECT",
+          "authoritative_statement": "No commander endorsement. Rank above DAF threshold. Request rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained",
+            "rank above threshold"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained",
+            "rank threshold changes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: no commander endorsement is on file, and the service member's rank exceeds the current SkillBridge approval threshold. The request is rejected."
+        }
+      ]
+    },
+    "WLB2-0080": {
+      "task_id": "WLB2-0080",
+      "mechanism": "governed_rejection",
+      "control_events": [
+        {
+          "event_id": "CE-d606210d1c80e2b6",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-SB-REJ-WLB2-0080",
+          "response": "REJECT",
+          "authoritative_statement": "No commander endorsement. Rank above DAF threshold. Request rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained",
+            "rank above threshold"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained",
+            "rank threshold changes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: no commander endorsement is on file, and the service member's rank exceeds the current SkillBridge approval threshold. The request is rejected."
+        }
+      ]
+    },
+    "WLB2-0081": {
+      "task_id": "WLB2-0081",
+      "mechanism": "i1_suppression",
+      "control_events": [
+        {
+          "event_id": "CE-fc4f6f9cb42853df",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-I1-WLB2-0081",
+          "response": "REJECT",
+          "authoritative_statement": "No commander endorsement. Rank above threshold. Wave-1 rejection stands.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "The counselor confirms the rejection from wave 1 stands. The re-submitted request has the same basis and is rejected without new examination."
+        }
+      ]
+    },
+    "WLB2-0082": {
+      "task_id": "WLB2-0082",
+      "mechanism": "i1_suppression",
+      "control_events": [
+        {
+          "event_id": "CE-e53e7f1bba5ff929",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-I1-WLB2-0082",
+          "response": "REJECT",
+          "authoritative_statement": "No commander endorsement. Rank above threshold. Wave-1 rejection stands.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "The counselor confirms the rejection from wave 1 stands. The re-submitted request has the same basis and is rejected without new examination."
+        }
+      ]
+    },
+    "WLB2-0083": {
+      "task_id": "WLB2-0083",
+      "mechanism": "i1_suppression",
+      "control_events": [
+        {
+          "event_id": "CE-83d0cf4c357321d8",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-I1-WLB2-0083",
+          "response": "REJECT",
+          "authoritative_statement": "No commander endorsement. Rank above threshold. Wave-1 rejection stands.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "The counselor confirms the rejection from wave 1 stands. The re-submitted request has the same basis and is rejected without new examination."
+        }
+      ]
+    },
+    "WLB2-0084": {
+      "task_id": "WLB2-0084",
+      "mechanism": "i1_suppression",
+      "control_events": [
+        {
+          "event_id": "CE-9be49aaebd667563",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-I1-WLB2-0084",
+          "response": "REJECT",
+          "authoritative_statement": "No commander endorsement. Rank above threshold. Wave-1 rejection stands.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "The counselor confirms the rejection from wave 1 stands. The re-submitted request has the same basis and is rejected without new examination."
+        }
+      ]
+    },
+    "WLB2-0085": {
+      "task_id": "WLB2-0085",
+      "mechanism": "i1_suppression",
+      "control_events": [
+        {
+          "event_id": "CE-0f60c3ab860fe762",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-I1-WLB2-0085",
+          "response": "REJECT",
+          "authoritative_statement": "No commander endorsement. Rank above threshold. Wave-1 rejection stands.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "The counselor confirms the rejection from wave 1 stands. The re-submitted request has the same basis and is rejected without new examination."
+        }
+      ]
+    },
+    "WLB2-0086": {
+      "task_id": "WLB2-0086",
+      "mechanism": "i1_suppression",
+      "control_events": [
+        {
+          "event_id": "CE-0da839c797dd79ef",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-I1-WLB2-0086",
+          "response": "REJECT",
+          "authoritative_statement": "No commander endorsement. Rank above threshold. Wave-1 rejection stands.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "The counselor confirms the rejection from wave 1 stands. The re-submitted request has the same basis and is rejected without new examination."
+        }
+      ]
+    },
+    "WLB2-0087": {
+      "task_id": "WLB2-0087",
+      "mechanism": "paraphrase_miss",
+      "control_events": [
+        {
+          "event_id": "CE-952ea615ebe44114",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-PARA-WLB2-0087",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 1: no endorsement, above threshold. Rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor confirms rejection at wave 1."
+        },
+        {
+          "event_id": "CE-75f4c86823fb4449",
+          "wave": 4,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-PARA-WLB2-0087",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 3 re-examination: same underlying finding. Rejected again.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor reviews re-entry: same finding, rejected."
+        }
+      ]
+    },
+    "WLB2-0088": {
+      "task_id": "WLB2-0088",
+      "mechanism": "paraphrase_miss",
+      "control_events": [
+        {
+          "event_id": "CE-b7c6dc071b0292b2",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-PARA-WLB2-0088",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 1: no endorsement, above threshold. Rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor confirms rejection at wave 1."
+        },
+        {
+          "event_id": "CE-4418e100becbd525",
+          "wave": 4,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-PARA-WLB2-0088",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 3 re-examination: same underlying finding. Rejected again.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor reviews re-entry: same finding, rejected."
+        }
+      ]
+    },
+    "WLB2-0089": {
+      "task_id": "WLB2-0089",
+      "mechanism": "paraphrase_miss",
+      "control_events": [
+        {
+          "event_id": "CE-8dd4001ab8eb118e",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-PARA-WLB2-0089",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 1: no endorsement, above threshold. Rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor confirms rejection at wave 1."
+        },
+        {
+          "event_id": "CE-cce5817d5c6832f9",
+          "wave": 4,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-PARA-WLB2-0089",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 3 re-examination: same underlying finding. Rejected again.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor reviews re-entry: same finding, rejected."
+        }
+      ]
+    },
+    "WLB2-0090": {
+      "task_id": "WLB2-0090",
+      "mechanism": "paraphrase_miss",
+      "control_events": [
+        {
+          "event_id": "CE-331a34ce3f4af244",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-PARA-WLB2-0090",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 1: no endorsement, above threshold. Rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor confirms rejection at wave 1."
+        },
+        {
+          "event_id": "CE-e3f76503f8e40aa6",
+          "wave": 4,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-PARA-WLB2-0090",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 3 re-examination: same underlying finding. Rejected again.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor reviews re-entry: same finding, rejected."
+        }
+      ]
+    },
+    "WLB2-0091": {
+      "task_id": "WLB2-0091",
+      "mechanism": "paraphrase_miss",
+      "control_events": [
+        {
+          "event_id": "CE-038c212d3820600c",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-PARA-WLB2-0091",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 1: no endorsement, above threshold. Rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor confirms rejection at wave 1."
+        },
+        {
+          "event_id": "CE-12e975881b1f54e7",
+          "wave": 4,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-PARA-WLB2-0091",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 3 re-examination: same underlying finding. Rejected again.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor reviews re-entry: same finding, rejected."
+        }
+      ]
+    },
+    "WLB2-0092": {
+      "task_id": "WLB2-0092",
+      "mechanism": "paraphrase_miss",
+      "control_events": [
+        {
+          "event_id": "CE-9508b2c5aa4cc736",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-PARA-WLB2-0092",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 1: no endorsement, above threshold. Rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor confirms rejection at wave 1."
+        },
+        {
+          "event_id": "CE-61f22338036cc9b6",
+          "wave": 4,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-PARA-WLB2-0092",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 3 re-examination: same underlying finding. Rejected again.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor reviews re-entry: same finding, rejected."
+        }
+      ]
+    },
+    "WLB2-0093": {
+      "task_id": "WLB2-0093",
+      "mechanism": "true_invalidation",
+      "control_events": [
+        {
+          "event_id": "CE-40ddf6f9bae6dfbb",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-INV-WLB2-0093",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 1: no endorsement. Rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor confirms rejection at wave 1: no endorsement on file."
+        },
+        {
+          "event_id": "CE-6a38b9eea72fa11b",
+          "wave": 4,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-INV-WLB2-0093",
+          "response": "ACCEPT",
+          "authoritative_statement": "Wave 3: commander approval verified. Prior rejection invalidated. SkillBridge authorized.",
+          "validity_conditions": [
+            "separation_date not passed",
+            "approval not rescinded"
+          ],
+          "invalidation_conditions": [
+            "approval rescinded"
+          ],
+          "arm_b_equivalent": "Counselor reviews the new approval: it is valid and supersedes the prior rejection. SkillBridge is now authorized."
+        }
+      ]
+    },
+    "WLB2-0094": {
+      "task_id": "WLB2-0094",
+      "mechanism": "true_invalidation",
+      "control_events": [
+        {
+          "event_id": "CE-e949982ef8c8b545",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-INV-WLB2-0094",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 1: no endorsement. Rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor confirms rejection at wave 1: no endorsement on file."
+        },
+        {
+          "event_id": "CE-779be364951f4463",
+          "wave": 4,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-INV-WLB2-0094",
+          "response": "ACCEPT",
+          "authoritative_statement": "Wave 3: commander approval verified. Prior rejection invalidated. SkillBridge authorized.",
+          "validity_conditions": [
+            "separation_date not passed",
+            "approval not rescinded"
+          ],
+          "invalidation_conditions": [
+            "approval rescinded"
+          ],
+          "arm_b_equivalent": "Counselor reviews the new approval: it is valid and supersedes the prior rejection. SkillBridge is now authorized."
+        }
+      ]
+    },
+    "WLB2-0095": {
+      "task_id": "WLB2-0095",
+      "mechanism": "true_invalidation",
+      "control_events": [
+        {
+          "event_id": "CE-b65923db886a79ff",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-INV-WLB2-0095",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 1: no endorsement. Rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor confirms rejection at wave 1: no endorsement on file."
+        },
+        {
+          "event_id": "CE-d2babe98869d4501",
+          "wave": 4,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-INV-WLB2-0095",
+          "response": "ACCEPT",
+          "authoritative_statement": "Wave 3: commander approval verified. Prior rejection invalidated. SkillBridge authorized.",
+          "validity_conditions": [
+            "separation_date not passed",
+            "approval not rescinded"
+          ],
+          "invalidation_conditions": [
+            "approval rescinded"
+          ],
+          "arm_b_equivalent": "Counselor reviews the new approval: it is valid and supersedes the prior rejection. SkillBridge is now authorized."
+        }
+      ]
+    },
+    "WLB2-0096": {
+      "task_id": "WLB2-0096",
+      "mechanism": "true_invalidation",
+      "control_events": [
+        {
+          "event_id": "CE-069f51feb5913e38",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-INV-WLB2-0096",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 1: no endorsement. Rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor confirms rejection at wave 1: no endorsement on file."
+        },
+        {
+          "event_id": "CE-9f2f54214ac5dadd",
+          "wave": 4,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-INV-WLB2-0096",
+          "response": "ACCEPT",
+          "authoritative_statement": "Wave 3: commander approval verified. Prior rejection invalidated. SkillBridge authorized.",
+          "validity_conditions": [
+            "separation_date not passed",
+            "approval not rescinded"
+          ],
+          "invalidation_conditions": [
+            "approval rescinded"
+          ],
+          "arm_b_equivalent": "Counselor reviews the new approval: it is valid and supersedes the prior rejection. SkillBridge is now authorized."
+        }
+      ]
+    },
+    "WLB2-0097": {
+      "task_id": "WLB2-0097",
+      "mechanism": "true_invalidation",
+      "control_events": [
+        {
+          "event_id": "CE-e966cf65c9d2bb5b",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-INV-WLB2-0097",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 1: no endorsement. Rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor confirms rejection at wave 1: no endorsement on file."
+        },
+        {
+          "event_id": "CE-d84fca2e892fbad6",
+          "wave": 4,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-INV-WLB2-0097",
+          "response": "ACCEPT",
+          "authoritative_statement": "Wave 3: commander approval verified. Prior rejection invalidated. SkillBridge authorized.",
+          "validity_conditions": [
+            "separation_date not passed",
+            "approval not rescinded"
+          ],
+          "invalidation_conditions": [
+            "approval rescinded"
+          ],
+          "arm_b_equivalent": "Counselor reviews the new approval: it is valid and supersedes the prior rejection. SkillBridge is now authorized."
+        }
+      ]
+    },
+    "WLB2-0098": {
+      "task_id": "WLB2-0098",
+      "mechanism": "true_invalidation",
+      "control_events": [
+        {
+          "event_id": "CE-c0b754f676868c85",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-INV-WLB2-0098",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 1: no endorsement. Rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor confirms rejection at wave 1: no endorsement on file."
+        },
+        {
+          "event_id": "CE-8ff18e64b87ab4d3",
+          "wave": 4,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-INV-WLB2-0098",
+          "response": "ACCEPT",
+          "authoritative_statement": "Wave 3: commander approval verified. Prior rejection invalidated. SkillBridge authorized.",
+          "validity_conditions": [
+            "separation_date not passed",
+            "approval not rescinded"
+          ],
+          "invalidation_conditions": [
+            "approval rescinded"
+          ],
+          "arm_b_equivalent": "Counselor reviews the new approval: it is valid and supersedes the prior rejection. SkillBridge is now authorized."
+        }
+      ]
+    },
+    "WLB2-0099": {
+      "task_id": "WLB2-0099",
+      "mechanism": "true_invalidation",
+      "control_events": [
+        {
+          "event_id": "CE-a6fd383e650ce35f",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-INV-WLB2-0099",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 1: no endorsement. Rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor confirms rejection at wave 1: no endorsement on file."
+        },
+        {
+          "event_id": "CE-c19f11a491e65de3",
+          "wave": 4,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-INV-WLB2-0099",
+          "response": "ACCEPT",
+          "authoritative_statement": "Wave 3: commander approval verified. Prior rejection invalidated. SkillBridge authorized.",
+          "validity_conditions": [
+            "separation_date not passed",
+            "approval not rescinded"
+          ],
+          "invalidation_conditions": [
+            "approval rescinded"
+          ],
+          "arm_b_equivalent": "Counselor reviews the new approval: it is valid and supersedes the prior rejection. SkillBridge is now authorized."
+        }
+      ]
+    },
+    "WLB2-0100": {
+      "task_id": "WLB2-0100",
+      "mechanism": "true_invalidation",
+      "control_events": [
+        {
+          "event_id": "CE-3b20272423a4e71d",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-INV-WLB2-0100",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 1: no endorsement. Rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor confirms rejection at wave 1: no endorsement on file."
+        },
+        {
+          "event_id": "CE-8f1fe06547131ca9",
+          "wave": 4,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-INV-WLB2-0100",
+          "response": "ACCEPT",
+          "authoritative_statement": "Wave 3: commander approval verified. Prior rejection invalidated. SkillBridge authorized.",
+          "validity_conditions": [
+            "separation_date not passed",
+            "approval not rescinded"
+          ],
+          "invalidation_conditions": [
+            "approval rescinded"
+          ],
+          "arm_b_equivalent": "Counselor reviews the new approval: it is valid and supersedes the prior rejection. SkillBridge is now authorized."
+        }
+      ]
+    },
+    "WLB2-0101": {
+      "task_id": "WLB2-0101",
+      "mechanism": "true_invalidation",
+      "control_events": [
+        {
+          "event_id": "CE-7890f4fed2c07807",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-INV-WLB2-0101",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 1: no endorsement. Rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor confirms rejection at wave 1: no endorsement on file."
+        },
+        {
+          "event_id": "CE-4aee32b487e875c1",
+          "wave": 4,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-INV-WLB2-0101",
+          "response": "ACCEPT",
+          "authoritative_statement": "Wave 3: commander approval verified. Prior rejection invalidated. SkillBridge authorized.",
+          "validity_conditions": [
+            "separation_date not passed",
+            "approval not rescinded"
+          ],
+          "invalidation_conditions": [
+            "approval rescinded"
+          ],
+          "arm_b_equivalent": "Counselor reviews the new approval: it is valid and supersedes the prior rejection. SkillBridge is now authorized."
+        }
+      ]
+    },
+    "WLB2-0102": {
+      "task_id": "WLB2-0102",
+      "mechanism": "true_invalidation",
+      "control_events": [
+        {
+          "event_id": "CE-4251e46ed9fc59b8",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-INV-WLB2-0102",
+          "response": "REJECT",
+          "authoritative_statement": "Wave 1: no endorsement. Rejected.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "Counselor confirms rejection at wave 1: no endorsement on file."
+        },
+        {
+          "event_id": "CE-6fc98b6e551e66be",
+          "wave": 4,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-INV-WLB2-0102",
+          "response": "ACCEPT",
+          "authoritative_statement": "Wave 3: commander approval verified. Prior rejection invalidated. SkillBridge authorized.",
+          "validity_conditions": [
+            "separation_date not passed",
+            "approval not rescinded"
+          ],
+          "invalidation_conditions": [
+            "approval rescinded"
+          ],
+          "arm_b_equivalent": "Counselor reviews the new approval: it is valid and supersedes the prior rejection. SkillBridge is now authorized."
+        }
+      ]
+    },
+    "WLB2-0103": {
+      "task_id": "WLB2-0103",
+      "mechanism": "stale_suppression_challenge",
+      "control_events": [
+        {
+          "event_id": "CE-a9ea5412122753dc",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-STALE-WLB2-0103",
+          "response": "REJECT",
+          "authoritative_statement": "Rejection holds. Address update is immaterial to SkillBridge status.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "The counselor confirms: the address update has no bearing on SkillBridge eligibility. The rejection stands."
+        }
+      ]
+    },
+    "WLB2-0104": {
+      "task_id": "WLB2-0104",
+      "mechanism": "stale_suppression_challenge",
+      "control_events": [
+        {
+          "event_id": "CE-969a7b2cd4097e4b",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-STALE-WLB2-0104",
+          "response": "REJECT",
+          "authoritative_statement": "Rejection holds. Address update is immaterial to SkillBridge status.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "The counselor confirms: the address update has no bearing on SkillBridge eligibility. The rejection stands."
+        }
+      ]
+    },
+    "WLB2-0105": {
+      "task_id": "WLB2-0105",
+      "mechanism": "stale_suppression_challenge",
+      "control_events": [
+        {
+          "event_id": "CE-3bdc4d491ef40aa6",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-STALE-WLB2-0105",
+          "response": "REJECT",
+          "authoritative_statement": "Rejection holds. Address update is immaterial to SkillBridge status.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "The counselor confirms: the address update has no bearing on SkillBridge eligibility. The rejection stands."
+        }
+      ]
+    },
+    "WLB2-0106": {
+      "task_id": "WLB2-0106",
+      "mechanism": "stale_suppression_challenge",
+      "control_events": [
+        {
+          "event_id": "CE-d97b732660c722a4",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-STALE-WLB2-0106",
+          "response": "REJECT",
+          "authoritative_statement": "Rejection holds. Address update is immaterial to SkillBridge status.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "The counselor confirms: the address update has no bearing on SkillBridge eligibility. The rejection stands."
+        }
+      ]
+    },
+    "WLB2-0107": {
+      "task_id": "WLB2-0107",
+      "mechanism": "stale_suppression_challenge",
+      "control_events": [
+        {
+          "event_id": "CE-366c624869dc4a8e",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-STALE-WLB2-0107",
+          "response": "REJECT",
+          "authoritative_statement": "Rejection holds. Address update is immaterial to SkillBridge status.",
+          "validity_conditions": [
+            "commander_approval not obtained"
+          ],
+          "invalidation_conditions": [
+            "commander approval obtained"
+          ],
+          "arm_b_equivalent": "The counselor confirms: the address update has no bearing on SkillBridge eligibility. The rejection stands."
+        }
+      ]
+    },
+    "WLB2-0108": {
+      "task_id": "WLB2-0108",
+      "mechanism": "graduation_restart",
+      "control_events": [
+        {
+          "event_id": "CE-71c09f1f9f0a5426",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-GRAD-WLB2-0108",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career target confirmed and governed. Graduation recorded. Deterministic reuse enabled.",
+          "validity_conditions": [
+            "target not changed by subject",
+            "counselor confirmation not rescinded"
+          ],
+          "invalidation_conditions": [
+            "subject changes target",
+            "counselor rescinds confirmation"
+          ],
+          "arm_b_equivalent": "The counselor confirms: the career target is formally established. Future requests about this target can use this confirmed basis."
+        }
+      ]
+    },
+    "WLB2-0109": {
+      "task_id": "WLB2-0109",
+      "mechanism": "graduation_restart",
+      "control_events": [
+        {
+          "event_id": "CE-0918b4f280298239",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-GRAD-WLB2-0109",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career target confirmed and governed. Graduation recorded. Deterministic reuse enabled.",
+          "validity_conditions": [
+            "target not changed by subject",
+            "counselor confirmation not rescinded"
+          ],
+          "invalidation_conditions": [
+            "subject changes target",
+            "counselor rescinds confirmation"
+          ],
+          "arm_b_equivalent": "The counselor confirms: the career target is formally established. Future requests about this target can use this confirmed basis."
+        }
+      ]
+    },
+    "WLB2-0110": {
+      "task_id": "WLB2-0110",
+      "mechanism": "graduation_restart",
+      "control_events": [
+        {
+          "event_id": "CE-83013ddc7f9ec281",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-GRAD-WLB2-0110",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career target confirmed and governed. Graduation recorded. Deterministic reuse enabled.",
+          "validity_conditions": [
+            "target not changed by subject",
+            "counselor confirmation not rescinded"
+          ],
+          "invalidation_conditions": [
+            "subject changes target",
+            "counselor rescinds confirmation"
+          ],
+          "arm_b_equivalent": "The counselor confirms: the career target is formally established. Future requests about this target can use this confirmed basis."
+        }
+      ]
+    },
+    "WLB2-0111": {
+      "task_id": "WLB2-0111",
+      "mechanism": "graduation_restart",
+      "control_events": [
+        {
+          "event_id": "CE-0ebfc28a413fc425",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-GRAD-WLB2-0111",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career target confirmed and governed. Graduation recorded. Deterministic reuse enabled.",
+          "validity_conditions": [
+            "target not changed by subject",
+            "counselor confirmation not rescinded"
+          ],
+          "invalidation_conditions": [
+            "subject changes target",
+            "counselor rescinds confirmation"
+          ],
+          "arm_b_equivalent": "The counselor confirms: the career target is formally established. Future requests about this target can use this confirmed basis."
+        }
+      ]
+    },
+    "WLB2-0112": {
+      "task_id": "WLB2-0112",
+      "mechanism": "graduation_restart",
+      "control_events": [
+        {
+          "event_id": "CE-b1643fded1bc2325",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-GRAD-WLB2-0112",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career target confirmed and governed. Graduation recorded. Deterministic reuse enabled.",
+          "validity_conditions": [
+            "target not changed by subject",
+            "counselor confirmation not rescinded"
+          ],
+          "invalidation_conditions": [
+            "subject changes target",
+            "counselor rescinds confirmation"
+          ],
+          "arm_b_equivalent": "The counselor confirms: the career target is formally established. Future requests about this target can use this confirmed basis."
+        }
+      ]
+    },
+    "WLB2-0113": {
+      "task_id": "WLB2-0113",
+      "mechanism": "graduation_restart",
+      "control_events": [
+        {
+          "event_id": "CE-0ded6ad995124069",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-GRAD-WLB2-0113",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career target confirmed and governed. Graduation recorded. Deterministic reuse enabled.",
+          "validity_conditions": [
+            "target not changed by subject",
+            "counselor confirmation not rescinded"
+          ],
+          "invalidation_conditions": [
+            "subject changes target",
+            "counselor rescinds confirmation"
+          ],
+          "arm_b_equivalent": "The counselor confirms: the career target is formally established. Future requests about this target can use this confirmed basis."
+        }
+      ]
+    },
+    "WLB2-0114": {
+      "task_id": "WLB2-0114",
+      "mechanism": "graduation_restart",
+      "control_events": [
+        {
+          "event_id": "CE-94f8405dd7d2ed0f",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-GRAD-WLB2-0114",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career target confirmed and governed. Graduation recorded. Deterministic reuse enabled.",
+          "validity_conditions": [
+            "target not changed by subject",
+            "counselor confirmation not rescinded"
+          ],
+          "invalidation_conditions": [
+            "subject changes target",
+            "counselor rescinds confirmation"
+          ],
+          "arm_b_equivalent": "The counselor confirms: the career target is formally established. Future requests about this target can use this confirmed basis."
+        }
+      ]
+    },
+    "WLB2-0115": {
+      "task_id": "WLB2-0115",
+      "mechanism": "graduation_restart",
+      "control_events": [
+        {
+          "event_id": "CE-ecdeccd5a4732d8d",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-GRAD-WLB2-0115",
+          "response": "ACCEPT",
+          "authoritative_statement": "Career target confirmed and governed. Graduation recorded. Deterministic reuse enabled.",
+          "validity_conditions": [
+            "target not changed by subject",
+            "counselor confirmation not rescinded"
+          ],
+          "invalidation_conditions": [
+            "subject changes target",
+            "counselor rescinds confirmation"
+          ],
+          "arm_b_equivalent": "The counselor confirms: the career target is formally established. Future requests about this target can use this confirmed basis."
+        }
+      ]
+    },
+    "WLB2-0116": {
+      "task_id": "WLB2-0116",
+      "mechanism": "rejected_examination",
+      "control_events": [
+        {
+          "event_id": "CE-323da66a7eef3e84",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-REJEX-WLB2-0116",
+          "response": "REJECT",
+          "authoritative_statement": "Unverified claim from unofficial channel does not constitute authorization. Rejected pending formal approval.",
+          "validity_conditions": [
+            "no formal approval on file"
+          ],
+          "invalidation_conditions": [
+            "formal approval obtained"
+          ],
+          "arm_b_equivalent": "The counselor confirms: an informal claim of approval is not sufficient. Formal written approval is required. Request rejected pending formal documentation."
+        }
+      ]
+    },
+    "WLB2-0117": {
+      "task_id": "WLB2-0117",
+      "mechanism": "rejected_examination",
+      "control_events": [
+        {
+          "event_id": "CE-a9a87816dfcf166e",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-REJEX-WLB2-0117",
+          "response": "REJECT",
+          "authoritative_statement": "Unverified claim from unofficial channel does not constitute authorization. Rejected pending formal approval.",
+          "validity_conditions": [
+            "no formal approval on file"
+          ],
+          "invalidation_conditions": [
+            "formal approval obtained"
+          ],
+          "arm_b_equivalent": "The counselor confirms: an informal claim of approval is not sufficient. Formal written approval is required. Request rejected pending formal documentation."
+        }
+      ]
+    },
+    "WLB2-0118": {
+      "task_id": "WLB2-0118",
+      "mechanism": "rejected_examination",
+      "control_events": [
+        {
+          "event_id": "CE-cf786ee37fe6e6cd",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-REJEX-WLB2-0118",
+          "response": "REJECT",
+          "authoritative_statement": "Unverified claim from unofficial channel does not constitute authorization. Rejected pending formal approval.",
+          "validity_conditions": [
+            "no formal approval on file"
+          ],
+          "invalidation_conditions": [
+            "formal approval obtained"
+          ],
+          "arm_b_equivalent": "The counselor confirms: an informal claim of approval is not sufficient. Formal written approval is required. Request rejected pending formal documentation."
+        }
+      ]
+    },
+    "WLB2-0119": {
+      "task_id": "WLB2-0119",
+      "mechanism": "rejected_examination",
+      "control_events": [
+        {
+          "event_id": "CE-fddc4ab066b2c28f",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-REJEX-WLB2-0119",
+          "response": "REJECT",
+          "authoritative_statement": "Unverified claim from unofficial channel does not constitute authorization. Rejected pending formal approval.",
+          "validity_conditions": [
+            "no formal approval on file"
+          ],
+          "invalidation_conditions": [
+            "formal approval obtained"
+          ],
+          "arm_b_equivalent": "The counselor confirms: an informal claim of approval is not sufficient. Formal written approval is required. Request rejected pending formal documentation."
+        }
+      ]
+    },
+    "WLB2-0120": {
+      "task_id": "WLB2-0120",
+      "mechanism": "rejected_examination",
+      "control_events": [
+        {
+          "event_id": "CE-f7d17a84182182c9",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-REJEX-WLB2-0120",
+          "response": "REJECT",
+          "authoritative_statement": "Unverified claim from unofficial channel does not constitute authorization. Rejected pending formal approval.",
+          "validity_conditions": [
+            "no formal approval on file"
+          ],
+          "invalidation_conditions": [
+            "formal approval obtained"
+          ],
+          "arm_b_equivalent": "The counselor confirms: an informal claim of approval is not sufficient. Formal written approval is required. Request rejected pending formal documentation."
+        }
+      ]
+    },
+    "WLB2-0121": {
+      "task_id": "WLB2-0121",
+      "mechanism": "rejected_examination",
+      "control_events": [
+        {
+          "event_id": "CE-d5ee340d0ad5c0fe",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-REJEX-WLB2-0121",
+          "response": "REJECT",
+          "authoritative_statement": "Unverified claim from unofficial channel does not constitute authorization. Rejected pending formal approval.",
+          "validity_conditions": [
+            "no formal approval on file"
+          ],
+          "invalidation_conditions": [
+            "formal approval obtained"
+          ],
+          "arm_b_equivalent": "The counselor confirms: an informal claim of approval is not sufficient. Formal written approval is required. Request rejected pending formal documentation."
+        }
+      ]
+    },
+    "WLB2-0122": {
+      "task_id": "WLB2-0122",
+      "mechanism": "rejected_examination",
+      "control_events": [
+        {
+          "event_id": "CE-aca6fdbf16d3fc86",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-REJEX-WLB2-0122",
+          "response": "REJECT",
+          "authoritative_statement": "Unverified claim from unofficial channel does not constitute authorization. Rejected pending formal approval.",
+          "validity_conditions": [
+            "no formal approval on file"
+          ],
+          "invalidation_conditions": [
+            "formal approval obtained"
+          ],
+          "arm_b_equivalent": "The counselor confirms: an informal claim of approval is not sufficient. Formal written approval is required. Request rejected pending formal documentation."
+        }
+      ]
+    },
+    "WLB2-0123": {
+      "task_id": "WLB2-0123",
+      "mechanism": "rejected_examination",
+      "control_events": [
+        {
+          "event_id": "CE-8bf79750b996f4e6",
+          "wave": 2,
+          "kind": "human_reject",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-REJEX-WLB2-0123",
+          "response": "REJECT",
+          "authoritative_statement": "Unverified claim from unofficial channel does not constitute authorization. Rejected pending formal approval.",
+          "validity_conditions": [
+            "no formal approval on file"
+          ],
+          "invalidation_conditions": [
+            "formal approval obtained"
+          ],
+          "arm_b_equivalent": "The counselor confirms: an informal claim of approval is not sufficient. Formal written approval is required. Request rejected pending formal documentation."
+        }
+      ]
+    },
+    "WLB2-0124": {
+      "task_id": "WLB2-0124",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-65dd3540c1b1477e",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0124",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0125": {
+      "task_id": "WLB2-0125",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-820c1b9e53d20d83",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0125",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0126": {
+      "task_id": "WLB2-0126",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-8a7f2b31a40d65e4",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0126",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0127": {
+      "task_id": "WLB2-0127",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-1dae07d8b76942d9",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0127",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0128": {
+      "task_id": "WLB2-0128",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-82c7df69a80cd750",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0128",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0129": {
+      "task_id": "WLB2-0129",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-3f9eac91f0d6eaeb",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0129",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0130": {
+      "task_id": "WLB2-0130",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-d51e5d848168d09f",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0130",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0131": {
+      "task_id": "WLB2-0131",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-0bbbe7a9db466b77",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0131",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0132": {
+      "task_id": "WLB2-0132",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-d14045a3f6bbf8c6",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0132",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0133": {
+      "task_id": "WLB2-0133",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-de308f6d8c80578f",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0133",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0134": {
+      "task_id": "WLB2-0134",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-d53f7acfe6366b1d",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0134",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0135": {
+      "task_id": "WLB2-0135",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-9eccd0068777ed62",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0135",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0136": {
+      "task_id": "WLB2-0136",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-bf77bb0bff5f60d0",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0136",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0137": {
+      "task_id": "WLB2-0137",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-ae61225155814f7f",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0137",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0138": {
+      "task_id": "WLB2-0138",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-555dbfe495528edd",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0138",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0139": {
+      "task_id": "WLB2-0139",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-1ab0a1dd62739927",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0139",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0140": {
+      "task_id": "WLB2-0140",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-9b5dcb0a7ee98313",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0140",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0141": {
+      "task_id": "WLB2-0141",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-499e6307e753311a",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0141",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0142": {
+      "task_id": "WLB2-0142",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-9bab03017b20d819",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0142",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0143": {
+      "task_id": "WLB2-0143",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-6589647be0e6979d",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0143",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0144": {
+      "task_id": "WLB2-0144",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-d105e7ec66256d22",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0144",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0145": {
+      "task_id": "WLB2-0145",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-dccebcf7db8fe7eb",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0145",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0146": {
+      "task_id": "WLB2-0146",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-83c5fbd88a2937f4",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0146",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0147": {
+      "task_id": "WLB2-0147",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-4dc60cc21c1fa977",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0147",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0148": {
+      "task_id": "WLB2-0148",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-51dc038582b2f412",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0148",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0149": {
+      "task_id": "WLB2-0149",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-a1d343def693db8e",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0149",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0150": {
+      "task_id": "WLB2-0150",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-89a67e2a0ec20403",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0150",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0151": {
+      "task_id": "WLB2-0151",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-b252ac83f0d94d73",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0151",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0152": {
+      "task_id": "WLB2-0152",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-5eb08b6e688ca7a1",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0152",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    },
+    "WLB2-0153": {
+      "task_id": "WLB2-0153",
+      "mechanism": "coupled_100_fact",
+      "control_events": [
+        {
+          "event_id": "CE-7a44fa1c19714a30",
+          "wave": 2,
+          "kind": "human_accept",
+          "prerequisite_wave_output_committed": true,
+          "gate_id": "WLB2-GATE-COUPLED-WLB2-0153",
+          "response": "ACCEPT",
+          "authoritative_statement": "All three jointly-necessary conditions verified. SkillBridge authorized.",
+          "validity_conditions": [
+            "certification valid",
+            "authorization not rescinded",
+            "separation date in window"
+          ],
+          "invalidation_conditions": [
+            "certification lapses",
+            "authorization rescinded",
+            "separation date passes"
+          ],
+          "arm_b_equivalent": "The counselor confirms: all three conditions are met. The certification is valid, the commander authorization is on file, and the separation date is within the eligibility window. SkillBridge is authorized."
+        }
+      ]
+    }
+  }
+}
