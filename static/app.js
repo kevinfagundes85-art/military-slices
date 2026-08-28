@@ -459,12 +459,11 @@ function renderPath(state) {
     || state.career_target
     || state.human_anchor
     || "Choose what matters first.";
-  const service = serviceLabels[state.service];
   const timing = windowLabels[state.current_timeline_window];
-  if (!service && state.current_timeline_window === "PATH_IDENTITY") {
+  if (state.current_timeline_window === "PATH_IDENTITY") {
     $("#path-position").textContent = "Timing details will be added only when they affect the plan.";
   } else {
-    $("#path-position").textContent = [service, timing].filter(Boolean).join(" · ") || "Current transition timing";
+    $("#path-position").textContent = timing || "Current transition timing";
   }
 }
 
