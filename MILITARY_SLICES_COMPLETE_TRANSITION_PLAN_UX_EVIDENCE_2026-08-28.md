@@ -118,4 +118,4 @@ The rendered browser drive visually verified the foreground working-direction re
 
 ## Candidate commit
 
-Recorded after final validation in the repository history.
+`c3f5f2e` — `feat: deliver complete transition plan UX`
