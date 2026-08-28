@@ -1,0 +1,22 @@
+{
+  "artifact": "T1 replacement arm configurations",
+  "design_owner_acknowledgement": "Kevin directed on 2026-08-28 that T1 must happen urgently and authorized BHE/NND to complete the necessary benchmark-runtime correction. H0 and H1 therefore use the same newly frozen generic governed Resolver; this fills the missing executable runtime contract and does not alter canonical HELM authority.",
+  "h0_parent_commit": "d968c15da3447c311f3322e1805bc8067383c29f",
+  "h1_selector_commit": "e4b1fa624685d17711a5c68bcc4e836b192673ab",
+  "resolver_instruction_sha256": "a8bd074067d15b437371be2e69668dc96c436f7494b42d9dc12ccb1aab4216b1",
+  "resolver_instruction_shared_byte_identical": true,
+  "resolver_instruction_visible_to_nnd_before_unseal": false,
+  "arm_H0": {
+    "selector": "current HELM execution strategy at h0_parent_commit",
+    "provider_path": "one generic governed Resolver call over full CanonicalState"
+  },
+  "arm_H1": {
+    "selector": "military_slices.adaptive_resolver_aperture.select_adaptive_resolver_aperture",
+    "provider_path": "Mode A zero calls; Modes B/C/D one generic governed Resolver call over selected governed surface; Mode E one existing Probe call"
+  },
+  "arm_B": {
+    "system_prompt_sha256": "3fd3a77a2c2b6512e39b627a70c92f23526ba3273e49031e45010e3a50099041",
+    "provider_path": "one competent broad-context call over broad_context_case"
+  },
+  "provider_configuration_sha256": "8ad25ab068ff5c280be14f36ff35a072002e553747d2eb964d0b2b03475f0009"
+}
