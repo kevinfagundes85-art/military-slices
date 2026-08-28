@@ -1,0 +1,38 @@
+{
+  "artifact": "T1 replacement public-task executable binding",
+  "schema_version": "t1.replacement.public-task/1.0.0",
+  "replacement_required": true,
+  "failed_corpus_identity_reuse_prohibited": true,
+  "runtime_model": "benchmark.t1_runtime_contract.ReplacementT1PublicTask",
+  "canonical_state_binding": "canonical_state is validated directly by military_slices.models.CanonicalState.model_validate; no adapter inference",
+  "aperture_request_binding": "aperture_request is converted field-for-field into military_slices.adaptive_resolver_aperture.ApertureRequest; no adapter inference",
+  "required_public_fields": [
+    "schema_version",
+    "corpus_id",
+    "task_id",
+    "canonical_state",
+    "canonical_state_sha256",
+    "aperture_request",
+    "decision_request",
+    "broad_context_case",
+    "authority_binding",
+    "public_metadata"
+  ],
+  "mode_a_requirement": "CanonicalState must contain the real governed Decision, MutationEvent, LineageRecord, and derived indexes produced by existing state-bound rejection contracts. aperture_request must contain the exact reuse fact IDs and validity dimensions.",
+  "mode_e_requirement": "aperture_request must contain an explicit governed permitted_latent_fact_id and probe_discovery_permitted value. BHE performs no selection or inference of either value.",
+  "resolver_instruction_owner": "BHE implementation",
+  "resolver_instruction_symbol": "benchmark.t1_runtime_contract.GOVERNED_ADJUDICATION_SYSTEM_INSTRUCTION",
+  "resolver_response_model": "benchmark.t1_runtime_contract.GovernedAdjudicationDecision",
+  "probe_contract": "existing frozen Probe SYSTEM_INSTRUCTION and ProbeDecision schema",
+  "authority_effect": "none; Resolver and Probe outputs remain proposals under existing Governor/Gate validation",
+  "prohibited": [
+    "hidden labels",
+    "expected mode",
+    "ground truth",
+    "harm assignments",
+    "inferred latent designation",
+    "generic decision to rejection conversion",
+    "model-selected execution mode",
+    "post-seal adapter discretion"
+  ]
+}
