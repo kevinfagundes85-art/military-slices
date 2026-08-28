@@ -76,7 +76,7 @@ def path_progress(state: CanonicalState) -> PathProgress:
         evidence_count = sum(SliceName.RESUME in fact.affected_slices for fact in state.facts)
         items.extend(
             [
-                ProgressItem(id="resume-target", label="Résumé target bounded", state=_status(target_known)),
+                ProgressItem(id="resume-target", label="Résumé goal set", state=_status(target_known)),
                 ProgressItem(
                     id="resume-evidence",
                     label="Target evidence available",
@@ -104,7 +104,7 @@ def path_progress(state: CanonicalState) -> PathProgress:
                 [
                     ProgressItem(
                         id="work-preferences",
-                        label="Work conditions bounded",
+                        label="Work needs set",
                         state=_status(_has_preference(state)),
                     ),
                     ProgressItem(
@@ -122,7 +122,7 @@ def path_progress(state: CanonicalState) -> PathProgress:
             items.append(
                 ProgressItem(
                     id="education-outcome",
-                    label="Education outcome bounded",
+                    label="Education goal set",
                     state=_status(len(relevant) > 1, partial=len(relevant) == 1),
                 )
             )
@@ -131,7 +131,7 @@ def path_progress(state: CanonicalState) -> PathProgress:
             items.append(
                 ProgressItem(
                     id="location-priority",
-                    label="Location condition bounded",
+                    label="Location need set",
                     state=_status(bool(relevant)),
                 )
             )
@@ -220,7 +220,7 @@ def lens_projections(state: CanonicalState) -> list[LensProjection]:
 
 
 def history_entry(state: CanonicalState, *, current: bool = False) -> HistoryEntry:
-    last_feedback = state.feedback[-1].headline if state.feedback else "Initial governed state."
+    last_feedback = state.feedback[-1].headline if state.feedback else "Plan created."
     return HistoryEntry(
         version=state.version,
         recorded_at=state.updated_at,
@@ -284,7 +284,7 @@ def _target_relative_scope(state: CanonicalState) -> tuple[list[SliceName], list
     domain = anchor_domain(state.human_anchor)
     slices = domain_slices.get(domain, []) if domain is not None else []
     if not slices:
-        raise ValueError("Establish what matters now before exploring a hypothetical choice.")
+        raise ValueError("Choose what matters now before exploring another choice.")
     return slices, []
 
 
@@ -321,7 +321,7 @@ def _parse_modification(state: CanonicalState, text: str) -> tuple[str, str, str
             ["planned-transition-date"],
         )
     if not state.human_anchor:
-        raise ValueError("Establish what matters now before exploring a hypothetical choice.")
+        raise ValueError("Choose what matters now before exploring another choice.")
     slices, gates = _target_relative_scope(state)
     value = re.sub(r"^\s*what\s+if\s+", "", text, flags=re.IGNORECASE).strip()
     if len(value) < 3:
@@ -334,7 +334,7 @@ def create_what_if(state: CanonicalState, text: str) -> WhatIfBranch:
     hypothetical = deepcopy(state)
     conflicts: list[str] = []
     consequences: list[str] = []
-    uncertainty = ["This branch uses only current governed evidence; real program and market conditions may change."]
+    uncertainty = ["This comparison uses what is saved now. Programs and job markets can change."]
     if kind == "relocation_willingness":
         existing_negative = any(
             any(
@@ -344,44 +344,43 @@ def create_what_if(state: CanonicalState, text: str) -> WhatIfBranch:
             for fact in state.facts
         )
         if value == "YES" and existing_negative:
-            conflicts.append("The hypothetical relocation choice conflicts with the current local-only preference.")
+            conflicts.append("This relocation choice conflicts with your plan to stay local.")
         consequences = [
-            "The location boundary would change.",
-            "Employment options could be reconsidered within the broader boundary.",
+            "Your location limits would change.",
+            "You could review jobs in a wider area.",
             "The current résumé target would remain unchanged.",
         ]
     elif kind == "education_priority":
         if any("income" in fact.statement.casefold() for fact in state.facts):
             conflicts.append("Full-time education first may conflict with the current immediate-income requirement.")
         consequences = [
-            "Education would become path-relevant.",
+            "Education would become part of this plan.",
             "Employment timing would need to be checked against the education workload.",
-            "The declared target would not change unless explicitly replaced.",
+            "Your current goal would stay the same unless you change it.",
         ]
     elif kind == "transition_date":
         old_window = state.current_timeline_window
         hypothetical.transition_date = value
         hypothetical = recompute_state(hypothetical)
         consequences = [
-            f"The transition window would move from {old_window} to {hypothetical.current_timeline_window}.",
-            "Only time-dependent tasks and gates would be reconsidered.",
-            "The declared target would remain unchanged.",
+            f"Your transition timing would move from {old_window} to {hypothetical.current_timeline_window}.",
+            "Only steps affected by time would be reviewed again.",
+            "Your current goal would stay the same.",
         ]
     else:
         current_gate = active_gate(state)
         gate_title = current_gate.title if current_gate else "the current decision"
         consequences = [
-            f"This possibility would be examined only against the current target: {state.human_anchor}.",
-            f"The active decision would remain: {gate_title}.",
+            f"This idea would be compared only with your current goal: {state.human_anchor}.",
+            f"Your current decision would stay the same: {gate_title}.",
             "No current target or confirmed fact changes during this comparison.",
         ]
         uncertainty = [
-            "Whether this possibility materially advances the current target still needs evidence "
-            "or a real-world test.",
+            "You still need a real-world test to learn whether this idea helps your current goal.",
             *uncertainty,
         ]
 
-    evidence = [f"Current governed target: {state.human_anchor}"]
+    evidence = [f"Current goal: {state.human_anchor}"]
     evidence.extend(
         fact.statement for fact in state.facts if set(fact.affected_slices).intersection(slices)
     )
@@ -389,11 +388,11 @@ def create_what_if(state: CanonicalState, text: str) -> WhatIfBranch:
     current_gate = active_gate(state)
     current_summary = [
         f"Current target: {state.human_anchor or 'not yet declared'}",
-        f"Path milestone: {state.path_target_state}",
-        f"Active gate: {current_gate.title if current_gate else 'none'}",
+        f"Current step: {state.path_target_state}",
+        f"Current question: {current_gate.title if current_gate else 'none'}",
     ]
     hypothetical_summary = [
-        f"Hypothetical change: {statement}",
+        f"Possible change: {statement}",
         *consequences,
     ]
     return WhatIfBranch(

@@ -241,7 +241,7 @@ def orient(text: str, *, context: CanonicalState | None = None) -> OrientationRe
         domains = ", ".join(_slice_label(item) for item in affected)
         summary = f"This could shape {domains}."
     else:
-        summary = "There is not enough decision context to choose a useful starting point yet."
+        summary = "Tell us what you want help deciding first."
 
     return OrientationResult(
         reviewed_input=text.strip(),
@@ -334,7 +334,7 @@ def apply_starting_vector(
         FeedbackEvent(
             id=stable_id("feedback", state.profile_id, idempotency_key),
             headline="Your starting point is set.",
-            consequences=["The next question will use this service and timeline context."],
+            consequences=["The next question will use your service and timing."],
         )
     )
     state.processed_keys.append(idempotency_key)
@@ -428,7 +428,7 @@ def examine_fog_bank(current: CanonicalState, text: str) -> FogBankProposal:
             source_version=current.version,
             reviewed_input=reviewed,
             status="clarification_needed",
-            summary="There is not enough new context to propose a safe re-orientation yet.",
+            summary="We need one more detail before suggesting an update.",
             clarification_question="What is the current plan getting wrong or leaving out?",
             statements=oriented.statements,
             conflicts=conflicts,
@@ -438,7 +438,7 @@ def examine_fog_bank(current: CanonicalState, text: str) -> FogBankProposal:
         source_version=current.version,
         reviewed_input=reviewed,
         status="review_ready",
-        summary="The current frame may need to change, but nothing has changed yet.",
+        summary="Your plan may need an update, but nothing has changed yet.",
         statements=oriented.statements,
         conflicts=conflicts,
         affected_slices=affected,
@@ -455,9 +455,9 @@ def apply_fog_bank_reorientation(
     if idempotency_key in current.processed_keys:
         return current
     if proposal.status != "review_ready" or not proposal.changes:
-        raise ValueError("This Fog Bank exploration does not contain a reviewable change.")
+        raise ValueError("This review does not include a change you can approve.")
     if proposal.source_version != current.version:
-        raise ValueError("The plan changed after this exploration. Reconsider it from the current plan.")
+        raise ValueError("Your plan changed during this review. Start again from the current plan.")
     state = deepcopy(current)
     previous_execution = deepcopy(current.execution)
     for change in proposal.changes:
@@ -501,7 +501,7 @@ def apply_fog_bank_reorientation(
     state.feedback.append(
         FeedbackEvent(
             id=stable_id("feedback", state.profile_id, idempotency_key),
-            headline="You changed how the plan is oriented.",
+            headline="You changed the direction of your plan.",
             consequences=[change.reason for change in proposal.changes[:3]],
         )
     )
@@ -607,7 +607,7 @@ def _set_explicit_career_target(state: CanonicalState, target: str) -> None:
             possible_gaps=_role_gaps(target),
             questions_to_test=_role_questions(target),
             first_experiment=_role_first_experiment(target),
-            next_step="Run the first bounded experiment and add what you learn.",
+            next_step="Try the first small test and add what you learn.",
             status="accepted",
         )
         state.career_hypotheses.insert(0, selected)
@@ -860,8 +860,8 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
     if state.conflicts:
         gate = Gate(
             id="priority-first-six-months",
-            title="Choose what must lead first",
-            question="Which must govern your first six months after separation?",
+            title="Choose what comes first",
+            question="What should come first during your first six months after service?",
             why="Income and full-time education both require the same time and attention.",
             state=GateState.CONFLICTED,
             surface=SurfaceType.CONFLICT,
@@ -876,9 +876,9 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
     if not state.human_anchor:
         gate = Gate(
             id="transition-human-anchor",
-            title="Choose the outcome that should lead",
+            title="Choose your main goal",
             question="What should this transition plan help you accomplish next?",
-            why="One outcome keeps useful information from turning into unrelated work.",
+            why="One clear goal keeps the next steps focused on what you need.",
             state=GateState.UNKNOWN,
             surface=SurfaceType.CHOICE,
             affected_slices=ALL_SLICES,
@@ -890,9 +890,9 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
     elif domain == "resume" and state.active_tasks and state.active_tasks[0].title.startswith("Name the role"):
         gate = Gate(
             id="resume-target-role",
-            title="Bound the résumé work",
+            title="Set the résumé goal",
             question="What role or specific use should this résumé support?",
-            why="The target determines which evidence matters and keeps unrelated career ideas latent.",
+            why="The goal tells us which experience matters for this résumé.",
             state=GateState.PARTIAL,
             surface=SurfaceType.TEXT,
             affected_slices=[SliceName.RESUME, SliceName.CAREER],
@@ -912,9 +912,9 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
     ):
         gate = Gate(
             id="planned-transition-date",
-            title="Anchor the timing",
+            title="Set your timing",
             question="When do you expect to leave active service?",
-            why="One date clarifies application, education, relocation, and résumé timing.",
+            why="One date helps time your job search, education, move, and résumé work.",
             state=GateState.UNKNOWN,
             surface=SurfaceType.DATE,
             affected_slices=ALL_SLICES,
@@ -933,7 +933,7 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
             id="service-path-identity",
             title="Use the right service path",
             question="Which service transition path applies to you?",
-            why="The underlying decision stays common, but timing and terminology differ by service.",
+            why="Each service uses different steps, names, and timing.",
             state=GateState.UNKNOWN,
             surface=SurfaceType.CHOICE,
             affected_slices=ALL_SLICES,
@@ -972,8 +972,7 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
             title="Shape the work around you",
             question="What would you like more or less of in your next work?",
             why=(
-                "Your preferences prevent the system from recommending the closest title "
-                "instead of the right direction."
+                "Your preferences help us find work that fits your life, not just your military title."
             ),
             state=GateState.PARTIAL if state.current_goal else GateState.UNKNOWN,
             surface=SurfaceType.TEXT,
@@ -989,8 +988,7 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
             title="Choose a direction to test",
             question="Which direction is worth testing first?",
             why=(
-                "A direction lets the system compare real roles, evidence, and gaps instead "
-                "of guessing from a military title."
+                "A direction lets us compare real jobs and what they require."
             ),
             state=GateState.PARTIAL if state.career_hypotheses else GateState.UNKNOWN,
             surface=SurfaceType.COMPARE if state.career_hypotheses else SurfaceType.TEXT,
@@ -1009,9 +1007,9 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
     ):
         gate = Gate(
             id="education-outcome",
-            title="Define the education outcome",
+            title="Choose what learning should do for you",
             question="What should education or training make possible after service?",
-            why="The outcome is needed before comparing programs, timing, or funding routes.",
+            why="Start with the result you want before comparing programs, timing, or funding.",
             state=GateState.PARTIAL,
             surface=SurfaceType.TEXT,
             affected_slices=[SliceName.EDUCATION],
@@ -1023,9 +1021,9 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
     if domain == "location" and not any(SliceName.LOCATION in fact.affected_slices for fact in state.facts):
         gate = Gate(
             id="location-priority",
-            title="Define the location decision",
+            title="Name your location needs",
             question="What location condition must the next plan respect?",
-            why="A single governing condition is enough to evaluate the next location decision.",
+            why="One clear need can guide the next location choice.",
             state=GateState.PARTIAL,
             surface=SurfaceType.TEXT,
             affected_slices=[SliceName.LOCATION],
@@ -1042,9 +1040,9 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
     if domain == "undecided" and state.service and (state.transition_date or separated_lifecycle):
         gate = Gate(
             id="transition-direction",
-            title="Choose one direction to examine",
-            question="Which direction is worth examining first?",
-            why="This is exploration, not a permanent commitment, and it keeps the next step bounded.",
+            title="Choose one direction to explore",
+            question="Which direction is worth exploring first?",
+            why="You are testing an option, not making a permanent choice.",
             state=GateState.PARTIAL,
             surface=SurfaceType.CHOICE,
             affected_slices=[SliceName.CAREER, SliceName.EDUCATION, SliceName.LOCATION],
@@ -1066,7 +1064,7 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
             question = (
                 task.title.strip()
                 if task.title.strip().endswith("?")
-                else f"What have you learned—or what still needs to be tested—about: {task_title}?"
+                else f"What have you learned about this, and what still needs testing: {task_title}?"
             )
             gate = Gate(
                 id=task_gate_id,
@@ -1391,11 +1389,11 @@ def _decision_consequences(
             "Did not require you to explain why the condition matters.",
         ]
     if gate_id == "resume-target-role":
-        return [f"Bound the résumé work to {decision_value}."]
+        return [f"Set {decision_value} as the goal for this résumé."]
     if gate_id == "education-outcome":
-        return ["Made the education outcome—not the program list—the next planning constraint."]
+        return ["Put the result you want ahead of choosing a school or program."]
     if gate_id == "location-priority":
-        return ["Made this location condition part of the active decision."]
+        return ["Added this location need to your current decision."]
     if gate_id.startswith("path-task_"):
         return [
             "Your answer moved this plan forward.",
@@ -1417,18 +1415,17 @@ def deterministic_hypotheses(text: str, rejected: list[str]) -> list[CareerHypot
             [
                 (
                     "Veteran-focused AI product builder",
-                    "Tests a product-building route around the veteran problem and impact you named.",
+                    "See whether you can build something useful for a veteran problem you care about.",
                     ["O*NET 15-1252.00", "U.S. Small Business Administration business guide"],
                 ),
                 (
                     "AI product management",
-                    "Tests product discovery and delivery inside an existing organization before or "
-                    "alongside a venture.",
+                    "See whether helping a company choose and build AI products fits you.",
                     ["O*NET 13-1082.00", "BLS Occupational Outlook Handbook"],
                 ),
                 (
                     "Veteran technology program lead",
-                    "Tests mission-driven program ownership using your technical and military-connected context.",
+                    "See whether leading a veteran technology program fits your skills and goals.",
                     ["O*NET 13-1082.00", "BLS Occupational Outlook Handbook"],
                 ),
             ]
@@ -1438,17 +1435,17 @@ def deterministic_hypotheses(text: str, rejected: list[str]) -> list[CareerHypot
             [
                 (
                     "Operations Research Analyst",
-                    "Uses structured analysis and decision support without requiring a defense setting.",
+                    "Use research and data to help a civilian team make better decisions.",
                     ["O*NET 15-2031.00", "BLS Occupational Outlook Handbook"],
                 ),
                 (
                     "Business Intelligence Analyst",
-                    "Translates complex information into decisions for civilian organizations.",
+                    "Turn complex business information into clear answers and useful reports.",
                     ["O*NET 15-2051.01"],
                 ),
                 (
                     "Program Management Analyst",
-                    "Combines planning, stakeholder coordination, and executive communication.",
+                    "Help teams plan work, solve problems, and keep leaders informed.",
                     ["O*NET 13-1111.00"],
                 ),
             ]
@@ -1456,13 +1453,17 @@ def deterministic_hypotheses(text: str, rejected: list[str]) -> list[CareerHypot
     elif any(term in lower for term in ("logistics", "supply", "warehouse", "transport")):
         families.extend(
             [
-                ("Logistics Analyst", "Builds on supply, movement, and readiness coordination.", ["O*NET 13-1081.02"]),
+                ("Logistics Analyst", "Use supply and movement data to solve delivery problems.", ["O*NET 13-1081.02"]),
                 (
                     "Supply Chain Planner",
-                    "Applies operational planning to civilian inventory and distribution.",
+                    "Plan how a company stores, moves, and delivers goods.",
                     ["O*NET 13-1081.00"],
                 ),
-                ("Operations Manager", "Transfers team, schedule, and resource responsibility.", ["O*NET 11-1021.00"]),
+                (
+                    "Operations Manager",
+                    "Lead people, schedules, and resources in a civilian workplace.",
+                    ["O*NET 11-1021.00"],
+                ),
             ]
         )
     elif any(term in lower for term in ("maintenance", "mechanic", "equipment", "aviation")):
@@ -1470,17 +1471,17 @@ def deterministic_hypotheses(text: str, rejected: list[str]) -> list[CareerHypot
             [
                 (
                     "Maintenance Planner",
-                    "Uses readiness, scheduling, and equipment history to reduce downtime.",
+                    "Use schedules and repair records to keep equipment working.",
                     ["O*NET 49-1011.00"],
                 ),
                 (
                     "Field Service Manager",
-                    "Transfers technical leadership and customer-facing troubleshooting.",
+                    "Lead technical teams that solve problems for customers.",
                     ["O*NET 49-1011.00"],
                 ),
                 (
                     "Quality Assurance Specialist",
-                    "Applies inspection, procedure, and risk-control experience.",
+                    "Use inspection and safety experience to improve how work gets done.",
                     ["O*NET 13-1199.00"],
                 ),
             ]
@@ -1490,17 +1491,17 @@ def deterministic_hypotheses(text: str, rejected: list[str]) -> list[CareerHypot
             [
                 (
                     "Operations Coordinator",
-                    "Tests how planning, execution, and cross-team coordination translate.",
+                    "See whether planning work and helping teams stay on track fits you.",
                     ["O*NET 13-1082.00"],
                 ),
                 (
                     "Project Coordinator",
-                    "Tests schedule, stakeholder, and delivery responsibility in a new setting.",
+                    "See whether managing schedules, people, and deadlines fits you.",
                     ["O*NET 13-1082.00"],
                 ),
                 (
                     "Customer Success Specialist",
-                    "Tests coaching, problem-solving, and relationship skills outside defense.",
+                    "See whether helping customers solve problems fits you.",
                     ["O*NET 13-1161.00"],
                 ),
             ]
@@ -1515,7 +1516,7 @@ def deterministic_hypotheses(text: str, rejected: list[str]) -> list[CareerHypot
             possible_gaps=_role_gaps(title),
             questions_to_test=_role_questions(title),
             first_experiment=_role_first_experiment(title),
-            next_step="Run the first bounded experiment and add what you learn.",
+            next_step="Try the first small test and add what you learn.",
         )
         for title, rationale, evidence in families
         if title not in rejected
@@ -1525,28 +1526,28 @@ def deterministic_hypotheses(text: str, rejected: list[str]) -> list[CareerHypot
 def _role_capabilities(title: str) -> list[str]:
     lower = title.casefold()
     if any(term in lower for term in ("maintenance", "field service", "quality")):
-        return ["Operational scheduling", "Inspection and risk control", "Team coordination"]
+        return ["Building work schedules", "Checking quality and safety", "Leading a team"]
     if any(term in lower for term in ("analyst", "intelligence", "research")):
-        return ["Structured analysis", "Decision support", "Executive communication"]
+        return ["Working through complex information", "Helping leaders decide", "Explaining findings clearly"]
     if any(term in lower for term in ("logistics", "supply", "operations")):
-        return ["Resource planning", "Cross-team coordination", "Operational execution"]
-    return ["Planning", "Stakeholder coordination", "Problem solving"]
+        return ["Planning people and resources", "Working across teams", "Putting plans into action"]
+    return ["Planning work", "Working with people", "Solving problems"]
 
 
 def _role_gaps(title: str) -> list[str]:
     lower = title.casefold()
     if any(term in lower for term in ("founder", "business principal", "product builder")):
         return [
-            "A specific user problem worth owning",
-            "Evidence that a small useful solution changes something for that user",
+            "One veteran problem you want to solve",
+            "A small test that shows whether your idea helps",
         ]
     if "maintenance" in lower or "field service" in lower:
-        return ["Civilian maintenance-system terminology", "Evidence from comparable job postings"]
+        return ["The maintenance systems civilian employers use", "A real job post that matches this work"]
     if "quality" in lower:
-        return ["Industry-specific quality standards", "Civilian examples with measurable outcomes"]
+        return ["The quality rules used in that industry", "A civilian example with a clear result"]
     if "analyst" in lower:
-        return ["Civilian data-tool evidence", "Portfolio examples without protected information"]
-    return ["Civilian job-title calibration", "Evidence matched to a real posting"]
+        return ["A work sample using common data tools", "A safe portfolio example with no protected information"]
+    return ["Which job title matches the work you want", "A real job post that matches this direction"]
 
 
 def _role_questions(title: str) -> list[str]:

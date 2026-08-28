@@ -7,7 +7,7 @@
     <meta name="description" content="Military SLICES helps U.S. service members connect career, education, location, and résumé decisions into one transition plan.">
     <title>Military SLICES</title>
     <link rel="stylesheet" href="/static/styles.css?v=12">
-    <script src="/static/app.js?v=15" defer></script>
+    <script src="/static/app.js?v=16" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the next decision</a>
@@ -87,22 +87,22 @@
           <div class="helm-focus-heading">
             <div>
               <div class="section-kicker">HELM focus</div>
-              <h2 id="helm-focus-title">The smallest useful decision surface.</h2>
+              <h2 id="helm-focus-title">What matters for this decision.</h2>
             </div>
             <span id="focus-state" class="focus-state">Active</span>
           </div>
           <dl class="focus-grid">
             <div>
-              <dt>Considering now</dt>
+              <dt>Working on now</dt>
               <dd id="focus-now">Loading the current decision…</dd>
             </div>
             <div>
-              <dt>Connected areas</dt>
+              <dt>Parts of your plan</dt>
               <dd id="focus-scope">Only what can change this decision.</dd>
             </div>
             <div>
-              <dt>Held in reserve</dt>
-              <dd id="focus-background">Other saved context stays available without crowding this step.</dd>
+              <dt>Kept in the background</dt>
+              <dd id="focus-background">Other details stay available without crowding this step.</dd>
             </div>
           </dl>
         </section>
@@ -130,11 +130,11 @@
 
       <section id="add-panel" class="add-panel" hidden aria-labelledby="add-title">
         <button id="close-add" class="clear-input" type="button">Clear</button>
-        <div class="section-kicker">Persistent HELM input</div>
+        <div class="section-kicker">Update your plan</div>
         <h2 id="add-title">Tell your plan what changed.</h2>
-        <p class="muted">Add context, correct the frame, or drop in evidence without leaving the decision in front of you.</p>
+        <p class="muted">Share a change, correct something, or add a file. You can stay on the decision in front of you.</p>
         <form id="input-form">
-          <label for="input-text">What should HELM understand?</label>
+          <label for="input-text">What changed or needs correcting?</label>
           <textarea id="input-text" maxlength="12000" rows="7" placeholder="For example: I need remote work now, and I want to test building a technology company for veterans."></textarea>
           <div class="input-actions">
             <label class="button button-secondary file-button" for="artifact-file">Add a file</label>
@@ -143,7 +143,7 @@
             <button class="button button-primary" type="submit">Review update</button>
           </div>
         </form>
-        <p class="trust-note">Text is reviewed before it changes your plan. Choosing a file lets Military SLICES use relevant details from it only after you deliberately select it.</p>
+        <p class="trust-note">You review the update before it changes your plan. A file is used only after you choose it.</p>
       </section>
 
       <section id="review-panel" class="review-panel" hidden aria-labelledby="review-title">
@@ -153,7 +153,7 @@
         <ul id="review-statements" class="review-statements"></ul>
         <label id="review-text-label" for="review-text">Correct anything that is off</label>
         <textarea id="review-text" maxlength="12000" rows="7"></textarea>
-        <p id="review-trust" class="trust-note">Reviewing this does not change your plan. Choose “Use this in my plan” to save it. AI suggestions never become facts on their own.</p>
+        <p id="review-trust" class="trust-note">Nothing changes until you choose “Use this in my plan.” AI suggestions are never saved as facts on their own.</p>
         <div class="button-row">
           <button id="cancel-review" class="button button-quiet" type="button">Go back</button>
           <button id="confirm-review" class="button button-primary" type="button">Use this in my plan</button>
@@ -178,26 +178,26 @@
 
       <section id="what-if-panel" class="inspection-panel" hidden aria-labelledby="what-if-title">
         <button id="close-what-if" class="icon-button" type="button" aria-label="Close What if">×</button>
-        <div class="section-kicker">Hypothetical — nothing changes yet</div>
+        <div class="section-kicker">Try an idea — nothing changes yet</div>
         <h2 id="what-if-title">What would you like to test?</h2>
         <p class="muted">Test one possible move against what matters now. Your current plan stays unchanged while you compare it.</p>
         <form id="what-if-form" class="gate-form">
           <label for="what-if-text">What if…</label>
-          <textarea id="what-if-text" rows="4" maxlength="2000" placeholder="For example: What if I upskill with a home lab and build a useful website for veterans?"></textarea>
+          <textarea id="what-if-text" rows="4" maxlength="2000" placeholder="For example: What if I learn with a home lab and build a useful website for veterans?"></textarea>
           <button class="button button-primary" type="submit">Compare without changing my plan</button>
         </form>
         <div id="what-if-result" hidden></div>
       </section>
 
       <section id="fog-bank-panel" class="inspection-panel" hidden aria-labelledby="fog-bank-title">
-        <button id="close-fog-bank" class="icon-button" type="button" aria-label="Close reconsideration">×</button>
-        <div class="section-kicker">Fog Bank · human-controlled reconsideration</div>
+        <button id="close-fog-bank" class="icon-button" type="button" aria-label="Close plan review">×</button>
+        <div class="section-kicker">Check the plan</div>
         <h2 id="fog-bank-title">What are we missing?</h2>
-        <p class="muted">Challenge the current frame in your own words. Nothing changes unless you review and accept a proposed update.</p>
+        <p class="muted">Tell us what feels wrong or out of date. Nothing changes until you review and accept an update.</p>
         <form id="fog-bank-form" class="gate-form">
           <label for="fog-bank-text">What feels wrong, incomplete, or out of date?</label>
           <textarea id="fog-bank-text" rows="5" maxlength="4000" placeholder="For example: I already left the military three years ago. I’m already working in cybersecurity. This is about what I should build or do next."></textarea>
-          <button class="button button-primary" type="submit">Reconsider without changing my plan</button>
+          <button class="button button-primary" type="submit">Review without changing my plan</button>
         </form>
         <div id="fog-bank-result" hidden></div>
       </section>
@@ -209,7 +209,7 @@
       <p>Planning support, not legal, medical, benefits, financial, or employment advice.</p>
       <details>
         <summary>How it works</summary>
-        <p>Powered by HELM, Google ADK, Gemini 3.7 Flash, Cloud Run, and Firestore. Your confirmed information is reused so the next interaction can be smaller and smarter.</p>
+        <p>Powered by HELM, Google ADK, Gemini 3.7 Flash, Cloud Run, and Firestore. Your confirmed information is reused so each next step can stay focused.</p>
       </details>
     </footer>
   </body>

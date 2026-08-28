@@ -96,7 +96,7 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert 'id="open-history"' in html
     assert 'id="open-what-if"' in html
     assert "Looking without changing" in html
-    assert "Hypothetical — nothing changes yet" in html
+    assert "Try an idea — nothing changes yet" in html
     assert "Test one possible move against what matters now" in html
     assert "home lab" in html
     assert 'api("/api/what-if"' in script
@@ -107,7 +107,7 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
     assert "Look at this another way" in html
     assert "Choose a relevant part of your plan" in html
-    assert "/static/app.js?v=15" in html
+    assert "/static/app.js?v=16" in html
     assert "/static/styles.css?v=12" in html
 
 
@@ -152,11 +152,11 @@ def test_cold_start_renders_intake_without_plan_machinery() -> None:
     assert "if (!state.starting_vector_complete && state.version === 0)" in script
     starting = script[script.index("function renderStartingVector") : script.index("function submitStartingVector")]
     assert "Who are you planning for?" in starting
-    assert "Where is the service member in their timeline?" in starting
+    assert "Where is the service member now?" in starting
     assert "Military branch" in starting
-    assert "Service category" in starting
+    assert "Service status" in starting
     fresh = script[script.index("function renderColdFrontDoor") : script.index("function renderPrimary")]
-    assert "You do not need to have your transition figured out." in fresh
+    assert "You don’t need the whole plan yet." in fresh
     assert "Start with a document" in fresh
     assert "Start with an image" in fresh
     assert "Tell me what’s going on" in fresh
@@ -228,7 +228,7 @@ def test_helm_workspace_keeps_input_visible_and_routes_unmodeled_directions_to_r
     script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
     css = (ROOT / "static" / "styles.css").read_text(encoding="utf-8")
 
-    assert "Persistent HELM input" in html
+    assert "Update your plan" in html
     assert "Tell your plan what changed." in html
     assert 'id="helm-focus-title"' in html
     assert 'id="focus-now"' in html
@@ -306,12 +306,12 @@ def test_fog_bank_is_persistent_human_control_not_an_automatic_mutation() -> Non
     assert 'id="open-fog-bank"' in html
     assert "Something doesn’t fit" in html
     assert 'id="fog-bank-panel"' in html
-    assert "Nothing changes unless you review and accept" in html
+    assert "Nothing changes until you review and accept" in html
     assert 'api("/api/fog-bank"' in script
     assert 'api("/api/fog-bank/accept"' in script
     assert "Keep my current plan" in script
-    assert "Use this re-orientation" in script
-    assert "none gains authority merely because it may matter" in script
+    assert "Use this update" in script
+    assert "Nothing changes unless you approve it" in script
 
 
 def test_execution_state_projection_is_human_facing() -> None:
@@ -329,8 +329,8 @@ def test_trust_boundary_copy_distinguishes_text_and_artifact_authority() -> None
     script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
     combined = html + script
     assert "Nothing is saved until you confirm" not in combined
-    assert "Reviewing this does not change your plan" in html
-    assert "Choosing a file lets Military SLICES use relevant details" in combined
+    assert "Nothing changes until you choose" in html
+    assert "A file is used only after you choose it" in combined
     assert 'api("/api/artifact"' in script
 
 
@@ -353,7 +353,7 @@ def test_lens_preview_and_what_if_keep_observe_separate_from_commit() -> None:
     assert "No changes have been made." in preview
     assert "openTopicUpdate(topic)" in preview
     assert 'mode === "ACTIVE"' in preview
-    assert "This remains hypothetical until you choose" in script
+    assert "Nothing changes until you choose" in script
     assert "Keep my current plan" in script
     assert "Use this plan" in script
 

@@ -118,14 +118,14 @@ def _forecast_items(state: CanonicalState, gate: Gate) -> list[AcquisitionCheckl
                     state,
                     item_id="next-work-preferences",
                     question="What conditions would make the work fit you?",
-                    purpose="Avoid recommending the closest title instead of a workable direction.",
+                    purpose="Find work that fits your life, not just the closest job title.",
                     slices=[SliceName.CAREER, SliceName.EDUCATION, SliceName.LOCATION],
                 ),
                 _item(
                     state,
                     item_id="career-direction",
                     question="Would you rather join an organization, build something yourself, or keep both open?",
-                    purpose="Distinguish the kind of direction worth examining without treating it as permanent.",
+                    purpose="Find a direction to explore without making it permanent.",
                     slices=[SliceName.CAREER, SliceName.EDUCATION, SliceName.RESUME],
                 ),
             ]
@@ -140,7 +140,7 @@ def _forecast_items(state: CanonicalState, gate: Gate) -> list[AcquisitionCheckl
                 state,
                 item_id="career-direction",
                 question="Which direction is worth testing first?",
-                purpose="Move from general intent to an evidence-backed direction.",
+                purpose="Turn a general idea into a direction you can test.",
                 slices=[SliceName.CAREER, SliceName.EDUCATION, SliceName.RESUME],
             )
         )
@@ -150,7 +150,7 @@ def _forecast_items(state: CanonicalState, gate: Gate) -> list[AcquisitionCheckl
                 state,
                 item_id="education-outcome",
                 question="What should the learning make possible?",
-                purpose="Keep program comparison tied to the intended outcome.",
+                purpose="Compare programs by what you want them to help you do.",
                 slices=[SliceName.EDUCATION],
             )
         )
@@ -160,7 +160,7 @@ def _forecast_items(state: CanonicalState, gate: Gate) -> list[AcquisitionCheckl
                 state,
                 item_id="location-priority",
                 question="What location condition must the plan respect?",
-                purpose="Use only the condition material to the current location decision.",
+                purpose="Focus on the location need that could change your choice.",
                 slices=[SliceName.LOCATION],
             )
         )
@@ -361,7 +361,7 @@ def evaluate_acquisition(
                 candidates,
                 matched,
                 None,
-                "What part of that answer should shape the decision in front of you?",
+                "Which part of that answer matters most for this decision?",
             )
         return DeterministicAcquisition(candidates, matched, text.strip(), None)
     return DeterministicAcquisition(candidates, matched, None, "Use the choices shown for this decision.")

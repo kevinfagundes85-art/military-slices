@@ -41,13 +41,13 @@ const serviceLabels = {
 const windowLabels = {
   PATH_IDENTITY: "Establishing the next useful starting point",
   A: "Early preparation · roughly 18–24+ months out",
-  B: "Transition path activation · roughly 12–18 months out",
-  C: "Preparation baseline · roughly 9–12 months out",
-  D: "Closing route prerequisites · roughly 6–9 months out",
-  E: "Time-sensitive execution · roughly 3–6 months out",
+  B: "Starting your transition plan · roughly 12–18 months out",
+  C: "Building your plan · roughly 9–12 months out",
+  D: "Finishing required steps · roughly 6–9 months out",
+  E: "Taking time-sensitive steps · roughly 3–6 months out",
   F: "Final readiness · roughly 1–3 months out",
-  G: "Final-out window · under 30 days",
-  H: "Post-service stabilization",
+  G: "Final month · under 30 days",
+  H: "Building stability after service",
 };
 
 function idempotencyKey() {
@@ -144,6 +144,24 @@ function humanCopy(value) {
     .replace(/\bexecution state\b/gi, "plan status")
     .replace(/\bauthority governor\b/gi, "your control")
     .replace(/\bresolver\b/gi, "system")
+    .replace(/\bpath[- ]relevant\b/gi, "important to this plan")
+    .replace(/\bmaterial(?:ly)?\b/gi, "enough to matter")
+    .replace(/\bbounded\b/gi, "focused")
+    .replace(/\bdeclared target\b/gi, "goal you chose")
+    .replace(/\bactive target\b/gi, "current goal")
+    .replace(/\bactive decision\b/gi, "current decision")
+    .replace(/\bactive path\b/gi, "current plan")
+    .replace(/\btransition window\b/gi, "transition timing")
+    .replace(/\breconsidered\b/gi, "reviewed again")
+    .replace(/\bre-orientation\b/gi, "plan update")
+    .replace(/\bhypothetical\b/gi, "possible")
+    .replace(/\bprovenance\b/gi, "source history")
+    .replace(/\buncertaint(?:y|ies)\b/gi, "open question")
+    .replace(/\bassumptions?\b/gi, "part of the plan")
+    .replace(/\bprerequisites?\b/gi, "required steps")
+    .replace(/\bfeasibility\b/gi, "whether it can work")
+    .replace(/\bnomination\b/gi, "suggestion")
+    .replace(/\bcandidates?\b/gi, "options")
     .replace(/initial saved state/gi, "Plan created");
 }
 
@@ -250,8 +268,8 @@ function renderHelmFocus(state, gate) {
   $("#focus-now").textContent = gate ? humanCopy(gate.title) : (mode === "COMPLETE" ? "No decision is waiting." : "Your current plan is caught up.");
   $("#focus-scope").textContent = scope.length ? scope.join(" · ") : "No additional plan area is active.";
   $("#focus-background").textContent = heldBack
-    ? `${heldBack} background ${heldBack === 1 ? "detail remains" : "details remain"} available without entering this decision.`
-    : "Other saved context stays available without being pulled into this decision.";
+    ? `${heldBack} ${heldBack === 1 ? "detail stays" : "details stay"} in the background until needed.`
+    : "Other details stay available without being pulled into this decision.";
 }
 
 function buildLensTopics(state, lenses) {
@@ -425,9 +443,9 @@ function taskHorizon(tasks, expanded = false) {
 
 function renderStartingVector() {
   primary.innerHTML = `
-    <div class="section-kicker">Start with a few facts</div>
-    <h2 id="primary-title">Let’s put you in the right place first.</h2>
-    <p class="gate-copy">Four quick choices keep Military SLICES from guessing where you are in military life.</p>
+    <div class="section-kicker">First, tell us where you are</div>
+    <h2 id="primary-title">Let’s start with where you are now.</h2>
+    <p class="gate-copy">Four quick answers help us show the right next step.</p>
     <form id="starting-vector-form" class="gate-form">
       <fieldset>
         <legend>Who are you planning for?</legend>
@@ -437,7 +455,7 @@ function renderStartingVector() {
           <label class="choice-option"><input type="radio" name="operating-role" value="counselor_supporter"><span>Counselor or supporter</span></label>
         </div>
       </fieldset>
-      <label for="starting-timeline">Where is the service member in their timeline?</label>
+      <label for="starting-timeline">Where is the service member now?</label>
       <select id="starting-timeline" required>
         <option value="">Choose one</option>
         <option value="currently_serving">Currently serving, with no planned departure in the next year</option>
@@ -456,7 +474,7 @@ function renderStartingVector() {
         <option value="">Choose one</option>
         ${Object.entries(serviceLabels).map(([value, label]) => `<option value="${value}">${label}</option>`).join("")}
       </select>
-      <label for="starting-component">Service category</label>
+      <label for="starting-component">Service status</label>
       <select id="starting-component" required>
         <option value="">Choose one</option>
         <option value="active_duty">Active duty or full-time service</option>
@@ -465,7 +483,7 @@ function renderStartingVector() {
       </select>
       <button class="button button-primary" type="submit">Continue</button>
     </form>
-    <p class="trust-note">These choices orient the plan. They do not determine eligibility or authorize an outcome.</p>
+    <p class="trust-note">These answers help choose your next question. They do not decide what you qualify for or take action for you.</p>
   `;
   $("#starting-vector-form").addEventListener("submit", submitStartingVector);
   $("#starting-timeline").addEventListener("change", (event) => {
@@ -549,8 +567,8 @@ function renderColdFrontDoor() {
   primary.innerHTML = `
     <div class="front-door-copy">
       <div class="section-kicker">Start with what you have</div>
-      <h2 id="primary-title">You do not need to have your transition figured out.</h2>
-      <p class="gate-copy">Bring a document, a screenshot, or one unpolished thought. Military SLICES will help identify one useful next step.</p>
+      <h2 id="primary-title">You don’t need the whole plan yet.</h2>
+      <p class="gate-copy">Start with a file, a screenshot, or a few words. We’ll help you find one next step.</p>
     </div>
     <div class="entry-story" role="list" aria-label="Choose how to start">
       <article class="entry-card" role="listitem">
@@ -579,7 +597,7 @@ function renderColdFrontDoor() {
       </article>
     </div>
     <input id="cold-artifact-file" type="file" hidden aria-hidden="true" tabindex="-1">
-    <p class="trust-note front-door-trust">Looking around does not change a plan. Choosing a file or writing a thought only starts the existing review process.</p>
+    <p class="trust-note front-door-trust">Nothing is saved yet. You will review anything we find before it changes your plan.</p>
   `;
   primary.querySelectorAll(".entry-choice").forEach((button) => {
     button.addEventListener("click", () => chooseColdEntry(button.dataset.entry));
@@ -616,14 +634,14 @@ function renderAcceptedExploration(item) {
         ${itemList(item.questions_to_test, "What would have to be true for this direction to be worth continuing?")}
       </section>
       <section>
-        <h3>What you already have evidence for</h3>
+        <h3>What you already bring</h3>
         ${itemList(item.capability_matches, "No fit is being assumed yet.")}
       </section>
       <section>
         <h3>What you still need to find out</h3>
         ${itemList(item.possible_gaps, "You still need a real-world answer here.")}
       </section>
-      <p class="evidence-note">Useful references: ${escapeHtml(humanCopy((item.evidence || []).join(" · ")))}</p>
+      <p class="evidence-note">What this is based on: ${escapeHtml(humanCopy((item.evidence || []).join(" · ")))}</p>
     </article>
     <button id="add-direction-learning" class="button button-primary" type="button">Add what I learn</button>
   `;
@@ -655,10 +673,10 @@ function renderHypothesisExploration(itemId) {
         ${itemList(item.capability_matches, "No fit is being assumed yet.")}
       </section>
       <section>
-        <h3>What still needs evidence</h3>
+        <h3>What to check</h3>
         ${itemList(item.possible_gaps, "You still need a real-world answer here.")}
       </section>
-      <p class="evidence-note">Useful references: ${escapeHtml(humanCopy((item.evidence || []).join(" · ")))}</p>
+      <p class="evidence-note">What this is based on: ${escapeHtml(humanCopy((item.evidence || []).join(" · ")))}</p>
     </article>
     <form id="gate-form" class="gate-form">
       <button id="accept-direction" class="button button-primary" data-value="explore:${escapeHtml(item.title)}" type="button">Use this as my working direction</button>
@@ -744,8 +762,8 @@ function renderPrimary(next, showConversationLead = false) {
         <h3>${escapeHtml(item.title)}</h3>
         <p>${escapeHtml(humanCopy(item.rationale))}</p>
         <p><strong>What may already fit</strong><br>${escapeHtml(humanCopy(item.capability_matches.join(" · ")))}</p>
-        <p><strong>What to verify</strong><br>${escapeHtml(humanCopy(item.possible_gaps.join(" · ")))}</p>
-        <div class="evidence-note">Explore with ${escapeHtml(humanCopy(item.evidence.join(" · ")))}</div>
+        <p><strong>What to check</strong><br>${escapeHtml(humanCopy(item.possible_gaps.join(" · ")))}</p>
+        <div class="evidence-note">Based on ${escapeHtml(humanCopy(item.evidence.join(" · ")))}</div>
         <div class="hypothesis-actions">
           <button class="button button-secondary hypothesis-explore" data-id="${escapeHtml(item.id)}" type="button">Explore this direction</button>
           <button class="button button-quiet hypothesis-choice" data-value="reject:${escapeHtml(item.title)}" type="button">Not for me</button>
@@ -975,9 +993,9 @@ async function inspectHistoryVersion(version) {
     detail.hidden = false;
     detail.innerHTML = `
       <div class="history-snapshot">
-        <div class="section-kicker">Read-only earlier plan</div>
+        <div class="section-kicker">Earlier plan — view only</div>
         <h3>${escapeHtml(humanCopy(entry.human_anchor || "No target was declared"))}</h3>
-        <p>${entry.open_gates.length ? `Still unresolved then: ${escapeHtml(humanCopy(entry.open_gates.join(" · ")))}` : "Nothing unresolved was recorded."}</p>
+        <p>${entry.open_gates.length ? `Still unanswered then: ${escapeHtml(humanCopy(entry.open_gates.join(" · ")))}` : "No unanswered question was recorded."}</p>
         <p>${entry.closed_decisions.length ? `Choices then: ${escapeHtml(humanCopy(entry.closed_decisions.join(" · ")))}` : "No choice was recorded yet."}</p>
         <p class="trust-note">Your current plan has not changed.</p>
         <button id="what-if-from-history" class="button button-secondary" type="button">What if from here?</button>
@@ -1031,12 +1049,12 @@ function renderWhatIf(branch) {
   result.innerHTML = `
     <div class="comparison-grid">
       <section><div class="section-kicker">Current</div><ul>${branch.current_summary.map((item) => `<li>${escapeHtml(whatIfCopy(item))}</li>`).join("")}</ul></section>
-      <section><div class="section-kicker">Hypothetical</div><ul>${branch.hypothetical_summary.map((item) => `<li>${escapeHtml(whatIfCopy(item))}</li>`).join("")}</ul></section>
+      <section><div class="section-kicker">Possible plan</div><ul>${branch.hypothetical_summary.map((item) => `<li>${escapeHtml(whatIfCopy(item))}</li>`).join("")}</ul></section>
     </div>
     ${branch.conflicts.length ? `<div class="conflict-note"><strong>Conflict to resolve</strong><ul>${branch.conflicts.map((item) => `<li>${escapeHtml(whatIfCopy(item))}</li>`).join("")}</ul></div>` : ""}
     <h3>${branch.modification_kind === "target_experiment" ? "If you add this possibility" : "If you use this plan"}</h3>
     <ul>${branch.consequences.map((item) => `<li>${escapeHtml(whatIfCopy(item))}</li>`).join("")}</ul>
-    <p class="trust-note">This remains hypothetical until you choose “${branch.modification_kind === "target_experiment" ? "Add this to my plan" : "Use this plan"}.”</p>
+    <p class="trust-note">Nothing changes until you choose “${branch.modification_kind === "target_experiment" ? "Add this to my plan" : "Use this plan"}.”</p>
     <div class="button-row">
       <button id="discard-what-if" class="button button-quiet" type="button">Keep my current plan</button>
       <button id="promote-what-if" class="button button-primary" type="button">${branch.modification_kind === "target_experiment" ? "Add this to my plan" : "Use this plan"}</button>
@@ -1129,12 +1147,12 @@ function renderFogBank(proposal) {
   result.innerHTML = `
     <div class="attention-note"><strong>Nothing has changed yet.</strong> ${escapeHtml(proposal.summary)}</div>
     ${proposal.conflicts.length ? `<h3>What no longer fits</h3><ul>${proposal.conflicts.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
-    <h3>Proposed re-orientation</h3>
+    <h3>Suggested plan update</h3>
     <ul>${proposal.changes.map((change) => `<li><strong>${escapeHtml(change.reason)}</strong><br><span>${escapeHtml(humanCopy(change.current_value || "Not set"))} → ${escapeHtml(humanCopy(change.proposed_value || "Remove from the active plan"))}</span></li>`).join("")}</ul>
-    <p class="trust-note">Relevant areas may be reconsidered, but none gains authority merely because it may matter.</p>
+    <p class="trust-note">Other parts of your plan may need another look. Nothing changes unless you approve it.</p>
     <div class="button-row">
       <button id="cancel-fog-bank" class="button button-quiet" type="button">Keep my current plan</button>
-      <button id="accept-fog-bank" class="button button-primary" type="button">Use this re-orientation</button>
+      <button id="accept-fog-bank" class="button button-primary" type="button">Use this update</button>
     </div>
   `;
   $("#cancel-fog-bank").addEventListener("click", () => {
@@ -1222,7 +1240,7 @@ async function requestOrientation(text, submit) {
   const originalLabel = submit?.textContent;
   if (submit) {
     submit.disabled = true;
-    submit.textContent = "Working through this…";
+    submit.textContent = "Reviewing this…";
   }
   try {
     pendingOrientation = await api("/api/orient", { method: "POST", body: JSON.stringify({ text }) });
@@ -1250,8 +1268,8 @@ function showReview(result) {
     ? "Add your answer to the words you already shared"
     : "Correct anything that is off";
   $("#review-trust").textContent = needsClarification
-    ? "Your words are preserved, but nothing can be saved until this clarification produces a useful starting point."
-    : "Reviewing this does not change your plan. Choose “Use this in my plan” to save it. AI suggestions never become facts on their own.";
+    ? "Your words are kept. Nothing is saved until your answer gives the plan a clear starting point."
+    : "Nothing changes until you choose “Use this in my plan.” AI suggestions are never saved as facts on their own.";
   $("#confirm-review").textContent = needsClarification ? "Check this clarification" : "Use this in my plan";
   $("#review-text").value = result.reviewed_input;
   showInspection(reviewPanel);

@@ -550,7 +550,7 @@ def consequential_impact_projection(
                 authority=fact.authority,
                 status=fact.status,
                 affected_slices=tuple(fact.affected_slices),
-                question="Does this authoritative information change or block the current next move?",
+                question="Does this trusted information change or block your next step?",
             )
     return None
 
@@ -683,7 +683,7 @@ def apply_revalidation_delta(
         FeedbackEvent(
             id=_stable_id("feedback", state.profile_id, idempotency_key),
             headline=headline,
-            consequences=["Only the affected assumption was updated."],
+            consequences=["Only the part affected by your answer was updated."],
         )
     )
     state.processed_keys.append(idempotency_key)

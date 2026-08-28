@@ -225,7 +225,7 @@ def test_what_if_accepts_a_target_relative_experiment_without_writing_truth() ->
     assert branch["affected_gates"] == ["career-direction"]
     assert branch["affected_slices"] == ["career", "resume"]
     assert confirmed["state"]["human_anchor"] in branch["consequences"][0]
-    assert "current governed target" in branch["evidence_basis"][0].casefold()
+    assert "current goal" in branch["evidence_basis"][0].casefold()
     assert client.get("/api/state").json() == before
 
 
@@ -412,6 +412,6 @@ def test_fog_bank_acceptance_rejects_a_stale_source_version() -> None:
     try:
         apply_fog_bank_reorientation(newer, proposal, idempotency_key="stale-fog-0001")
     except ValueError as exc:
-        assert "changed after this exploration" in str(exc)
+        assert "changed during this review" in str(exc)
     else:
         raise AssertionError("A stale Fog Bank proposal must not mutate newer state.")

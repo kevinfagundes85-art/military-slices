@@ -690,11 +690,11 @@ def _service_path_task(service: ServiceName | None, window_id: str) -> str | Non
 
 def _domain_fallback(domain: str) -> str:
     return {
-        "employment": "Define the civilian employment direction enough to choose the next route",
-        "education": "Define the education outcome enough to compare relevant programs",
-        "location": "Identify the location condition that materially shapes the declared target",
-        "undecided": "Choose one post-service direction to examine without committing permanently",
-        "general": "Confirm the next action that materially advances the declared target",
+        "employment": "Choose a civilian work direction so you can take the next step",
+        "education": "Choose what education should help you do before comparing programs",
+        "location": "Name the location need that could change your plan",
+        "undecided": "Explore one direction after service without making it permanent",
+        "general": "Choose the next action that could move your goal forward",
     }[domain]
 
 
