@@ -1180,6 +1180,7 @@ async function promoteWhatIf() {
 
 function openFogBank() {
   pendingFogBank = null;
+  $("#fog-bank-title").textContent = "What are we missing?";
   $("#fog-bank-form").hidden = false;
   $("#fog-bank-result").hidden = true;
   $("#fog-bank-text").value = "";
@@ -1301,20 +1302,24 @@ async function orientInput(event) {
     $("#input-text").focus();
     return;
   }
-  if (isGenericPlanChange(text)) {
+  if (isPlanChangeRequest(text)) {
     openFogBank();
-    showInlineGuidance($("#fog-bank-panel"), "What part of the plan do you want to change?");
+    $("#fog-bank-title").textContent = "What do you want to change?";
+    $("#fog-bank-text").value = text;
+    showInlineGuidance($("#fog-bank-panel"), "Your words are ready below. Add any detail you want, then review the change.");
+    $("#fog-bank-text").focus();
     return;
   }
   reviewReturn = "add";
   await requestOrientation(text, event.submitter);
 }
 
-function isGenericPlanChange(text) {
+function isPlanChangeRequest(text) {
   const normalized = text.toLowerCase().replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim();
-  const shortCommand = normalized.split(" ").filter(Boolean).length <= 9;
-  const asksForChange = /\b(change|update|fix|redo|revise)\b/.test(normalized);
-  return shortCommand && asksForChange && /\b(my\s+)?plan\b/.test(normalized);
+  const plan = "(?:my|the)?\\s*(?:career|transition|current)?\\s*plans?";
+  const directChange = new RegExp(`\\b(?:change|update|fix|redo|revise|edit)\\s+${plan}\\b`);
+  const makeChange = new RegExp(`\\bmake\\s+changes?\\s+to\\s+${plan}\\b`);
+  return directChange.test(normalized) || makeChange.test(normalized);
 }
 
 async function orientColdInput(event) {
