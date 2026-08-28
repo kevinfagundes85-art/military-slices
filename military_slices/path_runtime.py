@@ -810,7 +810,7 @@ def refresh_path_state(state: CanonicalState, *, today: date | None = None) -> C
         ActiveTask(
             id=f"path-{window_id.lower()}-{index}",
             title=_title(task),
-            reason="It advances the current target inside the active service-aware path.",
+            reason="This is the next answer that could change what you do.",
             source=f"transition-pack:{PACK_VERSION}:{window_id}",
             affected_slices=slices,
         )

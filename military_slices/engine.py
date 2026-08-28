@@ -1070,7 +1070,7 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
             )
             gate = Gate(
                 id=task_gate_id,
-                title="Resolve the next material uncertainty",
+                title="Choose what to test next",
                 question=question,
                 why=task.reason,
                 state=GateState.PARTIAL,
@@ -1398,8 +1398,8 @@ def _decision_consequences(
         return ["Made this location condition part of the active decision."]
     if gate_id.startswith("path-task_"):
         return [
-            "Used what you learned to retire this uncertainty.",
-            "Recomputed the next question from the updated plan.",
+            "Your answer moved this plan forward.",
+            "Here’s the next thing worth figuring out.",
         ]
     return [
         "Used that answer to determine the next useful question.",
@@ -1550,18 +1550,35 @@ def _role_gaps(title: str) -> list[str]:
 
 
 def _role_questions(title: str) -> list[str]:
+    lower = title.casefold()
+    if any(term in lower for term in ("founder", "product builder")):
+        return [
+            "Which veteran problem do you want to take on first?",
+            "What could you test with one veteran to see whether your idea actually helps?",
+        ]
+    if "analyst" in lower:
+        return [
+            "What public problem could you analyze without using protected information?",
+            "What work sample would show a civilian team how you think?",
+        ]
+    if any(term in lower for term in ("maintenance", "field service", "quality")):
+        return [
+            "Which part of your technical experience transfers most directly?",
+            "What civilian requirement do you still need to verify?",
+        ]
     return [
-        f"What evidence would confirm or change this assumption: {gap}?"
-        for gap in _role_gaps(title)[:3]
+        "What part of this direction fits the work you actually want?",
+        "What real conversation or work sample would help you decide whether to keep going?",
     ]
 
 
 def _role_first_experiment(title: str) -> str:
-    first_gap = _role_gaps(title)[0]
-    return (
-        f"Choose the smallest real example, conversation, work sample, or comparison that could test: "
-        f"{first_gap}. Capture what the evidence confirms, changes, or leaves unanswered."
-    )
+    lower = title.casefold()
+    if any(term in lower for term in ("founder", "product builder")):
+        return "Talk with one veteran who has the problem, test one small idea, and write down what helped."
+    if "analyst" in lower:
+        return "Build one small analysis from public information and ask someone in the field what it proves or misses."
+    return "Try one small, real example of the work and use what happens to decide whether this direction fits."
 
 
 def apply_hypotheses(state: CanonicalState, hypotheses: list[CareerHypothesis]) -> CanonicalState:

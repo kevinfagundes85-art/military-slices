@@ -132,6 +132,10 @@ function escapeHtml(value) {
 
 function humanCopy(value) {
   return String(value ?? "")
+    .replace(/resolve the next material uncertainty/gi, "Choose what to test next")
+    .replace(/used what you learned to retire this uncertainty/gi, "Your answer moved this plan forward")
+    .replace(/recomputed the next question from the updated plan/gi, "Here’s the next thing worth figuring out")
+    .replace(/it advances the current target inside the active service-aware path/gi, "This is the next answer that could change what you do")
     .replace(/\blatent\b/gi, "in the background")
     .replace(/\bcanonical\b/gi, "current")
     .replace(/\bgoverned\b/gi, "saved")
@@ -141,6 +145,22 @@ function humanCopy(value) {
     .replace(/\bauthority governor\b/gi, "your control")
     .replace(/\bresolver\b/gi, "system")
     .replace(/initial saved state/gi, "Plan created");
+}
+
+function humanQuestion(value) {
+  const question = humanCopy(value);
+  const legacyPrefix = "What evidence would confirm or change this assumption:";
+  if (!question.toLowerCase().startsWith(legacyPrefix.toLowerCase())) return question;
+  const gap = question.slice(legacyPrefix.length).trim().replace(/\?$/, "");
+  const known = {
+    "A specific user problem worth owning": "Which veteran problem do you want to take on first?",
+    "Evidence that a small useful solution changes something for that user": "What could you test with one veteran to see whether your idea actually helps?",
+    "Civilian job-title calibration": "Which civilian job title best matches the work you want?",
+    "Evidence matched to a real posting": "Which real job posting would help you test this direction?",
+    "Civilian data-tool evidence": "What work sample would show a civilian team how you use data tools?",
+    "Portfolio examples without protected information": "What could you put in a portfolio without using protected information?",
+  };
+  return known[gap] || `What would give you a real answer about ${gap.charAt(0).toLowerCase()}${gap.slice(1)}?`;
 }
 
 function whatIfCopy(value) {
@@ -227,7 +247,7 @@ function renderHelmFocus(state, gate) {
   const scope = (gate?.affected_slices || []).map((slice) => labels[slice] || humanCopy(slice));
   const heldBack = Number(state.latent_fact_count || 0);
   $("#focus-state").textContent = mode === "PARALYZED" ? "Needs attention" : (mode === "COMPLETE" ? "Complete" : "Active");
-  $("#focus-now").textContent = gate?.title || (mode === "COMPLETE" ? "No decision is waiting." : "Your current plan is caught up.");
+  $("#focus-now").textContent = gate ? humanCopy(gate.title) : (mode === "COMPLETE" ? "No decision is waiting." : "Your current plan is caught up.");
   $("#focus-scope").textContent = scope.length ? scope.join(" · ") : "No additional plan area is active.";
   $("#focus-background").textContent = heldBack
     ? `${heldBack} background ${heldBack === 1 ? "detail remains" : "details remain"} available without entering this decision.`
@@ -585,7 +605,7 @@ function renderAcceptedExploration(item) {
   primary.innerHTML = `
     <div class="section-kicker">Explore the direction</div>
     <h2 id="primary-title">Start by testing ${escapeHtml(item.title)}.</h2>
-    <p class="gate-copy">This is your working direction, not a permanent commitment. The useful next move is to reduce one uncertainty with real evidence.</p>
+    <p class="gate-copy">You’re not locked in. The next move is to try one thing in the real world and see what you learn.</p>
     <article class="direction-exploration">
       <section>
         <h3>A useful first experiment</h3>
@@ -600,8 +620,8 @@ function renderAcceptedExploration(item) {
         ${itemList(item.capability_matches, "No fit is being assumed yet.")}
       </section>
       <section>
-        <h3>What is still an assumption</h3>
-        ${itemList(item.possible_gaps, "The remaining uncertainty still needs outside evidence.")}
+        <h3>What you still need to find out</h3>
+        ${itemList(item.possible_gaps, "You still need a real-world answer here.")}
       </section>
       <p class="evidence-note">Useful references: ${escapeHtml(humanCopy((item.evidence || []).join(" · ")))}</p>
     </article>
@@ -636,7 +656,7 @@ function renderHypothesisExploration(itemId) {
       </section>
       <section>
         <h3>What still needs evidence</h3>
-        ${itemList(item.possible_gaps, "The remaining uncertainty still needs outside evidence.")}
+        ${itemList(item.possible_gaps, "You still need a real-world answer here.")}
       </section>
       <p class="evidence-note">Useful references: ${escapeHtml(humanCopy((item.evidence || []).join(" · ")))}</p>
     </article>
@@ -741,7 +761,7 @@ function renderPrimary(next, showConversationLead = false) {
   primary.innerHTML = `
     ${mode === "PARALYZED" ? '<div class="attention-note">These choices cannot both guide the next step. Your answer below will clear the conflict.</div>' : ""}
     ${conversationLead(acquisition, showConversationLead)}
-    <h2 id="primary-title">${escapeHtml(humanCopy(acquisition?.prompt || gate.question))}</h2>
+    <h2 id="primary-title">${escapeHtml(humanQuestion(acquisition?.prompt || gate.question))}</h2>
     <p class="gate-copy">${escapeHtml(humanCopy(gate.why))}</p>
     <form id="gate-form" class="gate-form">
       ${control}

@@ -33,7 +33,7 @@ def test_dynamic_backend_copy_is_projected_into_human_language() -> None:
         '.replace(/\\bresolver\\b/gi, "system")',
     ):
         assert replacement in script
-    assert "humanCopy(acquisition?.prompt || gate.question)" in script
+    assert "humanQuestion(acquisition?.prompt || gate.question)" in script
     assert "humanCopy(gate.why)" in script
     assert "humanCopy(lens.summary)" in script
     assert "humanCopy(feedback.headline)" in script
@@ -205,7 +205,7 @@ def test_pre_anchor_state_renders_the_backend_question_without_plan_scaffolding(
     assert "if (!state.starting_vector_complete && state.version === 0)" in script
     assert "if (!state.human_anchor && !state.original_intents.length)" in script
     assert '$("#orientation-shell").hidden = !started' in script
-    assert '<h2 id="primary-title">${escapeHtml(humanCopy(acquisition?.prompt || gate.question))}</h2>' in script
+    assert '<h2 id="primary-title">${escapeHtml(humanQuestion(acquisition?.prompt || gate.question))}</h2>' in script
 
 
 def test_bounded_acquisition_is_natural_inline_and_keeps_one_primary_surface() -> None:
@@ -240,6 +240,16 @@ def test_helm_workspace_keeps_input_visible_and_routes_unmodeled_directions_to_r
     assert 'await requestOrientation(value, event.submitter)' in script
     assert "Your plan advanced while you were writing" in script
     assert ".add-panel {" in css and "position: sticky" in css
+
+
+def test_saved_research_copy_is_projected_into_direct_human_language() -> None:
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+
+    assert "function humanQuestion" in script
+    assert '"Which veteran problem do you want to take on first?"' in script
+    assert '"What could you test with one veteran to see whether your idea actually helps?"' in script
+    assert '"Choose what to test next"' in script
+    assert '"This is the next answer that could change what you do"' in script
 
 
 def test_direction_exploration_observes_before_commit_and_builds_forward_afterward() -> None:

@@ -66,6 +66,10 @@ def test_founder_direction_recomputes_to_its_next_uncertainty_not_job_machinery(
     assert "what have you learned" not in gate.question.casefold()
     assert "stabilize employment" not in " ".join(task.title for task in state.active_tasks).casefold()
     assert all(item.id != "career-direction" for item in horizon.checklist[1:])
+    visible_copy = " ".join((gate.title, gate.question, gate.why)).casefold()
+    for research_term in ("material uncertainty", "confirm or change this assumption", "service-aware path"):
+        assert research_term not in visible_copy
+    assert gate.question.startswith("What ")
 
 
 def test_employment_direction_continues_to_role_evidence_when_that_is_relevant() -> None:
@@ -77,7 +81,7 @@ def test_employment_direction_continues_to_role_evidence_when_that_is_relevant()
     gate = active_gate(state)
 
     assert gate is not None and gate.id.startswith("path-task_")
-    assert any(term in gate.question.casefold() for term in ("evidence", "data-tool", "portfolio"))
+    assert any(term in gate.question.casefold() for term in ("public problem", "work sample"))
 
 
 def test_path_question_answer_is_independently_authorized_then_recomputes_again() -> None:
@@ -190,7 +194,7 @@ def test_transition_language_cannot_expose_internal_frontier_identity(
         resolver.transition_language(
             state=state,
             horizon=horizon,
-            material_change=["Used what you learned to retire this uncertainty."],
+            material_change=["Your answer moved this plan forward."],
         )
     )
 
