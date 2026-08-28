@@ -223,8 +223,14 @@ function setProcessing(message = "", button = null) {
   const indicator = $("#processing-status");
   indicator.hidden = !message;
   indicator.innerHTML = message
-    ? `<span class="processing-dot" aria-hidden="true"></span><span>${escapeHtml(message)}</span>`
+    ? `<div class="processing-dialog">
+        <span class="helm-wheel" aria-hidden="true"><span>HELM</span></span>
+        <strong class="processing-message">${escapeHtml(message)}</strong>
+        <span class="processing-support">Keeping your plan together while this finishes.</span>
+      </div>`
     : "";
+  document.body.classList.toggle("processing-open", Boolean(message));
+  $("#primary-content").setAttribute("aria-busy", message ? "true" : "false");
   if (button) button.disabled = Boolean(message);
 }
 
@@ -290,7 +296,7 @@ function renderHelmFocus(state, gate) {
   const activeEvidence = gate ? new Set(gate.required_evidence || []).size : 0;
   $("#focus-state").textContent = mode === "PARALYZED"
     ? "Needs attention"
-    : (mode === "COMPLETE" ? "Complete" : (caughtUp ? "Caught up" : "Active"));
+    : (mode === "COMPLETE" ? "Complete" : (caughtUp ? "Caught up" : "On course"));
   $("#focus-now").textContent = gate ? humanCopy(gate.title) : (mode === "COMPLETE" ? "No decision is waiting." : "Your current plan is caught up.");
   $("#focus-scope").textContent = scope.length ? scope.join(" · ") : "No additional plan area is active.";
   $("#focus-background").textContent = heldBack
@@ -299,6 +305,38 @@ function renderHelmFocus(state, gate) {
   $("#metric-active").textContent = String(activeEvidence);
   $("#metric-latent").textContent = String(heldBack);
   $("#metric-tasks").textContent = String((state.active_tasks || []).length);
+  renderPlanningRoute(state, gate);
+}
+
+function renderPlanningRoute(state, gate) {
+  const decisions = state.decisions || [];
+  const facts = state.facts || [];
+  const acceptedDirection = (state.career_hypotheses || []).some((item) => item.status === "accepted");
+  const gateId = gate?.id || "";
+  const hasDecision = (id) => decisions.some((decision) => decision.gate_id === id);
+  const hasDecisionPrefix = (prefix) => decisions.some((decision) => decision.gate_id?.startsWith(prefix));
+  const hasSliceFact = (slice) => facts.some((fact) => (fact.affected_slices || []).includes(slice));
+  const intent = (state.original_intents || []).join(" ").toLowerCase();
+  const obstacle = (label, cleared, active, known) => ({
+    label,
+    state: cleared ? "cleared" : (active ? "active" : (known ? "ahead" : "unmapped")),
+  });
+  const obstacles = [
+    obstacle("Set the timing", Boolean(state.transition_date || state.transition_month), gateId === "transition-date", true),
+    obstacle("Choose a direction", acceptedDirection, gateId === "career-direction", Boolean(state.career_target || state.career_hypotheses?.length || intent.match(/job|career|work/))),
+    obstacle("Test it in real life", hasDecisionPrefix("path-task_") && !gateId.startsWith("path-task_"), gateId.startsWith("path-task_"), acceptedDirection),
+    obstacle("Line up training", hasDecision("education-outcome"), gateId === "education-outcome", hasSliceFact("education") || /school|training|degree|certificate|education/.test(intent)),
+    obstacle("Protect location needs", hasDecision("location-priority"), gateId === "location-priority", hasSliceFact("location") || /move|relocat|location|remote/.test(intent)),
+    obstacle("Prepare your story", hasDecision("resume-target-role"), gateId === "resume-target-role", hasSliceFact("resume") || /resume|résumé|profile|application/.test(intent)),
+  ];
+  const labelsByState = { cleared: "Cleared", active: "Now", ahead: "Ahead", unmapped: "To map" };
+  $("#planning-obstacles").innerHTML = obstacles.map((item) => `
+    <li data-route-state="${item.state}">
+      <span class="route-marker" aria-hidden="true">${item.state === "cleared" ? "✓" : ""}</span>
+      <span class="route-label">${escapeHtml(item.label)}</span>
+      <small>${labelsByState[item.state]}</small>
+    </li>
+  `).join("");
 }
 
 function bindFocusCarousel() {
@@ -311,7 +349,7 @@ function bindFocusCarousel() {
   let activeIndex = 0;
   let scrollTimer;
   const reflect = () => {
-    position.textContent = `Focus ${activeIndex + 1} of ${total}`;
+    position.textContent = `Command view ${activeIndex + 1} of ${total}`;
     previous.disabled = activeIndex === 0;
     next.disabled = activeIndex === total - 1;
   };
@@ -949,22 +987,29 @@ function renderPrimary(next, showConversationLead = false) {
   } else if (gate.surface === "compare" && hypotheses.length) {
     control = `
       <div class="carousel-heading">
-        <span id="direction-position" class="carousel-position" aria-live="polite">Direction 1 of ${hypotheses.length}</span>
-        <div class="carousel-controls" aria-label="Browse directions">
-          <button id="direction-previous" class="carousel-button" type="button" aria-label="Previous direction">←</button>
-          <button id="direction-next" class="carousel-button" type="button" aria-label="Next direction">→</button>
+        <div>
+          <span id="direction-position" class="carousel-position" aria-live="polite">Direction 1 of ${hypotheses.length}</span>
+          <p class="direction-instruction">Choose one to start a real-world test. You can change it later.</p>
         </div>
+        <div class="carousel-controls" aria-label="Browse directions">
+          <button id="direction-previous" class="carousel-button direction-nav-button" type="button" aria-label="Previous direction">← Previous</button>
+          <button id="direction-next" class="carousel-button direction-nav-button" type="button" aria-label="Next direction">Next →</button>
+        </div>
+      </div>
+      <div id="direction-actions" class="direction-actions" aria-live="polite">
+        <button id="choose-current-direction" class="button button-primary" data-value="explore:${escapeHtml(hypotheses[0].title)}" type="button">Choose ${escapeHtml(hypotheses[0].title)}</button>
+        <button id="detail-current-direction" class="button button-secondary" data-id="${escapeHtml(hypotheses[0].id)}" type="button">See test details</button>
+        <button id="skip-current-direction" class="button button-quiet" data-value="reject:${escapeHtml(hypotheses[0].title)}" type="button">Skip this option</button>
       </div>
       <div id="direction-carousel" class="hypothesis-grid" tabindex="0">${hypotheses.map((item, index) => `
       <article class="hypothesis" aria-label="Direction ${index + 1} of ${hypotheses.length}">
         <h3>${escapeHtml(item.title)}</h3>
-        <p>${escapeHtml(humanCopy(item.rationale))}</p>
-        <p><strong>What may already fit</strong><br>${escapeHtml(humanCopy(item.capability_matches.join(" · ")))}</p>
-        <p><strong>What to check</strong><br>${escapeHtml(humanCopy(item.possible_gaps.join(" · ")))}</p>
-        <div class="evidence-note">Based on ${escapeHtml(humanCopy(item.evidence.join(" · ")))}</div>
-        <div class="hypothesis-actions">
-          <button class="button button-secondary hypothesis-explore" data-id="${escapeHtml(item.id)}" type="button">Explore this direction</button>
-          <button class="button button-quiet hypothesis-choice" data-value="reject:${escapeHtml(item.title)}" type="button">Not for me</button>
+        <div class="hypothesis-details">
+          <p>${escapeHtml(humanCopy(item.rationale))}</p>
+          <p><strong>First test</strong><br>${escapeHtml(humanCopy(item.first_experiment || item.next_step))}</p>
+          <p><strong>What may already fit</strong><br>${escapeHtml(humanCopy(item.capability_matches.join(" · ")))}</p>
+          <p><strong>What to check</strong><br>${escapeHtml(humanCopy(item.possible_gaps.join(" · ")))}</p>
+          <div class="evidence-note">Based on ${escapeHtml(humanCopy(item.evidence.join(" · ")))}</div>
         </div>
       </article>
     `).join("")}</div>`;
@@ -987,18 +1032,16 @@ function renderPrimary(next, showConversationLead = false) {
   `;
   const form = $("#gate-form");
   form.addEventListener("submit", submitDecision);
-  document.querySelectorAll(".hypothesis-choice").forEach((button) => {
-    button.addEventListener("click", () => submitDecision({ preventDefault() {}, currentTarget: button }));
-  });
-  document.querySelectorAll(".hypothesis-explore").forEach((button) => {
-    button.addEventListener("click", () => renderHypothesisExploration(button.dataset.id));
-  });
   if (gate.surface === "compare" && hypotheses.length) {
-    bindDirectionCarousel(hypotheses.length);
+    $("#choose-current-direction").addEventListener("click", (event) => submitDecision({ preventDefault() {}, currentTarget: event.currentTarget }));
+    $("#skip-current-direction").addEventListener("click", (event) => submitDecision({ preventDefault() {}, currentTarget: event.currentTarget }));
+    $("#detail-current-direction").addEventListener("click", (event) => renderHypothesisExploration(event.currentTarget.dataset.id));
+    bindDirectionCarousel(hypotheses);
   }
 }
 
-function bindDirectionCarousel(total) {
+function bindDirectionCarousel(hypotheses) {
+  const total = hypotheses.length;
   const track = $("#direction-carousel");
   const previous = $("#direction-previous");
   const next = $("#direction-next");
@@ -1008,9 +1051,14 @@ function bindDirectionCarousel(total) {
   let activeIndex = 0;
   let scrollTimer;
   const reflect = () => {
+    const current = hypotheses[activeIndex];
     position.textContent = `Direction ${activeIndex + 1} of ${total}`;
     previous.disabled = activeIndex === 0;
     next.disabled = activeIndex === total - 1;
+    $("#choose-current-direction").textContent = `Choose ${current.title}`;
+    $("#choose-current-direction").dataset.value = `explore:${current.title}`;
+    $("#detail-current-direction").dataset.id = current.id;
+    $("#skip-current-direction").dataset.value = `reject:${current.title}`;
   };
   const update = (index, behavior = "smooth") => {
     activeIndex = Math.max(0, Math.min(total - 1, index));
@@ -1638,7 +1686,7 @@ async function submitDecision(event) {
   }
   const buttons = document.querySelectorAll("#gate-form button");
   buttons.forEach((button) => { button.disabled = true; });
-  setProcessing("Working through this…");
+  setProcessing("Working through what you shared…");
   try {
     const next = await api("/api/decision", {
       method: "POST",

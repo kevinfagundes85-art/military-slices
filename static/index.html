@@ -6,8 +6,8 @@
     <meta name="theme-color" content="#08141f">
     <meta name="description" content="Military SLICES helps U.S. service members connect career, education, location, and résumé decisions into one transition plan.">
     <title>Military SLICES</title>
-    <link rel="stylesheet" href="/static/styles.css?v=20">
-    <script src="/static/app.js?v=35" defer></script>
+    <link rel="stylesheet" href="/static/styles.css?v=22">
+    <script src="/static/app.js?v=37" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the next decision</a>
@@ -31,7 +31,7 @@
       <div class="content-grid" hidden>
         <section id="primary" class="primary-card" aria-labelledby="primary-title">
           <div class="section-kicker">What matters now</div>
-          <div id="processing-status" class="processing-inline" role="status" aria-live="polite" hidden></div>
+          <div id="processing-status" class="processing-overlay" role="status" aria-live="polite" aria-atomic="true" hidden></div>
           <div id="primary-content" aria-live="polite" aria-busy="true"></div>
         </section>
 
@@ -85,34 +85,41 @@
         <section class="helm-focus" aria-labelledby="helm-focus-title">
           <div class="helm-focus-heading">
             <div>
-              <div class="section-kicker">HELM focus</div>
-              <h2 id="helm-focus-title">Why this is in front of you.</h2>
+              <div class="section-kicker">HELM Command Post</div>
+              <h2 id="helm-focus-title">Your next move, and why.</h2>
             </div>
-            <span id="focus-state" class="focus-state">Active</span>
+            <span id="focus-state" class="focus-state">On course</span>
           </div>
-          <dl class="helm-metrics" aria-label="How HELM is focusing your plan">
-            <div><dt>Evidence now</dt><dd id="metric-active">0</dd></div>
-            <div><dt>Available later</dt><dd id="metric-latent">0</dd></div>
-            <div><dt>Open decisions</dt><dd id="metric-tasks">0</dd></div>
+          <section class="planning-route" aria-labelledby="planning-route-title">
+            <div class="planning-route-heading">
+              <h3 id="planning-route-title">Planning route</h3>
+              <span>One obstacle at a time</span>
+            </div>
+            <ol id="planning-obstacles" class="planning-obstacles"></ol>
+          </section>
+          <dl class="helm-metrics" aria-label="What the command post is using">
+            <div><dt>In play now</dt><dd id="metric-active">0</dd></div>
+            <div><dt>Standing by</dt><dd id="metric-latent">0</dd></div>
+            <div><dt>Decisions open</dt><dd id="metric-tasks">0</dd></div>
           </dl>
           <div class="focus-carousel-heading">
-            <span id="focus-position">Focus 1 of 3</span>
-            <div class="carousel-controls" aria-label="Browse HELM focus">
-              <button id="focus-previous" class="carousel-button" type="button" aria-label="Previous HELM focus">←</button>
-              <button id="focus-next" class="carousel-button" type="button" aria-label="Next HELM focus">→</button>
+            <span id="focus-position">Command view 1 of 3</span>
+            <div class="carousel-controls" aria-label="Browse the HELM Command Post">
+              <button id="focus-previous" class="carousel-button" type="button" aria-label="Previous command view">←</button>
+              <button id="focus-next" class="carousel-button" type="button" aria-label="Next command view">→</button>
             </div>
           </div>
           <dl id="focus-carousel" class="focus-grid" tabindex="0">
             <div>
-              <dt>Working on now</dt>
+              <dt>Your next move</dt>
               <dd id="focus-now">Loading the current decision…</dd>
             </div>
             <div>
-              <dt>Parts of your plan</dt>
+              <dt>What this affects</dt>
               <dd id="focus-scope">Only what can change this decision.</dd>
             </div>
             <div>
-              <dt>Kept in the background</dt>
+              <dt>Standing by</dt>
               <dd id="focus-background">Other details stay available without crowding this step.</dd>
             </div>
           </dl>

@@ -107,8 +107,8 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
     assert "View connected areas" in html
     assert "Choose a relevant part of your plan" in html
-    assert "/static/app.js?v=35" in html
-    assert "/static/styles.css?v=20" in html
+    assert "/static/app.js?v=37" in html
+    assert "/static/styles.css?v=22" in html
 
 
 def test_primary_decision_precedes_plan_scaffolding_and_requires_an_explicit_choice() -> None:
@@ -230,6 +230,23 @@ def test_helm_workspace_keeps_input_visible_and_routes_unmodeled_directions_to_r
     css = (ROOT / "static" / "styles.css").read_text(encoding="utf-8")
 
     assert "Command your plan" in html
+    assert "HELM Command Post" in html
+    assert "Your next move, and why." in html
+    assert "Your next move" in html
+    assert "What this affects" in html
+    assert "Standing by" in html
+    assert "HELM focus" not in html
+    assert "Planning route" in html
+    assert "One obstacle at a time" in html
+    assert 'id="planning-obstacles"' in html
+    assert "function renderPlanningRoute" in script
+    assert "Set the timing" in script
+    assert "Test it in real life" in script
+    assert "Line up training" in script
+    assert "Protect location needs" in script
+    assert "Prepare your story" in script
+    assert 'data-route-state="${item.state}"' in script
+    assert ".planning-obstacles" in css
     assert "What changed?" in html
     assert 'id="helm-focus-title"' in html
     assert 'id="focus-now"' in html
@@ -243,6 +260,15 @@ def test_helm_workspace_keeps_input_visible_and_routes_unmodeled_directions_to_r
     assert ".add-panel {" in css and "position: sticky" in css
     assert "grid-template-columns: minmax(0, 1.8fr) minmax(300px, 0.8fr)" in css
     assert ".hypothesis-grid" in css and "scroll-snap-type: x mandatory" in css
+    assert 'id="direction-actions"' in script
+    assert 'id="choose-current-direction"' in script
+    assert "Choose ${current.title}" in script
+    assert "See test details" in script
+    assert "Skip this option" in script
+    assert "← Previous" in script and "Next →" in script
+    assert ".hypothesis-details" in css
+    assert "grid-template-rows: auto minmax(0, 1fr)" in css
+    assert ".direction-actions" in css
     assert "bindDirectionCarousel" in script
     assert "min-height: 70px" in css
     assert "grid-row: 1" in css
@@ -436,8 +462,14 @@ def test_lens_cloud_is_secondary_and_empty_domain_surfaces_are_not_padded() -> N
 def test_loading_preserves_stable_content_and_never_exposes_processing_steps() -> None:
     html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
     script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    styles = (ROOT / "static" / "styles.css").read_text(encoding="utf-8")
     assert 'id="processing-status"' in html
-    assert "Working through this…" in script
+    assert 'class="processing-overlay"' in html
+    assert "Working through what you shared…" in script
+    assert 'class="helm-wheel"' in script
+    assert 'document.body.classList.toggle("processing-open"' in script
+    assert ".processing-overlay" in styles
+    assert "@keyframes helm-wheel-spin" in styles
     assert "setProcessing" in script
     for forbidden in ("calling model", "running resolver", "writing firestore", "recomputing gates"):
         assert forbidden not in (html + script).casefold()

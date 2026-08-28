@@ -25,7 +25,7 @@ Target: 3:35–3:50. Use synthetic data only.
 
 3. **A focused dashboard, not a giant intake (0:55–1:25)**
 
-   Show the fixed dashboard: central input, current plan, and HELM Focus. Explain that confirmed state can remain available without all of it entering the active reasoning surface. Choose **Information Security Analyst**.
+   Show the fixed dashboard: central input, current plan, and the HELM Command Post. The Command Post names the veteran's next move, what it affects, and what is standing by. Explain that confirmed state can remain available without all of it entering the active reasoning surface. Choose **Information Security Analyst**.
 
 4. **Bounded agent action and bundled human decisions (1:25–2:05)**
 
