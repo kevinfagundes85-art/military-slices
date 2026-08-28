@@ -1,0 +1,101 @@
+{
+  "evidence_id": "helm-adaptive-resolver-aperture-v1-implementation-preexecution-2026-08-28",
+  "disposition": "H1 IMPLEMENTATION READY FOR SEALED T1",
+  "implementation_commit": "e4b1fa624685d17711a5c68bcc4e836b192673ab",
+  "architecture_classification": "existing-contract enforcement + implementation hardening",
+  "frozen_t1": {
+    "accepted_commit": "b120136ba564f84cd9b261702030edfb4deeb189",
+    "design_sha256": "dc8bd82ceb49d053ac67ac17843edfbe1f9f8b646a55871368c7412b3b4bbf6e",
+    "contract_sha256": "df78c5836a3886ad965611f780b84e65e30d1ff7bd56360c42b50d7a6b6139de",
+    "authority_interface_sha256": "daf9e867c5f77d5f19683321bb915aa976c8f8d93c52d549ed226be8a973677c",
+    "role_attestation_sha256": "fbacd290c76b29991d9da742f1fd46ab5dd2b1ad5157770053eae6487a01f14b",
+    "manifest_sha256": "99c756a931f60f4a2292ef9f20b35c83fd80bf999e3ce3af36fc892f5fd2d8ed",
+    "modified": false
+  },
+  "implementation": {
+    "canonical_models_changed": false,
+    "domain_pack_changed": false,
+    "h0_runtime_changed": false,
+    "production_changed": false,
+    "selector_stateless": true,
+    "receipt_canonical_mutation": false,
+    "model_participates_in_selection": false,
+    "coupling_inference": false,
+    "coupling_ratio_telemetry_only": true,
+    "files": [
+      {
+        "path": "military_slices/adaptive_resolver_aperture.py",
+        "bytes": 13275,
+        "sha256": "17a232c7b61d995ad9c4d08cab0d47586c7d6b18ed08f478033a5b60226d0ef1"
+      },
+      {
+        "path": "tests/test_adaptive_resolver_aperture.py",
+        "bytes": 11322,
+        "sha256": "ece28ba7b442f85979eacaf41d0be38275aa5f1a56417f1a82f2683b9b725701"
+      },
+      {
+        "path": "benchmark/preflight_adaptive_resolver_aperture_t1_provider.py",
+        "bytes": 2650,
+        "sha256": "0a55ecdc1ea3b6ddc9a55fd6751986db9f6df02d6ec38f9e909f5951f68b344c"
+      }
+    ]
+  },
+  "local_falsification": {
+    "targeted_tests": 25,
+    "targeted_passed": 25,
+    "complete_tests": 297,
+    "complete_passed": 297,
+    "initial_failed_tests": 14,
+    "initial_failure_cause": "generic execution reason contained transition and incorrectly routed every fixture to lifecycle protection",
+    "failure_preserved_in_report": true,
+    "wide_surface_counts_verified": [3, 10, 25, 50, 100],
+    "wide_surface_exact": true,
+    "partial_coupled_adjudications": 0,
+    "telemetry_ratio_routing_changes": 0,
+    "canonical_mutations_from_selection": 0,
+    "authority_violations": 0,
+    "stale_suppressions": 0,
+    "improper_governance_bypasses": 0,
+    "model_selected_authority": 0,
+    "inferred_coupling": 0,
+    "ungoverned_broad_exposures": 0,
+    "relevant_invalidation_bypasses": 0,
+    "probe_self_eligibility_events": 0
+  },
+  "validation": {
+    "changed_file_ruff": "PASS",
+    "repository_wide_ruff": "PRE_EXISTING_DEBT_152_ERRORS",
+    "strict_mypy": "PASS_17_SOURCE_FILES",
+    "bandit": "PASS",
+    "dependency_audit": "PASS_NO_KNOWN_VULNERABILITIES",
+    "dependency_audit_skips": ["military-slices 0.1.0 is not published on PyPI"],
+    "javascript_syntax": "PASS_static/app.js",
+    "pytest_warning": "pre-existing Starlette TestClient httpx deprecation warning"
+  },
+  "provider_preflight": {
+    "artifact": "benchmark/output/adaptive-resolver-aperture-t1-provider-preflight-2026-08-28.json",
+    "sha256": "de919ba8212a0e6a58581979877bc35749eb6646e9c95caf02c9b7f5032070af",
+    "provider": "Vertex AI",
+    "project": "veteran-pathfinder-kf-2026",
+    "location": "global",
+    "requested_model": "gemini-3.7-flash",
+    "resolved_model": "publishers/google/models/gemini-3.7-flash",
+    "resolved_version": "default",
+    "final_status": "AVAILABLE",
+    "attempts": 2,
+    "provider_reached_attempts": 1,
+    "local_client_lifetime_failures": 1,
+    "benchmark_task_content_transmitted": false,
+    "benchmark_generation_calls": 0
+  },
+  "release_boundary": {
+    "t1_executed": false,
+    "t1_corpus_received": false,
+    "ground_truth_opened": false,
+    "authority_schedule_opened": false,
+    "provider_benchmark_calls": 0,
+    "production_traffic_changed": false,
+    "production_probe_enabled": false,
+    "external_effects": false
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "contract": "adaptive-resolver-aperture-t1-provider-preflight-v1",
+  "attempts": [
+    {
+      "provider": "Vertex AI",
+      "project": "veteran-pathfinder-kf-2026",
+      "location": "global",
+      "requested_model": "gemini-3.7-flash",
+      "timestamp": "2026-08-28T05:53:21.055264+00:00",
+      "operation": "models.get",
+      "benchmark_task_content_transmitted": false,
+      "benchmark_calls": 0,
+      "initialization_success": false,
+      "model_metadata": null,
+      "model_metadata_sha256": null,
+      "error_class": "RuntimeError",
+      "error": "Cannot send a request, as the client has been closed."
+    },
+    {
+      "provider": "Vertex AI",
+      "project": "veteran-pathfinder-kf-2026",
+      "location": "global",
+      "requested_model": "gemini-3.7-flash",
+      "timestamp": "2026-08-28T05:53:49.482819+00:00",
+      "operation": "models.get",
+      "benchmark_task_content_transmitted": false,
+      "benchmark_calls": 0,
+      "initialization_success": true,
+      "model_metadata": {
+        "name": "publishers/google/models/gemini-3.7-flash",
+        "display_name": null,
+        "version": "default"
+      },
+      "model_metadata_sha256": "81ccffde77c99ca4fdd4d38693be5c8b55fb61b1d5941991b270452627c62827",
+      "error_class": null,
+      "error": null
+    }
+  ],
+  "final_status": "AVAILABLE"
+}
