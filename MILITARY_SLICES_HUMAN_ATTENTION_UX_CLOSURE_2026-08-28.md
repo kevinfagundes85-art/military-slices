@@ -1,9 +1,8 @@
 # Military SLICES Human Attention UX Closure Evidence
 
 Date: 2026-08-28  
-Implementation commit: `286bcab70432392791ae6898dc3d1733962a5c40`  
-Candidate revision: `military-slices-00051-vab`  
-Candidate image: `sha256:b774cd71b0ab14d0bbcf0782be7c850ff73c1c2f590f280c6f49e39d508c6c1d`
+Implementation commits: `286bcab70432392791ae6898dc3d1733962a5c40`, `35cd08b1af2a813c9cfeaf078a65634012a7e839`  
+Candidate revision: `military-slices-00052-sag`
 
 ## Disposition
 
@@ -108,6 +107,10 @@ Pass. The primary answer is the large left-hand NOW surface. One primary action 
 
 Pass at 390 × 844. The header exposes `Something changed?`; the working direction and active content are first; required information appears before optional context. No text collision, horizontal overflow, or secondary control displaced the current objective.
 
+### Resolution-tightening follow-up
+
+The release candidate was additionally inspected at 1366 × 768 and 1440 × 900 after human review graded the hierarchy solid but noted slight screen-fit drift. Short-height desktop spacing is now compacted without changing the information hierarchy. The primary pane exposes a visible slim scroll rail whenever its fixed dashboard surface contains more governed content than the viewport can show; content no longer appears accidentally cropped. Android behavior remains unchanged.
+
 ## Automated validation
 
 | Check | Result |
@@ -136,13 +139,12 @@ No bounded issue remains that prevents the one-foreground-objective contract fro
 
 ## Candidate and production status
 
-- Implementation commit: `286bcab70432392791ae6898dc3d1733962a5c40`
-- Cloud Run revision: `military-slices-00051-vab`
-- Candidate URL: <https://hackathon-rc---military-slices-ztvqlzospa-uw.a.run.app/?release=286bcab>
+- Implementation commits: `286bcab70432392791ae6898dc3d1733962a5c40`, `35cd08b1af2a813c9cfeaf078a65634012a7e839`
+- Cloud Run revision: `military-slices-00052-sag`
+- Candidate URL: <https://hackathon-rc---military-slices-ztvqlzospa-uw.a.run.app/?release=35cd08b>
 - Candidate traffic: `0%`
 - Production traffic: `100%` remains on `military-slices-00001-niw`
 - Production Probe/profile state: unchanged
 - External effects: none
 
 The deployed candidate was opened after deployment and rendered the corrected bundled-decision hierarchy. Cloud Run reported the revision ready, and the revision error-log query returned an empty ledger.
-
