@@ -6,8 +6,8 @@
     <meta name="theme-color" content="#08141f">
     <meta name="description" content="Military SLICES helps U.S. service members connect career, education, location, and résumé decisions into one transition plan.">
     <title>Military SLICES</title>
-    <link rel="stylesheet" href="/static/styles.css?v=11">
-  <script src="/static/app.js?v=14" defer></script>
+    <link rel="stylesheet" href="/static/styles.css?v=12">
+    <script src="/static/app.js?v=15" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the next decision</a>
@@ -19,7 +19,7 @@
           <small>Your transition, connected.</small>
         </span>
       </a>
-      <button id="add-context-top" class="button button-quiet" type="button" hidden>Add an update</button>
+      <button id="add-context-top" class="button button-quiet" type="button" hidden>Go to input</button>
     </header>
 
     <main id="main" tabindex="-1">
@@ -83,6 +83,29 @@
           </div>
           <div id="readiness-marks" class="readiness-marks" aria-hidden="true"></div>
         </div>
+        <section class="helm-focus" aria-labelledby="helm-focus-title">
+          <div class="helm-focus-heading">
+            <div>
+              <div class="section-kicker">HELM focus</div>
+              <h2 id="helm-focus-title">The smallest useful decision surface.</h2>
+            </div>
+            <span id="focus-state" class="focus-state">Active</span>
+          </div>
+          <dl class="focus-grid">
+            <div>
+              <dt>Considering now</dt>
+              <dd id="focus-now">Loading the current decision…</dd>
+            </div>
+            <div>
+              <dt>Connected areas</dt>
+              <dd id="focus-scope">Only what can change this decision.</dd>
+            </div>
+            <div>
+              <dt>Held in reserve</dt>
+              <dd id="focus-background">Other saved context stays available without crowding this step.</dd>
+            </div>
+          </dl>
+        </section>
       </section>
 
       <section id="lens-cloud-shell" class="lens-cloud-shell" aria-labelledby="lens-cloud-title" hidden>
@@ -106,21 +129,21 @@
       </nav>
 
       <section id="add-panel" class="add-panel" hidden aria-labelledby="add-title">
-        <button id="close-add" class="icon-button" type="button" aria-label="Close">×</button>
-        <div class="section-kicker">Start with what you have</div>
-        <h2 id="add-title">What should your plan understand?</h2>
-        <p class="muted">A sentence is enough. A résumé, screenshot, or document works too.</p>
+        <button id="close-add" class="clear-input" type="button">Clear</button>
+        <div class="section-kicker">Persistent HELM input</div>
+        <h2 id="add-title">Tell your plan what changed.</h2>
+        <p class="muted">Add context, correct the frame, or drop in evidence without leaving the decision in front of you.</p>
         <form id="input-form">
-          <label for="input-text">What should your transition plan understand?</label>
-          <textarea id="input-text" maxlength="12000" rows="7" placeholder="For example: I leave the Coast Guard next spring. I need steady work near Tacoma, but I don’t know what civilian roles fit my experience."></textarea>
+          <label for="input-text">What should HELM understand?</label>
+          <textarea id="input-text" maxlength="12000" rows="7" placeholder="For example: I need remote work now, and I want to test building a technology company for veterans."></textarea>
           <div class="input-actions">
             <label class="button button-secondary file-button" for="artifact-file">Add a file</label>
             <input id="artifact-file" class="visually-hidden" type="file" accept=".txt,.pdf,.docx,.png,.jpg,.jpeg,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/png,image/jpeg">
             <span id="file-status" class="file-status" aria-live="polite">PDF, DOCX, TXT, PNG, or JPG · 5 MB max</span>
-            <button class="button button-primary" type="submit">Continue</button>
+            <button class="button button-primary" type="submit">Review update</button>
           </div>
         </form>
-        <p class="trust-note">You decide what to add. Choosing a file lets Military SLICES use relevant details from it to update this step.</p>
+        <p class="trust-note">Text is reviewed before it changes your plan. Choosing a file lets Military SLICES use relevant details from it only after you deliberately select it.</p>
       </section>
 
       <section id="review-panel" class="review-panel" hidden aria-labelledby="review-title">

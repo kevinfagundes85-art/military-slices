@@ -107,8 +107,8 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
     assert "Look at this another way" in html
     assert "Choose a relevant part of your plan" in html
-    assert "/static/app.js?v=14" in html
-    assert "/static/styles.css?v=11" in html
+    assert "/static/app.js?v=15" in html
+    assert "/static/styles.css?v=12" in html
 
 
 def test_primary_decision_precedes_plan_scaffolding_and_requires_an_explicit_choice() -> None:
@@ -221,6 +221,25 @@ def test_bounded_acquisition_is_natural_inline_and_keeps_one_primary_surface() -
     assert 'id="primary-content" aria-live="polite"' in html
     assert ".natural-answer summary" in css
     assert "acquisition-horizon" not in script
+
+
+def test_helm_workspace_keeps_input_visible_and_routes_unmodeled_directions_to_review() -> None:
+    html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    css = (ROOT / "static" / "styles.css").read_text(encoding="utf-8")
+
+    assert "Persistent HELM input" in html
+    assert "Tell your plan what changed." in html
+    assert 'id="helm-focus-title"' in html
+    assert 'id="focus-now"' in html
+    assert 'id="focus-scope"' in html
+    assert 'id="focus-background"' in html
+    assert "function renderHelmFocus" in script
+    assert "addPanel.hidden = !started" in script
+    assert 'gate.id === "career-direction" && gate.surface === "text"' in script
+    assert 'await requestOrientation(value, event.submitter)' in script
+    assert "Your plan advanced while you were writing" in script
+    assert ".add-panel {" in css and "position: sticky" in css
 
 
 def test_direction_exploration_observes_before_commit_and_builds_forward_afterward() -> None:

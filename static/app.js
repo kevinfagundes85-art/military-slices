@@ -183,6 +183,7 @@ function applyProgressiveDisclosure(next, showFeedback) {
   $("#orientation-shell").hidden = !started;
   $("#add-context-top").hidden = !started;
   $(".control-nav").hidden = !started;
+  addPanel.hidden = !started;
   $(".context-column").hidden = !contextVisible;
   contentGrid.hidden = false;
   contentGrid.classList.toggle("fresh-start", !started);
@@ -198,6 +199,7 @@ function render(next, options = {}) {
   renderTimeline(next.state);
   renderPath(next.state);
   renderProgress(next.progress, next.state, next.active_gate);
+  renderHelmFocus(next.state, next.active_gate);
   renderLenses(next.state, next.lenses);
   renderPrimary(next, showFeedback);
   renderImpact(next.impact);
@@ -218,6 +220,18 @@ function renderProgress(_progress, state, gate) {
     $("#readiness-count").textContent = gate ? `Next: ${gate.question}` : "No immediate choice is waiting.";
   }
   $("#readiness-marks").innerHTML = "";
+}
+
+function renderHelmFocus(state, gate) {
+  const mode = executionMode(state);
+  const scope = (gate?.affected_slices || []).map((slice) => labels[slice] || humanCopy(slice));
+  const heldBack = Number(state.latent_fact_count || 0);
+  $("#focus-state").textContent = mode === "PARALYZED" ? "Needs attention" : (mode === "COMPLETE" ? "Complete" : "Active");
+  $("#focus-now").textContent = gate?.title || (mode === "COMPLETE" ? "No decision is waiting." : "Your current plan is caught up.");
+  $("#focus-scope").textContent = scope.length ? scope.join(" · ") : "No additional plan area is active.";
+  $("#focus-background").textContent = heldBack
+    ? `${heldBack} background ${heldBack === 1 ? "detail remains" : "details remain"} available without entering this decision.`
+    : "Other saved context stays available without being pulled into this decision.";
 }
 
 function buildLensTopics(state, lenses) {
@@ -721,6 +735,9 @@ function renderPrimary(next, showConversationLead = false) {
   } else {
     control = `<label for="gate-value">Your answer</label><textarea id="gate-value" rows="4" placeholder="A sentence is enough."></textarea>`;
   }
+  const primaryAction = gate.id === "career-direction" && gate.surface === "text"
+    ? "Turn this into directions"
+    : "Use this decision";
   primary.innerHTML = `
     ${mode === "PARALYZED" ? '<div class="attention-note">These choices cannot both guide the next step. Your answer below will clear the conflict.</div>' : ""}
     ${conversationLead(acquisition, showConversationLead)}
@@ -728,7 +745,7 @@ function renderPrimary(next, showConversationLead = false) {
     <p class="gate-copy">${escapeHtml(humanCopy(gate.why))}</p>
     <form id="gate-form" class="gate-form">
       ${control}
-      ${gate.surface === "compare" && hypotheses.length ? "" : '<button class="button button-primary" type="submit">Use this decision</button>'}
+      ${gate.surface === "compare" && hypotheses.length ? "" : `<button class="button button-primary" type="submit">${primaryAction}</button>`}
     </form>
     ${taskHorizon(state.active_tasks)}
   `;
@@ -869,13 +886,19 @@ function showInspection(panel) {
   heading?.focus({ preventScroll: true });
 }
 
-function closeInspection(panel, returnTo) {
-  panel.hidden = true;
+function restoreWorkspace(returnTo = null) {
   document.body.classList.remove("inspection-open");
   contentGrid.hidden = false;
-  $("#orientation-shell").hidden = !planHasStarted(envelope.state);
-  $(".control-nav").hidden = !planHasStarted(envelope.state);
+  const started = planHasStarted(envelope.state);
+  $("#orientation-shell").hidden = !started;
+  $(".control-nav").hidden = !started;
+  addPanel.hidden = !started;
   returnTo?.focus();
+}
+
+function closeInspection(panel, returnTo) {
+  panel.hidden = true;
+  restoreWorkspace(returnTo);
 }
 
 function openLensDetail(lens) {
@@ -1131,9 +1154,11 @@ async function acceptFogBank() {
 function openAdd(fileFirst) {
   reviewReturn = "add";
   reviewPanel.hidden = true;
-  contentGrid.hidden = true;
   addPanel.hidden = false;
-  addPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+  addPanel.classList.remove("input-attention");
+  void addPanel.offsetWidth;
+  addPanel.classList.add("input-attention");
+  addPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
   if (fileFirst) {
     $("#artifact-file").click();
   } else {
@@ -1142,9 +1167,11 @@ function openAdd(fileFirst) {
 }
 
 function closeAdd() {
-  addPanel.hidden = true;
-  contentGrid.hidden = false;
-  $("#add-context-top").focus();
+  $("#input-text").value = "";
+  $("#artifact-file").value = "";
+  $("#file-status").textContent = "PDF, DOCX, TXT, PNG, or JPG · 5 MB max";
+  addPanel.querySelector(".inline-guidance")?.remove();
+  $("#input-text").focus();
 }
 
 async function orientInput(event) {
@@ -1172,6 +1199,7 @@ async function orientColdInput(event) {
 }
 
 async function requestOrientation(text, submit) {
+  const originalLabel = submit?.textContent;
   if (submit) {
     submit.disabled = true;
     submit.textContent = "Working through this…";
@@ -1184,7 +1212,7 @@ async function requestOrientation(text, submit) {
   } finally {
     if (submit) {
       submit.disabled = false;
-      submit.textContent = "Continue";
+      submit.textContent = originalLabel || "Review update";
     }
   }
 }
@@ -1249,8 +1277,11 @@ async function confirmReview() {
     focusPrimary();
     announce("Saved.");
   } catch (error) {
-    if (error.status === 409) await loadState();
-    announce(error.message, true);
+    if (error.status === 409) {
+      await reloadKeepingDraft(reviewedInput, "dock");
+    } else {
+      announce(error.message, true);
+    }
   } finally {
     button.disabled = false;
     button.textContent = pendingOrientation?.sufficient ? "Use this in my plan" : "Check this clarification";
@@ -1275,6 +1306,11 @@ async function submitDecision(event) {
     showInlineGuidance(primary, "Add your decision first.");
     return;
   }
+  if (gate.id === "career-direction" && gate.surface === "text") {
+    reviewReturn = "plan";
+    await requestOrientation(value, event.submitter);
+    return;
+  }
   if (gate.surface === "text") {
     await submitAcquisition(gate, value);
     return;
@@ -1296,8 +1332,11 @@ async function submitDecision(event) {
     focusPrimary();
     announce("Saved.");
   } catch (error) {
-    if (error.status === 409) await loadState();
-    showInlineGuidance(primary, error.message);
+    if (error.status === 409) {
+      await reloadKeepingDraft(value, "gate");
+    } else {
+      showInlineGuidance(primary, error.message);
+    }
   } finally {
     buttons.forEach((button) => { button.disabled = false; });
     setProcessing();
@@ -1332,8 +1371,11 @@ async function submitAcquisition(gate, text) {
     focusPrimary();
     announce("Saved.");
   } catch (error) {
-    if (error.status === 409) await loadState();
-    showInlineGuidance(primary, error.message);
+    if (error.status === 409) {
+      await reloadKeepingDraft(text, "gate");
+    } else {
+      showInlineGuidance(primary, error.message);
+    }
     buttons.forEach((button) => { button.disabled = false; });
   } finally {
     setProcessing();
@@ -1392,21 +1434,33 @@ async function loadState() {
   }
 }
 
+async function reloadKeepingDraft(draft, destination = "dock") {
+  await loadState();
+  restoreWorkspace();
+  const input = destination === "gate"
+    ? ($("#gate-natural-value") || $("#gate-value"))
+    : $("#input-text");
+  if (input) {
+    input.value = draft;
+    input.focus();
+  }
+  showInlineGuidance(
+    destination === "gate" ? primary : addPanel,
+    "Your plan advanced while you were writing. The newest decision is loaded and your draft is preserved for review.",
+  );
+}
+
 $("#add-context-top").addEventListener("click", () => openAdd(false));
 $("#close-add").addEventListener("click", closeAdd);
 $("#input-form").addEventListener("submit", orientInput);
 $("#artifact-file").addEventListener("change", uploadArtifact);
 $("#cancel-review").addEventListener("click", () => {
   reviewPanel.hidden = true;
-  document.body.classList.remove("inspection-open");
   if (reviewReturn === "add") {
-    addPanel.hidden = false;
+    restoreWorkspace($("#input-text"));
     $("#input-text").focus();
   } else {
-    contentGrid.hidden = false;
-    $("#orientation-shell").hidden = !planHasStarted(envelope.state);
-    $(".control-nav").hidden = !planHasStarted(envelope.state);
-    $("#cold-input-text")?.focus();
+    restoreWorkspace($("#gate-value") || $("#cold-input-text"));
   }
 });
 $("#confirm-review").addEventListener("click", confirmReview);
