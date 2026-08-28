@@ -1,0 +1,70 @@
+{
+  "artifact": "T1 r3 compact scoring extract manifest",
+  "source_raw_sha256": "533bfa3d61f1f778c04ab33f9f458ecda236e82aa66ad362d1593a5317a91834",
+  "source_execution_commit": "ed451fd4b532236d3c5cef003ccad0dbeff6550f",
+  "row_count": 720,
+  "rows_by_arm": {
+    "H0": 240,
+    "H1": 240,
+    "B": 240
+  },
+  "h0": {
+    "provider_valid": 232,
+    "provider_failures": 8
+  },
+  "h1": {
+    "provider_logical_calls": 208,
+    "provider_valid": 195,
+    "provider_failures": 13,
+    "zero_call_deterministic_reuse": 32,
+    "arm_task_results": 240
+  },
+  "b": {
+    "provider_valid": 240,
+    "provider_failures": 0
+  },
+  "authority_oracle": {
+    "requests_made_during_execution": 0,
+    "result_for_every_task": "null",
+    "retrospective_schedule_application_prohibited": true
+  },
+  "hard_gate_counter_basis": "read-only routing and non-authoritative model proposals; no Canonical mutation path executed",
+  "artifacts": [
+    {
+      "name": "t1_r3_scoring_extract_shard_1_of_6.csv",
+      "bytes": 30924,
+      "sha256": "946c5aedf7b5931bbafff185d5c039def4dfbc34a12e83f8d702416e67efc1b6",
+      "rows": 120
+    },
+    {
+      "name": "t1_r3_scoring_extract_shard_2_of_6.csv",
+      "bytes": 29531,
+      "sha256": "3eae4a5b95d94f6c986485a3da9202b2ad87763587adf7bebd5aee4274947112",
+      "rows": 120
+    },
+    {
+      "name": "t1_r3_scoring_extract_shard_3_of_6.csv",
+      "bytes": 29954,
+      "sha256": "4e8800f29907cf0465c5346771679abd6d164fe0706eac5f4857e1b25c61f74f",
+      "rows": 120
+    },
+    {
+      "name": "t1_r3_scoring_extract_shard_4_of_6.csv",
+      "bytes": 33975,
+      "sha256": "30f092c5201d3ac400da4e07b1da0b4cac168021d513735f4496d86e69d9a6ff",
+      "rows": 120
+    },
+    {
+      "name": "t1_r3_scoring_extract_shard_5_of_6.csv",
+      "bytes": 29914,
+      "sha256": "7d080456764178f195b09686ecb3f8d6b779bd3226c20e050cb1531bc1c4b27a",
+      "rows": 120
+    },
+    {
+      "name": "t1_r3_scoring_extract_shard_6_of_6.csv",
+      "bytes": 30951,
+      "sha256": "f858465bf84fec8be26d01fa7448a60b2696491395a67c4b98443328b3f17ed4",
+      "rows": 120
+    }
+  ]
+}
