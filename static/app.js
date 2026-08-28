@@ -71,6 +71,16 @@ function resetInputContext() {
   if (input) input.placeholder = "For example: My timeline changed, or I want to explore something different.";
 }
 
+function setAddPanelCopy(kicker, title, description) {
+  $("#add-kicker").textContent = kicker;
+  $("#add-title").textContent = title;
+  $("#add-description").textContent = description;
+}
+
+function resetAddPanelCopy() {
+  setAddPanelCopy("Update your plan", "Something changed?", "Tell Military SLICES what’s different.");
+}
+
 async function api(path, options = {}) {
   const { timeoutMs = 25000, ...requestOptions } = options;
   const controller = new AbortController();
@@ -291,15 +301,39 @@ function renderProgress(_progress, state, gate) {
 function renderHelmFocus(state, gate) {
   const mode = executionMode(state);
   const caughtUp = !gate && !(state.active_tasks || []).length;
+  const acceptedDirection = (state.career_hypotheses || []).find((item) => item.status === "accepted");
+  const needsLearningDecision = Boolean(
+    caughtUp && acceptedDirection && directionAwaitingNextMove(state, acceptedDirection),
+  );
+  const hasPlannedDirectionTest = Boolean(
+    caughtUp
+    && acceptedDirection
+    && !needsLearningDecision
+    && directionNextTestValues(state, acceptedDirection).length,
+  );
   const scope = (gate?.affected_slices || []).map((slice) => labels[slice] || humanCopy(slice));
   $("#focus-state").textContent = mode === "PARALYZED"
     ? "Needs attention"
-    : (mode === "COMPLETE" ? "Complete" : (caughtUp ? "Caught up" : "On course"));
-  $("#focus-now").textContent = gate ? humanCopy(gate.title) : (mode === "COMPLETE" ? "No decision is waiting." : "Your current plan is caught up.");
+    : (mode === "COMPLETE"
+      ? "Complete"
+      : (needsLearningDecision ? "Next move" : (hasPlannedDirectionTest ? "In the field" : (caughtUp ? "Caught up" : "On course"))));
+  $("#focus-now").textContent = gate
+    ? humanCopy(gate.title)
+    : (mode === "COMPLETE"
+      ? "No decision is waiting."
+      : (needsLearningDecision
+        ? "Decide what to do with what you learned."
+        : (hasPlannedDirectionTest ? "Run your planned test, then add what happened." : "Your current plan is caught up.")));
   $("#focus-why").textContent = gate
     ? humanCopy(gate.why)
-    : (mode === "COMPLETE" ? "This goal has been closed." : "Nothing needs your decision right now.");
-  $("#focus-scope").textContent = scope.length ? scope.join(" · ") : "No additional plan area is active.";
+    : (mode === "COMPLETE"
+      ? "This goal has been closed."
+      : (needsLearningDecision
+        ? "A real result should shape the next test—or the direction."
+        : (hasPlannedDirectionTest ? "The next useful input is evidence from the real world." : "Nothing needs your decision right now.")));
+  $("#focus-scope").textContent = scope.length
+    ? scope.join(" · ")
+    : ((needsLearningDecision || hasPlannedDirectionTest) ? "Work · Your story" : "No additional plan area is active.");
   renderPlanningRoute(state, gate);
 }
 
@@ -679,11 +713,38 @@ function itemList(items, emptyCopy) {
 
 function openDirectionLearning(item) {
   openAdd(false);
+  setAddPanelCopy(
+    "Test the direction",
+    "Add what you learned",
+    "Tell us what happened and what changed your view.",
+  );
   inputContext = { kind: "direction-learning", title: item.title };
   const input = $("#input-text");
   input.value = "";
   input.placeholder = `What did you learn while testing ${item.title}? A sentence is enough.`;
   input.focus();
+}
+
+function openDirectionNextTest(item) {
+  openAdd(false);
+  setAddPanelCopy(
+    "Keep moving",
+    "Plan the next small test",
+    "Turn what you learned into one concrete next test.",
+  );
+  inputContext = { kind: "direction-next-test", title: item.title };
+  const input = $("#input-text");
+  input.value = "";
+  input.placeholder = `What is the next small test for ${item.title}? Say what you will try and what result you will watch for.`;
+  input.focus();
+}
+
+function changeWorkingDirection(item) {
+  openFogBank();
+  $("#fog-bank-title").textContent = "What direction fits better now?";
+  $("#fog-bank-text").value = `I want to explore a different direction instead of ${item.title}. `;
+  showInlineGuidance($("#fog-bank-panel"), "Add the direction you want to explore, then review the change.");
+  $("#fog-bank-text").focus();
 }
 
 function directionDecisionValues(state) {
@@ -703,11 +764,57 @@ function directionLearningValues(state, item) {
     .slice(-3);
 }
 
+function directionNextTestValues(state, item) {
+  const prefix = `For my next test of the ${item.title} work direction:`.toLowerCase();
+  return (state.original_intents || [])
+    .filter((value) => value.toLowerCase().startsWith(prefix))
+    .map((value) => value.slice(prefix.length).trim())
+    .filter(Boolean);
+}
+
+function directionAwaitingNextMove(state, item) {
+  const learningPrefix = `While testing the ${item.title} work direction, I learned:`.toLowerCase();
+  const nextTestPrefix = `For my next test of the ${item.title} work direction:`.toLowerCase();
+  const latestCycleEntry = [...(state.original_intents || [])]
+    .reverse()
+    .find((value) => {
+      const normalized = value.toLowerCase();
+      return normalized.startsWith(learningPrefix) || normalized.startsWith(nextTestPrefix);
+    });
+  return Boolean(latestCycleEntry?.toLowerCase().startsWith(learningPrefix));
+}
+
 function renderAcceptedExploration(item, state) {
   const decisions = directionDecisionValues(state);
   const learnings = directionLearningValues(state, item);
-  const experiment = decisions.length >= 3 ? decisions.at(-1) : humanCopy(item.first_experiment || item.next_step);
+  const nextTestValues = directionNextTestValues(state, item);
+  const experiment = nextTestValues.at(-1)
+    || (decisions.length >= 3 ? decisions.at(-1) : humanCopy(item.first_experiment || item.next_step));
   const recordedDecisions = decisions.length >= 3 ? decisions.slice(0, -1) : decisions;
+  if (directionAwaitingNextMove(state, item)) {
+    primary.innerHTML = `
+      <div class="section-kicker">Use what you learned</div>
+      <h2 id="primary-title">What do you want to do next?</h2>
+      <p class="gate-copy">You tested this direction and learned something real. Use that result now instead of leaving it buried in the plan.</p>
+      <section class="learning-next-move">
+        <span>YOUR LATEST RESULT</span>
+        <strong>${escapeHtml(learnings.at(-1) || "A test result was recorded.")}</strong>
+        <p>Choose whether to run a sharper test or reconsider the direction.</p>
+        <div class="direction-actions next-move-actions">
+          <button id="plan-next-direction-test" class="button button-primary" type="button">Plan the next small test</button>
+          <button id="change-working-direction" class="button button-secondary" type="button">Change direction</button>
+        </div>
+      </section>
+      <details class="working-record-details">
+        <summary>Review the working direction</summary>
+        <p><strong>${escapeHtml(item.title)}</strong></p>
+        <p>Previous test: ${escapeHtml(experiment)}</p>
+      </details>
+    `;
+    $("#plan-next-direction-test").addEventListener("click", () => openDirectionNextTest(item));
+    $("#change-working-direction").addEventListener("click", () => changeWorkingDirection(item));
+    return;
+  }
   const nextTests = learnings.length
     ? ["Use the findings to decide whether to strengthen, change, or stop this direction. If you continue, define the next small test."]
     : (decisions.length >= 3
@@ -1451,6 +1558,7 @@ async function acceptFogBank() {
 function openAdd(fileFirst) {
   reviewReturn = "add";
   resetInputContext();
+  resetAddPanelCopy();
   reviewPanel.hidden = true;
   addPanel.hidden = false;
   document.body.classList.add("input-open");
@@ -1467,6 +1575,7 @@ function openAdd(fileFirst) {
 
 function closeAdd() {
   resetInputContext();
+  resetAddPanelCopy();
   $("#input-text").value = "";
   $("#artifact-file").value = "";
   $("#file-status").textContent = "PDF, DOCX, TXT, PNG, or JPG · 5 MB max";
@@ -1495,7 +1604,9 @@ async function orientInput(event) {
   reviewReturn = "add";
   const orientedText = inputContext?.kind === "direction-learning"
     ? `While testing the ${inputContext.title} work direction, I learned: ${text}`
-    : text;
+    : (inputContext?.kind === "direction-next-test"
+      ? `For my next test of the ${inputContext.title} work direction: ${text}`
+      : text);
   await requestOrientation(orientedText, event.submitter);
 }
 

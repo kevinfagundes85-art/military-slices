@@ -548,6 +548,13 @@ textarea { resize: vertical; }
 .decision-bundle section { padding: 0.85rem 1rem; background: rgba(7, 20, 31, 0.55); border: 1px solid var(--line); border-radius: 0.8rem; }
 .decision-bundle section p { margin: 0.35rem 0 0.65rem; color: var(--muted); font-size: 0.88rem; }
 .decision-bundle textarea { min-height: 76px; }
+.learning-next-move { margin-top: 1.2rem; padding: clamp(1rem, 2.4vw, 1.4rem); background: rgba(7, 20, 31, 0.62); border: 1px solid rgba(101, 213, 197, 0.5); border-radius: 0.9rem; }
+.learning-next-move > span { display: block; color: var(--sea); font-size: 0.72rem; font-weight: 850; letter-spacing: 0.1em; text-transform: uppercase; }
+.learning-next-move > strong { display: block; margin-top: 0.45rem; font-size: clamp(1.05rem, 2vw, 1.3rem); }
+.learning-next-move > p { margin: 0.6rem 0 0; color: var(--muted); }
+.next-move-actions { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); margin: 1rem 0 0; }
+.working-record-details { margin-top: 0.85rem; padding: 0.2rem 0.85rem; border: 1px solid var(--line); border-radius: 0.75rem; }
+.working-record-details p { color: var(--muted); }
 .conversation-lead { margin-bottom: 1.15rem; padding: 0 0 1rem; border-bottom: 1px solid var(--line); }
 .conversation-lead p { margin: 0; color: var(--muted); }
 .conversation-lead .conversation-ack { margin-bottom: 0.45rem; color: var(--ink); font-size: clamp(1.05rem, 3vw, 1.3rem); font-weight: 850; }

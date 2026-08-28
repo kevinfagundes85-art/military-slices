@@ -7,7 +7,7 @@
     <meta name="description" content="Military SLICES helps U.S. service members connect career, education, location, and résumé decisions into one transition plan.">
     <title>Military SLICES</title>
     <link rel="stylesheet" href="/static/styles.css?v=26">
-    <script src="/static/app.js?v=42" defer></script>
+    <script src="/static/app.js?v=43" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the next decision</a>
@@ -159,9 +159,9 @@
 
       <section id="add-panel" class="add-panel" hidden aria-labelledby="add-title">
         <button id="close-add" class="clear-input" type="button">Close</button>
-        <div class="section-kicker">Update your plan</div>
+        <div id="add-kicker" class="section-kicker">Update your plan</div>
         <h2 id="add-title">Something changed?</h2>
-        <p class="muted">Tell Military SLICES what’s different.</p>
+        <p id="add-description" class="muted">Tell Military SLICES what’s different.</p>
         <form id="input-form">
           <label class="visually-hidden" for="input-text">What changed or needs correcting?</label>
           <textarea id="input-text" maxlength="12000" rows="2" placeholder="For example: My timeline changed, or I want to explore something different."></textarea>

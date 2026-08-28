@@ -107,7 +107,7 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
     assert "View connected areas" in html
     assert "Choose a relevant part of your plan" in html
-    assert "/static/app.js?v=42" in html
+    assert "/static/app.js?v=43" in html
     assert "/static/styles.css?v=26" in html
 
 
@@ -347,6 +347,25 @@ def test_known_direction_questions_are_presented_as_one_governed_bundle() -> Non
     assert "Each answer keeps its own approval and record." in script
     assert 'return title || "Describe the next real-world check."' in script
     assert "What will you do first, and what result would tell you whether it helped?" not in script
+
+
+def test_a_recorded_learning_becomes_a_next_move_instead_of_a_caught_up_dead_end() -> None:
+    html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+
+    assert 'id="add-kicker"' in html
+    assert 'id="add-description"' in html
+    assert "function directionAwaitingNextMove" in script
+    assert "What do you want to do next?" in script
+    assert "Plan the next small test" in script
+    assert "Change direction" in script
+    assert "Decide what to do with what you learned." in script
+    assert "Run your planned test, then add what happened." in script
+    assert "The next useful input is evidence from the real world." in script
+    assert "For my next test of the ${inputContext.title} work direction:" in script
+    assert 'setAddPanelCopy("Update your plan", "Something changed?"' in script
+    assert '"Add what you learned"' in script
+    assert '"Turn what you learned into one concrete next test."' in script
 
 
 def test_recomputed_conversation_lead_is_visible_only_after_a_material_change() -> None:
