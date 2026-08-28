@@ -499,7 +499,7 @@ class FogBankAcceptRequest(BaseModel):
 class FogBankChange(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    field: Literal["human_anchor", "lifecycle_position", "transition_date"]
+    field: Literal["human_anchor", "lifecycle_position", "transition_date", "service"]
     current_value: str | None = None
     proposed_value: str | None = None
     reason: str

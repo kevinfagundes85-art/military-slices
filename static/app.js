@@ -65,6 +65,12 @@ function humanError(message, status = 0) {
   return message || "Something went wrong. Your earlier plan is unchanged; try again.";
 }
 
+function resetInputContext() {
+  inputContext = null;
+  const input = $("#input-text");
+  if (input) input.placeholder = "Tell HELM what changed…";
+}
+
 async function api(path, options = {}) {
   const { timeoutMs = 25000, ...requestOptions } = options;
   const controller = new AbortController();
@@ -132,7 +138,20 @@ function escapeHtml(value) {
 }
 
 function humanCopy(value) {
-  return String(value ?? "")
+  const raw = String(value ?? "");
+  const exactLabels = {
+    army: "Army",
+    navy: "Navy",
+    marine_corps: "Marine Corps",
+    air_force: "Air Force",
+    space_force: "Space Force",
+    coast_guard: "Coast Guard",
+    active_duty: "Active duty or full-time service",
+    reserve: "Reserve",
+    national_guard: "National Guard",
+  };
+  if (exactLabels[raw]) return exactLabels[raw];
+  return raw
     .replace(/resolve the next material uncertainty/gi, "Choose what to test next")
     .replace(/used what you learned to retire this uncertainty/gi, "Your answer moved this plan forward")
     .replace(/recomputed the next question from the updated plan/gi, "Here’s the next thing worth figuring out")
@@ -265,16 +284,19 @@ function renderProgress(_progress, state, gate) {
 
 function renderHelmFocus(state, gate) {
   const mode = executionMode(state);
+  const caughtUp = !gate && !(state.active_tasks || []).length;
   const scope = (gate?.affected_slices || []).map((slice) => labels[slice] || humanCopy(slice));
   const heldBack = Number(state.latent_fact_count || 0);
-  const activeFacts = (state.facts || []).filter((fact) => fact.status !== "stale").length;
-  $("#focus-state").textContent = mode === "PARALYZED" ? "Needs attention" : (mode === "COMPLETE" ? "Complete" : "Active");
+  const activeEvidence = gate ? new Set(gate.required_evidence || []).size : 0;
+  $("#focus-state").textContent = mode === "PARALYZED"
+    ? "Needs attention"
+    : (mode === "COMPLETE" ? "Complete" : (caughtUp ? "Caught up" : "Active"));
   $("#focus-now").textContent = gate ? humanCopy(gate.title) : (mode === "COMPLETE" ? "No decision is waiting." : "Your current plan is caught up.");
   $("#focus-scope").textContent = scope.length ? scope.join(" · ") : "No additional plan area is active.";
   $("#focus-background").textContent = heldBack
     ? `${heldBack} ${heldBack === 1 ? "detail stays" : "details stay"} in the background until needed.`
     : "Other details stay available without being pulled into this decision.";
-  $("#metric-active").textContent = String(activeFacts);
+  $("#metric-active").textContent = String(activeEvidence);
   $("#metric-latent").textContent = String(heldBack);
   $("#metric-tasks").textContent = String((state.active_tasks || []).length);
 }
@@ -658,33 +680,157 @@ function openDirectionLearning(item) {
   input.focus();
 }
 
-function renderAcceptedExploration(item) {
+function directionDecisionValues(state) {
+  return (state.decisions || [])
+    .filter((decision) => decision.gate_id?.startsWith("path-task_"))
+    .map((decision) => humanCopy(decision.value))
+    .filter(Boolean)
+    .slice(-4);
+}
+
+function directionLearningValues(state, item) {
+  const prefix = `While testing the ${item.title} work direction, I learned:`.toLowerCase();
+  return (state.original_intents || [])
+    .filter((value) => value.toLowerCase().startsWith(prefix))
+    .map((value) => value.slice(prefix.length).trim())
+    .filter(Boolean)
+    .slice(-3);
+}
+
+function renderAcceptedExploration(item, state) {
+  const decisions = directionDecisionValues(state);
+  const learnings = directionLearningValues(state, item);
+  const experiment = decisions.length >= 3 ? decisions.at(-1) : humanCopy(item.first_experiment || item.next_step);
+  const recordedDecisions = decisions.length >= 3 ? decisions.slice(0, -1) : decisions;
+  const nextTests = learnings.length
+    ? ["Use the findings to decide whether to strengthen, change, or stop this direction. If you continue, define the next small test."]
+    : (decisions.length >= 3
+      ? ["Run the experiment you described, then add the result—especially anything that changed your trust in this direction."]
+      : item.possible_gaps);
   primary.innerHTML = `
     <div class="section-kicker">Explore the direction</div>
-    <h2 id="primary-title">Start by testing ${escapeHtml(item.title)}.</h2>
-    <p class="gate-copy">You’re not locked in. The next move is to try one thing in the real world and see what you learn.</p>
+    <h2 id="primary-title">Your working direction: ${escapeHtml(item.title)}</h2>
+    <p class="gate-copy">This is the live decision record—not a permanent commitment. Add evidence whenever the real world changes your view.</p>
     <article class="direction-exploration">
       <section>
-        <h3>A useful first experiment</h3>
-        <p>${escapeHtml(humanCopy(item.first_experiment || item.next_step))}</p>
+        <h3>What you’re testing</h3>
+        <p>${escapeHtml(experiment)}</p>
+      </section>
+      <section class="decision-record">
+        <h3>Decisions you made</h3>
+        ${itemList(recordedDecisions, "No test decision has been recorded yet.")}
+      </section>
+      <section class="learning-record">
+        <h3>What you learned</h3>
+        ${itemList(learnings, "No test result has been added yet.")}
       </section>
       <section>
-        <h3>Questions this test should answer</h3>
-        ${itemList(item.questions_to_test, "What would have to be true for this direction to be worth continuing?")}
+        <h3>What to test next</h3>
+        ${itemList(nextTests, "What would have to be true for this direction to be worth continuing?")}
       </section>
       <section>
         <h3>What you already bring</h3>
         ${itemList(item.capability_matches, "No fit is being assumed yet.")}
       </section>
-      <section>
-        <h3>What you still need to find out</h3>
-        ${itemList(item.possible_gaps, "You still need a real-world answer here.")}
-      </section>
       <p class="evidence-note">What this is based on: ${escapeHtml(humanCopy((item.evidence || []).join(" · ")))}</p>
     </article>
-    <button id="add-direction-learning" class="button button-primary" type="button">Add what I learn</button>
+    <button id="add-direction-learning" class="button button-primary" type="button">Add a test result</button>
   `;
   $("#add-direction-learning").addEventListener("click", () => openDirectionLearning(item));
+}
+
+function remainingDirectionTasks(state) {
+  const decisions = state.decisions || [];
+  const accepted = (state.career_hypotheses || []).find((item) => item.status === "accepted");
+  if (!accepted) return [];
+  let directionIndex = -1;
+  decisions.forEach((decision, index) => {
+    if (decision.gate_id === "career-direction" && decision.value?.startsWith("Explore: ")) directionIndex = index;
+  });
+  const completed = decisions
+    .slice(directionIndex + 1)
+    .filter((decision) => decision.gate_id?.startsWith("path-task_"))
+    .length;
+  const declaredTasks = [
+    ...(accepted.questions_to_test || []).map((question) => ({
+      title: question,
+      reason: "This answer defines what the real-world test must resolve.",
+    })),
+    {
+      title: accepted.first_experiment,
+      reason: "This answer turns the direction into a bounded first action and a result you can evaluate.",
+    },
+  ];
+  return declaredTasks.slice(completed);
+}
+
+function directionTaskQuestion(task) {
+  const title = humanCopy(task.title || "").trim();
+  return title.endsWith("?")
+    ? title
+    : "What will you do first, and what result would tell you whether it helped?";
+}
+
+function renderDecisionBundle(state, gate, tasks) {
+  primary.innerHTML = `
+    <div class="section-kicker">Make the whole test plan</div>
+    <h2 id="primary-title">Answer the known questions together.</h2>
+    <p class="gate-copy">These answers belong together. Review all of them once; we’ll save each one in the right place without making you step through three screens.</p>
+    <form id="decision-bundle-form" class="gate-form decision-bundle">
+      ${tasks.map((task, index) => `
+        <section>
+          <label for="bundle-answer-${index}"><strong>${index + 1}. ${escapeHtml(directionTaskQuestion(task))}</strong></label>
+          <p>${escapeHtml(humanCopy(task.reason || "This answer shapes the next test."))}</p>
+          <textarea id="bundle-answer-${index}" data-bundle-answer rows="3" maxlength="2000" required placeholder="A direct answer is enough."></textarea>
+        </section>
+      `).join("")}
+      <button class="button button-primary" type="submit">Use these decisions</button>
+      <p class="trust-note">Each answer keeps its own approval and record. This screen only removes unnecessary repetition.</p>
+    </form>
+    ${taskHorizon(tasks, true)}
+  `;
+  $("#decision-bundle-form").addEventListener("submit", submitDecisionBundle);
+  $("#bundle-answer-0").focus();
+}
+
+async function submitDecisionBundle(event) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const answers = [...form.querySelectorAll("[data-bundle-answer]")].map((input) => input.value.trim());
+  if (answers.some((answer) => !answer)) {
+    showInlineGuidance(primary, "Answer each question before using this test plan.");
+    return;
+  }
+  const button = event.submitter;
+  button.disabled = true;
+  button.textContent = "Saving the test plan…";
+  let next = envelope;
+  try {
+    for (const answer of answers) {
+      const currentGate = next.active_gate;
+      if (!currentGate?.id?.startsWith("path-task_")) {
+        throw new Error("The plan changed before every answer could be applied. The saved decisions remain visible.");
+      }
+      next = await api("/api/decision", {
+        method: "POST",
+        body: JSON.stringify({
+          gate_id: currentGate.id,
+          value: answer,
+          expected_version: next.state.version,
+          idempotency_key: idempotencyKey(),
+        }),
+      });
+    }
+    render(next, { showFeedback: true });
+    focusPrimary();
+    announce("Test plan saved.");
+  } catch (error) {
+    if (error.status === 409) await loadState();
+    showInlineGuidance(primary, error.message);
+  } finally {
+    button.disabled = false;
+    button.textContent = "Use these decisions";
+  }
 }
 
 function renderHypothesisExploration(itemId) {
@@ -767,7 +913,7 @@ function renderPrimary(next, showConversationLead = false) {
   if (!gate) {
     const accepted = state.career_hypotheses.find((item) => item.status === "accepted");
     if (accepted) {
-      renderAcceptedExploration(accepted);
+      renderAcceptedExploration(accepted, state);
       return;
     }
     const hasTasks = Boolean(state.active_tasks?.length);
@@ -778,6 +924,11 @@ function renderPrimary(next, showConversationLead = false) {
       <button id="add-more" class="button ${hasTasks ? "button-quiet" : "button-primary"}" type="button">Add an update</button>
     `;
     $("#add-more").addEventListener("click", () => openAdd(false));
+    return;
+  }
+  const directionTasks = remainingDirectionTasks(state);
+  if (gate.id.startsWith("path-task_") && directionTasks.length > 1) {
+    renderDecisionBundle(state, gate, directionTasks);
     return;
   }
   const hypotheses = state.career_hypotheses.filter((item) => item.status === "candidate");
@@ -1042,22 +1193,24 @@ async function openHistory() {
   try {
     const history = await api("/api/history");
     const meaningful = [];
-    let lastAnchor = null;
+    let lastFingerprint = null;
     history.entries.slice().reverse().forEach((entry) => {
       const anchor = entry.human_anchor?.trim();
-      if (!anchor || anchor === lastAnchor) return;
+      const latestDecision = entry.closed_decisions.at(-1) || "";
+      const fingerprint = `${anchor || ""}\u001f${latestDecision}`;
+      if (!anchor || fingerprint === lastFingerprint) return;
       meaningful.push(entry);
-      lastAnchor = anchor;
+      lastFingerprint = fingerprint;
     });
-    if (meaningful.length < 2) {
-      $("#history-list").innerHTML = "<p>No earlier direction change has been recorded yet.</p>";
+    if (!meaningful.length) {
+      $("#history-list").innerHTML = "<p>No governed decision has been recorded yet.</p>";
       return;
     }
-    $("#history-list").innerHTML = meaningful.slice(0, 4).map((entry) => `
+    $("#history-list").innerHTML = meaningful.slice(0, 8).map((entry) => `
       <button class="history-version" data-version="${entry.version}" type="button">
         <strong>${entry.current ? "Current plan" : "Earlier plan"}</strong>
         <span>${escapeHtml(humanCopy(entry.human_anchor))}</span>
-        <small>${escapeHtml(humanCopy(entry.change_summary))}</small>
+        <small>${escapeHtml(humanCopy(entry.closed_decisions.at(-1) || entry.change_summary))}</small>
       </button>
     `).join("");
     document.querySelectorAll(".history-version").forEach((button) => {
@@ -1219,7 +1372,7 @@ function renderFogBank(proposal) {
   result.hidden = false;
   if (proposal.status === "clarification_needed") {
     result.innerHTML = `
-      <div class="attention-note">
+      <div class="guidance-note">
         <h3>One more detail</h3>
         <p>${escapeHtml(proposal.clarification_question)}</p>
         <p class="trust-note">Your current plan has not changed.</p>
@@ -1230,7 +1383,7 @@ function renderFogBank(proposal) {
   }
   $("#fog-bank-form").hidden = true;
   result.innerHTML = `
-    <div class="attention-note"><strong>Nothing has changed yet.</strong> ${escapeHtml(proposal.summary)}</div>
+    <div class="guidance-note"><strong>Nothing has changed yet.</strong> ${escapeHtml(proposal.summary)}</div>
     ${proposal.conflicts.length ? `<h3>What no longer fits</h3><ul>${proposal.conflicts.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
     <h3>Suggested plan update</h3>
     <ul>${proposal.changes.map((change) => `<li><strong>${escapeHtml(change.reason)}</strong><br><span>${escapeHtml(humanCopy(change.current_value || "Not set"))} → ${escapeHtml(humanCopy(change.proposed_value || "Remove from the active plan"))}</span></li>`).join("")}</ul>
@@ -1261,6 +1414,7 @@ async function acceptFogBank() {
       }),
     });
     pendingFogBank = null;
+    resetInputContext();
     $("#input-text").value = "";
     $("#fog-bank-panel").hidden = true;
     document.body.classList.remove("inspection-open");
@@ -1277,7 +1431,7 @@ async function acceptFogBank() {
 
 function openAdd(fileFirst) {
   reviewReturn = "add";
-  inputContext = null;
+  resetInputContext();
   reviewPanel.hidden = true;
   addPanel.hidden = false;
   addPanel.classList.remove("input-attention");
@@ -1292,7 +1446,7 @@ function openAdd(fileFirst) {
 }
 
 function closeAdd() {
-  inputContext = null;
+  resetInputContext();
   $("#input-text").value = "";
   $("#artifact-file").value = "";
   $("#file-status").textContent = "PDF, DOCX, TXT, PNG, or JPG · 5 MB max";
@@ -1328,7 +1482,9 @@ function isPlanChangeRequest(text) {
   const plan = "(?:my|the)?\\s*(?:career|transition|current)?\\s*plans?";
   const directChange = new RegExp(`\\b(?:change|update|fix|redo|revise|edit)\\s+${plan}\\b`);
   const makeChange = new RegExp(`\\bmake\\s+changes?\\s+to\\s+${plan}\\b`);
-  return directChange.test(normalized) || makeChange.test(normalized);
+  const hasWorkingDirection = (envelope?.state?.career_hypotheses || []).some((item) => item.status === "accepted");
+  const declaresNewDirection = /\b(?:i\s+)?(?:now\s+)?want\s+to\s+(?:build|become|work\s+as|focus\s+on|pursue)\b/.test(normalized);
+  return directChange.test(normalized) || makeChange.test(normalized) || (hasWorkingDirection && declaresNewDirection);
 }
 
 async function orientColdInput(event) {
@@ -1364,6 +1520,22 @@ async function requestOrientation(text, submit) {
 
 function showReview(result) {
   const needsClarification = !result.sufficient;
+  const isUnrelated = needsClarification
+    && (result.affected_slices || []).length === 0
+    && envelope?.state?.starting_vector_complete;
+  $("#review-text-label").hidden = Boolean(isUnrelated);
+  $("#review-text").hidden = Boolean(isUnrelated);
+  $("#confirm-review").hidden = Boolean(isUnrelated);
+  $("#cancel-review").textContent = isUnrelated ? "Back to my plan" : "Go back";
+  if (isUnrelated) {
+    $("#review-title").textContent = "This doesn’t change your plan.";
+    $("#review-summary").textContent = "We kept your current plan as-is because this detail is not connected to a decision you are working on.";
+    $("#review-statements").innerHTML = result.statements.map((item) => `<li>${escapeHtml(item.text)}</li>`).join("");
+    $("#review-trust").textContent = "Nothing was saved, and you do not need to explain it further.";
+    $("#review-text").value = result.reviewed_input;
+    showInspection(reviewPanel);
+    return;
+  }
   $("#review-title").textContent = needsClarification
     ? "One question before this can shape your plan."
     : "Check this before it shapes your plan.";
@@ -1419,7 +1591,7 @@ async function confirmReview() {
     pendingOrientation = null;
     if (reviewReturn === "add") {
       $("#input-text").value = "";
-      inputContext = null;
+      resetInputContext();
     }
     render(next, { showFeedback: true });
     $("#primary").scrollIntoView({ behavior: "smooth", block: "start" });

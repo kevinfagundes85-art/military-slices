@@ -17,6 +17,20 @@ from military_slices.models import MilitaryStateSubject, PlanningActor, ServiceN
 from military_slices.path_runtime import PACK_VERSION, path_boundaries, refresh_path_state
 
 
+def test_specific_product_platform_goal_becomes_the_human_anchor() -> None:
+    text = "I want to build a peer-to-peer disaster logistics platform for Guard families."
+    state = apply_confirmed_input(new_state("ms-platform-anchor"), orient(text), idempotency_key="platform-0001")
+
+    assert state.human_anchor == text.rstrip(".")
+
+
+def test_specific_civilian_role_replaces_a_rejected_product_direction() -> None:
+    text = "I changed my mind. I no longer want to build a product; I want a stable cybersecurity analyst role."
+    state = apply_confirmed_input(new_state("ms-role-anchor"), orient(text), idempotency_key="role-0001")
+
+    assert state.human_anchor == "Find civilian work"
+
+
 def test_installed_pack_version_and_activation_limits_are_locked() -> None:
     boundaries = path_boundaries()
     assert boundaries["version"] == PACK_VERSION

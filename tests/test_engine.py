@@ -116,6 +116,14 @@ def test_ai_tool_goal_produces_product_builder_directions() -> None:
     assert any("AI product" in item.title for item in hypotheses)
 
 
+def test_novel_product_platform_goal_is_transition_relevant() -> None:
+    result = orient("I want to build a peer-to-peer disaster logistics platform for Guard families.")
+
+    assert result.sufficient is True
+    assert SliceName.CAREER in result.affected_slices
+    assert SliceName.LOCATION in result.affected_slices
+
+
 def test_explicit_rejection_changes_later_reasoning_without_looping() -> None:
     state = apply_confirmed_input(
         new_state("ms-test"),

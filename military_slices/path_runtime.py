@@ -154,7 +154,8 @@ def _venture_product_objective(value: str) -> bool:
     return bool(
         re.search(
             r"\b(?:build|building|create|creating)\s+"
-            r"(?:an?\s+)?(?:tool|product|app|platform|solution|service)s?\b",
+            r"(?:an?\s+)?(?:[a-z0-9-]+\s+){0,6}"
+            r"(?:tool|product|app|platform|solution|service)s?\b",
             value,
         )
     )
@@ -163,6 +164,14 @@ def _venture_product_objective(value: str) -> bool:
 def _anchor_candidate(clause: str) -> tuple[int, int, str, str] | None:
     lower = clause.casefold()
     domain = anchor_domain(clause)
+    specific_role_objective = bool(
+        not any(term in lower for term in ("resume", "résumé", "cv"))
+        and re.search(
+            r"\bi\s+(?:want|need|plan|hope)\s+(?:to\s+)?(?:be(?:come)?\s+)?"
+            r"(?:an?\s+)?[^.!?]{0,60}\b(?:role|analyst|manager|engineer|specialist|coordinator)\b",
+            lower,
+        )
+    )
     if any(term in lower for term in ("resume", "résumé", "cv", "submission-ready")) and any(
         term in lower
         for term in ("my anchor", "our anchor", "my goal", "our goal", "help me", "make my", "update my", "prepare my")
@@ -181,6 +190,8 @@ def _anchor_candidate(clause: str) -> tuple[int, int, str, str] | None:
             "steady work",
         )
     ) or ("want to compare" in lower and any(term in lower for term in ("work", "career", "job", "delivery"))):
+        domain = "employment"
+    elif specific_role_objective:
         domain = "employment"
     elif any(term in lower for term in ("choose education", "education path", "education program")):
         domain = "education"
@@ -215,6 +226,7 @@ def _anchor_candidate(clause: str) -> tuple[int, int, str, str] | None:
             "prefer ",
             "do not want",
             "don't want",
+            "no longer want",
         )
     )
     explicit_target = bool(
@@ -243,6 +255,7 @@ def _anchor_candidate(clause: str) -> tuple[int, int, str, str] | None:
         or re.search(r"\bi\s+(?:want|need)\s+(?:my|a|the)\s+(?:resume|résumé|cv)\b", lower)
         or re.search(r"\bi\s+(?:want|need)\s+[^.!?]{0,40}\b(?:civilian\s+)?(?:work|employment|job)\b", lower)
         or re.search(r"\bwe\s+(?:want|need|plan)\s+to\b", lower)
+        or specific_role_objective
     )
     explicit_task = bool(
         re.search(r"\bhelp\s+(?:me|us)\b", lower)

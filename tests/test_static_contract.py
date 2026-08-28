@@ -107,8 +107,8 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
     assert "View connected areas" in html
     assert "Choose a relevant part of your plan" in html
-    assert "/static/app.js?v=24" in html
-    assert "/static/styles.css?v=17" in html
+    assert "/static/app.js?v=35" in html
+    assert "/static/styles.css?v=20" in html
 
 
 def test_primary_decision_precedes_plan_scaffolding_and_requires_an_explicit_choice() -> None:
@@ -122,12 +122,13 @@ def test_primary_decision_precedes_plan_scaffolding_and_requires_an_explicit_cho
     assert '.orientation-shell > .timeline { display: none; }' in css
 
 
-def test_history_surface_collapses_write_versions_into_real_direction_changes() -> None:
+def test_history_surface_collapses_write_versions_into_governed_decision_changes() -> None:
     script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
     history = script[script.index("async function openHistory") : script.index("async function inspectHistoryVersion")]
 
-    assert "if (!anchor || anchor === lastAnchor) return;" in history
-    assert "No earlier direction change has been recorded yet." in history
+    assert "const latestDecision = entry.closed_decisions.at(-1)" in history
+    assert "fingerprint === lastFingerprint" in history
+    assert "No governed decision has been recorded yet." in history
     assert "No target declared" not in history
 
 
@@ -155,7 +156,7 @@ def test_cold_start_renders_intake_without_plan_machinery() -> None:
     assert "Where is the service member now?" in starting
     assert "Military branch" in starting
     assert "Service status" in starting
-    fresh = script[script.index("function renderColdFrontDoor") : script.index("function renderPrimary")]
+    fresh = script[script.index("function renderColdFrontDoor") : script.index("function itemList")]
     assert "You don’t need the whole plan yet." in fresh
     assert "Start with a document" in fresh
     assert "Start with an image" in fresh
@@ -172,7 +173,7 @@ def test_cold_start_renders_intake_without_plan_machinery() -> None:
 def test_static_front_door_choices_are_local_and_accept_normal_artifacts() -> None:
     script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
     choice = script[script.index("function chooseColdEntry") : script.index("function renderColdFrontDoor")]
-    front_door = script[script.index("function renderColdFrontDoor") : script.index("function renderPrimary")]
+    front_door = script[script.index("function renderColdFrontDoor") : script.index("function itemList")]
     text_entry = script[script.index("function renderColdTextEntry") : script.index("function chooseColdEntry")]
     assert "api(" not in choice
     assert "api(" not in front_door
@@ -282,9 +283,29 @@ def test_direction_exploration_observes_before_commit_and_builds_forward_afterwa
     assert "Use this as my working direction" in preview
     assert "Exploring this page did not save or change your plan" in preview
     assert "api(" not in preview
-    assert "Add what I learn" in accepted
+    assert "Add a test result" in accepted
+    assert "Decisions you made" in accepted
+    assert "What you learned" in accepted
+    assert "What to test next" in accepted
+    assert "directionDecisionValues(state)" in accepted
+    assert "directionLearningValues(state, item)" in accepted
     assert "Add a job description or update" not in script
     assert "compare them with a real job description" not in script
+
+
+def test_known_direction_questions_are_presented_as_one_governed_bundle() -> None:
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+
+    assert "function renderDecisionBundle" in script
+    assert "accepted.questions_to_test" in script
+    assert "accepted.first_experiment" in script
+    assert "Answer the known questions together." in script
+    assert "Use these decisions" in script
+    assert "for (const answer of answers)" in script
+    assert 'currentGate?.id?.startsWith("path-task_")' in script
+    assert 'api("/api/decision"' in script
+    assert "expected_version: next.state.version" in script
+    assert "Each answer keeps its own approval and record." in script
 
 
 def test_recomputed_conversation_lead_is_visible_only_after_a_material_change() -> None:
@@ -324,7 +345,7 @@ def test_fog_bank_is_persistent_human_control_not_an_automatic_mutation() -> Non
     assert "Nothing changes until you review and accept" in html
     assert 'api("/api/fog-bank"' in script
     assert 'api("/api/fog-bank/accept"' in script
-    assert 'pendingFogBank = null;\n    $("#input-text").value = "";' in script
+    assert 'pendingFogBank = null;\n    resetInputContext();\n    $("#input-text").value = "";' in script
     assert "Keep my current plan" in script
     assert "Use this update" in script
     assert "Nothing changes unless you approve it" in script
@@ -444,3 +465,19 @@ def test_governed_changes_and_required_actions_never_depend_on_toasts() -> None:
         "Goal complete. No new task was created.",
     ):
         assert forbidden_toast not in script
+
+
+def test_unrelated_input_returns_to_the_plan_without_forcing_a_clarification() -> None:
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+
+    assert "This doesn’t change your plan." in script
+    assert "Nothing was saved, and you do not need to explain it further." in script
+    assert '$("#confirm-review").hidden = Boolean(isUnrelated)' in script
+
+
+def test_completed_or_cancelled_flows_clear_stale_input_context() -> None:
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+
+    assert "function resetInputContext()" in script
+    assert 'input.placeholder = "Tell HELM what changed…"' in script
+    assert script.count("resetInputContext();") >= 4

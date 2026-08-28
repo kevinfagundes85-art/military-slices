@@ -97,6 +97,10 @@ def _slice_hits(statement: str) -> list[SliceName]:
             "analyst",
             "build a company",
             "build something",
+            "want to build",
+            "building a",
+            "product",
+            "platform",
             "startup",
             "founder",
             "make an impact",
@@ -121,7 +125,7 @@ def _slice_hits(statement: str) -> list[SliceName]:
             "commute",
             "city",
             "state",
-            "family",
+            "famil",
             "stay near",
             "stay in",
             "stay local",
@@ -351,6 +355,19 @@ def _already_civilian_employed(text: str) -> bool:
     )
 
 
+def _explicit_role_goal(text: str) -> str | None:
+    for sentence in _sentences(text):
+        for clause in re.split(r"\s*(?:;|\bbut\b|\band\b)\s*", sentence, flags=re.IGNORECASE):
+            candidate = clause.strip(" ,.-")
+            if re.search(
+                r"\bi\s+(?:want|need|plan|hope)\s+(?:to\s+)?(?:be(?:come)?\s+)?"
+                r"(?:an?\s+)?[^.!?]{0,60}\b(?:role|analyst|manager|engineer|specialist|coordinator)\b",
+                candidate.casefold(),
+            ):
+                return candidate
+    return None
+
+
 def examine_fog_bank(current: CanonicalState, text: str) -> FogBankProposal:
     reviewed = text.strip()
     oriented = orient(reviewed)
@@ -387,8 +404,49 @@ def examine_fog_bank(current: CanonicalState, text: str) -> FogBankProposal:
                 )
             )
 
+    service_terms = {
+        ServiceName.ARMY: ("army",),
+        ServiceName.NAVY: ("navy",),
+        ServiceName.MARINE_CORPS: ("marine corps", "marines"),
+        ServiceName.AIR_FORCE: ("air force",),
+        ServiceName.SPACE_FORCE: ("space force",),
+        ServiceName.COAST_GUARD: ("coast guard",),
+    }
+    reviewed_lower = reviewed.casefold()
+    explicitly_claimed_services = [
+        service_name
+        for service_name, terms in service_terms.items()
+        if any(
+            re.search(
+                rf"\b(?:served|serve|serving|was)\s+(?:in|with)\s+(?:the\s+)?{re.escape(term)}\b",
+                reviewed_lower,
+            )
+            for term in terms
+        )
+    ]
+    mentioned_services = [
+        service_name
+        for service_name, terms in service_terms.items()
+        if any(re.search(rf"\b{re.escape(term)}\b", reviewed_lower) for term in terms)
+    ]
+    claimed_services = explicitly_claimed_services or mentioned_services
+    if len(claimed_services) == 1 and claimed_services[0] != current.service:
+        changes.append(
+            FogBankChange(
+                field="service",
+                current_value=current.service.value if current.service else None,
+                proposed_value=claimed_services[0].value,
+                reason="You identified a different service branch.",
+                affected_slices=ALL_SLICES,
+            )
+        )
+        conflicts.append("The service branch differs from the current orientation.")
+
     anchor_resolution = resolve_human_anchor(oriented)
     proposed_anchor = anchor_resolution.anchor
+    explicit_role_goal = _explicit_role_goal(reviewed)
+    if current.human_anchor and proposed_anchor == "Find civilian work" and explicit_role_goal:
+        proposed_anchor = explicit_role_goal
     employment_disproves_first_job = (
         _already_civilian_employed(reviewed) and current.human_anchor == "Find civilian work"
     )
@@ -475,6 +533,8 @@ def apply_fog_bank_reorientation(
                 state.planning_actor = PlanningActor.VETERAN
         elif change.field == "transition_date":
             state.transition_date = change.proposed_value
+        elif change.field == "service" and change.proposed_value:
+            state.service = ServiceName(change.proposed_value)
         elif change.field == "human_anchor":
             if change.proposed_value != state.human_anchor:
                 state.career_target = None
@@ -1063,7 +1123,7 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
             question = (
                 task.title.strip()
                 if task.title.strip().endswith("?")
-                else "What did you learn from this test, and what do you still need to check?"
+                else "What will you do first, and what result would tell you whether it helped?"
             )
             gate = Gate(
                 id=task_gate_id,
@@ -1334,7 +1394,22 @@ def _consequences_for_input(
     orientation: OrientationResult,
     transition_date: str | None,
 ) -> list[str]:
-    consequences = [f"Connected your input to {_slice_label(item)}." for item in orientation.affected_slices]
+    approved = orientation.reviewed_input.strip()
+    consequence_label = "Saved your approved update"
+    learning_match = re.match(r"While testing the .+? work direction, I learned:\s*(.+)", approved, re.IGNORECASE)
+    if learning_match:
+        approved = learning_match.group(1).strip()
+        consequence_label = "Saved this test result"
+    approved = re.sub(
+        r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b",
+        "[contact removed]",
+        approved,
+        flags=re.IGNORECASE,
+    )
+    if len(approved) > 220:
+        approved = approved[:217].rstrip() + "…"
+    consequences = [f"{consequence_label}: {approved}"]
+    consequences.extend(f"Connected it to {_slice_label(item)}." for item in orientation.affected_slices)
     if transition_date:
         consequences.append("Anchored application, education, relocation, and résumé timing to one date.")
     if state.conflicts:

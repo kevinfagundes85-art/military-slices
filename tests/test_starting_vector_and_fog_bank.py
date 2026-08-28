@@ -416,6 +416,36 @@ def test_fog_bank_recognizes_a_human_declared_ai_product_direction() -> None:
     assert updated.career_hypotheses == []
 
 
+def test_fog_bank_corrects_service_branch_without_changing_the_plan_goal() -> None:
+    current = _wrong_frame_state()
+    current.service = ServiceName.AIR_FORCE
+    original_anchor = current.human_anchor
+
+    proposal = examine_fog_bank(
+        current,
+        "The service branch is wrong. I served in the Navy, not the Air Force.",
+    )
+
+    assert proposal.status == "review_ready"
+    service_change = next(change for change in proposal.changes if change.field == "service")
+    assert service_change.current_value == ServiceName.AIR_FORCE.value
+    assert service_change.proposed_value == ServiceName.NAVY.value
+
+    updated = apply_fog_bank_reorientation(current, proposal, idempotency_key="fog-service-0001")
+    assert updated.service == ServiceName.NAVY
+    assert updated.human_anchor == original_anchor
+
+
+def test_fog_bank_reversal_keeps_the_positive_specific_role_goal() -> None:
+    current = _wrong_frame_state()
+    text = "I changed my mind. I no longer want to build a product; I want a stable cybersecurity analyst role."
+
+    proposal = examine_fog_bank(current, text)
+
+    anchor_change = next(change for change in proposal.changes if change.field == "human_anchor")
+    assert anchor_change.proposed_value == "I want a stable cybersecurity analyst role"
+
+
 def test_fog_bank_acceptance_rejects_a_stale_source_version() -> None:
     state = _wrong_frame_state()
     proposal = examine_fog_bank(state, FOG_INPUT)
