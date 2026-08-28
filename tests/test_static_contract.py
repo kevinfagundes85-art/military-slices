@@ -107,8 +107,8 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
     assert "View connected areas" in html
     assert "Choose a relevant part of your plan" in html
-    assert "/static/app.js?v=37" in html
-    assert "/static/styles.css?v=22" in html
+    assert "/static/app.js?v=42" in html
+    assert "/static/styles.css?v=25" in html
 
 
 def test_primary_decision_precedes_plan_scaffolding_and_requires_an_explicit_choice() -> None:
@@ -229,15 +229,15 @@ def test_helm_workspace_keeps_input_visible_and_routes_unmodeled_directions_to_r
     script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
     css = (ROOT / "static" / "styles.css").read_text(encoding="utf-8")
 
-    assert "Command your plan" in html
+    assert "Update your plan" in html
+    assert "Tell Military SLICES what’s different." in html
+    assert "Tell HELM what changed" not in html
     assert "HELM Command Post" in html
     assert "Your next move, and why." in html
     assert "Your next move" in html
     assert "What this affects" in html
-    assert "Standing by" in html
     assert "HELM focus" not in html
-    assert "Planning route" in html
-    assert "One obstacle at a time" in html
+    assert "Open your full plan checklist" in html
     assert 'id="planning-obstacles"' in html
     assert "function renderPlanningRoute" in script
     assert "Set the timing" in script
@@ -247,13 +247,26 @@ def test_helm_workspace_keeps_input_visible_and_routes_unmodeled_directions_to_r
     assert "Prepare your story" in script
     assert 'data-route-state="${item.state}"' in script
     assert ".planning-obstacles" in css
-    assert "What changed?" in html
+    assert "Do this next" in html
+    assert "Why now" in html
+    assert 'id="focus-why"' in html
+    assert "Command view" not in html
+    assert "bindFocusCarousel" not in script
+    assert ".command-brief" in css
+    assert "Related check for later" in script
+    assert 'class="deferred-impact"' in script
+    assert "Open your full plan checklist" in html
+    assert 'id="planning-route-summary"' in html
+    assert 'id="planning-route-dialog"' in html
+    assert 'id="open-planning-route"' in html
+    assert 'showModal()' in script
+    assert "More plan tools" in html
+    assert "Something changed?" in html
     assert 'id="helm-focus-title"' in html
     assert 'id="focus-now"' in html
     assert 'id="focus-scope"' in html
-    assert 'id="focus-background"' in html
     assert "function renderHelmFocus" in script
-    assert "addPanel.hidden = !started" in script
+    assert "addPanel.hidden = true" in script
     assert 'gate.id === "career-direction" && gate.surface === "text"' in script
     assert 'await requestOrientation(value, event.submitter)' in script
     assert "Your plan advanced while you were writing" in script
@@ -262,7 +275,7 @@ def test_helm_workspace_keeps_input_visible_and_routes_unmodeled_directions_to_r
     assert ".hypothesis-grid" in css and "scroll-snap-type: x mandatory" in css
     assert 'id="direction-actions"' in script
     assert 'id="choose-current-direction"' in script
-    assert "Choose ${current.title}" in script
+    assert 'textContent = "Explore this direction"' in script
     assert "See test details" in script
     assert "Skip this option" in script
     assert "← Previous" in script and "Next →" in script
@@ -332,6 +345,8 @@ def test_known_direction_questions_are_presented_as_one_governed_bundle() -> Non
     assert 'api("/api/decision"' in script
     assert "expected_version: next.state.version" in script
     assert "Each answer keeps its own approval and record." in script
+    assert 'return title || "Describe the next real-world check."' in script
+    assert "What will you do first, and what result would tell you whether it helped?" not in script
 
 
 def test_recomputed_conversation_lead_is_visible_only_after_a_material_change() -> None:
@@ -511,5 +526,22 @@ def test_completed_or_cancelled_flows_clear_stale_input_context() -> None:
     script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
 
     assert "function resetInputContext()" in script
-    assert 'input.placeholder = "Tell HELM what changed…"' in script
+    assert 'input.placeholder = "For example: My timeline changed, or I want to explore something different."' in script
     assert script.count("resetInputContext();") >= 4
+
+
+def test_direction_choices_are_alternatives_not_steps() -> None:
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+
+    assert "directions to consider" in script
+    assert "These are alternatives, not steps." in script
+    assert "Direction 1 of" not in script
+    assert "Explore this direction" in script
+
+
+def test_persistent_input_routes_explicit_direction_reversal_to_plan_change() -> None:
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+
+    assert "work\\s+as|focus\\s+on|pursue|explore" in script
+    assert "Add your answer to the box above" in script
+    assert "restoreWorkspace();\n    openAdd(false);" in script

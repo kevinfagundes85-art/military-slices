@@ -446,6 +446,17 @@ def test_fog_bank_reversal_keeps_the_positive_specific_role_goal() -> None:
     assert anchor_change.proposed_value == "I want a stable cybersecurity analyst role"
 
 
+def test_fog_bank_reversal_recognizes_exploring_a_named_role() -> None:
+    current = _wrong_frame_state()
+    text = "I changed my mind. I want to explore Customer Success Specialist instead."
+
+    proposal = examine_fog_bank(current, text)
+
+    assert proposal.status == "review_ready"
+    anchor_change = next(change for change in proposal.changes if change.field == "human_anchor")
+    assert anchor_change.proposed_value == "I want to explore Customer Success Specialist instead"
+
+
 def test_fog_bank_acceptance_rejects_a_stale_source_version() -> None:
     state = _wrong_frame_state()
     proposal = examine_fog_bank(state, FOG_INPUT)

@@ -39,6 +39,11 @@ def test_stay_near_location_language_is_not_lost() -> None:
     assert SliceName.LOCATION in result.affected_slices
 
 
+def test_stay_within_distance_location_language_is_not_lost() -> None:
+    result = orient("My spouse got a job in Seattle, so we need to stay within 30 minutes.")
+    assert SliceName.LOCATION in result.affected_slices
+
+
 def test_shared_transition_gate_is_one_date_interaction() -> None:
     state = apply_confirmed_input(
         new_state("ms-test"),

@@ -68,7 +68,7 @@ function humanError(message, status = 0) {
 function resetInputContext() {
   inputContext = null;
   const input = $("#input-text");
-  if (input) input.placeholder = "Tell HELM what changed…";
+  if (input) input.placeholder = "For example: My timeline changed, or I want to explore something different.";
 }
 
 async function api(path, options = {}) {
@@ -247,7 +247,7 @@ function applyProgressiveDisclosure(next, showFeedback) {
   $("#orientation-shell").hidden = !started;
   $("#add-context-top").hidden = !started;
   $(".control-nav").hidden = !started;
-  addPanel.hidden = !started;
+  addPanel.hidden = true;
   $(".context-column").hidden = !contextVisible;
   contentGrid.hidden = false;
   contentGrid.classList.toggle("fresh-start", !started);
@@ -292,19 +292,14 @@ function renderHelmFocus(state, gate) {
   const mode = executionMode(state);
   const caughtUp = !gate && !(state.active_tasks || []).length;
   const scope = (gate?.affected_slices || []).map((slice) => labels[slice] || humanCopy(slice));
-  const heldBack = Number(state.latent_fact_count || 0);
-  const activeEvidence = gate ? new Set(gate.required_evidence || []).size : 0;
   $("#focus-state").textContent = mode === "PARALYZED"
     ? "Needs attention"
     : (mode === "COMPLETE" ? "Complete" : (caughtUp ? "Caught up" : "On course"));
   $("#focus-now").textContent = gate ? humanCopy(gate.title) : (mode === "COMPLETE" ? "No decision is waiting." : "Your current plan is caught up.");
+  $("#focus-why").textContent = gate
+    ? humanCopy(gate.why)
+    : (mode === "COMPLETE" ? "This goal has been closed." : "Nothing needs your decision right now.");
   $("#focus-scope").textContent = scope.length ? scope.join(" · ") : "No additional plan area is active.";
-  $("#focus-background").textContent = heldBack
-    ? `${heldBack} ${heldBack === 1 ? "detail stays" : "details stay"} in the background until needed.`
-    : "Other details stay available without being pulled into this decision.";
-  $("#metric-active").textContent = String(activeEvidence);
-  $("#metric-latent").textContent = String(heldBack);
-  $("#metric-tasks").textContent = String((state.active_tasks || []).length);
   renderPlanningRoute(state, gate);
 }
 
@@ -319,10 +314,10 @@ function renderPlanningRoute(state, gate) {
   const intent = (state.original_intents || []).join(" ").toLowerCase();
   const obstacle = (label, cleared, active, known) => ({
     label,
-    state: cleared ? "cleared" : (active ? "active" : (known ? "ahead" : "unmapped")),
+    state: active ? "active" : (cleared ? "cleared" : (known ? "ahead" : "unmapped")),
   });
   const obstacles = [
-    obstacle("Set the timing", Boolean(state.transition_date || state.transition_month), gateId === "transition-date", true),
+    obstacle("Set the timing", Boolean(state.transition_date || state.transition_month), gateId === "planned-transition-date", true),
     obstacle("Choose a direction", acceptedDirection, gateId === "career-direction", Boolean(state.career_target || state.career_hypotheses?.length || intent.match(/job|career|work/))),
     obstacle("Test it in real life", hasDecisionPrefix("path-task_") && !gateId.startsWith("path-task_"), gateId.startsWith("path-task_"), acceptedDirection),
     obstacle("Line up training", hasDecision("education-outcome"), gateId === "education-outcome", hasSliceFact("education") || /school|training|degree|certificate|education/.test(intent)),
@@ -337,38 +332,11 @@ function renderPlanningRoute(state, gate) {
       <small>${labelsByState[item.state]}</small>
     </li>
   `).join("");
-}
-
-function bindFocusCarousel() {
-  const track = $("#focus-carousel");
-  const previous = $("#focus-previous");
-  const next = $("#focus-next");
-  const position = $("#focus-position");
-  if (!track || !previous || !next || !position) return;
-  const total = track.children.length;
-  let activeIndex = 0;
-  let scrollTimer;
-  const reflect = () => {
-    position.textContent = `Command view ${activeIndex + 1} of ${total}`;
-    previous.disabled = activeIndex === 0;
-    next.disabled = activeIndex === total - 1;
-  };
-  const update = (index) => {
-    activeIndex = Math.max(0, Math.min(total - 1, index));
-    track.scrollTo({ left: track.clientWidth * activeIndex, behavior: "smooth" });
-    reflect();
-  };
-  previous.addEventListener("click", () => update(activeIndex - 1));
-  next.addEventListener("click", () => update(activeIndex + 1));
-  track.addEventListener("scroll", () => {
-    clearTimeout(scrollTimer);
-    scrollTimer = setTimeout(() => {
-      if (!track.clientWidth) return;
-      activeIndex = Math.max(0, Math.min(total - 1, Math.round(track.scrollLeft / track.clientWidth)));
-      reflect();
-    }, 100);
-  }, { passive: true });
-  reflect();
+  $("#metric-active").textContent = String(obstacles.filter((item) => item.state === "cleared").length);
+  $("#metric-latent").textContent = String(obstacles.filter((item) => item.state === "active").length);
+  $("#metric-tasks").textContent = String(obstacles.filter((item) => item.state === "ahead" || item.state === "unmapped").length);
+  const cleared = obstacles.filter((item) => item.state === "cleared").length;
+  $("#planning-route-summary").textContent = `${cleared} of ${obstacles.length} cleared · see the full route`;
 }
 
 function buildLensTopics(state, lenses) {
@@ -804,9 +772,7 @@ function remainingDirectionTasks(state) {
 
 function directionTaskQuestion(task) {
   const title = humanCopy(task.title || "").trim();
-  return title.endsWith("?")
-    ? title
-    : "What will you do first, and what result would tell you whether it helped?";
+  return title || "Describe the next real-world check.";
 }
 
 function renderDecisionBundle(state, gate, tasks) {
@@ -988,8 +954,8 @@ function renderPrimary(next, showConversationLead = false) {
     control = `
       <div class="carousel-heading">
         <div>
-          <span id="direction-position" class="carousel-position" aria-live="polite">Direction 1 of ${hypotheses.length}</span>
-          <p class="direction-instruction">Choose one to start a real-world test. You can change it later.</p>
+          <span id="direction-position" class="carousel-position" aria-live="polite">${hypotheses.length} directions to consider</span>
+          <p class="direction-instruction">These are alternatives, not steps. Explore the one that feels most useful.</p>
         </div>
         <div class="carousel-controls" aria-label="Browse directions">
           <button id="direction-previous" class="carousel-button direction-nav-button" type="button" aria-label="Previous direction">← Previous</button>
@@ -997,7 +963,7 @@ function renderPrimary(next, showConversationLead = false) {
         </div>
       </div>
       <div id="direction-actions" class="direction-actions" aria-live="polite">
-        <button id="choose-current-direction" class="button button-primary" data-value="explore:${escapeHtml(hypotheses[0].title)}" type="button">Choose ${escapeHtml(hypotheses[0].title)}</button>
+        <button id="choose-current-direction" class="button button-primary" data-value="explore:${escapeHtml(hypotheses[0].title)}" type="button">Explore this direction</button>
         <button id="detail-current-direction" class="button button-secondary" data-id="${escapeHtml(hypotheses[0].id)}" type="button">See test details</button>
         <button id="skip-current-direction" class="button button-quiet" data-value="reject:${escapeHtml(hypotheses[0].title)}" type="button">Skip this option</button>
       </div>
@@ -1006,10 +972,8 @@ function renderPrimary(next, showConversationLead = false) {
         <h3>${escapeHtml(item.title)}</h3>
         <div class="hypothesis-details">
           <p>${escapeHtml(humanCopy(item.rationale))}</p>
-          <p><strong>First test</strong><br>${escapeHtml(humanCopy(item.first_experiment || item.next_step))}</p>
-          <p><strong>What may already fit</strong><br>${escapeHtml(humanCopy(item.capability_matches.join(" · ")))}</p>
-          <p><strong>What to check</strong><br>${escapeHtml(humanCopy(item.possible_gaps.join(" · ")))}</p>
-          <div class="evidence-note">Based on ${escapeHtml(humanCopy(item.evidence.join(" · ")))}</div>
+          <p><strong>Why it may fit</strong><br>${escapeHtml(humanCopy(item.capability_matches.slice(0, 2).join(" · ")))}</p>
+          <p><strong>What we’d need to check</strong><br>${escapeHtml(humanCopy(item.possible_gaps.slice(0, 1).join(" · ")))}</p>
         </div>
       </article>
     `).join("")}</div>`;
@@ -1052,10 +1016,10 @@ function bindDirectionCarousel(hypotheses) {
   let scrollTimer;
   const reflect = () => {
     const current = hypotheses[activeIndex];
-    position.textContent = `Direction ${activeIndex + 1} of ${total}`;
+    position.textContent = `${total} directions to consider`;
     previous.disabled = activeIndex === 0;
     next.disabled = activeIndex === total - 1;
-    $("#choose-current-direction").textContent = `Choose ${current.title}`;
+    $("#choose-current-direction").textContent = "Explore this direction";
     $("#choose-current-direction").dataset.value = `explore:${current.title}`;
     $("#detail-current-direction").dataset.id = current.id;
     $("#skip-current-direction").dataset.value = `reject:${current.title}`;
@@ -1142,10 +1106,15 @@ function renderImpact(impact) {
     return;
   }
   panel.hidden = false;
-  $("#impact-message").textContent = humanCopy(impact.message);
-  $("#impact-question").textContent = humanCopy(impact.question);
-  $("#impact-actions").innerHTML = impactControls(impact);
-  wireImpact($("#impact-actions"), impact);
+  panel.innerHTML = `
+    <details class="deferred-impact">
+      <summary>Related check for later</summary>
+      <p>${escapeHtml(humanCopy(impact.message))}</p>
+      <h2>${escapeHtml(humanCopy(impact.question))}</h2>
+      <div class="deferred-impact-actions">${impactControls(impact)}</div>
+    </details>
+  `;
+  wireImpact(panel.querySelector(".deferred-impact-actions"), impact);
 }
 
 async function submitRevalidation(impact, action, value = null) {
@@ -1187,7 +1156,7 @@ function renderChanged(feedback) {
   }
   panel.hidden = false;
   $("#changed-title").textContent = humanCopy(feedback.headline);
-  $("#changed-list").innerHTML = feedback.consequences.map((item) => `<li>${escapeHtml(humanCopy(item))}</li>`).join("");
+  $("#changed-list").innerHTML = feedback.consequences.slice(0, 2).map((item) => `<li>${escapeHtml(humanCopy(item))}</li>`).join("");
 }
 
 function showInspection(panel) {
@@ -1199,6 +1168,7 @@ function showInspection(panel) {
   $(".control-nav").hidden = true;
   $("#orientation-shell").hidden = true;
   document.body.classList.add("inspection-open");
+  document.body.classList.remove("input-open");
   panel.hidden = false;
   panel.scrollIntoView({ behavior: "smooth", block: "start" });
   const heading = panel.querySelector("h2");
@@ -1212,7 +1182,7 @@ function restoreWorkspace(returnTo = null) {
   const started = planHasStarted(envelope.state);
   $("#orientation-shell").hidden = !started;
   $(".control-nav").hidden = !started;
-  addPanel.hidden = !started;
+  addPanel.hidden = true;
   returnTo?.focus();
 }
 
@@ -1423,6 +1393,7 @@ function renderFogBank(proposal) {
       <div class="guidance-note">
         <h3>One more detail</h3>
         <p>${escapeHtml(proposal.clarification_question)}</p>
+        <p><strong>Add your answer to the box above, then choose “Review this plan change” again.</strong></p>
         <p class="trust-note">Your current plan has not changed.</p>
       </div>
     `;
@@ -1482,6 +1453,7 @@ function openAdd(fileFirst) {
   resetInputContext();
   reviewPanel.hidden = true;
   addPanel.hidden = false;
+  document.body.classList.add("input-open");
   addPanel.classList.remove("input-attention");
   void addPanel.offsetWidth;
   addPanel.classList.add("input-attention");
@@ -1499,7 +1471,9 @@ function closeAdd() {
   $("#artifact-file").value = "";
   $("#file-status").textContent = "PDF, DOCX, TXT, PNG, or JPG · 5 MB max";
   addPanel.querySelector(".inline-guidance")?.remove();
-  $("#input-text").focus();
+  addPanel.hidden = true;
+  document.body.classList.remove("input-open");
+  $("#add-context-top").focus();
 }
 
 async function orientInput(event) {
@@ -1531,7 +1505,7 @@ function isPlanChangeRequest(text) {
   const directChange = new RegExp(`\\b(?:change|update|fix|redo|revise|edit)\\s+${plan}\\b`);
   const makeChange = new RegExp(`\\bmake\\s+changes?\\s+to\\s+${plan}\\b`);
   const hasWorkingDirection = (envelope?.state?.career_hypotheses || []).some((item) => item.status === "accepted");
-  const declaresNewDirection = /\b(?:i\s+)?(?:now\s+)?want\s+to\s+(?:build|become|work\s+as|focus\s+on|pursue)\b/.test(normalized);
+  const declaresNewDirection = /\b(?:i\s+)?(?:now\s+)?want\s+to\s+(?:build|become|work\s+as|focus\s+on|pursue|explore)\b/.test(normalized);
   return directChange.test(normalized) || makeChange.test(normalized) || (hasWorkingDirection && declaresNewDirection);
 }
 
@@ -1826,8 +1800,8 @@ $("#artifact-file").addEventListener("change", uploadArtifact);
 $("#cancel-review").addEventListener("click", () => {
   reviewPanel.hidden = true;
   if (reviewReturn === "add") {
-    restoreWorkspace($("#input-text"));
-    $("#input-text").focus();
+    restoreWorkspace();
+    openAdd(false);
   } else {
     restoreWorkspace($("#gate-value") || $("#cold-input-text"));
   }
@@ -1854,8 +1828,11 @@ $("#close-fog-bank").addEventListener("click", () => {
 });
 $("#what-if-form").addEventListener("submit", createWhatIf);
 $("#fog-bank-form").addEventListener("submit", examineFogBank);
-bindFocusCarousel();
-
+$("#open-planning-route").addEventListener("click", () => $("#planning-route-dialog").showModal());
+$("#close-planning-route").addEventListener("click", () => $("#planning-route-dialog").close());
+$("#planning-route-dialog").addEventListener("click", (event) => {
+  if (event.target === $("#planning-route-dialog")) $("#planning-route-dialog").close();
+});
 $("#boot-shell").hidden = true;
 contentGrid.hidden = false;
 contentGrid.classList.add("fresh-start");

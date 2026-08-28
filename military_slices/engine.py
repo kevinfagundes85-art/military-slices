@@ -128,6 +128,7 @@ def _slice_hits(statement: str) -> list[SliceName]:
             "famil",
             "stay near",
             "stay in",
+            "stay within",
             "stay local",
             "remain local",
             "near ",
@@ -361,6 +362,7 @@ def _explicit_role_goal(text: str) -> str | None:
             candidate = clause.strip(" ,.-")
             if re.search(
                 r"\bi\s+(?:want|need|plan|hope)\s+(?:to\s+)?(?:be(?:come)?\s+)?"
+                r"(?:explore\s+)?"
                 r"(?:an?\s+)?[^.!?]{0,60}\b(?:role|analyst|manager|engineer|specialist|coordinator)\b",
                 candidate.casefold(),
             ):
@@ -445,7 +447,7 @@ def examine_fog_bank(current: CanonicalState, text: str) -> FogBankProposal:
     anchor_resolution = resolve_human_anchor(oriented)
     proposed_anchor = anchor_resolution.anchor
     explicit_role_goal = _explicit_role_goal(reviewed)
-    if current.human_anchor and proposed_anchor == "Find civilian work" and explicit_role_goal:
+    if current.human_anchor and proposed_anchor in {None, "Find civilian work"} and explicit_role_goal:
         proposed_anchor = explicit_role_goal
     employment_disproves_first_job = (
         _already_civilian_employed(reviewed) and current.human_anchor == "Find civilian work"
@@ -1132,11 +1134,10 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
             task_gate_id = path_task_gate_id(task)
             if task_gate_id in completed_gate_ids:
                 continue
-            question = (
-                task.title.strip()
-                if task.title.strip().endswith("?")
-                else "What will you do first, and what result would tell you whether it helped?"
-            )
+            # The task title is already the governed next action. Preserve it so
+            # distinct plan obstacles do not collapse into the same generic
+            # question in the human-facing queue.
+            question = task.title.strip()
             gate = Gate(
                 id=task_gate_id,
                 title="Choose what to test next",

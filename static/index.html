@@ -6,8 +6,8 @@
     <meta name="theme-color" content="#08141f">
     <meta name="description" content="Military SLICES helps U.S. service members connect career, education, location, and résumé decisions into one transition plan.">
     <title>Military SLICES</title>
-    <link rel="stylesheet" href="/static/styles.css?v=22">
-    <script src="/static/app.js?v=37" defer></script>
+    <link rel="stylesheet" href="/static/styles.css?v=25">
+    <script src="/static/app.js?v=42" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the next decision</a>
@@ -19,7 +19,7 @@
           <small>Your transition, connected.</small>
         </span>
       </a>
-      <button id="add-context-top" class="button button-quiet" type="button" hidden>Go to input</button>
+      <button id="add-context-top" class="button button-quiet" type="button" hidden>Something changed?</button>
     </header>
 
     <main id="main" tabindex="-1">
@@ -90,47 +90,59 @@
             </div>
             <span id="focus-state" class="focus-state">On course</span>
           </div>
-          <section class="planning-route" aria-labelledby="planning-route-title">
-            <div class="planning-route-heading">
-              <h3 id="planning-route-title">Planning route</h3>
-              <span>One obstacle at a time</span>
-            </div>
-            <ol id="planning-obstacles" class="planning-obstacles"></ol>
-          </section>
-          <dl class="helm-metrics" aria-label="What the command post is using">
-            <div><dt>In play now</dt><dd id="metric-active">0</dd></div>
-            <div><dt>Standing by</dt><dd id="metric-latent">0</dd></div>
-            <div><dt>Decisions open</dt><dd id="metric-tasks">0</dd></div>
-          </dl>
-          <div class="focus-carousel-heading">
-            <span id="focus-position">Command view 1 of 3</span>
-            <div class="carousel-controls" aria-label="Browse the HELM Command Post">
-              <button id="focus-previous" class="carousel-button" type="button" aria-label="Previous command view">←</button>
-              <button id="focus-next" class="carousel-button" type="button" aria-label="Next command view">→</button>
-            </div>
-          </div>
-          <dl id="focus-carousel" class="focus-grid" tabindex="0">
-            <div>
-              <dt>Your next move</dt>
+          <dl class="command-brief">
+            <div class="command-order">
+              <dt>Do this next</dt>
               <dd id="focus-now">Loading the current decision…</dd>
+            </div>
+            <div>
+              <dt>Why now</dt>
+              <dd id="focus-why">This is the next decision that can move the plan.</dd>
             </div>
             <div>
               <dt>What this affects</dt>
               <dd id="focus-scope">Only what can change this decision.</dd>
             </div>
-            <div>
-              <dt>Standing by</dt>
-              <dd id="focus-background">Other details stay available without crowding this step.</dd>
-            </div>
           </dl>
+          <button id="open-planning-route" class="planning-route-button" type="button">
+            <span>
+              <strong>Open your full plan checklist</strong>
+              <small id="planning-route-summary">See what is cleared and what comes next.</small>
+            </span>
+            <span aria-hidden="true">→</span>
+          </button>
         </section>
         <nav class="control-nav" aria-label="Plan tools" hidden>
-          <button id="open-lenses" class="button button-quiet" type="button" aria-expanded="false">View connected areas</button>
-          <button id="open-fog-bank" class="button button-secondary" type="button">Fix the plan</button>
-          <button id="open-history" class="button button-quiet" type="button">Earlier plans</button>
-          <button id="open-what-if" class="button button-quiet" type="button">Try a what-if</button>
+          <details class="plan-tools">
+            <summary>More plan tools</summary>
+            <div>
+              <button id="open-lenses" class="button button-quiet" type="button" aria-expanded="false">View connected areas</button>
+              <button id="open-fog-bank" class="button button-secondary" type="button">Fix the plan</button>
+              <button id="open-history" class="button button-quiet" type="button">Earlier plans</button>
+              <button id="open-what-if" class="button button-quiet" type="button">Try a what-if</button>
+            </div>
+          </details>
         </nav>
       </section>
+
+      <dialog id="planning-route-dialog" class="planning-route-dialog" aria-labelledby="planning-route-title">
+        <div class="dialog-heading">
+          <div>
+            <div class="section-kicker">Your transition route</div>
+            <h2 id="planning-route-title">The obstacles between here and ready.</h2>
+          </div>
+          <button id="close-planning-route" class="dialog-close" type="button" aria-label="Close plan checklist">×</button>
+        </div>
+        <p>Military SLICES keeps the whole route in view, but asks only for the decision that can move you forward now.</p>
+        <section class="planning-route">
+            <dl class="helm-metrics" aria-label="Progress through the planning route">
+              <div><dt>Cleared</dt><dd id="metric-active">0</dd></div>
+              <div><dt>Now</dt><dd id="metric-latent">0</dd></div>
+              <div><dt>Still ahead</dt><dd id="metric-tasks">0</dd></div>
+            </dl>
+            <ol id="planning-obstacles" class="planning-obstacles"></ol>
+        </section>
+      </dialog>
 
       <section id="lens-cloud-shell" class="lens-cloud-shell" aria-labelledby="lens-cloud-title" hidden>
         <div class="lens-cloud-heading">
@@ -146,12 +158,13 @@
       </section>
 
       <section id="add-panel" class="add-panel" hidden aria-labelledby="add-title">
-        <button id="close-add" class="clear-input" type="button">Clear</button>
-        <div class="section-kicker">Command your plan</div>
-        <h2 id="add-title">What changed?</h2>
+        <button id="close-add" class="clear-input" type="button">Close</button>
+        <div class="section-kicker">Update your plan</div>
+        <h2 id="add-title">Something changed?</h2>
+        <p class="muted">Tell Military SLICES what’s different.</p>
         <form id="input-form">
           <label class="visually-hidden" for="input-text">What changed or needs correcting?</label>
-          <textarea id="input-text" maxlength="12000" rows="2" placeholder="Tell HELM what changed…"></textarea>
+          <textarea id="input-text" maxlength="12000" rows="2" placeholder="For example: My timeline changed, or I want to explore something different."></textarea>
           <div class="input-actions">
             <label class="button button-secondary file-button" for="artifact-file">Add a file</label>
             <input id="artifact-file" class="visually-hidden" type="file" accept=".txt,.pdf,.docx,.png,.jpg,.jpeg,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/png,image/jpeg">
