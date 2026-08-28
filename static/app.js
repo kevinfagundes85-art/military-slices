@@ -1390,6 +1390,7 @@ async function confirmReview() {
     contentGrid.hidden = false;
     document.body.classList.remove("inspection-open");
     pendingOrientation = null;
+    if (reviewReturn === "add") $("#input-text").value = "";
     render(next, { showFeedback: true });
     $("#primary").scrollIntoView({ behavior: "smooth", block: "start" });
     focusPrimary();
