@@ -1,22 +1,61 @@
-# Unedited Four-Minute Demo Script
+# Military SLICES — Unedited Four-Minute Demo
 
-Target length: 3:35–3:50.
+Target: 3:35–3:50. Use synthetic data only.
 
-1. **Problem (0:00–0:25)** — Transition decisions are usually split across career, school, location, and résumé tools. Military SLICES treats them as one evolving plan.
-2. **Messy input (0:25–0:55)** — Paste the synthetic demo statement. Show immediate orientation and the review boundary. Confirm it.
-   For the artifact variant, select a normal résumé and show that selection itself authorizes the update—there is no second résumé-confirmation screen.
-   If no purpose was declared, show the single question asking what the résumé should help accomplish. Choose a résumé target and point out that unrelated career recommendations remain absent.
-3. **Proof of agent action (0:55–1:35)** — Show that the service-aware path first decides whether a career resolver call is authorized. When the active employment gate requires it, Gemini/ADK receives only the human objective, path target, active tasks, and relevant evidence.
-4. **Shared decision (1:35–2:15)** — The planned transition date appears as the one next question because it changes four areas. Use the date control.
-5. **Feedback (2:15–2:45)** — Show what changed: application, education, location, and résumé timing update together.
-6. **Conflict and adjudication (2:45–3:15)** — Add “I need immediate income and plan full-time school.” Show `CONFLICTED` behavior in human language and resolve with one choice.
-7. **Continuity (3:15–3:35)** — Reload. State remains, the same questions do not return, and the foreground is quieter.
-8. **Cloud proof (3:35–3:50)** — Show the `.run.app`/custom domain and Cloud Run/Firestore/Vertex execution evidence.
+## Before recording
 
-## Synthetic demo input
+- Open the zero-traffic candidate in a clean session.
+- Keep Cloud Run revision and logs available in a second tab.
+- Use desktop width for the main journey; show the responsive mobile view briefly only if time permits.
+- Do not mention intelligence-community or Booz Allen history.
 
-> I separate from the Coast Guard next spring. I led a maintenance team and coordinated parts, schedules, inspections, and emergency repairs, but I do not want shift work or constant travel. My family needs to stay near Tacoma. I am open to a credential if it can finish before I leave, and I am not sure what civilian job title fits.
+## Script
 
-When the shared timing question appears, enter **2027-03-15**.
+1. **The problem (0:00–0:25)**
 
-No government, employer, or real veteran data is used.
+   “The internet became the information superhighway. AI should not be a teleport device that skips human judgment. It should be the bullet train: compressing the trip from intent to outcome while the veteran stays in control. Military SLICES turns career, education, location, and transition decisions into one plan that remembers.”
+
+2. **Natural input and human boundary (0:25–0:55)**
+
+   Enter:
+
+   > I leave the Navy in June 2027. I want a stable remote cybersecurity analyst job, I cannot relocate, and I want to complete a part-time AI certificate.
+
+   Point out that the veteran speaks normally, reviews the update, and remains the authority before the plan changes.
+
+3. **A focused dashboard, not a giant intake (0:55–1:25)**
+
+   Show the fixed dashboard: central input, current plan, and HELM Focus. Explain that confirmed state can remain available without all of it entering the active reasoning surface. Choose **Information Security Analyst**.
+
+4. **Bounded agent action and bundled human decisions (1:25–2:05)**
+
+   Show that Google ADK and Gemini receive a purpose-limited projection and return evidence-backed directions. When the two related questions appear, answer both on the same screen:
+
+   - “Across three postings: Security+, SIEM experience, and basic cloud security.”
+   - “Compare three postings and build one public SOC triage sample. It helped if two recruiters say it covers entry-role expectations.”
+
+   Explain: “Military SLICES minimizes human turns, not human control. It does not drip-feed questions it already knows belong together.”
+
+5. **Real-world learning and continuity (2:05–2:40)**
+
+   Select **Add a test result** and enter:
+
+   > I compared five remote analyst roles. Four required Security+ and SIEM experience, and a recruiter said my public SOC triage sample was strong. I want to continue.
+
+   Show that the learning stays attached to the selected direction and that the plan preserves what was chosen, tested, and learned.
+
+6. **Changed reality reopens the right decision (2:40–3:15)**
+
+   Use the same central input:
+
+   > I changed my mind. I no longer want Information Security Analyst; I want a stable Cloud Security Engineer role instead.
+
+   Show the current target changing to **Cloud Security Engineer** and the next relevant decision reopening. Explain that the system did not erase the prior plan; it re-evaluated it against new human intent.
+
+7. **Persistence and cloud proof (3:15–3:50)**
+
+   Reload the page. Show that the plan and target persist. Then show the tagged `.run.app` URL, Cloud Run revision, Firestore-backed session continuity, and Vertex AI model metadata/log evidence.
+
+## Closing line
+
+“The veteran provides reality. HELM governs what matters, what can change, and when the human is needed. Gemini does the bounded reasoning work. The result is one plan that remembers and adapts without taking control away from the person whose life it is.”
