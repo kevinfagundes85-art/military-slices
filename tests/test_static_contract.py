@@ -108,7 +108,7 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert "View connected areas" in html
     assert "Choose a relevant part of your plan" in html
     assert "/static/app.js?v=42" in html
-    assert "/static/styles.css?v=25" in html
+    assert "/static/styles.css?v=26" in html
 
 
 def test_primary_decision_precedes_plan_scaffolding_and_requires_an_explicit_choice() -> None:
