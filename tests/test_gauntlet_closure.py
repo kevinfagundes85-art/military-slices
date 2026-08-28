@@ -279,6 +279,28 @@ def test_resume_target_change_and_clear_reopens_gate() -> None:
     assert "resume-target-role" in {gate.id for gate in state.gates}
 
 
+def test_natural_language_reversal_replaces_the_active_career_target() -> None:
+    state = apply_confirmed_input(
+        new_state("career-natural-reversal"),
+        orient("My career target is Information Security Analyst."),
+        idempotency_key="career-natural-reversal-0001",
+    )
+
+    state = apply_confirmed_input(
+        state,
+        orient(
+            "I changed my mind. I no longer want Information Security Analyst; "
+            "I want a stable Cloud Security Engineer role instead."
+        ),
+        idempotency_key="career-natural-reversal-0002",
+    )
+
+    assert state.career_target == "Cloud Security Engineer"
+    assert [item.title for item in state.career_hypotheses if item.status == "accepted"] == [
+        "Cloud Security Engineer"
+    ]
+
+
 def test_legacy_profile_without_execution_normalizes_additively() -> None:
     payload = new_state("legacy-execution").model_dump(mode="json")
     payload.pop("execution")

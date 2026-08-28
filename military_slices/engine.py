@@ -625,6 +625,18 @@ def _extract_career_target(text: str) -> str | None:
         text,
         flags=re.IGNORECASE,
     )
+    if not match and any(
+        cue in text.casefold()
+        for cue in ("changed my mind", "change my mind", "no longer want", "instead")
+    ):
+        match = re.search(
+            r"\bi\s+(?:now\s+)?want\s+(?:to\s+be(?:come)?\s+)?(?:an?\s+)?"
+            r"(?:stable\s+|remote\s+|civilian\s+)*"
+            r"([^.;!?\n]{2,90}?\b(?:analyst|engineer|manager|specialist|coordinator))"
+            r"(?:\s+role)?(?:\s+instead)?\b",
+            text,
+            flags=re.IGNORECASE,
+        )
     if not match:
         return None
     target = match.group(1).strip()
