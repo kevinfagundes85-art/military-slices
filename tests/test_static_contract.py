@@ -360,7 +360,7 @@ def test_a_recorded_learning_becomes_a_next_move_instead_of_a_caught_up_dead_end
     assert "Plan the next small test" in script
     assert "Change direction" in script
     assert "Decide what to do with what you learned." in script
-    assert "Run your planned test, then add what happened." in script
+    assert "Run the test shown here, then add what happened." in script
     assert "The next useful input is evidence from the real world." in script
     assert "For my next test of the ${inputContext.title} work direction:" in script
     assert 'setAddPanelCopy("Update your plan", "Something changed?"' in script

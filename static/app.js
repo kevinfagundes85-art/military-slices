@@ -305,35 +305,30 @@ function renderHelmFocus(state, gate) {
   const needsLearningDecision = Boolean(
     caughtUp && acceptedDirection && directionAwaitingNextMove(state, acceptedDirection),
   );
-  const hasPlannedDirectionTest = Boolean(
-    caughtUp
-    && acceptedDirection
-    && !needsLearningDecision
-    && directionNextTestValues(state, acceptedDirection).length,
-  );
+  const hasActiveDirectionTest = Boolean(caughtUp && acceptedDirection && !needsLearningDecision);
   const scope = (gate?.affected_slices || []).map((slice) => labels[slice] || humanCopy(slice));
   $("#focus-state").textContent = mode === "PARALYZED"
     ? "Needs attention"
     : (mode === "COMPLETE"
       ? "Complete"
-      : (needsLearningDecision ? "Next move" : (hasPlannedDirectionTest ? "In the field" : (caughtUp ? "Caught up" : "On course"))));
+      : (needsLearningDecision ? "Next move" : (hasActiveDirectionTest ? "In the field" : (caughtUp ? "Caught up" : "On course"))));
   $("#focus-now").textContent = gate
     ? humanCopy(gate.title)
     : (mode === "COMPLETE"
       ? "No decision is waiting."
       : (needsLearningDecision
         ? "Decide what to do with what you learned."
-        : (hasPlannedDirectionTest ? "Run your planned test, then add what happened." : "Your current plan is caught up.")));
+        : (hasActiveDirectionTest ? "Run the test shown here, then add what happened." : "Your current plan is caught up.")));
   $("#focus-why").textContent = gate
     ? humanCopy(gate.why)
     : (mode === "COMPLETE"
       ? "This goal has been closed."
       : (needsLearningDecision
         ? "A real result should shape the next test—or the direction."
-        : (hasPlannedDirectionTest ? "The next useful input is evidence from the real world." : "Nothing needs your decision right now.")));
+        : (hasActiveDirectionTest ? "The next useful input is evidence from the real world." : "Nothing needs your decision right now.")));
   $("#focus-scope").textContent = scope.length
     ? scope.join(" · ")
-    : ((needsLearningDecision || hasPlannedDirectionTest) ? "Work · Your story" : "No additional plan area is active.");
+    : ((needsLearningDecision || hasActiveDirectionTest) ? "Work · Your story" : "No additional plan area is active.");
   renderPlanningRoute(state, gate);
 }
 
