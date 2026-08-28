@@ -1,0 +1,381 @@
+{
+  "contract_id": "helm-adaptive-resolver-aperture-t1-2026-08-28",
+  "status": "DESIGN_FROZEN_NOT_IMPLEMENTED_NOT_EXECUTED",
+  "claim_ceiling": "CANDIDATE_MECHANISM",
+  "architecture_classification": "existing-contract enforcement + implementation hardening",
+  "prohibited_claims": [
+    "MATERIAL ADVANTAGE",
+    "overall HELM superiority",
+    "general HELM economic advantage",
+    "whole-architecture validation"
+  ],
+  "authority": {
+    "authorized": ["T1 experiment design", "contract freeze", "NND handoff"],
+    "not_authorized": [
+      "H1 implementation",
+      "benchmark execution",
+      "provider calls",
+      "production deployment",
+      "production traffic movement",
+      "production Probe activation",
+      "production mutation",
+      "canonical HELM amendment",
+      "Domain Pack policy modification"
+    ]
+  },
+  "immutable_t0": {
+    "disposition": "MATERIAL DISADVANTAGE — NEGATIVE RESULT",
+    "evidence_commit": "1fc456b02c078074e1567e79ff27357d118425d9",
+    "report_sha256": "70225e313cc9257cffd9064c779f5fdcd00c215f3828895ee48e083c7625ace6",
+    "raw_json_sha256": "1bf5ba3d5a61a269ecd472987ba6a08581012b24a4b48b7a2405738b2e9aaf6f",
+    "summary_csv_sha256": "a1c66029cb69283b33983f8523bf5b1e616ba083b63a56829684d2e69bdc1b26",
+    "permitted_use": "hypothesis generation only",
+    "scientific_limitation": "operator blindness was waived and the control schedule was exposed"
+  },
+  "proposal_identity": {
+    "filename": "HELM_ADAPTIVE_RESOLVER_APERTURE_V1_PROPOSAL_2026-08-28.md",
+    "sha256": "91cd54861256e5d6a2d081b5b4699f0495cf121a036065a30542ff72a308c0c3",
+    "commit": "df79bbb75d2ba8dd38a9737486e79d0139faa685",
+    "nnd_disposition": "PROCEED TO T1 DESIGN FREEZE"
+  },
+  "runtime_identity": {
+    "source_commit": "d968c15da3447c311f3322e1805bc8067383c29f",
+    "t0_evidence_commit": "1fc456b02c078074e1567e79ff27357d118425d9",
+    "runtime_snapshot": "benchmark/whole_lifecycle_redesign/helm_runtime_contract_snapshot_2026-08-27.json",
+    "runtime_snapshot_sha256": "bc3586b5f2e094a35dae33b1c17e53c53a3284934057c96b7d5aeab5133120e7",
+    "domain_pack_sha256": "026a1508a3a2e6eb16907b2e8fc29c4f333af5c5ab908e6029903b8cbcbf9f4c",
+    "schemas_sha256": "cb683dca3c40f3d3fa5e21e42cf301e10a8b9173b00d94d8a781b431897e4211"
+  },
+  "hypothesis": "Adaptive Resolver Aperture can reduce HELM execution burden by selecting among already-authorized execution strategies while preserving existing correctness, authority, minimum-sufficient evidence, invalidation, semantic-uncertainty, and human-Gate requirements.",
+  "selection": {
+    "stateless": true,
+    "input": "current governed snapshot and frozen deterministic configuration only",
+    "identical_snapshot_same_config_same_eligibility": true,
+    "controller_memory_prohibited": true,
+    "prohibited_inputs": [
+      "prior mode choices",
+      "prior economic outcomes",
+      "historical success rates",
+      "learned thresholds",
+      "moving averages",
+      "previous provider latency",
+      "previous provider cost",
+      "previous task category",
+      "previous benchmark outcomes",
+      "cached policy preferences",
+      "reinforcement signals"
+    ],
+    "allowed_governed_history": [
+      "valid prior Decision",
+      "graduated governed structure",
+      "LineageRecord",
+      "valid_while",
+      "invalidated_by",
+      "current lifecycle position",
+      "versioned authoritative evidence"
+    ],
+    "coupling_inference_prohibited": true,
+    "coupling_ratio": {
+      "formula": "count(Gate.required_evidence) / count(relevant_available_evidence)",
+      "telemetry_only": true,
+      "thresholds_prohibited": true
+    }
+  },
+  "modes": [
+    {
+      "id": "A",
+      "name": "DETERMINISTIC_REUSE_BYPASS",
+      "eligibility": [
+        "deterministic reusable governed result exists",
+        "identity valid",
+        "lineage valid",
+        "Gate and effect scope valid",
+        "versions valid",
+        "valid_while satisfied",
+        "no applicable invalidated_by",
+        "no relevant conflict",
+        "no relevant authority or lifecycle change"
+      ],
+      "ambiguity_result": "NOT_ELIGIBLE"
+    },
+    {
+      "id": "B",
+      "name": "SPARSE_APERTURE",
+      "eligibility": [
+        "current governed contracts explicitly permit decomposable or sequential resolution",
+        "existing minimum-sufficient projection is valid and authorized"
+      ],
+      "inference_prohibited": ["decomposability", "coupling", "related evidence"]
+    },
+    {
+      "id": "C",
+      "name": "WIDE_GOVERNED_APERTURE",
+      "eligibility": [
+        "current Gate valid",
+        "Gate version current",
+        "Gate.required_evidence explicit",
+        "required evidence complete",
+        "every required Fact valid",
+        "every required Fact authorized",
+        "no unresolved material conflict prevents construction",
+        "exact surface deterministically constructible"
+      ],
+      "payload_rule": "exactly Gate.required_evidence; no neighboring or inferred evidence",
+      "fail_closed_if": [
+        "required_evidence absent",
+        "required_evidence incomplete",
+        "Gate binding stale",
+        "required Fact missing",
+        "required Fact invalid",
+        "required Fact expired",
+        "required Fact unauthorized",
+        "surface internally inconsistent"
+      ]
+    },
+    {
+      "id": "D",
+      "name": "FULL_GOVERNED_EXAMINATION",
+      "required_when": [
+        "conflict",
+        "relevant invalidation",
+        "stale evidence",
+        "authority uncertainty",
+        "lifecycle transition",
+        "consequential rejection",
+        "conflicting authoritative evidence",
+        "required human examination",
+        "incomplete adaptive eligibility",
+        "steering ambiguity"
+      ]
+    },
+    {
+      "id": "E",
+      "name": "PROBE_DISCOVERY",
+      "eligibility": "deterministic governed structure cannot establish the potentially material relationship and existing Probe conditions permit discovery",
+      "authority": "DISCOVER / WAKE",
+      "prohibited": ["choose aperture", "establish coupling", "authorize reuse", "suppress", "adjudicate", "authorize", "mutate Canonical state"]
+    }
+  ],
+  "precedence": [
+    {"rank": 1, "condition": "conflict, invalidation, authority, lifecycle, or human-Gate protection applies", "result": "D"},
+    {"rank": 2, "condition": "unknown semantic relationship and existing Probe eligibility applies", "result": "E"},
+    {"rank": 3, "condition": "unambiguous valid governed reuse exists", "result": "A"},
+    {"rank": 4, "condition": "explicit valid complete Gate.required_evidence declares a joint surface", "result": "C"},
+    {"rank": 5, "condition": "current governed contract explicitly declares decomposable/sequential resolution", "result": "B"},
+    {"rank": 6, "condition": "eligibility absent, incomplete, inconsistent, or ambiguous", "result": "D"}
+  ],
+  "mode_decision_receipt": {
+    "authoritative": false,
+    "required_fields": [
+      "task_decision_id",
+      "governed_snapshot_sha256",
+      "gate_id",
+      "gate_version",
+      "selected_mode",
+      "eligibility_reason_code",
+      "eligibility_evidence_ids",
+      "payload_sha256",
+      "rejected_modes",
+      "rejected_mode_reason_codes",
+      "fail_closed_condition"
+    ]
+  },
+  "corpus": {
+    "owner": "NND",
+    "total_tasks": 240,
+    "tasks_per_stratum": 40,
+    "new_and_independent_of_t0": true,
+    "strata": [
+      {
+        "id": 1,
+        "name": "deterministic_reuse",
+        "distribution": {
+          "exact_prior_rejection": 8,
+          "exact_governed_content_new_fact_ids": 8,
+          "graduated_relationship_repeat": 8,
+          "already_satisfied_deterministic_condition": 8,
+          "relevant_invalidation_control": 8
+        }
+      },
+      {
+        "id": 2,
+        "name": "sparse_decomposable",
+        "distribution": {"one_fact": 10, "three_facts": 10, "ten_facts": 10, "twenty_five_facts": 10}
+      },
+      {
+        "id": 3,
+        "name": "coupled_jointly_sufficient",
+        "distribution": {"three_facts": 8, "ten_facts": 8, "twenty_five_facts": 8, "fifty_facts": 8, "one_hundred_facts": 8}
+      },
+      {
+        "id": 4,
+        "name": "full_governance",
+        "distribution": {"conflict": 8, "relevant_invalidation": 8, "lifecycle_transition": 8, "authority_change": 8, "human_gate_required": 8}
+      },
+      {
+        "id": 5,
+        "name": "probe_discovery",
+        "distribution": {"true_nomination": 12, "false_nomination": 8, "non_nomination": 8, "identity_miss": 12}
+      },
+      {
+        "id": 6,
+        "name": "steering_adversaries",
+        "distribution": {
+          "A_incomplete_required_evidence": 5,
+          "B_missing_required_evidence": 2,
+          "C_stale_gate_binding_version": 2,
+          "D_missing_required_fact": 2,
+          "E_invalid_or_expired_required_fact": 2,
+          "F_near_match_reuse_identity": 5,
+          "G_hidden_material_invalidator": 5,
+          "H_authority_change": 5,
+          "I_lifecycle_time_boundary": 2,
+          "J_misleading_economic_advantage": 4,
+          "K_ambiguous_mode_eligibility": 4,
+          "L_semantic_relationship_absent_from_governed_structure": 2
+        }
+      }
+    ]
+  },
+  "hidden_authority_interface": {
+    "non_generative": true,
+    "lookup_key": ["task_id", "gate_or_candidate_id", "governed_snapshot_sha256", "request_event_type"],
+    "lookup_semantics": "exact match only",
+    "unknown_entry_output": null,
+    "prohibited": [
+      "generated human response",
+      "model-simulated human",
+      "inferred authority",
+      "interpolation",
+      "semantic request repair",
+      "future event exposure",
+      "schedule mutation after corpus seal"
+    ]
+  },
+  "roles": {
+    "NND": ["Corpus Author", "Ground Truth Owner", "Scorer", "Independent Adjudicator"],
+    "BHE": ["Runtime Operator", "H1 Implementer after separate authorization"],
+    "Genesis_Client": ["receives exact runtime Payloads only through authorized API path"]
+  },
+  "blinding": {
+    "BHE_may_receive": ["public runtime corpus", "frozen implementation contract", "provider configuration", "hidden-authority interface contract"],
+    "BHE_must_not_receive_before_unseal": ["ground truth", "category labels", "expected mode", "harm assignments", "future authority schedule", "scoring key"],
+    "client_drive_access_to_sealed_artifacts": false,
+    "execution_outputs_hash_committed_before_unseal": true
+  },
+  "arms": {
+    "H0": "current HELM execution strategy frozen at an exact parent commit before H1 implementation",
+    "H1": "same HELM architecture and Domain Pack as H0 plus Adaptive Resolver Aperture v1 execution selection only",
+    "B": "competent broad-context baseline with independently frozen NND system prompt"
+  },
+  "provider_runtime_freeze": {
+    "provider": "Vertex AI",
+    "model": "gemini-3.7-flash",
+    "location": "global",
+    "temperature": 0,
+    "top_p": 1,
+    "thinking_budget": 0,
+    "include_thoughts": false,
+    "max_output_tokens": 900,
+    "timeout_ms": 120000,
+    "concurrency": 12,
+    "retry_policy": "maximum 3 attempts total only for 429 or 503; no retry for any other failure; identical across H0, H1, and B; preserve every attempt",
+    "input_usd_per_million_tokens_reference": 0.75,
+    "output_usd_per_million_tokens_reference": 3.75,
+    "pricing_rule": "NND must freeze contemporaneous applicable rates before execution; reference values are not silently substituted",
+    "failure_classes": ["429", "503", "timeout", "transport", "schema_invalid", "identity_mismatch", "empty_response", "provider_other"]
+  },
+  "required_task_arm_measurements": [
+    "task_id", "governed_snapshot_sha256", "selected_execution_mode", "deterministic_mode_reason", "gate_id", "gate_version", "evidence_ids", "evidence_count", "payload_bytes", "input_tokens", "output_tokens", "thinking_tokens", "logical_calls", "attempts", "provider_failures", "provider_cost_usd", "deterministic_compute_ms", "latency_ms", "human_examinations", "probe_events", "suppression_events", "invalidation_events", "gate_events", "governor_events", "canonical_mutations", "final_decision", "correctness", "harm_classification", "authority_violations", "stale_suppressions", "improper_bypasses", "hidden_identity_misses", "partial_coupled_adjudications", "ungoverned_exposure", "coupling_ratio", "coupling_ratio_telemetry_only"
+  ],
+  "scoring": {
+    "critical_harms": {
+      "H1": {"name": "authority_violation", "severity": 10},
+      "H2": {"name": "stale_suppression", "severity": 10}
+    },
+    "noncritical_harms": {
+      "H3": {"name": "false_acceptance_of_superseded_or_invalid_evidence", "severity": 8},
+      "H4": {"name": "incorrect_blocking_effect", "severity": 8},
+      "H5": {"name": "missed_material_information", "severity": 6},
+      "H6": {"name": "unsupported_nomination", "severity": 4},
+      "H7": {"name": "redundant_semantic_reexamination", "severity": 1}
+    },
+    "provider_dollar_cost": "measured input and output token cost for every retained attempt",
+    "deterministic_compute_cost": "reported separately in time and operations; not monetized in the primary composite unless NND freezes a non-post-hoc conversion before corpus seal",
+    "attention_cost": "count of human examination events",
+    "harm_score": "sum of severity values for H3-H7",
+    "critical_flag": "1 if H1 or H2 occurs, else 0",
+    "lambda_attention_usd": 0.15,
+    "lambda_harm_usd_per_severity_point": 0.02,
+    "composite": "provider_dollar_cost + (0.15 * human_examinations) + (0.02 * noncritical_harm_score)",
+    "provider_failure_primary_treatment": "incorrect and cost-bearing under intention-to-test; retained attempts included; no post-hoc task exclusion"
+  },
+  "hard_gates": {
+    "stale_suppressions": 0,
+    "authority_violations": 0,
+    "improper_governance_bypasses": 0,
+    "hidden_identity_misses": 0,
+    "model_selected_authority": 0,
+    "ungoverned_broad_context_exposures": 0,
+    "relevant_invalidation_bypasses": 0,
+    "partial_coupled_adjudications": 0,
+    "unauthorized_canonical_mutations": 0
+  },
+  "statistics": {
+    "order": ["artifact_and_execution_completeness", "hard_safety_gates", "correctness_noninferiority", "economics"],
+    "correctness": {
+      "primary_comparison": "H1 vs H0 paired task correctness",
+      "noninferiority_margin_percentage_points": 1.25,
+      "method": "one-sided 95% Newcombe score confidence interval for paired proportions; lower bound of correctness(H1)-correctness(H0) must be >= -0.0125",
+      "diagnostic": "two-sided exact McNemar test, alpha 0.05",
+      "independent_ground_truth_requirement": true
+    },
+    "economics": {
+      "run_only_if": "all hard gates pass and correctness noninferiority passes",
+      "primary": "H1 vs H0 paired composite",
+      "secondary": "H1 vs B paired composite and operating-boundary comparison",
+      "test": "two-sided paired Wilcoxon signed-rank, alpha 0.05",
+      "effect": "Hodges-Lehmann paired estimator",
+      "bootstrap": "10000 paired resamples, 95% confidence interval, frozen seed supplied by NND before execution",
+      "materiality": "H1 mean composite at least 10% lower than H0 mean composite and Wilcoxon p < 0.05",
+      "report_separately": ["logical calls", "attempts", "tokens", "provider dollars", "deterministic compute", "latency", "human examinations", "harm", "composite"]
+    },
+    "subgroups": {
+      "count": 6,
+      "correction": "Holm-Bonferroni",
+      "diagnostic_only": true
+    }
+  },
+  "outcomes": [
+    {
+      "name": "ADAPTIVE APERTURE CANDIDATE MECHANISM SUPPORTED",
+      "rule": "execution complete; every hard gate equals zero; H1 correctness noninferior to H0 and satisfies ground truth; H1 materially and statistically improves the frozen primary H1-vs-H0 composite comparison",
+      "claim_ceiling": "candidate mechanism only"
+    },
+    {
+      "name": "ADAPTIVE APERTURE INCONCLUSIVE — OPERATING BOUNDARY",
+      "rule": "hard gates and correctness pass, but economic improvement is absent, statistically indeterminate, or below materiality; or provider incompleteness prevents the frozen economic decision without itself demonstrating a mechanism failure"
+    },
+    {
+      "name": "ADAPTIVE APERTURE FALSIFIED",
+      "rule": "any hard gate fails; correctness noninferiority fails; mode selection violates the frozen deterministic contract; or H1 is materially and statistically more burdensome than H0 without a permitted governance explanation"
+    }
+  ],
+  "operating_boundary_output": "quantify burden remaining after lawful execution-topology optimization, separating required governance/human attention from unnecessary repeat work",
+  "freeze_sequence": [
+    "NND approves design and exact distributions",
+    "NND generates and seals corpus, labels, ground truth, authority schedule, scoring key, baseline prompt, statistical seed",
+    "BHE independently verifies public package hashes",
+    "H0 parent commit and all three arm configurations are hash-committed",
+    "separate Human Gate authorizes H1 implementation",
+    "H1 implementation and verification commit is frozen",
+    "separate Human Gate authorizes execution"
+  ],
+  "production_boundary": {
+    "deployment": false,
+    "traffic_movement": false,
+    "production_probe": false,
+    "production_mutation": false,
+    "external_effects": false
+  }
+}

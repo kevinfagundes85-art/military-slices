@@ -1,0 +1,53 @@
+{
+  "contract_id": "helm-adaptive-resolver-aperture-t1-hidden-authority-interface-2026-08-28",
+  "status": "PUBLIC_INTERFACE_FROZEN_SCHEDULE_WITHHELD",
+  "generative": false,
+  "request_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["task_id", "gate_or_candidate_id", "governed_snapshot_sha256", "request_event_type"],
+    "properties": {
+      "task_id": {"type": "string", "minLength": 1},
+      "gate_or_candidate_id": {"type": "string", "minLength": 1},
+      "governed_snapshot_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+      "request_event_type": {
+        "type": "string",
+        "enum": ["HUMAN_EXAMINATION", "HUMAN_AUTHORIZATION", "HUMAN_REJECTION", "HUMAN_CLARIFICATION"]
+      }
+    }
+  },
+  "lookup": {
+    "type": "exact_hash_bound_schedule_lookup",
+    "semantic_repair": false,
+    "partial_match": false,
+    "future_event_visibility": false,
+    "unknown_entry": null
+  },
+  "response_schema": {
+    "oneOf": [
+      {"type": "null"},
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["schedule_entry_id", "request_sha256", "authority_event", "event_sha256"],
+        "properties": {
+          "schedule_entry_id": {"type": "string", "minLength": 1},
+          "request_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "authority_event": {"type": "object"},
+          "event_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    ]
+  },
+  "schedule_owner": "NND",
+  "schedule_visibility_before_execution": ["NND hidden authority service only"],
+  "schedule_prohibited_visibility_before_unseal": ["BHE", "H0", "H1", "Arm B", "Genesis Client"],
+  "prohibited": [
+    "LLM-generated authority",
+    "simulated human response",
+    "inferred approval",
+    "interpolation",
+    "semantic fallback",
+    "post-seal schedule mutation"
+  ]
+}
