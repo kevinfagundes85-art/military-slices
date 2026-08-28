@@ -108,7 +108,7 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert "Look at this another way" in html
     assert "Choose a relevant part of your plan" in html
     assert "/static/app.js?v=16" in html
-    assert "/static/styles.css?v=13" in html
+    assert "/static/styles.css?v=14" in html
 
 
 def test_primary_decision_precedes_plan_scaffolding_and_requires_an_explicit_choice() -> None:
@@ -240,9 +240,10 @@ def test_helm_workspace_keeps_input_visible_and_routes_unmodeled_directions_to_r
     assert 'await requestOrientation(value, event.submitter)' in script
     assert "Your plan advanced while you were writing" in script
     assert ".add-panel {" in css and "position: sticky" in css
-    assert "width: min(860px, 100%)" in css
+    assert "grid-template-columns: minmax(0, 1.8fr) minmax(300px, 0.8fr)" in css
+    assert "grid-column: 1 / -1" in css
+    assert "min-height: 74px" in css
     assert "grid-row: 1" in css
-    assert "justify-self: center" in css
 
 
 def test_saved_research_copy_is_projected_into_direct_human_language() -> None:
