@@ -109,6 +109,13 @@ def test_rejected_roles_never_return_from_deterministic_resolver() -> None:
     assert rejected[0] not in [item.title for item in second]
 
 
+def test_ai_tool_goal_produces_product_builder_directions() -> None:
+    hypotheses = deterministic_hypotheses("I want to build AI tools for veterans.", [])
+
+    assert hypotheses[0].title == "Veteran-focused AI product builder"
+    assert any("AI product" in item.title for item in hypotheses)
+
+
 def test_explicit_rejection_changes_later_reasoning_without_looping() -> None:
     state = apply_confirmed_input(
         new_state("ms-test"),

@@ -11,6 +11,7 @@ let pendingFogBank = null;
 let whatIfSourceVersion = null;
 let hasRendered = false;
 let reviewReturn = "plan";
+let inputContext = null;
 
 const labels = {
   career: "Work",
@@ -650,6 +651,7 @@ function itemList(items, emptyCopy) {
 
 function openDirectionLearning(item) {
   openAdd(false);
+  inputContext = { kind: "direction-learning", title: item.title };
   const input = $("#input-text");
   input.value = "";
   input.placeholder = `What did you learn while testing ${item.title}? A sentence is enough.`;
@@ -1275,6 +1277,7 @@ async function acceptFogBank() {
 
 function openAdd(fileFirst) {
   reviewReturn = "add";
+  inputContext = null;
   reviewPanel.hidden = true;
   addPanel.hidden = false;
   addPanel.classList.remove("input-attention");
@@ -1289,6 +1292,7 @@ function openAdd(fileFirst) {
 }
 
 function closeAdd() {
+  inputContext = null;
   $("#input-text").value = "";
   $("#artifact-file").value = "";
   $("#file-status").textContent = "PDF, DOCX, TXT, PNG, or JPG · 5 MB max";
@@ -1313,7 +1317,10 @@ async function orientInput(event) {
     return;
   }
   reviewReturn = "add";
-  await requestOrientation(text, event.submitter);
+  const orientedText = inputContext?.kind === "direction-learning"
+    ? `While testing the ${inputContext.title} work direction, I learned: ${text}`
+    : text;
+  await requestOrientation(orientedText, event.submitter);
 }
 
 function isPlanChangeRequest(text) {
@@ -1410,7 +1417,10 @@ async function confirmReview() {
     contentGrid.hidden = false;
     document.body.classList.remove("inspection-open");
     pendingOrientation = null;
-    if (reviewReturn === "add") $("#input-text").value = "";
+    if (reviewReturn === "add") {
+      $("#input-text").value = "";
+      inputContext = null;
+    }
     render(next, { showFeedback: true });
     $("#primary").scrollIntoView({ behavior: "smooth", block: "start" });
     focusPrimary();

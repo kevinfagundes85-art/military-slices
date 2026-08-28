@@ -107,7 +107,7 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
     assert "View connected areas" in html
     assert "Choose a relevant part of your plan" in html
-    assert "/static/app.js?v=23" in html
+    assert "/static/app.js?v=24" in html
     assert "/static/styles.css?v=17" in html
 
 
@@ -247,7 +247,10 @@ def test_helm_workspace_keeps_input_visible_and_routes_unmodeled_directions_to_r
     assert "grid-row: 1" in css
     assert html.index('id="orientation-shell"') < html.index('class="context-column"')
     assert html.index('class="context-column"') < html.index('class="helm-focus"')
-    assert 'if (reviewReturn === "add") $("#input-text").value = "";' in script
+    assert 'if (reviewReturn === "add") {' in script
+    assert "inputContext = null;" in script
+    assert 'kind: "direction-learning"' in script
+    assert "While testing the ${inputContext.title} work direction, I learned:" in script
     assert "function isPlanChangeRequest" in script
     assert '$("#fog-bank-text").value = text' in script
     assert "Your words are ready below" in script

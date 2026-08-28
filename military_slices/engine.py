@@ -1060,11 +1060,10 @@ def _recompute_gates(state: CanonicalState) -> list[Gate]:
             task_gate_id = path_task_gate_id(task)
             if task_gate_id in completed_gate_ids:
                 continue
-            task_title = task.title.strip().rstrip(".")
             question = (
                 task.title.strip()
                 if task.title.strip().endswith("?")
-                else f"What have you learned about this, and what still needs testing: {task_title}?"
+                else "What did you learn from this test, and what do you still need to check?"
             )
             gate = Gate(
                 id=task_gate_id,
@@ -1396,7 +1395,7 @@ def _decision_consequences(
         return ["Added this location need to your current decision."]
     if gate_id.startswith("path-task_"):
         return [
-            "Your answer moved this plan forward.",
+            f"Saved your answer: {decision_value}",
             "Here’s the next thing worth figuring out.",
         ]
     return [
@@ -1409,7 +1408,17 @@ def deterministic_hypotheses(text: str, rejected: list[str]) -> list[CareerHypot
     families: list[tuple[str, str, list[str]]] = []
     if any(
         term in lower
-        for term in ("build a company", "start a company", "startup", "founder", "build something")
+        for term in (
+            "build a company",
+            "start a company",
+            "startup",
+            "founder",
+            "build something",
+            "build ai",
+            "building ai",
+            "ai tool",
+            "ai product",
+        )
     ):
         families.extend(
             [
