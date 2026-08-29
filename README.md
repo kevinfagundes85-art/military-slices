@@ -1,122 +1,156 @@
 # Military SLICES
 
-**U.S. Military and Coast Guard Career Transition Planning Assistant**
+**A governed transition-planning partner for service members, veterans, and military families.**
 
-Military SLICES turns incomplete transition context into one persistent, governed plan. It connects career, education, location, and résumé decisions; lets a bounded Gemini agent close machine-resolvable work; and asks the service member only for the next decision that genuinely requires them.
+[Try the hosted candidate](https://hackathon-rc---military-slices-ztvqlzospa-uw.a.run.app/) · [Architecture](docs/ARCHITECTURE.md) · [Submission evidence](FINAL_HACKATHON_SUBMISSION_PACKAGE.md)
 
-The installed transition runtime is `2026-08-24-v2-shadow-tested`. It separates the human objective from the next service-aware milestone and keeps the visible task horizon to one gate and no more than three tasks.
+Military transition is not one decision. Work, education, location, family needs, timing, and personal priorities change together—and most tools either flatten that reality into a checklist or make the person repeat it in every conversation.
 
-This is a fresh competition implementation created during the All Things Agentic Hackathon submission period. It does not contain Veteran Slice code, routes, schemas, deployments, or data.
+Military SLICES starts with ordinary language, a document, or a screenshot. It lets the person review what the system heard before anything changes their plan. From there it keeps one durable transition plan, brings forward only the next decision or real-world action that matters, and reconnects new evidence to the decisions it can actually affect.
 
-## What it proves
+The result is not a chat transcript. It is a plan the veteran can inspect, revise, print, and export.
 
-- Typed human input becomes reviewable orientation before it becomes state.
-- Deliberately selecting an artifact authorizes one bounded update; the user is not asked to authorize the same résumé twice.
-- An artifact may contribute governed evidence without manufacturing the human's objective. If its desired use is unknown, the next interaction asks one routing question and keeps unrelated recommendations latent.
-- Every visible task must support both the human objective and the next path milestone; relevance alone does not grant execution authority.
-- Current-path readiness counts only decisions material to the declared target; it is not a master transition checklist.
-- Career, Education, Location, and Your Story can be inspected without activating work or invoking Gemini.
-- Historical versions are read-only. What-If branches remain signed, ephemeral hypotheses until the human explicitly promotes one.
-- Temporal revalidation marks only mapped downstream assumptions, uses bounded receipt patches, and makes zero Gemini calls for freshness detection.
-- Confirmed facts retain human authority and provenance.
-- One shared decision can update several transition areas.
-- Typed uncertainty preserves `UNKNOWN`, `PARTIAL`, and `CONFLICTED` instead of manufacturing certainty.
-- Google ADK with Gemini 3.7 Flash proposes bounded career hypotheses and uses deterministic tools.
-- Firestore persists one canonical state with optimistic concurrency and idempotency.
-- Cloud Run hosts the public candidate.
-- The next interaction is selected by the highest-value unresolved decision.
+![Military SLICES complete transition plan](docs/screenshots/07-complete-plan-and-export.png)
 
-## Architecture
+## The experience
 
-The submission-ready architecture diagram is available as
-[`output/pdf/military-slices-architecture.pdf`](output/pdf/military-slices-architecture.pdf).
+A typical journey looks like this:
 
-```mermaid
-flowchart LR
-    H[Service member] --> UI[Adaptive web interface]
-    UI -->|typed input| O[Stateless orientation]
-    O --> R[Human review and confirmation]
-    R --> API[FastAPI on Cloud Run]
-    UI -->|deliberately selected artifact| X[Safe ephemeral extraction]
-    X --> API
-    API --> G[Governed state transition]
-    G --> ADK[Google ADK agent]
-    ADK --> GEM[Gemini 3.7 Flash on Vertex AI]
-    ADK --> T[Bounded deterministic tools]
-    G --> FS[(Firestore canonical state)]
-    FS --> P[Path-bounded projection: one gate and one to three tasks]
-    P --> UI
+1. **Start with what you have.** Explain the situation naturally or provide a supported file.
+2. **Review before write.** Military SLICES extracts decision-relevant statements and asks the person to correct them before they become plan state.
+3. **Work on what matters now.** The interface presents one bounded decision surface, bundling related questions when they belong together.
+4. **Use bounded reasoning.** Gemini can propose career directions from a purpose-limited projection; it cannot authorize or persist them.
+5. **Keep the human in command.** Consequential choices require an explicit human action. Rejected alternatives remain available without staying in the foreground.
+6. **Act outside the app.** The plan turns uncertainty into a small real-world test, such as reviewing a work sample with someone in the field.
+7. **Return with evidence.** The result updates only the relevant parts of the plan and may change what comes next.
+8. **Take the plan away.** The accumulated direction, strengths, priorities, decisions, experiments, open questions, next actions, and dates are available in a readable export.
+
+![Military SLICES bounded direction choice](docs/screenshots/03-direction-choice.png)
+
+## What HELM is
+
+HELM is the governance layer underneath Military SLICES. It separates five jobs that a normal assistant often blends together:
+
+- **Human intent** establishes the objective.
+- **Slices** expose the smallest relevant view of the shared plan, such as Career, Education, Location, or Your Story.
+- A **Domain Pack** supplies the versioned transition path and the rules that make those views meaningful in this domain.
+- A **Gate** identifies the bounded decision that is currently unresolved.
+- A **Resolver** may propose an answer from deterministic rules or a bounded Gemini call.
+- The **Authority Governor** validates scope, evidence, state version, and authority before any governed change is written.
+
+The model proposes; it does not grant itself authority. Observation does not silently become plan truth. A user can inspect history or explore a hypothetical branch without changing the current plan.
+
+The prototype keeps autonomous HELM Probe execution disabled. Probe is represented in the architecture as a bounded discovery path for relationships that governed structure does not already know; it is not used here as an autonomous decision-maker.
+
+## HELM, Domain Packs, and Slices
+
+HELM is domain-independent governance. The installed Military Transition Domain Pack gives it a versioned service-aware path, stable transition boundaries, and permitted evidence surfaces. Slices are bounded projections over one shared canonical plan—not independent agents and not separate copies of the veteran's data.
+
+That relationship is the core design:
+
+```text
+ordinary human input
+  → reviewable orientation
+  → governed evidence
+  → one bounded Slice and Gate
+  → deterministic or Gemini/ADK Resolver proposal
+  → Authority Governor validation
+  → versioned plan state
+  → one next decision, action, or re-entry prompt
 ```
 
-The state persists. The decision determines the interface.
+![Military SLICES judge-readable architecture](docs/architecture.svg)
 
-![Military SLICES architecture](docs/architecture.svg)
+## Technology stack
 
-## Local setup
+| Technology | Implemented use |
+|---|---|
+| **Gemini 3.7 Flash on Vertex AI** | Produces structured, evidence-bounded career hypotheses and natural-language bridges when the current Gate permits a model call. |
+| **Google Agent Development Kit (ADK)** | Defines the bounded agent, structured output schema, deterministic tools, call limit, and wall-clock limit around Gemini. |
+| **Cloud Run** | Hosts the public FastAPI candidate as a containerized HTTPS service. |
+| **Firestore** | Stores one versioned canonical plan per anonymous session with optimistic concurrency, idempotency, and prior-version history. |
+| **FastAPI + Pydantic** | Implements the web/API boundary and strict state, proposal, receipt, and export models. |
+| **HTML, CSS, and JavaScript** | Delivers the responsive foreground, review surfaces, transition plan, history, What-If, and export experience. |
 
-Prerequisites: Python 3.11+, a Google Cloud project, and Application Default Credentials for live Gemini/Firestore use.
+See [the technology-use ledger](docs/TECHNOLOGY_USE_LEDGER.md) for implementation paths and status.
+
+## Run locally
+
+Prerequisites: Python 3.11 or newer. Google Cloud credentials are needed only for the live ADK/Gemini and Firestore configuration.
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-pip install -e ".[dev]"
-cp .env.example .env
-uvicorn military_slices.app:app --reload --port 8080
 ```
 
-For a deterministic local run without cloud writes, keep:
+Activate the environment:
+
+```bash
+# macOS/Linux
+source .venv/bin/activate
+
+# Windows PowerShell
+.venv\Scripts\Activate.ps1
+```
+
+Install and configure:
+
+```bash
+pip install -e ".[dev]"
+```
+
+Copy `.env.example` to `.env`, then run the deterministic local configuration:
 
 ```text
 MILITARY_SLICES_STORE=memory
 MILITARY_SLICES_AGENT=deterministic
 ```
 
-Open `http://127.0.0.1:8080`.
+```bash
+uvicorn military_slices.app:app --reload --port 8080
+```
 
-## Tests
+Open <http://127.0.0.1:8080/>.
+
+For live Google services, set `MILITARY_SLICES_STORE=firestore`, `MILITARY_SLICES_AGENT=adk`, a Google Cloud project/location, and Application Default Credentials. Never commit `.env` or credentials.
+
+## Validate
 
 ```bash
 pytest
-ruff check .
+ruff check military_slices tests
 mypy military_slices
 bandit -r military_slices
 pip-audit
 ```
 
-## Deploy to Cloud Run
+The final executed results, including any environment limitations, are recorded in [the final submission package](FINAL_HACKATHON_SUBMISSION_PACKAGE.md).
 
-```bash
-gcloud run deploy military-slices \
-  --source . \
-  --region us-west1 \
-  --service-account military-slices-runtime@YOUR_PROJECT.iam.gserviceaccount.com \
-  --allow-unauthenticated \
-  --set-env-vars MILITARY_SLICES_ENV=production,MILITARY_SLICES_STORE=firestore,MILITARY_SLICES_COOKIE_SECURE=true,MILITARY_SLICES_AGENT=adk,GOOGLE_GENAI_USE_VERTEXAI=true,GOOGLE_CLOUD_PROJECT=YOUR_PROJECT,GOOGLE_CLOUD_LOCATION=global,MILITARY_SLICES_MODEL=gemini-3.7-flash \
-  --set-secrets MILITARY_SLICES_SESSION_SECRET=military-slices-session-secret:latest
-```
+## Trust and data boundaries
 
-Grant the runtime service account Firestore User, Vertex AI User, and Secret Manager Secret Accessor for the named secret.
+- Typed orientation is not persisted until the human reviews and approves it.
+- Supported files are processed ephemerally; raw bytes and the full extracted artifact are not stored in Firestore.
+- Only decision-relevant statements survive governed orientation.
+- Resolver output is a typed proposal, never self-authenticating truth.
+- Writes are bound to the evaluated state version and protected by optimistic concurrency and idempotency.
+- History is read-only; What-If branches are signed, short-lived, and non-canonical until explicitly promoted.
+- External operational effects and autonomous Probe execution are disabled in this prototype.
+- Military SLICES provides planning support, not legal, medical, benefits, financial, clearance, hiring, or employment advice.
 
-## Data and authority boundary
+## Prototype scope and limitations
 
-- Unconfirmed typed orientation is not written.
-- Deliberately selecting a supported artifact is the authorization to use it for the current plan update; no redundant confirmation follows.
-- Raw uploaded bytes are ephemeral and are never written to Firestore.
-- The full extracted artifact is not persisted; only decision-relevant statements survive deterministic orientation.
-- The durable cross-service path and source manifest live in `military_slices/data/`; volatile program rules are not treated as timeless truth and must be refreshed from an authoritative source when they become path-critical.
-- Model output is a proposal, never self-authenticating truth.
-- Durable state contains conclusions, provenance, decisions, and minimal feedback—not hidden model reasoning.
-- Lenses inspect canonical state; History inspects prior canonical state; What-If creates hypothetical state. Only explicit governed promotion changes canonical truth.
-- This product provides transition planning, not legal, medical, financial, clearance, benefits, or employment guarantees.
+- The reference Domain Pack covers a bounded U.S. military-transition planning journey; it is not an authoritative benefits or eligibility engine.
+- Occupational evidence supports exploration and testing, not qualification or hiring predictions.
+- The hosted candidate is an anonymous-session prototype, not a production identity system.
+- File extraction supports the implemented TXT, DOCX, PDF, scanned-PDF, PNG, and JPEG paths; it is not a general document-management platform.
+- Provider failure falls back safely, but fallback career suggestions are intentionally generic outside recognized evidence families.
+- Physical-device validation and an independent cold-user study remain outside the completed automated and emulated-mobile evidence.
+- The current public candidate is a tagged, zero-production-traffic release candidate. No production traffic was moved for the submission build.
 
-## Competition technology
+## Hackathon status
 
-- Gemini 3.7 Flash through Vertex AI
-- Google Agent Development Kit (ADK)
-- Cloud Run
-- Firestore
+Military SLICES is a fresh competition implementation for the **Collaborative Partner** category. The required stack is present: Gemini 3.7 Flash through Vertex AI, Google ADK, and Google Cloud infrastructure (Cloud Run and Firestore). OpenAI Codex assisted with implementation, testing, documentation, and release verification.
 
-See [docs/HACKATHON_COMPLIANCE.md](docs/HACKATHON_COMPLIANCE.md), [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/RELEASE_EVIDENCE_2026-08-23.md](docs/RELEASE_EVIDENCE_2026-08-23.md), and [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md).
+The hosted candidate, clean demo take, screenshot pack, claim-to-evidence matrix, and final submission copy are prepared. Repository publication/access, public video upload, entrant attestations, and the irreversible Devpost submission remain human-controlled steps.
 
 ## License
 

@@ -162,7 +162,7 @@ def test_deliberately_selected_artifact_updates_plan_without_second_confirmation
         files={
             "file": (
                 "resume.txt",
-                b"Kevin kevin@example.com. Led maintenance schedules and want remote work.",
+                b"Alex alex@example.com. Led maintenance schedules and want remote work.",
                 "text/plain",
             )
         },
@@ -173,7 +173,7 @@ def test_deliberately_selected_artifact_updates_plan_without_second_confirmation
     assert payload["state"]["facts"]
     assert payload["what_changed"]["headline"] == "Your document changed what comes next."
     serialized = response.text
-    assert "kevin@example.com" not in serialized
+    assert "alex@example.com" not in serialized
     assert payload["state"]["original_intents"] == ["Shared a document to update my transition plan."]
     after = client.get("/api/state").json()["state"]
     assert after["version"] == before["version"] + 1

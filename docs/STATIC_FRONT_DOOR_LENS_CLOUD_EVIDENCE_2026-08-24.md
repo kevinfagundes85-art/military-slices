@@ -122,15 +122,15 @@ Assets were generated with the built-in OpenAI image generation tool and then
 locally resized/encoded as WebP. They carry no third-party stock-photo license.
 
 1. `static/images/start-document.webp`
-   - source: `C:/Users/kevin/.codex/generated_images/01a00e50-fa5e-7241-ae9d-c8adae055064/exec-c0fe486f-a2ee-40cb-b4ff-1cf1935d9226.png`
+   - source: local generation source (not distributed); final WebP is tracked in the repository.
    - prompt intent: photorealistic Black woman reviewing transition documents at
      a kitchen table; natural light; no uniforms, weapons, logos, or text.
 2. `static/images/start-image.webp`
-   - source: `C:/Users/kevin/.codex/generated_images/01a00e50-fa5e-7241-ae9d-c8adae055064/exec-71ba5902-6462-42cf-b93a-87dbaef67e7b.png`
+   - source: local generation source (not distributed); final WebP is tracked in the repository.
    - prompt intent: photorealistic Asian man comparing a phone screenshot with a
      laptop; natural home-office setting; no uniforms, logos, or text.
 3. `static/images/start-thought.webp`
-   - source: `C:/Users/kevin/.codex/generated_images/01a00e50-fa5e-7241-ae9d-c8adae055064/exec-272fbec4-e40c-4884-b2c1-4e26174cfbdb.png`
+   - source: local generation source (not distributed); final WebP is tracked in the repository.
    - prompt intent: photorealistic military-connected couple discussing a move
      and career choice at home; natural and non-cheesy; no uniforms, logos, or
      text.

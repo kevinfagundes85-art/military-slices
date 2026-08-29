@@ -16,18 +16,18 @@ State vocabulary: `YES`, `NO`, `PARTIAL`, `UNKNOWN`, `CONFLICTED`.
 | Team structure | Individual entry currently assumed | PARTIAL | Kevin | Confirm entrant/team roster |
 | Gemini 3.5+ | `gemini-3.7-flash` through Vertex AI | YES | BHE | Show runtime proof |
 | Google agent framework | Google ADK bounded agent runtime | YES | BHE | Show in demo and repository |
-| Google Cloud infrastructure | Cloud Run revision `military-slices-00047-doz`; Firestore canonical state | YES | BHE | Preserve evidence |
+| Google Cloud infrastructure | Cloud Run tagged candidate revision `military-slices-00050-cad`; Firestore canonical state | YES | BHE | Preserve evidence |
 | Beyond a standard chat loop | Structured plan mutation, persistent state, bounded tools, re-entry, and changed-reality handling | YES | BHE | Demonstrate live |
 | Functional/testable project | Public HTTPS tagged candidate validated on desktop and Android-width viewport | YES | BHE | Keep tag live through judging |
 | Free judge access | Anonymous isolated session requires no paid account or credentials | YES | BHE | Recheck before submission |
 | English | App and materials are English | YES | BHE | Final visual review |
-| Repository URL | GitHub/GitLab/Bitbucket URL required | UNKNOWN | Kevin | Publish repository or choose private access |
+| Repository URL | `https://github.com/kevinfagundes85-art/military-slices` configured; reachability not independently confirmed | PARTIAL | Kevin | Verify public access or choose private reviewer access |
 | Private repository access | If private, grant `testing@devpost.com` and `cloudhackathons@google.com` | UNKNOWN | Kevin | Apply only if private |
 | README spin-up instructions | Root README includes local and cloud setup | YES | BHE | Final link check |
 | Architecture diagram | README and architecture artifact | YES | BHE | Export a clear image for submission |
 | Hosted-project URL | Public zero-traffic tagged Cloud Run candidate | YES | BHE | Use candidate URL; custom domain optional |
 | Text description | Features, stack, sources, findings, and learnings drafted | YES | BHE | Human review and paste |
-| Demo video | Public YouTube/Vimeo, English, no longer than four minutes | UNKNOWN | Kevin | Record and upload at Human Gate |
+| Demo video | Clean 89.6-second English take verified locally; public YouTube/Vimeo URL still required | PARTIAL | Kevin | Upload the verified take at Human Gate |
 | Cloud proof in video | Script includes `.run.app`, Cloud Run, Firestore, and Vertex proof | YES | BHE/Kevin | Capture in unedited recording |
 | Third-party authorization/licenses | PyPI dependencies and public official evidence sources | PARTIAL | BHE/Kevin | Preserve dependency/license inventory and attest |
 | AI-generated code disclosure | Codex assistance explicitly disclosed | YES | BHE | Keep disclosure |
@@ -36,7 +36,7 @@ State vocabulary: `YES`, `NO`, `PARTIAL`, `UNKNOWN`, `CONFLICTED`.
 | Demo content/IP | Synthetic inputs and no unauthorized biography or endorsement claims | YES | BHE/Kevin | Final recording review |
 | Innovation & operational utility (40%) | Connected plan, messy input, persistent mutation, human-attention reduction | YES | BHE | Make action visible in demo |
 | Architectural discipline & stack (30%) | Typed state, bounded agent/tooling, authority separation, Firestore, failure-safe fallback | YES | BHE | Show diagram and logs |
-| Demo & production readiness (30%) | Hosted candidate and script ready; video remains open | PARTIAL | Kevin | Record and upload video |
+| Demo & production readiness (30%) | Hosted candidate and clean verified take ready; public video URL remains open | PARTIAL | Kevin | Upload the verified take |
 | Final Devpost submission | Binding legal attestation and irreversible submission | UNKNOWN | Kevin | Human-only final gate |
 
 ## Category decision
@@ -51,5 +51,5 @@ Military SLICES was implemented in a new repository during the contest period. P
 
 1. Confirm eligibility, conflict, ownership, and final entrant/team roster.
 2. Choose public repository or grant the required reviewers access to a private repository.
-3. Record and publicly upload the no-longer-than-four-minute English demo.
+3. Publicly upload the verified 89.6-second English demo.
 4. Review the final Devpost entry and perform the irreversible submission.

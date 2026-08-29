@@ -1,91 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1050" viewBox="0 0 1400 1050" role="img" aria-labelledby="title desc">
-  <title id="title">Military SLICES architecture</title>
-  <desc id="desc">One governed transition loop persists decisions, deterministically revalidates affected assumptions, and derives ACTIVE, PARALYZED, or COMPLETE before presenting the next interaction. Lenses observe, History inspects, and What-If stays hypothetical until explicit promotion.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Military SLICES and HELM architecture</title>
+  <desc id="desc">Human intent enters Military SLICES. HELM uses a Domain Pack and Gate to create a bounded evidence surface, a Resolver proposes, the Authority Governor validates, and versioned state produces the next human decision or action. Probe is a disabled bounded discovery path in this prototype.</desc>
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0d1b2a"/><stop offset="1" stop-color="#132d46"/></linearGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-opacity=".24"/></filter>
-    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#f2c45e"/></marker>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#061826"/><stop offset="1" stop-color="#0b2636"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#000" flood-opacity="0.25"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#66d4c6"/></marker>
     <style>
-      .box{fill:#1e3a53;stroke:#7198b8;stroke-width:2;rx:20;filter:url(#shadow)}
-      .core{fill:#274c67;stroke:#f2c45e;stroke-width:3;rx:20;filter:url(#shadow)}
-      .control{fill:#142f45;stroke:#65d5c5;stroke-width:2;rx:18;filter:url(#shadow)}
-      .label{fill:#f7f3e8;font:700 24px system-ui,sans-serif;text-anchor:middle}
-      .small{fill:#cfdae4;font:18px system-ui,sans-serif;text-anchor:middle}
-      .eyebrow{fill:#f2c45e;font:700 16px system-ui,sans-serif;letter-spacing:2px;text-anchor:middle}
-      .line{stroke:#f2c45e;stroke-width:4;fill:none;marker-end:url(#arrow)}
-      .observe{stroke:#65d5c5;stroke-width:3;fill:none;marker-end:url(#arrow)}
-      .promote{stroke:#f2c45e;stroke-width:3;stroke-dasharray:9 7;fill:none;marker-end:url(#arrow)}
+      .title{font:700 44px system-ui,Segoe UI,sans-serif;fill:#fffaf0}.sub{font:400 22px system-ui,Segoe UI,sans-serif;fill:#adc0cf}.label{font:800 18px system-ui,Segoe UI,sans-serif;letter-spacing:2px;fill:#f7c94f}.head{font:700 27px system-ui,Segoe UI,sans-serif;fill:#fffaf0}.copy{font:400 18px system-ui,Segoe UI,sans-serif;fill:#c8d5df}.small{font:700 16px system-ui,Segoe UI,sans-serif;fill:#9aafbd}.card{fill:#102b3d;stroke:#2c566b;stroke-width:2}.core{fill:#102f3c;stroke:#66d4c6;stroke-width:2.5}.guard{fill:#27342e;stroke:#d3a936;stroke-width:2}.arrow{stroke:#66d4c6;stroke-width:4;fill:none;marker-end:url(#arrow)}.dash{stroke:#7c94a4;stroke-width:3;stroke-dasharray:10 10;fill:none;marker-end:url(#arrow)}
     </style>
   </defs>
-  <rect width="1400" height="1050" rx="32" fill="url(#bg)"/>
-  <text x="700" y="62" class="label" font-size="34">Military SLICES</text>
-  <text x="700" y="94" class="small">One canonical transition plan · one next useful interaction</text>
-
-  <rect class="box" x="60" y="170" width="250" height="150"/>
-  <text class="eyebrow" x="185" y="210">HUMAN INPUT</text>
-  <text class="label" x="185" y="250">Sentence or artifact</text>
-  <text class="small" x="185" y="282">PDF · DOCX · TXT</text>
-  <text class="small" x="185" y="308">PNG · JPG</text>
-
-  <rect class="box" x="400" y="170" width="250" height="150"/>
-  <text class="eyebrow" x="525" y="210">TRUST BOUNDARY</text>
-  <text class="label" x="525" y="246">Bounded authority</text>
-  <text class="small" x="525" y="280">Typed: review + confirm</text>
-  <text class="small" x="525" y="308">Artifact: direct bounded update</text>
-
-  <rect class="core" x="740" y="140" width="300" height="210"/>
-  <text class="eyebrow" x="890" y="185">BOUNDED PATH RUNTIME</text>
-  <text class="label" x="890" y="225">Objective + milestone</text>
-  <text class="small" x="890" y="260">Service + time window</text>
-  <text class="small" x="890" y="289">ADK + Gemini only when</text>
-  <text class="small" x="890" y="318">the active gate authorizes it</text>
-
-  <rect class="box" x="1130" y="170" width="210" height="150"/>
-  <text class="eyebrow" x="1235" y="210">FIRESTORE</text>
-  <text class="label" x="1235" y="250">Canonical state</text>
-  <text class="small" x="1235" y="282">Versioned · idempotent</text>
-  <text class="small" x="1235" y="308">Evidence + decisions</text>
-
-  <path class="line" d="M310 245H385"/><path class="line" d="M650 245H725"/><path class="line" d="M1040 245H1115"/>
-
-  <rect class="control" x="250" y="400" width="900" height="135"/>
-  <text class="eyebrow" x="700" y="438">TEMPORAL REVALIDATION IN THE SAME LOOP</text>
-  <text class="label" x="700" y="474">Governed delta → static dependencies → materiality</text>
-  <text class="small" x="700" y="506">Machine refresh or one-tap human check → small receipt patch · zero Gemini detection calls</text>
-  <path class="line" d="M1235 320V365H700V390"/>
-
-  <rect class="core" x="330" y="585" width="360" height="150"/>
-  <text class="eyebrow" x="510" y="627">DERIVED EXECUTION STATE</text>
-  <text class="label" x="510" y="670">ACTIVE · PARALYZED · COMPLETE</text>
-  <text class="small" x="510" y="704">Named blocker · version · authority</text>
-  <rect class="core" x="750" y="585" width="420" height="150"/>
-  <text class="eyebrow" x="960" y="627">ADAPTIVE INTERFACE ON CLOUD RUN</text>
-  <text class="label" x="960" y="670">What matters now</text>
-  <text class="small" x="960" y="704">One gate + up to three tasks</text>
-  <path class="line" d="M700 535V560H510V575"/>
-  <path class="line" d="M690 660H740"/>
-  <path class="line" d="M750 700H185V335"/>
-
-  <rect class="control" x="175" y="825" width="270" height="115"/>
-  <text class="eyebrow" x="310" y="863">LENSES</text>
-  <text class="label" x="310" y="899">Observe current state</text>
-  <text class="small" x="310" y="927">No activation · no model call</text>
-
-  <rect class="control" x="565" y="825" width="270" height="115"/>
-  <text class="eyebrow" x="700" y="863">HISTORY</text>
-  <text class="label" x="700" y="899">Inspect prior state</text>
-  <text class="small" x="700" y="927">Read-only canonical versions</text>
-
-  <rect class="control" x="955" y="825" width="270" height="115"/>
-  <text class="eyebrow" x="1090" y="863">WHAT-IF</text>
-  <text class="label" x="1090" y="899">Hypothetical branch</text>
-  <text class="small" x="1090" y="927">Explore ≠ commit</text>
-
-  <path class="observe" d="M860 735V780H310V815"/>
-  <path class="observe" d="M960 735V780H700V815"/>
-  <path class="observe" d="M1060 735V780H1090V815"/>
-  <path class="promote" d="M1225 882H1305V350H1250"/>
-  <text class="small" x="1287" y="615" transform="rotate(-90 1287 615)">explicit human promotion only</text>
-
-  <text x="700" y="1008" class="small">Persist decisions · Revalidate assumptions · Unchanged state stays latent.</text>
+  <rect width="1600" height="900" rx="32" fill="url(#bg)"/>
+  <text x="80" y="80" class="title">Military SLICES: governed planning, not an open-ended chat loop</text>
+  <text x="80" y="118" class="sub">The model proposes inside a bounded surface. HELM and the human control what becomes plan truth.</text>
+  <g filter="url(#shadow)">
+    <rect x="80" y="200" width="250" height="170" rx="24" class="card"/><text x="110" y="240" class="label">HUMAN INTENT</text><text x="110" y="285" class="head">Ordinary input</text><text x="110" y="320" class="copy">Words · documents</text><text x="110" y="350" class="copy">screenshots · corrections</text>
+    <rect x="400" y="200" width="260" height="170" rx="24" class="card"/><text x="430" y="240" class="label">MILITARY SLICES</text><text x="430" y="285" class="head">Review first</text><text x="430" y="320" class="copy">Career · Education</text><text x="430" y="350" class="copy">Location · Your Story</text>
+    <rect x="730" y="165" width="430" height="240" rx="28" class="core"/><text x="765" y="210" class="label">HELM GOVERNANCE</text><text x="765" y="255" class="head">Select the authorized surface</text><rect x="765" y="285" width="170" height="82" rx="16" class="card"/><text x="785" y="317" class="small">DOMAIN PACK</text><text x="785" y="346" class="copy">Path + rules</text><rect x="955" y="285" width="170" height="82" rx="16" class="card"/><text x="975" y="317" class="small">ACTIVE GATE</text><text x="975" y="346" class="copy">One decision</text>
+    <rect x="1230" y="200" width="290" height="170" rx="24" class="card"/><text x="1260" y="240" class="label">RESOLVER</text><text x="1260" y="285" class="head">Propose</text><text x="1260" y="320" class="copy">Deterministic logic or</text><text x="1260" y="350" class="copy">ADK + Gemini</text>
+    <rect x="730" y="485" width="430" height="165" rx="28" class="guard"/><text x="765" y="530" class="label">AUTHORITY GOVERNOR</text><text x="765" y="575" class="head">Validate before write</text><text x="765" y="610" class="copy">Scope · evidence · authority · version</text>
+    <rect x="1230" y="485" width="290" height="165" rx="24" class="card"/><text x="1260" y="530" class="label">GOVERNED STATE</text><text x="1260" y="575" class="head">One durable plan</text><text x="1260" y="610" class="copy">Versioned in Firestore</text>
+    <rect x="400" y="485" width="260" height="165" rx="24" class="card"/><text x="430" y="530" class="label">HUMAN CONTROL</text><text x="430" y="575" class="head">Decide or correct</text><text x="430" y="610" class="copy">Nothing consequential</text><text x="430" y="638" class="copy">changes silently</text>
+    <rect x="80" y="485" width="250" height="165" rx="24" class="card"/><text x="110" y="530" class="label">NEXT MOVE</text><text x="110" y="575" class="head" style="font-size:22px">Decide · Act · Learn</text><text x="110" y="610" class="copy">Return with evidence</text>
+  </g>
+  <path d="M330 285 H400" class="arrow"/><path d="M660 285 H730" class="arrow"/><path d="M1160 285 H1230" class="arrow"/><path d="M1375 370 V445 H945 V485" class="arrow"/><path d="M1160 568 H1230" class="arrow"/><path d="M1230 605 H1195 V700 H530 V650" class="arrow"/><path d="M400 568 H330" class="arrow"/><path d="M205 485 V425 H530 V370" class="arrow"/>
+  <rect x="80" y="735" width="1440" height="105" rx="22" fill="#0b202e" stroke="#38576a" stroke-width="1.5"/><text x="110" y="775" class="label">SECONDARY DISCOVERY BOUNDARY</text><text x="110" y="810" class="copy">HELM Probe may discover or wake a potentially material relationship; it cannot adjudicate, authorize, or mutate state.</text><text x="1280" y="810" class="small">AUTONOMOUS PROBE: DISABLED</text><path d="M930 735 V680" class="dash"/>
 </svg>

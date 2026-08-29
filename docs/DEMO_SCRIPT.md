@@ -7,7 +7,7 @@ Target: 3:35–3:50. Use synthetic data only.
 - Open the zero-traffic candidate in a clean session.
 - Keep Cloud Run revision and logs available in a second tab.
 - Use desktop width for the main journey; show the responsive mobile view briefly only if time permits.
-- Do not mention intelligence-community or Booz Allen history.
+- Do not mention the product owner's personal employment history.
 
 ## Script
 
