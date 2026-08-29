@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+from datetime import date
+
 from military_slices.engine import (
+    _extract_transition_date,
     active_gate,
     apply_confirmed_input,
     apply_decision,
@@ -70,6 +73,32 @@ def test_confirmed_date_closes_shared_gate_and_changes_feedback() -> None:
     assert state.transition_date == "2027-03-15"
     assert all(gate.id != "planned-transition-date" for gate in state.gates)
     assert len(state.feedback[-1].consequences) >= 3
+
+
+def test_approved_natural_language_separation_date_closes_gate_without_repeat_question() -> None:
+    text = (
+        "I'm 23 and leaving the Navy on May 15, 2027. I led a five-person logistics team. "
+        "My wife starts nursing school in Tacoma on February 1, 2027, so we need to stay nearby."
+    )
+
+    state = apply_confirmed_input(new_state("ms-natural-date"), orient(text), idempotency_key="natural-date-0001")
+
+    assert state.transition_date == "2027-05-15"
+    assert all(gate.id != "planned-transition-date" for gate in state.gates)
+
+
+def test_transition_date_parser_understands_military_date_formats() -> None:
+    reference_day = date(2026, 8, 28)
+
+    assert _extract_transition_date("I separate on 15MAY27.", today=reference_day) == "2027-05-15"
+    assert _extract_transition_date("My EAS is 15 MAY 2027.", today=reference_day) == "2027-05-15"
+    assert _extract_transition_date("I get out 1FEB.", today=reference_day) == "2027-02-01"
+
+
+def test_transition_date_parser_binds_date_to_transition_language() -> None:
+    text = "My wife starts school on 1FEB27. I leave active duty on 15MAY27."
+
+    assert _extract_transition_date(text, today=date(2026, 8, 28)) == "2027-05-15"
 
 
 def test_repeat_input_is_idempotent() -> None:

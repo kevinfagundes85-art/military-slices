@@ -595,38 +595,103 @@ def reconstitute_state(current: CanonicalState) -> CanonicalState:
     return bind_gate_contracts(derive_execution_state(state, previous=previous_execution))
 
 
-def _extract_transition_date(text: str) -> str | None:
-    iso = re.search(r"\b(20\d{2})-(0[1-9]|1[0-2])-([0-2]\d|3[01])\b", text)
-    if iso:
-        try:
-            return date.fromisoformat(iso.group(0)).isoformat()
-        except ValueError:
-            return None
-    months = {
-        name.lower(): index
-        for index, name in enumerate(
-            (
-                "",
-                "January",
-                "February",
-                "March",
-                "April",
-                "May",
-                "June",
-                "July",
-                "August",
-                "September",
-                "October",
-                "November",
-                "December",
-            )
+_MONTH_NUMBERS = {
+    name.casefold(): number
+    for number, names in enumerate(
+        (
+            (),
+            ("jan", "january"),
+            ("feb", "february"),
+            ("mar", "march"),
+            ("apr", "april"),
+            ("may",),
+            ("jun", "june"),
+            ("jul", "july"),
+            ("aug", "august"),
+            ("sep", "sept", "september"),
+            ("oct", "october"),
+            ("nov", "november"),
+            ("dec", "december"),
         )
-        if name
-    }
-    month_year = re.search(r"\b(" + "|".join(months) + r")\s+(20\d{2})\b", text, flags=re.IGNORECASE)
-    if month_year:
-        return date(int(month_year.group(2)), months[month_year.group(1).lower()], 1).isoformat()
-    return None
+    )
+    for name in names
+}
+_MONTH_PATTERN = "|".join(sorted(_MONTH_NUMBERS, key=len, reverse=True))
+_TRANSITION_DATE_CUE = re.compile(
+    r"\b(?:separat(?:e|es|ed|ing|ion)|leav(?:e|es|ing)|get(?:ting)?\s+out|"
+    r"ets|eaos|eas|retir(?:e|es|ed|ing|ement))\b",
+    flags=re.IGNORECASE,
+)
+
+
+def _expanded_year(value: str, *, today: date) -> int:
+    if len(value) == 4:
+        return int(value)
+    return 2000 + int(value)
+
+
+def _future_year_for(month: int, day: int, *, today: date) -> int:
+    candidate = date(today.year, month, day)
+    return today.year if candidate >= today else today.year + 1
+
+
+def _date_candidates(text: str, *, today: date) -> list[tuple[int, str]]:
+    candidates: list[tuple[int, str]] = []
+
+    def add(match: re.Match[str], year: int, month: int, day: int) -> None:
+        try:
+            parsed = date(year, month, day).isoformat()
+        except ValueError:
+            return
+        candidates.append((match.start(), parsed))
+
+    for match in re.finditer(r"\b(20\d{2})-(0[1-9]|1[0-2])-([0-2]\d|3[01])\b", text):
+        add(match, int(match.group(1)), int(match.group(2)), int(match.group(3)))
+
+    month_day_year = re.compile(
+        rf"\b({_MONTH_PATTERN})\s+([0-3]?\d)(?:st|nd|rd|th)?(?:,\s*|\s+)(20\d{{2}}|\d{{2}})\b",
+        flags=re.IGNORECASE,
+    )
+    for match in month_day_year.finditer(text):
+        add(
+            match,
+            _expanded_year(match.group(3), today=today),
+            _MONTH_NUMBERS[match.group(1).casefold()],
+            int(match.group(2)),
+        )
+
+    day_month = re.compile(
+        rf"\b([0-3]?\d)(?:st|nd|rd|th)?\s*({_MONTH_PATTERN})(?:\s*(20\d{{2}}|\d{{2}}))?\b",
+        flags=re.IGNORECASE,
+    )
+    for match in day_month.finditer(text):
+        month = _MONTH_NUMBERS[match.group(2).casefold()]
+        day = int(match.group(1))
+        year = (
+            _expanded_year(match.group(3), today=today)
+            if match.group(3)
+            else _future_year_for(month, day, today=today)
+        )
+        add(match, year, month, day)
+
+    month_year = re.compile(rf"\b({_MONTH_PATTERN})\s+(20\d{{2}})\b", flags=re.IGNORECASE)
+    for match in month_year.finditer(text):
+        add(match, int(match.group(2)), _MONTH_NUMBERS[match.group(1).casefold()], 1)
+
+    return sorted(set(candidates))
+
+
+def _extract_transition_date(text: str, *, today: date | None = None) -> str | None:
+    reference_day = today or date.today()
+    transition_sentences = [sentence for sentence in _sentences(text) if _TRANSITION_DATE_CUE.search(sentence)]
+    for sentence in transition_sentences:
+        candidates = _date_candidates(sentence, today=reference_day)
+        if candidates:
+            return candidates[0][1]
+
+    candidates = _date_candidates(text, today=reference_day)
+    distinct_dates = list(dict.fromkeys(value for _, value in candidates))
+    return distinct_dates[0] if len(distinct_dates) == 1 else None
 
 
 def _describes_household_relocation(text: str) -> bool:
