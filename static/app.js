@@ -2023,6 +2023,16 @@ $("#planning-route-dialog").addEventListener("click", (event) => {
 });
 $("#open-transition-plan").addEventListener("click", openTransitionPlan);
 $("#close-transition-plan").addEventListener("click", () => $("#transition-plan-dialog").close());
+$("#add-plan-dates").addEventListener("click", () => {
+  $("#transition-plan-dialog").close();
+  openAdd(false);
+  setAddPanelCopy(
+    "Build your timeline",
+    "What dates should your plan remember?",
+    "Add every date you know in one update—appointments, applications, training, moving, separation, and follow-ups."
+  );
+  $("#input-text").placeholder = "For example: My résumé is due November 15, and I plan to start applications January 15.";
+});
 $("#transition-plan-dialog").addEventListener("click", (event) => {
   if (event.target === $("#transition-plan-dialog")) $("#transition-plan-dialog").close();
 });

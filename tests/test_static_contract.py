@@ -5,6 +5,16 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 
+def test_transition_plan_exposes_one_bundled_date_update_action() -> None:
+    html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "static" / "app.js").read_text(encoding="utf-8")
+
+    assert 'id="add-plan-dates"' in html
+    assert "Add or update dates" in html
+    assert "What dates should your plan remember?" in script
+    assert "Add every date you know in one update" in script
+
+
 def test_cold_path_avoids_architecture_language() -> None:
     html = (ROOT / "static" / "index.html").read_text(encoding="utf-8")
     visible = html.casefold()
@@ -107,7 +117,7 @@ def test_human_control_layer_stays_bounded_and_explicit() -> None:
     assert ".lens-cloud { display: flex; flex-wrap: wrap" in css
     assert "View connected areas" in html
     assert "Choose a relevant part of your plan" in html
-    assert "/static/app.js?v=46" in html
+    assert "/static/app.js?v=47" in html
     assert "/static/styles.css?v=27" in html
 
 

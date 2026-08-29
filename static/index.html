@@ -7,7 +7,7 @@
     <meta name="description" content="Military SLICES helps U.S. service members connect career, education, location, and résumé decisions into one transition plan.">
     <title>Military SLICES</title>
     <link rel="stylesheet" href="/static/styles.css?v=27">
-    <script src="/static/app.js?v=46" defer></script>
+    <script src="/static/app.js?v=47" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the next decision</a>
@@ -157,6 +157,7 @@
         <div class="plan-dialog-actions">
           <a id="export-transition-plan" class="button button-primary" href="/api/plan/export" download>Export my plan</a>
           <button id="print-transition-plan" class="button button-secondary" type="button">Print or save as PDF</button>
+          <button id="add-plan-dates" class="button button-secondary" type="button">Add or update dates</button>
         </div>
         <div id="transition-plan-content" class="transition-plan-content" aria-live="polite"></div>
       </dialog>

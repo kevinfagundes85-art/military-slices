@@ -119,3 +119,33 @@ The rendered browser drive visually verified the foreground working-direction re
 ## Candidate commit
 
 `c3f5f2e` — `feat: deliver complete transition plan UX`
+
+## Complete dated-plan acceptance extension
+
+A second rendered-browser acceptance drive used a fresh 23-year-old active-duty Navy persona leaving service on May 15, 2027. The veteran entered the schedule through one bundled human-review step rather than eleven separate screens.
+
+The first drive exposed a bounded defect: slice-neutral schedule statements were visible during review but were not all retained as plan facts, and retained timeline items were not chronological. The repair did not add canonical state or bypass approval. It:
+
+- recognizes transition-plan appointments, interviews, applications, and follow-ups as career-relevant statements;
+- adds an explicit **Add or update dates** action inside My transition plan;
+- lets the veteran submit all known dates in one reviewed update;
+- sorts the projected timeline deterministically by calendar date; and
+- distinguishes known dates from veteran targets in both the plan and export.
+
+The final rendered plan retained and ordered all approved events:
+
+1. September 15, 2026 — TAP counseling appointment (known date).
+2. October 20, 2026 — interview a veteran transition coordinator (veteran target).
+3. November 1, 2026 — compare two certificate programs (veteran target).
+4. November 15, 2026 — résumé draft due (known date).
+5. November 22, 2026 — résumé review with counselor (veteran target).
+6. January 15, 2027 — begin applications (veteran target).
+7. February 1, 2027 — spouse begins nursing school in Tacoma (known date).
+8. February 15, 2027 — decide Tacoma commute or move (veteran target).
+9. March 1, 2027 — begin a short certificate (veteran target).
+10. May 15, 2027 — separate from active service (known date).
+11. June 15, 2027 — post-separation check-in (veteran target).
+
+The **Export my plan** control was exercised from the populated rendered plan. The downloadable HTML and print/save-to-PDF paths use the same server-side projection as the plan dialog.
+
+Post-repair validation: full Pytest passed; changed-file Ruff passed; strict Mypy passed; Bandit passed; dependency audit reported no known vulnerabilities; JavaScript syntax passed.

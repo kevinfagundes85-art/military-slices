@@ -4,6 +4,7 @@ from fastapi.testclient import TestClient
 
 from military_slices.agent_runtime import Resolver
 from military_slices.app import create_app
+from military_slices.engine import orient
 from military_slices.models import (
     Authority,
     CanonicalState,
@@ -215,3 +216,48 @@ def test_plan_api_and_download_use_the_same_projection() -> None:
     assert "attachment" in export_response.headers["content-disposition"]
     assert "Veteran services coordinator" in export_response.text
     assert export_response.headers["cache-control"] == "no-store"
+
+
+def test_timeline_is_chronological_and_distinguishes_known_from_target_dates() -> None:
+    state = developed_state()
+    state.transition_date = "2027-05-15"
+    state.decisions.append(Decision(id="decision-date", gate_id="planned-transition-date", value="2027-05-15"))
+    state.facts.extend(
+        [
+            Fact(
+                id="fact-appointment",
+                statement="My TAP counseling appointment is September 15, 2026.",
+                value="September 15, 2026",
+                authority=Authority.HUMAN,
+                affected_slices=[SliceName.CAREER],
+            ),
+            Fact(
+                id="fact-applications",
+                statement="I will start applications on January 15, 2027.",
+                value="January 15, 2027",
+                authority=Authority.HUMAN,
+                affected_slices=[SliceName.CAREER],
+            ),
+        ]
+    )
+
+    timeline = build_transition_plan(state).timeline
+    dates = [item.date for item in timeline if item.date]
+    assert dates == sorted(dates, key=lambda value: value + ("-01" if len(value) == 7 else ""))
+    appointment = next(item for item in timeline if item.date == "2026-09-15")
+    applications = next(item for item in timeline if item.date == "2027-01-15")
+    assert appointment.date_kind == "known"
+    assert applications.date_kind == "veteran_target"
+
+
+def test_transition_schedule_dates_survive_orientation_without_a_benchmark_label() -> None:
+    result = orient(
+        "My TAP counseling appointment is September 15, 2026. "
+        "I will interview a veteran transition coordinator on October 20, 2026. "
+        "I plan to start applications on January 15, 2027. "
+        "I want a post-separation check-in on June 15, 2027."
+    )
+
+    assert result.sufficient is True
+    assert len(result.statements) == 4
+    assert all(statement.affected_slices for statement in result.statements)

@@ -81,6 +81,15 @@ def _fact_note(fact: Fact) -> PlanNote:
     return PlanNote(title=_human_field(fact.field_key), detail=fact.statement, source=evidence)
 
 
+def _timeline_sort_key(item: PlanNote) -> tuple[int, str, str]:
+    """Put dated plan events in calendar order while preserving deterministic ties."""
+
+    if not item.date:
+        return (1, "", item.title.casefold())
+    normalized = item.date[:10] if len(item.date) >= 10 else f"{item.date}-01"
+    return (0, normalized, item.title.casefold())
+
+
 def _direction_cycle(state: CanonicalState, direction: CareerHypothesis) -> tuple[list[str], list[str]]:
     learning_prefix = f"While testing the {direction.title} work direction, I learned:"
     next_test_prefix = f"For my next test of the {direction.title} work direction:"
@@ -324,7 +333,14 @@ def build_transition_plan(state: CanonicalState) -> TransitionPlan:
         if fact.effective_at or stated_date or any(term in fact.field_key for term in ("date", "deadline", "timing")):
             is_veteran_target = bool(
                 stated_date
-                and any(term in fact.statement.casefold() for term in ("want", "plan", " by "))
+                and any(term in fact.statement.casefold() for term in ("want", "plan", " by ", "will "))
+            )
+            is_known_date = bool(
+                stated_date
+                and any(
+                    term in fact.statement.casefold()
+                    for term in (" is ", " starts ", "appointment", " due ", "separation date")
+                )
             )
             timeline.append(
                 PlanNote(
@@ -333,12 +349,14 @@ def build_transition_plan(state: CanonicalState) -> TransitionPlan:
                     date=fact.effective_at or stated_date,
                     date_kind=(
                         "known"
-                        if fact.effective_at
+                        if fact.effective_at or is_known_date
                         else ("veteran_target" if is_veteran_target else "planned")
                     ),
                     source="You told Military SLICES",
                 )
             )
+
+    timeline.sort(key=_timeline_sort_key)
 
     return TransitionPlan(
         generated_at=datetime.now(UTC).isoformat(),
