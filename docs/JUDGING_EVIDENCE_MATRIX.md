@@ -20,4 +20,5 @@
 | The application is publicly testable without account setup. | Hosted candidate URL | Live verification on 2026-08-29: title and front door rendered; zero console warnings/errors |
 | The candidate uses Cloud Run and Firestore. | `Dockerfile`, `store.py`, hosted release report | Public `.run.app` URL and deployment identity in evidence report |
 | The final product suite passes. | Executed final validation | 335/335 Pytest; product/test Ruff; strict Mypy on 18 source files; Bandit; JS syntax; pip-audit |
-| The demo is a clean synthetic journey. | Clean-take ledger and video SHA-256 | Seven extracted screenshots; frame-by-frame/contact-sheet QA |
+| The final presentation is publicly reachable. | <https://youtu.be/EwAtrtrIUiI> | YouTube title and oEmbed metadata resolved on 2026-08-29; visible duration 3:12 |
+| The demonstrated journey uses synthetic data. | Final presentation plus clean-take ledger and video SHA-256 | Seven extracted product screenshots; frame/contact-sheet QA |

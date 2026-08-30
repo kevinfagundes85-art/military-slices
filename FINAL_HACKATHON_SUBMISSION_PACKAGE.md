@@ -16,6 +16,10 @@ The interface does not ask the veteran to fill out the whole transition plan at 
 
 Hosted candidate: <https://hackathon-rc---military-slices-ztvqlzospa-uw.a.run.app/>
 
+Source repository: <https://github.com/kevinfagundes85-art/military-slices>
+
+Final presentation: <https://youtu.be/EwAtrtrIUiI>
+
 ## 2. Final HELM explanation
 
 HELM is the governance layer beneath Military SLICES. It separates responsibilities that a normal assistant often blends:
@@ -181,6 +185,10 @@ All product frames were extracted from the SHA-256-verified clean take at 2560×
 
 ## 7. Demo evidence and exact timestamp ledger
 
+Final public presentation: <https://youtu.be/EwAtrtrIUiI>
+
+YouTube verification on 2026-08-29 resolved the title **Military SLICES — Powered by HELM | Hackathon Demo**, valid oEmbed metadata, and a visible duration of `3:12`. The timestamp ledger below belongs to the verified local clean source take and remains capture provenance; it is not presented as the final public video's timestamp map.
+
 - Clean take SHA-256: `6c8c0bd12b2b58fca4267407928b9f2b037c8c93175f704093f6ac3fb00c9cc0`
 - Bytes: `4,172,987`
 - Recorder duration: `89.6426s`; container duration: `88.8s`
@@ -259,7 +267,7 @@ Deployment evidence identifies tagged Cloud Run candidate revision `military-sli
 - Provider failure safely falls back, but fallback suggestions are intentionally generic outside recognized evidence families.
 - Autonomous HELM Probe and external operational effects are disabled.
 - Historical benchmark scripts retain disclosed lint debt.
-- The large clean demo MP4 is local and hash-verified but still needs public upload.
+- The local clean source MP4 remains hash-verified provenance and is intentionally excluded from Git; the final presentation is available at <https://youtu.be/EwAtrtrIUiI>.
 
 ## 11. Final submission checklist
 
@@ -281,10 +289,12 @@ Deployment evidence identifies tagged Cloud Run candidate revision `military-sli
 ### Human Gate — required before submission
 
 - [ ] Confirm entrant eligibility, conflicts, team roster, ownership, and third-party rights attestations
-- [ ] Verify `https://github.com/kevinfagundes85-art/military-slices` is publicly reachable, or grant `testing@devpost.com` and `cloudhackathons@google.com` access if private
+- [x] Repository is publicly reachable at `https://github.com/kevinfagundes85-art/military-slices`
+- [ ] Push the final local `main` branch to the public repository and confirm the displayed commit matches the final-preparation commit
 - [x] Repository URL is present in the Devpost copy
-- [ ] Upload the verified clean take to public YouTube or Vimeo
-- [ ] Add the demo URL to the Devpost copy
+- [x] Final presentation resolves at `https://youtu.be/EwAtrtrIUiI`
+- [x] Exact demo URL is present in the Devpost copy
+- [ ] Confirm the video plays from beginning to end in a signed-out/private browser window
 - [ ] Select **Collaborative Partner**
 - [ ] Verify the hosted candidate URL in the final form
 - [ ] Review all pasted text and screenshots
@@ -295,4 +305,4 @@ Deployment evidence identifies tagged Cloud Run candidate revision `military-sli
 
 **READY FOR HUMAN SUBMISSION GATE**
 
-No final submission, repository publication, video upload, permission change, production deployment, or traffic movement was performed by this packaging pass.
+No final submission, repository push/publication, permission change, production deployment, or traffic movement was performed by this preparation pass.

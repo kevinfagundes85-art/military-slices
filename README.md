@@ -2,7 +2,7 @@
 
 **A governed transition-planning partner for service members, veterans, and military families.**
 
-[Try the hosted candidate](https://hackathon-rc---military-slices-ztvqlzospa-uw.a.run.app/) · [Architecture](docs/ARCHITECTURE.md) · [Submission evidence](FINAL_HACKATHON_SUBMISSION_PACKAGE.md)
+[Try the hosted candidate](https://hackathon-rc---military-slices-ztvqlzospa-uw.a.run.app/) · [Watch the final demo](https://youtu.be/EwAtrtrIUiI) · [Architecture](docs/ARCHITECTURE.md) · [Submission evidence](FINAL_HACKATHON_SUBMISSION_PACKAGE.md)
 
 Military transition is not one decision. Work, education, location, family needs, timing, and personal priorities change together—and most tools either flatten that reality into a checklist or make the person repeat it in every conversation.
 
@@ -150,7 +150,7 @@ The final executed results, including any environment limitations, are recorded 
 
 Military SLICES is a fresh competition implementation for the **Collaborative Partner** category. The required stack is present: Gemini 3.7 Flash through Vertex AI, Google ADK, and Google Cloud infrastructure (Cloud Run and Firestore). OpenAI Codex assisted with implementation, testing, documentation, and release verification.
 
-The hosted candidate, clean demo take, screenshot pack, claim-to-evidence matrix, and final submission copy are prepared. Repository publication/access, public video upload, entrant attestations, and the irreversible Devpost submission remain human-controlled steps.
+The hosted candidate, public presentation video, screenshot pack, claim-to-evidence matrix, and final submission copy are prepared. Synchronizing the final local commit to the public repository, entrant attestations, and the irreversible Devpost submission remain human-controlled steps.
 
 ## License
 

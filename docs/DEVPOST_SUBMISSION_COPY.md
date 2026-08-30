@@ -1,5 +1,13 @@
 # Devpost Submission Copy
 
+Paste the narrative sections in their displayed order. The URL block below is a reference for Devpost's separate project, repository, and video fields; copy those three values exactly.
+
+## Submission URLs
+
+- Hosted project: https://hackathon-rc---military-slices-ztvqlzospa-uw.a.run.app/
+- Source repository: https://github.com/kevinfagundes85-art/military-slices
+- Demo video: https://youtu.be/EwAtrtrIUiI
+
 ## Project title
 
 Military SLICES
@@ -95,5 +103,5 @@ The demonstration uses synthetic transition data. Occupational references suppor
 ## Links
 
 - Hosted project: <https://hackathon-rc---military-slices-ztvqlzospa-uw.a.run.app/>
-- Source repository: `https://github.com/kevinfagundes85-art/military-slices` — **HUMAN GATE: verify public reachability or grant the required private-repository reviewer accounts before submission**
-- Demo video: **HUMAN GATE — upload the verified clean take to YouTube or Vimeo and add the public URL**
+- Source repository: <https://github.com/kevinfagundes85-art/military-slices>
+- Demo video: <https://youtu.be/EwAtrtrIUiI>

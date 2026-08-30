@@ -21,13 +21,13 @@ State vocabulary: `YES`, `NO`, `PARTIAL`, `UNKNOWN`, `CONFLICTED`.
 | Functional/testable project | Public HTTPS tagged candidate validated on desktop and Android-width viewport | YES | BHE | Keep tag live through judging |
 | Free judge access | Anonymous isolated session requires no paid account or credentials | YES | BHE | Recheck before submission |
 | English | App and materials are English | YES | BHE | Final visual review |
-| Repository URL | `https://github.com/kevinfagundes85-art/military-slices` configured; reachability not independently confirmed | PARTIAL | Kevin | Verify public access or choose private reviewer access |
+| Repository URL | Public at `https://github.com/kevinfagundes85-art/military-slices`; public branch is behind the local submission commit | PARTIAL | Kevin | Push final `main`, then verify the displayed commit |
 | Private repository access | If private, grant `testing@devpost.com` and `cloudhackathons@google.com` | UNKNOWN | Kevin | Apply only if private |
 | README spin-up instructions | Root README includes local and cloud setup | YES | BHE | Final link check |
 | Architecture diagram | README and architecture artifact | YES | BHE | Export a clear image for submission |
 | Hosted-project URL | Public zero-traffic tagged Cloud Run candidate | YES | BHE | Use candidate URL; custom domain optional |
 | Text description | Features, stack, sources, findings, and learnings drafted | YES | BHE | Human review and paste |
-| Demo video | Clean 89.6-second English take verified locally; public YouTube/Vimeo URL still required | PARTIAL | Kevin | Upload the verified take at Human Gate |
+| Demo video | Final 3:12 presentation resolves at `https://youtu.be/EwAtrtrIUiI`; clean-take provenance retained separately | YES | BHE/Kevin | Perform one signed-out playback check |
 | Cloud proof in video | Script includes `.run.app`, Cloud Run, Firestore, and Vertex proof | YES | BHE/Kevin | Capture in unedited recording |
 | Third-party authorization/licenses | PyPI dependencies and public official evidence sources | PARTIAL | BHE/Kevin | Preserve dependency/license inventory and attest |
 | AI-generated code disclosure | Codex assistance explicitly disclosed | YES | BHE | Keep disclosure |
@@ -36,7 +36,7 @@ State vocabulary: `YES`, `NO`, `PARTIAL`, `UNKNOWN`, `CONFLICTED`.
 | Demo content/IP | Synthetic inputs and no unauthorized biography or endorsement claims | YES | BHE/Kevin | Final recording review |
 | Innovation & operational utility (40%) | Connected plan, messy input, persistent mutation, human-attention reduction | YES | BHE | Make action visible in demo |
 | Architectural discipline & stack (30%) | Typed state, bounded agent/tooling, authority separation, Firestore, failure-safe fallback | YES | BHE | Show diagram and logs |
-| Demo & production readiness (30%) | Hosted candidate and clean verified take ready; public video URL remains open | PARTIAL | Kevin | Upload the verified take |
+| Demo & production readiness (30%) | Hosted candidate and final public presentation URL are ready | YES | Kevin | Confirm final preview |
 | Final Devpost submission | Binding legal attestation and irreversible submission | UNKNOWN | Kevin | Human-only final gate |
 
 ## Category decision
@@ -50,6 +50,6 @@ Military SLICES was implemented in a new repository during the contest period. P
 ## Remaining Human Gates
 
 1. Confirm eligibility, conflict, ownership, and final entrant/team roster.
-2. Choose public repository or grant the required reviewers access to a private repository.
-3. Publicly upload the verified 89.6-second English demo.
+2. Push the final local `main` branch to the already-public repository and verify its displayed commit.
+3. Verify `https://youtu.be/EwAtrtrIUiI` plays in a signed-out/private browser window.
 4. Review the final Devpost entry and perform the irreversible submission.
