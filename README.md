@@ -2,7 +2,7 @@
 
 **A governed transition-planning partner for service members, veterans, and military families.**
 
-[Try the hosted candidate](https://hackathon-rc---military-slices-ztvqlzospa-uw.a.run.app/) · [Watch the final demo](https://youtu.be/EwAtrtrIUiI) · [Architecture](docs/ARCHITECTURE.md) · [Submission evidence](FINAL_HACKATHON_SUBMISSION_PACKAGE.md)
+[Try the hosted candidate](https://hackathon-rc---military-slices-ztvqlzospa-uw.a.run.app/) · [Watch the final demo](https://youtu.be/cpM1sqzRtEU) · [Architecture](docs/ARCHITECTURE.md) · [Submission evidence](FINAL_HACKATHON_SUBMISSION_PACKAGE.md)
 
 Military transition is not one decision. Work, education, location, family needs, timing, and personal priorities change together—and most tools either flatten that reality into a checklist or make the person repeat it in every conversation.
 

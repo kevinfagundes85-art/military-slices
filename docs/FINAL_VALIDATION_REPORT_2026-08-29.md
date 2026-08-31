@@ -53,9 +53,9 @@ The live smoke check proves availability and front-door rendering. The clean dem
 
 ## Clean demo evidence
 
-Final public presentation: <https://youtu.be/EwAtrtrIUiI>
+Final public presentation: <https://youtu.be/cpM1sqzRtEU>
 
-On 2026-08-30, YouTube resolved the title **Military SLICES — Powered by HELM | Hackathon Demo** and displayed a duration of `3:12`; the entrant separately confirmed signed-out playback. The local clean-take evidence below remains capture provenance; its hash is not represented as the byte hash of the final YouTube presentation.
+On 2026-08-30, YouTube resolved the replacement presentation title **Military Slices Powered by HELM Demo Final** and displayed a duration of `3:16`. Signed-out playback and Public visibility remain final Human Gate checks. The local clean-take evidence below remains capture provenance; its hash is not represented as the byte hash of the final YouTube presentation.
 
 - Video: `benchmark/output/MILITARY_SLICES_JUDGE_DEMO_CLEAN_TAKE_2026-08-28.mp4`
 - SHA-256: `6c8c0bd12b2b58fca4267407928b9f2b037c8c93175f704093f6ac3fb00c9cc0`
@@ -78,8 +78,8 @@ The QA ledger records no lock screen, notifications, unrelated tabs, personal da
 4. The reference Domain Pack is a bounded planning pack, not an authoritative benefits/eligibility engine.
 5. External operational actions and autonomous Probe execution are disabled.
 6. The hosted candidate is an anonymous-session prototype, not a production identity or case-management system.
-7. The final presentation's title, duration, and reachability were verified, but its complete visual coverage of application action and Google Cloud evidence was not independently re-adjudicated during this documentation-only review.
+7. Public visibility and signed-out playback of the replacement presentation remain final Human Gate checks.
 
 ## Submission blockers
 
-No engineering blocker remains for packaging. The remaining Human Gates are to confirm the final video's rendered Devpost playback and required visual content, complete entrant/legal/IP attestations, and perform the irreversible Devpost submission before the official deadline.
+No engineering blocker remains for packaging. The remaining Human Gates are to confirm Public visibility and signed-out Devpost playback, complete entrant/legal/IP attestations, and perform the irreversible Devpost submission before the official deadline.

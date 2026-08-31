@@ -18,7 +18,7 @@ Hosted candidate: <https://hackathon-rc---military-slices-ztvqlzospa-uw.a.run.ap
 
 Source repository: <https://github.com/kevinfagundes85-art/military-slices>
 
-Final presentation: <https://youtu.be/EwAtrtrIUiI>
+Final presentation: <https://youtu.be/cpM1sqzRtEU>
 
 ## 2. Final HELM explanation
 
@@ -188,9 +188,9 @@ All product frames were extracted from the SHA-256-verified clean take at 2560×
 
 ## 7. Demo evidence and exact timestamp ledger
 
-Final public presentation: <https://youtu.be/EwAtrtrIUiI>
+Final public presentation: <https://youtu.be/cpM1sqzRtEU>
 
-YouTube verification on 2026-08-29 resolved the title **Military SLICES — Powered by HELM | Hackathon Demo**, valid oEmbed metadata, and a visible duration of `3:12`. The timestamp ledger below belongs to the verified local clean source take and remains capture provenance; it is not presented as the final public video's timestamp map.
+YouTube verification on 2026-08-30 resolved the title **Military Slices Powered by HELM Demo Final** and a visible duration of `3:16`. The timestamp ledger below belongs to the verified local clean source take and remains capture provenance; it is not presented as the final public video's timestamp map.
 
 - Clean take SHA-256: `6c8c0bd12b2b58fca4267407928b9f2b037c8c93175f704093f6ac3fb00c9cc0`
 - Bytes: `4,172,987`
@@ -270,7 +270,7 @@ Deployment evidence identifies tagged Cloud Run candidate revision `military-sli
 - Provider failure safely falls back, but fallback suggestions are intentionally generic outside recognized evidence families.
 - Autonomous HELM Probe and external operational effects are disabled.
 - Historical benchmark scripts retain disclosed lint debt.
-- The local clean source MP4 remains hash-verified provenance and is intentionally excluded from Git; the final presentation is available at <https://youtu.be/EwAtrtrIUiI>.
+- The local clean source MP4 remains hash-verified provenance and is intentionally excluded from Git; the final presentation is available at <https://youtu.be/cpM1sqzRtEU>.
 
 ## 11. Final submission checklist
 
@@ -295,7 +295,7 @@ Deployment evidence identifies tagged Cloud Run candidate revision `military-sli
 - [x] Repository is publicly reachable at `https://github.com/kevinfagundes85-art/military-slices`
 - [x] Public repository synchronization was completed and independently verified during submission closure
 - [x] Repository URL is present in the Devpost copy
-- [x] Final presentation resolves at `https://youtu.be/EwAtrtrIUiI`
+- [x] Final presentation resolves at `https://youtu.be/cpM1sqzRtEU`
 - [x] Exact demo URL is present in the Devpost copy
 - [x] Entrant confirmed signed-out playback of the final presentation
 - [ ] Select **Collaborative Partner**

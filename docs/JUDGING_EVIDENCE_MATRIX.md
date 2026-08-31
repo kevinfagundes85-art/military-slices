@@ -23,5 +23,5 @@
 | Google ADK orchestrates bounded Gemini calls through Vertex AI. | `Agent`, `Runner`, `RunConfig`, structured output, and call limits in `military_slices/agent_runtime.py:413-667` | `.env.example`; technology-use ledger; architecture diagram |
 | The signed cookie provides anonymous plan continuity, not production authentication. | `military_slices/security.py:53-66`; `military_slices/app.py:86`, `:917-929` | Architecture diagram and anonymous live smoke check |
 | The final product suite passes. | Executed final validation | 335/335 Pytest; product/test Ruff; strict Mypy on 18 source files; Bandit; JS syntax; pip-audit |
-| The final presentation is reachable without application credentials. | <https://youtu.be/EwAtrtrIUiI> | YouTube title resolved on 2026-08-30; visible duration 3:12; entrant confirmed signed-out playback |
+| The final presentation URL resolves. | <https://youtu.be/cpM1sqzRtEU> | YouTube title resolved on 2026-08-30; visible duration 3:16; signed-out playback remains a final Human Gate check |
 | The demonstrated journey uses synthetic data. | Final presentation plus clean-take ledger and video SHA-256 | Seven extracted product screenshots; frame/contact-sheet QA |

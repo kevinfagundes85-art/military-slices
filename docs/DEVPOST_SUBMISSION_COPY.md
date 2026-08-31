@@ -6,7 +6,7 @@ Paste the narrative sections in their displayed order. The URL block below is a 
 
 - Hosted project: https://hackathon-rc---military-slices-ztvqlzospa-uw.a.run.app/
 - Source repository: https://github.com/kevinfagundes85-art/military-slices
-- Demo video: https://youtu.be/EwAtrtrIUiI
+- Demo video: https://youtu.be/cpM1sqzRtEU
 
 ## Project title
 
@@ -106,4 +106,4 @@ The demonstration uses synthetic transition data. Occupational references suppor
 
 - Hosted project: <https://hackathon-rc---military-slices-ztvqlzospa-uw.a.run.app/>
 - Source repository: <https://github.com/kevinfagundes85-art/military-slices>
-- Demo video: <https://youtu.be/EwAtrtrIUiI>
+- Demo video: <https://youtu.be/cpM1sqzRtEU>

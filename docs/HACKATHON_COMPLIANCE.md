@@ -27,8 +27,8 @@ State vocabulary: `YES`, `NO`, `PARTIAL`, `UNKNOWN`, `CONFLICTED`.
 | Architecture diagram | README and architecture artifact | YES | BHE | Export a clear image for submission |
 | Hosted-project URL | Public tagged Cloud Run release candidate; no existing production service or traffic was migrated | YES | BHE | Use candidate URL; custom domain optional |
 | Text description | Features, stack, sources, findings, and learnings drafted | YES | BHE | Human review and paste |
-| Demo video | Final 3:12 presentation resolves at `https://youtu.be/EwAtrtrIUiI`; entrant confirmed signed-out playback; clean-take provenance retained separately | YES | BHE/Kevin | Confirm Public visibility and final rendered playback in Devpost |
-| Cloud proof in video | Final video's complete visual coverage of the running app and Google Cloud evidence was not independently re-adjudicated in this documentation-only review | UNKNOWN | Kevin | Confirm the final video itself visibly satisfies the rule before submission; repository/diagram evidence does not replace that check |
+| Demo video | Final 3:16 presentation resolves at `https://youtu.be/cpM1sqzRtEU`; clean-take provenance retained separately | YES | BHE/Kevin | Confirm Public visibility and signed-out playback in Devpost |
+| Cloud proof in video | Replacement video visibly shows the running product and the Cloud Run → Google ADK → Gemini/Vertex AI → HELM Governor → Firestore architecture frame at approximately 2:36 | YES | BHE | Preserve the replacement video URL |
 | Third-party authorization/licenses | PyPI dependencies and public official evidence sources | PARTIAL | BHE/Kevin | Preserve dependency/license inventory and attest |
 | AI-generated code disclosure | Codex assistance explicitly disclosed | YES | BHE | Keep disclosure |
 | Prior-work disclosure | HELM methodology/lessons disclosed; no prior implementation reused | YES | BHE | Keep disclosure |
@@ -36,7 +36,7 @@ State vocabulary: `YES`, `NO`, `PARTIAL`, `UNKNOWN`, `CONFLICTED`.
 | Demo content/IP | Synthetic inputs and no unauthorized biography or endorsement claims | YES | BHE/Kevin | Final recording review |
 | Innovation & operational utility (40%) | Connected plan, messy input, persistent mutation, human-attention reduction | YES | BHE | Make action visible in demo |
 | Architectural discipline & stack (30%) | Typed state, bounded agent/tooling, authority separation, Firestore, failure-safe fallback | YES | BHE | Show diagram and logs |
-| Demo & production readiness (30%) | Hosted candidate and final presentation URL are ready; final video content check remains human | PARTIAL | Kevin | Confirm final video content and Devpost preview |
+| Demo & production readiness (30%) | Hosted candidate and replacement presentation are ready; application and Google Cloud architecture are visible | YES | Kevin | Confirm final Devpost preview |
 | Final Devpost submission | Binding legal attestation and irreversible submission | UNKNOWN | Kevin | Human-only final gate |
 
 ## Category decision
@@ -50,5 +50,5 @@ Military SLICES was implemented in a new repository during the contest period. P
 ## Remaining Human Gates
 
 1. Confirm eligibility, conflict, ownership, and final entrant/team roster.
-2. Confirm the final video is Public, plays in Devpost, and visibly covers the application and Google Cloud implementation required by the rules.
+2. Confirm the final video is Public and plays in Devpost.
 3. Review the final Devpost entry and perform the irreversible submission.

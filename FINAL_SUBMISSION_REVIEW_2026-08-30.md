@@ -45,8 +45,8 @@ The implemented distinction is:
 | Signed cookie is production authentication | **Not claimed** | Materials explicitly describe anonymous prototype session continuity, not production identity |
 | Firestore hosts the application | **False and removed** | Primary materials explicitly assign hosting to Cloud Run |
 | Product suite passes 335 tests | **Directly proven** | Fresh 335/335 Pytest execution |
-| Final video is reachable | **Directly proven** | YouTube title and 3:12 duration resolved; entrant confirmed signed-out playback |
-| Final video visibly demonstrates every required app/Cloud element | **Unverified in this documentation review** | Must be confirmed in the final rendered Devpost preview |
+| Final video URL resolves | **Directly proven** | Replacement YouTube title and 3:16 duration resolved; signed-out playback remains a Human Gate check |
+| Final video visibly demonstrates the app and Google Cloud architecture | **Directly proven** | Replacement video shows the product and the Cloud Run/ADK/Gemini/HELM/Firestore frame at approximately 2:36 |
 
 ## Cross-document consistency
 
@@ -70,7 +70,7 @@ HELM is expanded consistently as **Human Enabled Lifecycle Management**. The res
 
 - **After 30 seconds:** understands the problem, the durable-plan outcome, and that the candidate is live.
 - **After 2 minutes:** understands review-before-write, bounded decisions, real-world testing, re-entry, and plan export.
-- **After the video:** should understand the veteran journey; the entrant must confirm the final rendered video visibly includes application action and Google Cloud evidence.
+- **After the video:** understands the veteran journey and sees the Google Cloud/ADK/Gemini/HELM/Firestore execution boundary at approximately 2:36.
 - **After technical evidence:** can identify Cloud Run hosting, signed anonymous session continuity, ADK orchestration, Gemini/Vertex execution, HELM governance, Authority Governor validation, and Firestore persistence without inference.
 
 ## Link and access status
@@ -79,8 +79,9 @@ HELM is expanded consistently as **Human Enabled Lifecycle Management**. The res
 |---|---|---|
 | Hosted candidate | **PASS** | Live 2026-08-30; rendered anonymously at the public Cloud Run URL |
 | GitHub repository | **PASS** | Public repository; final documentation synchronization is part of this closure pass |
-| Final video URL | **PASS** | Exact URL resolves with correct title and 3:12 duration; entrant confirmed signed-out playback |
-| Final video visibility/content requirement | **HUMAN ACTION** | Confirm Public visibility and required app/Cloud visuals in Devpost preview |
+| Final video URL | **PASS** | Exact replacement URL resolves with the correct title and 3:16 duration |
+| Final video architecture content | **PASS** | Replacement video visibly contains the judge-readable Google stack frame at approximately 2:36 |
+| Final video visibility | **HUMAN ACTION** | Confirm Public visibility and signed-out playback in Devpost |
 | Architecture SVG/PNG | **PASS** | XML/render QA; Google deployment and authority boundaries legible |
 | Judge screenshots | **PASS** | Eight-image ordered pack present |
 
@@ -99,7 +100,7 @@ HELM is expanded consistently as **Human Enabled Lifecycle Management**. The res
 
 - Hosted app: <https://hackathon-rc---military-slices-ztvqlzospa-uw.a.run.app/>
 - Repository: <https://github.com/kevinfagundes85-art/military-slices>
-- Final video: <https://youtu.be/EwAtrtrIUiI>
+- Final video: <https://youtu.be/cpM1sqzRtEU>
 - Devpost copy: `docs/DEVPOST_SUBMISSION_COPY.md`
 - Architecture SVG: `docs/architecture.svg`
 - Architecture PNG: `docs/screenshots/08-helm-architecture.png`

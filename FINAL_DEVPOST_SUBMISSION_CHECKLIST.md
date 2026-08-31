@@ -9,20 +9,18 @@ Current gate classification: **HUMAN ACTION**
 
 Open a signed-out/private browser window and play:
 
-https://youtu.be/EwAtrtrIUiI
+https://youtu.be/cpM1sqzRtEU
 
 Confirm:
 
 - no login or permission request blocks playback;
 - YouTube visibility is **Public**;
-- title is **Military SLICES — Powered by HELM | Hackathon Demo**;
+- title is **Military Slices Powered by HELM Demo Final**;
 - the presentation plays through the end;
 - audio is understandable and the image remains legible.
-- the video visibly shows the application in action and evidence that its backend runs on Google Cloud, as required by the official rules.
+- the application and Google Cloud architecture frame remain legible in Devpost's player.
 
 Do not replace or regenerate the video.
-
-If the last condition is not true, stop: the repository and architecture image cannot substitute for a required video demonstration.
 
 ## 2. Open the Devpost submission form — HUMAN ACTION
 
@@ -47,7 +45,7 @@ Use these URLs exactly:
 
 - Hosted project: `https://hackathon-rc---military-slices-ztvqlzospa-uw.a.run.app/`
 - Source repository: `https://github.com/kevinfagundes85-art/military-slices`
-- Demo video: `https://youtu.be/EwAtrtrIUiI`
+- Demo video: `https://youtu.be/cpM1sqzRtEU`
 
 Do not add unsupported claims or personal employment history.
 
