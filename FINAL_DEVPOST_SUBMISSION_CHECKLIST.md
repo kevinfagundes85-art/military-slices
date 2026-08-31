@@ -1,35 +1,11 @@
 # Final Devpost Submission Checklist
 
-Complete these actions in order. Every item is classified **HUMAN ACTION**. There is currently no engineering **BLOCKER**.
+Complete only these remaining human actions, in order.
 
-Overall submission readiness: **READY**  
+Overall submission readiness: **READY WITH HUMAN VERIFICATION**
 Current gate classification: **HUMAN ACTION**
 
-## 1. Publish the final repository commit — HUMAN ACTION
-
-From the local `military-slices` repository:
-
-```powershell
-git status --short
-git push origin main
-git rev-parse HEAD
-```
-
-Expected before push: `git status --short` prints nothing.
-
-After the push, open:
-
-https://github.com/kevinfagundes85-art/military-slices
-
-Confirm all three facts:
-
-- repository visibility says **Public**;
-- the latest commit equals the commit reported at the end of this preparation pass;
-- the README begins **Military SLICES** and includes **Watch the final demo**.
-
-If the push is rejected, stop and resolve GitHub authentication or branch protection. Do not submit an outdated repository.
-
-## 2. Verify the final presentation — HUMAN ACTION
+## 1. Verify the final presentation — HUMAN ACTION
 
 Open a signed-out/private browser window and play:
 
@@ -38,13 +14,17 @@ https://youtu.be/EwAtrtrIUiI
 Confirm:
 
 - no login or permission request blocks playback;
+- YouTube visibility is **Public**;
 - title is **Military SLICES — Powered by HELM | Hackathon Demo**;
 - the presentation plays through the end;
 - audio is understandable and the image remains legible.
+- the video visibly shows the application in action and evidence that its backend runs on Google Cloud, as required by the official rules.
 
 Do not replace or regenerate the video.
 
-## 3. Open the Devpost submission form — HUMAN ACTION
+If the last condition is not true, stop: the repository and architecture image cannot substitute for a required video demonstration.
+
+## 2. Open the Devpost submission form — HUMAN ACTION
 
 Select the **Collaborative Partner** category.
 
@@ -71,7 +51,7 @@ Use these URLs exactly:
 
 Do not add unsupported claims or personal employment history.
 
-## 4. Upload judge media — HUMAN ACTION
+## 3. Upload judge media — HUMAN ACTION
 
 Upload these images in this exact order:
 
@@ -86,7 +66,7 @@ Upload these images in this exact order:
 
 Use `01-front-door.png` as the cover image unless Devpost's crop makes its title unreadable; in that case use `07-complete-plan-and-export.png`. Do not reorder the remaining images.
 
-## 5. Complete entrant-controlled declarations — HUMAN ACTION
+## 4. Complete entrant-controlled declarations — HUMAN ACTION
 
 Read and answer the Devpost declarations yourself. Confirm only facts you personally know, including:
 
@@ -100,14 +80,14 @@ Read and answer the Devpost declarations yourself. Confirm only facts you person
 
 Do not infer an answer from repository text. If any declaration cannot be answered confidently, stop before submission and resolve it.
 
-## 6. Run the final preview — HUMAN ACTION
+## 5. Run the final preview — HUMAN ACTION
 
 Before submitting, verify the rendered Devpost preview:
 
 - title and tagline are correct;
 - category is **Collaborative Partner**;
 - hosted application opens without credentials;
-- GitHub opens publicly and displays the final preparation commit;
+- GitHub opens publicly and displays the review commit reported by BHE;
 - YouTube opens and plays;
 - all eight images are legible and ordered correctly;
 - Markdown, lists, punctuation, and links rendered correctly;
@@ -115,7 +95,7 @@ Before submitting, verify the rendered Devpost preview:
 - limitations and required disclosures are present;
 - no field contains internal gate labels, placeholder markers, or unfinished instructions.
 
-## 7. Submit — HUMAN ACTION
+## 6. Submit — HUMAN ACTION
 
 Confirm the deadline shown by Devpost still permits submission. Then perform the irreversible final submission.
 

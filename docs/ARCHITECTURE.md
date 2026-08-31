@@ -4,6 +4,10 @@
 
 Military SLICES is one web service with one canonical state. Career, Education, Location, and Your Story are bounded projections, not independent applications or agents.
 
+## Deployment boundary
+
+The public browser connects to a FastAPI container on **Google Cloud Run**. That container serves the static Military SLICES interface, API routes, and HELM runtime. A signed cookie identifies an anonymous prototype session; it is not a production identity system. When a governed Gate permits a model call, **Google ADK** orchestrates the bounded Resolver inside the Cloud Run process and invokes **Gemini 3.7 Flash through Vertex AI**. HELM's Authority Governor validates the typed proposal before **Firestore** transactionally stores the canonical session plan and prior versions. Cloud Run hosts execution; Firestore persists state.
+
 The transition runtime carries two distinct anchors:
 
 - `human_anchor`: the outcome the person is pursuing now;

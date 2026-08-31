@@ -1,6 +1,6 @@
 # Hackathon Compliance Ledger
 
-Checked against the official All Things Agentic Hackathon rules on 2026-08-28.
+Checked against the official All Things Agentic Hackathon rules on 2026-08-30.
 
 Primary authority: <https://allthingsagentichackathon.devpost.com/rules>
 
@@ -21,14 +21,14 @@ State vocabulary: `YES`, `NO`, `PARTIAL`, `UNKNOWN`, `CONFLICTED`.
 | Functional/testable project | Public HTTPS tagged candidate validated on desktop and Android-width viewport | YES | BHE | Keep tag live through judging |
 | Free judge access | Anonymous isolated session requires no paid account or credentials | YES | BHE | Recheck before submission |
 | English | App and materials are English | YES | BHE | Final visual review |
-| Repository URL | Public at `https://github.com/kevinfagundes85-art/military-slices`; public branch is behind the local submission commit | PARTIAL | Kevin | Push final `main`, then verify the displayed commit |
-| Private repository access | If private, grant `testing@devpost.com` and `cloudhackathons@google.com` | UNKNOWN | Kevin | Apply only if private |
+| Repository URL | Public and synchronized at `https://github.com/kevinfagundes85-art/military-slices` during submission closure | YES | BHE | Verify final displayed review commit after the documentation push |
+| Private repository access | Not applicable because the repository is public | YES | Kevin | Keep repository public through judging |
 | README spin-up instructions | Root README includes local and cloud setup | YES | BHE | Final link check |
 | Architecture diagram | README and architecture artifact | YES | BHE | Export a clear image for submission |
-| Hosted-project URL | Public zero-traffic tagged Cloud Run candidate | YES | BHE | Use candidate URL; custom domain optional |
+| Hosted-project URL | Public tagged Cloud Run release candidate; no existing production service or traffic was migrated | YES | BHE | Use candidate URL; custom domain optional |
 | Text description | Features, stack, sources, findings, and learnings drafted | YES | BHE | Human review and paste |
-| Demo video | Final 3:12 presentation resolves at `https://youtu.be/EwAtrtrIUiI`; clean-take provenance retained separately | YES | BHE/Kevin | Perform one signed-out playback check |
-| Cloud proof in video | Script includes `.run.app`, Cloud Run, Firestore, and Vertex proof | YES | BHE/Kevin | Capture in unedited recording |
+| Demo video | Final 3:12 presentation resolves at `https://youtu.be/EwAtrtrIUiI`; entrant confirmed signed-out playback; clean-take provenance retained separately | YES | BHE/Kevin | Confirm Public visibility and final rendered playback in Devpost |
+| Cloud proof in video | Final video's complete visual coverage of the running app and Google Cloud evidence was not independently re-adjudicated in this documentation-only review | UNKNOWN | Kevin | Confirm the final video itself visibly satisfies the rule before submission; repository/diagram evidence does not replace that check |
 | Third-party authorization/licenses | PyPI dependencies and public official evidence sources | PARTIAL | BHE/Kevin | Preserve dependency/license inventory and attest |
 | AI-generated code disclosure | Codex assistance explicitly disclosed | YES | BHE | Keep disclosure |
 | Prior-work disclosure | HELM methodology/lessons disclosed; no prior implementation reused | YES | BHE | Keep disclosure |
@@ -36,7 +36,7 @@ State vocabulary: `YES`, `NO`, `PARTIAL`, `UNKNOWN`, `CONFLICTED`.
 | Demo content/IP | Synthetic inputs and no unauthorized biography or endorsement claims | YES | BHE/Kevin | Final recording review |
 | Innovation & operational utility (40%) | Connected plan, messy input, persistent mutation, human-attention reduction | YES | BHE | Make action visible in demo |
 | Architectural discipline & stack (30%) | Typed state, bounded agent/tooling, authority separation, Firestore, failure-safe fallback | YES | BHE | Show diagram and logs |
-| Demo & production readiness (30%) | Hosted candidate and final public presentation URL are ready | YES | Kevin | Confirm final preview |
+| Demo & production readiness (30%) | Hosted candidate and final presentation URL are ready; final video content check remains human | PARTIAL | Kevin | Confirm final video content and Devpost preview |
 | Final Devpost submission | Binding legal attestation and irreversible submission | UNKNOWN | Kevin | Human-only final gate |
 
 ## Category decision
@@ -50,6 +50,5 @@ Military SLICES was implemented in a new repository during the contest period. P
 ## Remaining Human Gates
 
 1. Confirm eligibility, conflict, ownership, and final entrant/team roster.
-2. Push the final local `main` branch to the already-public repository and verify its displayed commit.
-3. Verify `https://youtu.be/EwAtrtrIUiI` plays in a signed-out/private browser window.
-4. Review the final Devpost entry and perform the irreversible submission.
+2. Confirm the final video is Public, plays in Devpost, and visibly covers the application and Google Cloud implementation required by the rules.
+3. Review the final Devpost entry and perform the irreversible submission.

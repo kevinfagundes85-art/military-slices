@@ -36,7 +36,7 @@ At any point the veteran can view the accumulated transition plan: objective, wo
 
 ## How it works
 
-Military SLICES is powered by HELM, a governance layer that separates intent, evidence, reasoning, authority, and persistence.
+Military SLICES is powered by **HELM—Human Enabled Lifecycle Management**—a governance layer that separates intent, evidence, reasoning, authority, and persistence. HELM governs **how** work may proceed; the installed Domain Pack governs **what** evidence and transition rules apply; Slices govern **where** bounded work occurs over one shared plan.
 
 1. The person supplies ordinary input.
 2. A deterministic orientation step extracts only what the person actually provided.
@@ -49,6 +49,8 @@ Military SLICES is powered by HELM, a governance layer that separates intent, ev
 9. The runtime recomputes the next decision, real-world action, or re-entry prompt.
 
 The model cannot authorize its own proposal, close a human-only decision, or write directly to the plan.
+
+The deployment roles are distinct: **Cloud Run hosts** the FastAPI application, static interface, and HELM runtime. A signed cookie binds the anonymous prototype session to its plan; it is not a production login system. Inside that runtime, **Google ADK orchestrates** bounded Resolver calls and **Gemini 3.7 Flash runs through Vertex AI** to produce typed proposals. HELM validates proposals before **Firestore transactionally stores** the canonical plan and prior versions. Firestore stores state; it does not host the application.
 
 ## How we built it
 
@@ -79,7 +81,7 @@ The human experience was equally difficult. A technically correct workflow still
 - Enforced a separate Authority Governor before governed mutation.
 - Supported persistent re-entry, history, signed What-If branches, changed-reality handling, and reversible direction choices.
 - Turned governed state into a readable, dated transition plan that can be exported and understood without the application.
-- Completed a clean synthetic end-to-end demo with no personal data or developer surfaces.
+- Completed a clean synthetic end-to-end product drive with preserved screenshots, export evidence, and no personal data in the demonstrated journey.
 - Passed the final 335-test product suite, strict Mypy, product/test Ruff, Bandit, JavaScript syntax, and dependency auditing.
 
 ## What we learned

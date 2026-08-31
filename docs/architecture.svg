@@ -1,27 +1,43 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
-  <title id="title">Military SLICES and HELM architecture</title>
-  <desc id="desc">Human intent enters Military SLICES. HELM uses a Domain Pack and Gate to create a bounded evidence surface, a Resolver proposes, the Authority Governor validates, and versioned state produces the next human decision or action. Probe is a disabled bounded discovery path in this prototype.</desc>
+  <title id="title">Military SLICES, HELM, and Google Cloud deployment</title>
+  <desc id="desc">A browser connects to the Military SLICES FastAPI application and HELM runtime on Cloud Run. HELM selects an authorized evidence surface. Google ADK orchestrates a bounded Resolver that calls Gemini 3.7 Flash through Vertex AI. The Authority Governor validates a proposal before Firestore persists the canonical plan and prior versions. A signed anonymous session cookie binds the browser to its plan.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#061826"/><stop offset="1" stop-color="#0b2636"/></linearGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#000" flood-opacity="0.25"/></filter>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#000" flood-opacity="0.24"/></filter>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#66d4c6"/></marker>
     <style>
-      .title{font:700 44px system-ui,Segoe UI,sans-serif;fill:#fffaf0}.sub{font:400 22px system-ui,Segoe UI,sans-serif;fill:#adc0cf}.label{font:800 18px system-ui,Segoe UI,sans-serif;letter-spacing:2px;fill:#f7c94f}.head{font:700 27px system-ui,Segoe UI,sans-serif;fill:#fffaf0}.copy{font:400 18px system-ui,Segoe UI,sans-serif;fill:#c8d5df}.small{font:700 16px system-ui,Segoe UI,sans-serif;fill:#9aafbd}.card{fill:#102b3d;stroke:#2c566b;stroke-width:2}.core{fill:#102f3c;stroke:#66d4c6;stroke-width:2.5}.guard{fill:#27342e;stroke:#d3a936;stroke-width:2}.arrow{stroke:#66d4c6;stroke-width:4;fill:none;marker-end:url(#arrow)}.dash{stroke:#7c94a4;stroke-width:3;stroke-dasharray:10 10;fill:none;marker-end:url(#arrow)}
+      .title{font:700 42px system-ui,Segoe UI,sans-serif;fill:#fffaf0}.sub{font:400 20px system-ui,Segoe UI,sans-serif;fill:#adc0cf}.label{font:800 17px system-ui,Segoe UI,sans-serif;letter-spacing:1.8px;fill:#f7c94f}.head{font:700 25px system-ui,Segoe UI,sans-serif;fill:#fffaf0}.copy{font:400 17px system-ui,Segoe UI,sans-serif;fill:#c8d5df}.small{font:700 15px system-ui,Segoe UI,sans-serif;fill:#9aafbd}.card{fill:#102b3d;stroke:#2c566b;stroke-width:2}.core{fill:#102f3c;stroke:#66d4c6;stroke-width:2.5}.guard{fill:#27342e;stroke:#d3a936;stroke-width:2}.cloud{fill:#0a2230;stroke:#4a8295;stroke-width:2;stroke-dasharray:10 8}.service{fill:#142d43;stroke:#78a9df;stroke-width:2.5}.arrow{stroke:#66d4c6;stroke-width:4;fill:none;marker-end:url(#arrow)}.return{stroke:#8ea5b5;stroke-width:3;fill:none;stroke-dasharray:8 7;marker-end:url(#arrow)}
     </style>
   </defs>
   <rect width="1600" height="900" rx="32" fill="url(#bg)"/>
-  <text x="80" y="80" class="title">Military SLICES: governed planning, not an open-ended chat loop</text>
-  <text x="80" y="118" class="sub">The model proposes inside a bounded surface. HELM and the human control what becomes plan truth.</text>
+  <text x="65" y="65" class="title">Military SLICES: HELM-governed execution on Google Cloud</text>
+  <text x="65" y="102" class="sub">Cloud Run hosts the application · ADK orchestrates bounded reasoning · Gemini runs on Vertex AI · Firestore persists governed plan state</text>
   <g filter="url(#shadow)">
-    <rect x="80" y="200" width="250" height="170" rx="24" class="card"/><text x="110" y="240" class="label">HUMAN INTENT</text><text x="110" y="285" class="head">Ordinary input</text><text x="110" y="320" class="copy">Words · documents</text><text x="110" y="350" class="copy">screenshots · corrections</text>
-    <rect x="400" y="200" width="260" height="170" rx="24" class="card"/><text x="430" y="240" class="label">MILITARY SLICES</text><text x="430" y="285" class="head">Review first</text><text x="430" y="320" class="copy">Career · Education</text><text x="430" y="350" class="copy">Location · Your Story</text>
-    <rect x="730" y="165" width="430" height="240" rx="28" class="core"/><text x="765" y="210" class="label">HELM GOVERNANCE</text><text x="765" y="255" class="head">Select the authorized surface</text><rect x="765" y="285" width="170" height="82" rx="16" class="card"/><text x="785" y="317" class="small">DOMAIN PACK</text><text x="785" y="346" class="copy">Path + rules</text><rect x="955" y="285" width="170" height="82" rx="16" class="card"/><text x="975" y="317" class="small">ACTIVE GATE</text><text x="975" y="346" class="copy">One decision</text>
-    <rect x="1230" y="200" width="290" height="170" rx="24" class="card"/><text x="1260" y="240" class="label">RESOLVER</text><text x="1260" y="285" class="head">Propose</text><text x="1260" y="320" class="copy">Deterministic logic or</text><text x="1260" y="350" class="copy">ADK + Gemini</text>
-    <rect x="730" y="485" width="430" height="165" rx="28" class="guard"/><text x="765" y="530" class="label">AUTHORITY GOVERNOR</text><text x="765" y="575" class="head">Validate before write</text><text x="765" y="610" class="copy">Scope · evidence · authority · version</text>
-    <rect x="1230" y="485" width="290" height="165" rx="24" class="card"/><text x="1260" y="530" class="label">GOVERNED STATE</text><text x="1260" y="575" class="head">One durable plan</text><text x="1260" y="610" class="copy">Versioned in Firestore</text>
-    <rect x="400" y="485" width="260" height="165" rx="24" class="card"/><text x="430" y="530" class="label">HUMAN CONTROL</text><text x="430" y="575" class="head">Decide or correct</text><text x="430" y="610" class="copy">Nothing consequential</text><text x="430" y="638" class="copy">changes silently</text>
-    <rect x="80" y="485" width="250" height="165" rx="24" class="card"/><text x="110" y="530" class="label">NEXT MOVE</text><text x="110" y="575" class="head" style="font-size:22px">Decide · Act · Learn</text><text x="110" y="610" class="copy">Return with evidence</text>
+    <rect x="55" y="180" width="270" height="220" rx="24" class="card"/>
+    <text x="85" y="222" class="label">HUMAN + BROWSER</text><text x="85" y="265" class="head">Intent and control</text>
+    <text x="85" y="302" class="copy">Words · documents</text><text x="85" y="332" class="copy">screenshots · decisions</text><text x="85" y="370" class="small">Signed anonymous session cookie</text>
+    <rect x="370" y="135" width="790" height="610" rx="30" class="cloud"/>
+    <text x="402" y="175" class="label">GOOGLE CLOUD RUN</text><text x="650" y="175" class="small">FASTAPI · STATIC UI · HELM RUNTIME</text>
+    <rect x="410" y="215" width="270" height="155" rx="22" class="card"/>
+    <text x="440" y="255" class="label">MILITARY SLICES</text><text x="440" y="297" class="head">Review and route</text><text x="440" y="332" class="copy">Career · Education</text><text x="440" y="360" class="copy">Location · Your Story</text>
+    <rect x="730" y="200" width="390" height="185" rx="25" class="core"/>
+    <text x="760" y="240" class="label">HELM GOVERNANCE</text><text x="760" y="282" class="head">Authorize the reasoning surface</text>
+    <rect x="760" y="310" width="155" height="52" rx="12" class="card"/><text x="778" y="332" class="small">DOMAIN PACK</text><text x="778" y="352" class="copy" style="font-size:14px">What is governed</text>
+    <rect x="935" y="310" width="155" height="52" rx="12" class="card"/><text x="953" y="332" class="small">SLICE + GATE</text><text x="953" y="352" class="copy" style="font-size:14px">Where + now</text>
+    <rect x="730" y="430" width="390" height="125" rx="22" class="card"/>
+    <text x="760" y="470" class="label">GOOGLE ADK RESOLVER</text><text x="760" y="510" class="head">Bounded orchestration</text><text x="760" y="540" class="copy">Typed output · scoped tools · call limits</text>
+    <rect x="410" y="585" width="710" height="125" rx="23" class="guard"/>
+    <text x="440" y="625" class="label">AUTHORITY GOVERNOR</text><text x="440" y="665" class="head">Validate before any governed write</text><text x="440" y="695" class="copy">Scope · evidence · human authority · state version</text>
+    <rect x="1220" y="200" width="320" height="175" rx="24" class="service"/>
+    <text x="1250" y="242" class="label">VERTEX AI</text><text x="1250" y="285" class="head">Gemini 3.7 Flash</text><text x="1250" y="320" class="copy">Structured proposal only</text><text x="1250" y="350" class="small">No direct plan writes</text>
+    <rect x="1220" y="500" width="320" height="190" rx="24" class="service"/>
+    <text x="1250" y="542" class="label">FIRESTORE</text><text x="1250" y="585" class="head">Persistent plan state</text><text x="1250" y="620" class="copy">Canonical session plan</text><text x="1250" y="650" class="copy">Prior versions · transactions</text><text x="1250" y="677" class="small">Stores data; does not host the app</text>
   </g>
-  <path d="M330 285 H400" class="arrow"/><path d="M660 285 H730" class="arrow"/><path d="M1160 285 H1230" class="arrow"/><path d="M1375 370 V445 H945 V485" class="arrow"/><path d="M1160 568 H1230" class="arrow"/><path d="M1230 605 H1195 V700 H530 V650" class="arrow"/><path d="M400 568 H330" class="arrow"/><path d="M205 485 V425 H530 V370" class="arrow"/>
-  <rect x="80" y="735" width="1440" height="105" rx="22" fill="#0b202e" stroke="#38576a" stroke-width="1.5"/><text x="110" y="775" class="label">SECONDARY DISCOVERY BOUNDARY</text><text x="110" y="810" class="copy">HELM Probe may discover or wake a potentially material relationship; it cannot adjudicate, authorize, or mutate state.</text><text x="1280" y="810" class="small">AUTONOMOUS PROBE: DISABLED</text><path d="M930 735 V680" class="dash"/>
+  <path d="M325 290 H410" class="arrow"/><path d="M680 292 H730" class="arrow"/><path d="M925 385 V430" class="arrow"/>
+  <path d="M1120 492 H1170 V287 H1220" class="arrow"/><path d="M1220 340 H1170 V540 H1120" class="return"/>
+  <path d="M925 555 V585" class="arrow"/><path d="M1120 648 H1220" class="arrow"/>
+  <path d="M1220 675 H1185 V765 H540 V710" class="return"/><path d="M410 650 H360 V490 H190 V400" class="return"/>
+  <rect x="55" y="790" width="1485" height="72" rx="18" fill="#0b202e" stroke="#38576a" stroke-width="1.5"/>
+  <text x="82" y="820" class="label">AUTHORITY MAP</text><text x="260" y="820" class="copy">HELM governs HOW</text><text x="535" y="820" class="copy">Domain Pack governs WHAT</text><text x="875" y="820" class="copy">Slices govern WHERE</text><text x="1165" y="820" class="copy">Human decides what becomes true</text>
+  <text x="82" y="848" class="small">Autonomous Probe and external operational effects are disabled in this prototype.</text>
 </svg>

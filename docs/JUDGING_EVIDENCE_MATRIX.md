@@ -18,7 +18,10 @@
 | The veteran can view and export a complete dated transition plan. | `plan.py:194+`; `/api/plan/export` in `app.py:166-181` | Screenshot `07-complete-plan-and-export.png`; demo 01:15.282–01:21.799; verified export SHA-256 |
 | The UI works at Android width. | Responsive CSS and targeted browser/UX regression tests | `MILITARY_SLICES_COMPLETE_TRANSITION_PLAN_UX_EVIDENCE_2026-08-28.md` |
 | The application is publicly testable without account setup. | Hosted candidate URL | Live verification on 2026-08-29: title and front door rendered; zero console warnings/errors |
-| The candidate uses Cloud Run and Firestore. | `Dockerfile`, `store.py`, hosted release report | Public `.run.app` URL and deployment identity in evidence report |
+| Cloud Run hosts the deployed application and HELM runtime. | `Dockerfile`; FastAPI entry point; hosted release report | Public `.run.app` URL and deployment identity in evidence report |
+| Firestore persists canonical state and versions; it does not host the application. | `military_slices/store.py:85-153` | Transactional persistence tests; architecture diagram |
+| Google ADK orchestrates bounded Gemini calls through Vertex AI. | `Agent`, `Runner`, `RunConfig`, structured output, and call limits in `military_slices/agent_runtime.py:413-667` | `.env.example`; technology-use ledger; architecture diagram |
+| The signed cookie provides anonymous plan continuity, not production authentication. | `military_slices/security.py:53-66`; `military_slices/app.py:86`, `:917-929` | Architecture diagram and anonymous live smoke check |
 | The final product suite passes. | Executed final validation | 335/335 Pytest; product/test Ruff; strict Mypy on 18 source files; Bandit; JS syntax; pip-audit |
-| The final presentation is publicly reachable. | <https://youtu.be/EwAtrtrIUiI> | YouTube title and oEmbed metadata resolved on 2026-08-29; visible duration 3:12 |
+| The final presentation is reachable without application credentials. | <https://youtu.be/EwAtrtrIUiI> | YouTube title resolved on 2026-08-30; visible duration 3:12; entrant confirmed signed-out playback |
 | The demonstrated journey uses synthetic data. | Final presentation plus clean-take ledger and video SHA-256 | Seven extracted product screenshots; frame/contact-sheet QA |

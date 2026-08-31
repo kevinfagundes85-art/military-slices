@@ -29,7 +29,7 @@ A typical journey looks like this:
 
 ## What HELM is
 
-HELM is the governance layer underneath Military SLICES. It separates five jobs that a normal assistant often blends together:
+HELM—**Human Enabled Lifecycle Management**—is the governance layer underneath Military SLICES. HELM governs **how** work may proceed, an installed Domain Pack governs **what** is meaningful and allowed in a domain, and Slices govern **where** the person sees and works with the shared plan. It separates jobs that a normal assistant often blends together:
 
 - **Human intent** establishes the objective.
 - **Slices** expose the smallest relevant view of the shared plan, such as Career, Education, Location, or Your Story.
@@ -60,6 +60,10 @@ ordinary human input
 ```
 
 ![Military SLICES judge-readable architecture](docs/architecture.svg)
+
+### Google deployment at a glance
+
+The browser connects to one FastAPI application and HELM runtime hosted as a container on **Cloud Run**. A signed cookie binds the anonymous prototype session to its plan; it is not a production login system. When the active Gate permits model reasoning, **Google ADK** orchestrates a bounded Resolver inside the Cloud Run runtime and calls **Gemini 3.7 Flash through Vertex AI** for a typed proposal. HELM's Authority Governor validates that proposal before **Firestore** transactionally persists the canonical plan and prior versions. Firestore stores application state; it does not host the application.
 
 ## Technology stack
 
@@ -144,13 +148,13 @@ The final executed results, including any environment limitations, are recorded 
 - File extraction supports the implemented TXT, DOCX, PDF, scanned-PDF, PNG, and JPEG paths; it is not a general document-management platform.
 - Provider failure falls back safely, but fallback career suggestions are intentionally generic outside recognized evidence families.
 - Physical-device validation and an independent cold-user study remain outside the completed automated and emulated-mobile evidence.
-- The current public candidate is a tagged, zero-production-traffic release candidate. No production traffic was moved for the submission build.
+- The current public candidate is a tagged Cloud Run release candidate. No existing production service or traffic was migrated for the submission build.
 
 ## Hackathon status
 
 Military SLICES is a fresh competition implementation for the **Collaborative Partner** category. The required stack is present: Gemini 3.7 Flash through Vertex AI, Google ADK, and Google Cloud infrastructure (Cloud Run and Firestore). OpenAI Codex assisted with implementation, testing, documentation, and release verification.
 
-The hosted candidate, public presentation video, screenshot pack, claim-to-evidence matrix, and final submission copy are prepared. Synchronizing the final local commit to the public repository, entrant attestations, and the irreversible Devpost submission remain human-controlled steps.
+The hosted candidate, final presentation video, public repository, screenshot pack, claim-to-evidence matrix, and final submission copy are prepared. Entrant attestations and the irreversible Devpost submission remain human-controlled steps.
 
 ## License
 

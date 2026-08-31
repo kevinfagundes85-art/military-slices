@@ -55,7 +55,7 @@ The live smoke check proves availability and front-door rendering. The clean dem
 
 Final public presentation: <https://youtu.be/EwAtrtrIUiI>
 
-On 2026-08-29, YouTube resolved the title **Military SLICES — Powered by HELM | Hackathon Demo**, exposed valid oEmbed metadata, and displayed a duration of `3:12`. The local clean-take evidence below remains capture provenance; its hash is not represented as the byte hash of the final YouTube presentation.
+On 2026-08-30, YouTube resolved the title **Military SLICES — Powered by HELM | Hackathon Demo** and displayed a duration of `3:12`; the entrant separately confirmed signed-out playback. The local clean-take evidence below remains capture provenance; its hash is not represented as the byte hash of the final YouTube presentation.
 
 - Video: `benchmark/output/MILITARY_SLICES_JUDGE_DEMO_CLEAN_TAKE_2026-08-28.mp4`
 - SHA-256: `6c8c0bd12b2b58fca4267407928b9f2b037c8c93175f704093f6ac3fb00c9cc0`
@@ -72,20 +72,14 @@ The QA ledger records no lock screen, notifications, unrelated tabs, personal da
 
 ## Known limitations
 
-1. The configured repository `https://github.com/kevinfagundes85-art/military-slices` is public, but its public `main` head is `8e01b7487ddd64415c9fb5401be5ce4a83aceba2`; the local submission branch is 99 commits ahead before this final-preparation commit. Publishing the final commit remains a Human Gate.
-2. The final presentation URL is live, but the entrant should perform one signed-out/private-window playback check before submission.
-3. Eligibility, entrant/team, ownership, and final submission attestations remain human-only.
-4. Physical Android hardware and an independent cold-user study remain uncompleted; automated and emulated Android-width evidence exists.
-5. Repository-wide Ruff is not green because frozen historical benchmark scripts retain 155 disclosed findings.
-6. The reference Domain Pack is a bounded planning pack, not an authoritative benefits/eligibility engine.
-7. External operational actions and autonomous Probe execution are disabled.
-8. The hosted candidate is an anonymous-session prototype, not a production identity or case-management system.
+1. Eligibility, entrant/team, ownership, and final submission attestations remain human-only.
+2. Physical Android hardware and an independent cold-user study remain uncompleted; automated and emulated Android-width evidence exists.
+3. Repository-wide Ruff is not green because frozen historical benchmark scripts retain 155 disclosed findings.
+4. The reference Domain Pack is a bounded planning pack, not an authoritative benefits/eligibility engine.
+5. External operational actions and autonomous Probe execution are disabled.
+6. The hosted candidate is an anonymous-session prototype, not a production identity or case-management system.
+7. The final presentation's title, duration, and reachability were verified, but its complete visual coverage of application action and Google Cloud evidence was not independently re-adjudicated during this documentation-only review.
 
 ## Submission blockers
 
-No engineering blocker remains for packaging. The remaining blockers are Human Gates:
-
-- push the final local `main` branch to the already-public repository and confirm the displayed commit;
-- verify signed-out playback of the final presentation URL;
-- complete entrant/legal/IP attestations;
-- review and perform the irreversible Devpost submission before the official deadline.
+No engineering blocker remains for packaging. The remaining Human Gates are to confirm the final video's rendered Devpost playback and required visual content, complete entrant/legal/IP attestations, and perform the irreversible Devpost submission before the official deadline.
